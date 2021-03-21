@@ -21,9 +21,14 @@ export class Editor extends React.Component {
   public render() {
     return (
       <div className="editor-wrapper">
-        <div className="editor-inputer" contentEditable="true" onInput={this.handleContentInput}></div>
+        <div className="editor-inputer" contentEditable={true} suppressContentEditableWarning={true} onInput={this.handleContentInput}>
+          {/* {this.state.content === "" ? <p className="editor-placeholder">请输入</p> : this.state.content} */}
+        </div>
         <div className="tools-wrapper">
-          <div className="tools-container"></div>
+          <div className="tools-container">
+            <span>B</span>
+            <span>I</span>
+          </div>
           <button className="save-btn" onClick={this.handleSendBtnClick}>
             Send
           </button>
@@ -34,6 +39,7 @@ export class Editor extends React.Component {
 
   protected handleContentInput(e: FormEvent) {
     const etext = e.currentTarget.textContent;
+
     if (etext) {
       this.setState({
         content: etext,
