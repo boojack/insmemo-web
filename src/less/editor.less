@@ -7,15 +7,20 @@
   align-items: flex-start;
   background-color: white;
   padding: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
-  > .editor-textarea {
+  > .editor-inputer {
     width: 100%;
     height: 80px;
     padding: 8px;
     resize: none;
     border: 1px solid lightgray;
     outline: none;
+    overflow-y: auto;
+
+    &:focus {
+      border: 1px solid black;
+    }
   }
 
   > .tools-wrapper {
@@ -25,5 +30,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    > .save-btn {
+      cursor: pointer;
+      padding: 4px 10px;
+    }
   }
 }
