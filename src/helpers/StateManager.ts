@@ -12,6 +12,9 @@ class StateManager {
     this.init();
   }
 
+  /**
+   * init data
+   */
   private init() {
     this.setState<MemoType[]>("memos", [{ id: "123", content: "123123", createdAt: Date.now() }]);
   }
@@ -37,12 +40,26 @@ class StateManager {
     }
   }
 
+  public unbindStateListener(key: string, context: Object) {
+    const lns = this.listener.get(key);
+    if (lns) {
+      for (let i = 0; i < lns.length; ++i) {
+        if (lns[i].context === context) {
+          lns.splice(i, 1);
+          break;
+        }
+      }
+    } else {
+      throw new Error("no key in listenr");
+    }
+  }
+
   private emitValueChangedEvent(key: string, value: BasicType) {
     const handlers = this.listener.get(key);
 
     if (handlers) {
       for (const h of handlers) {
-        h.handler.call(h.context, value);
+        h.handler(value);
       }
     }
   }

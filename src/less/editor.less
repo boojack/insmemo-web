@@ -1,4 +1,5 @@
 .editor-wrapper {
+  position: relative;
   width: 100%;
   height: auto;
   display: flex;
@@ -18,13 +19,15 @@
     outline: none;
     overflow-y: auto;
     border-bottom: 1px solid lightgray;
+  }
 
-    > .editor-placeholder {
-      user-select: none;
-      color: gray;
-      position: relative;
-      z-index: -1;
-    }
+  > .editor-placeholder {
+    position: absolute;
+    user-select: none;
+    color: gray;
+    top: 24px;
+    left: 26px;
+    font-size: 14px;
   }
 
   > .tools-wrapper {

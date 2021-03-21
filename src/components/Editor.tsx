@@ -6,6 +6,7 @@ export class Editor extends React.Component {
   public state: {
     content: string;
   };
+  public editorRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: any) {
     super(props);
@@ -14,6 +15,8 @@ export class Editor extends React.Component {
       content: "",
     };
 
+    this.editorRef = React.createRef();
+
     this.handleContentInput = this.handleContentInput.bind(this);
     this.handleSendBtnClick = this.handleSendBtnClick.bind(this);
   }
@@ -21,9 +24,14 @@ export class Editor extends React.Component {
   public render() {
     return (
       <div className="editor-wrapper">
-        <div className="editor-inputer" contentEditable={true} suppressContentEditableWarning={true} onInput={this.handleContentInput}>
-          {/* {this.state.content === "" ? <p className="editor-placeholder">请输入</p> : this.state.content} */}
-        </div>
+        <div
+          ref={this.editorRef}
+          className="editor-inputer"
+          contentEditable={true}
+          suppressContentEditableWarning={true}
+          onInput={this.handleContentInput}
+        ></div>
+        <p className={this.state.content === "" ? "editor-placeholder" : "hidden"}>请输入</p>
         <div className="tools-wrapper">
           <div className="tools-container">
             <span>B</span>
@@ -40,20 +48,24 @@ export class Editor extends React.Component {
   protected handleContentInput(e: FormEvent) {
     const etext = e.currentTarget.textContent;
 
-    if (etext) {
-      this.setState({
-        content: etext,
-      });
-    }
+    this.setState({
+      content: etext,
+    });
   }
 
   protected handleSendBtnClick() {
+    this.setState({
+      content: "",
+    });
+    this.editorRef.current!.textContent = "";
+
     const memos = StateManager.getState("memos") as MemoType[];
     memos.unshift({
-      content: this.state.content,
       id: new Date().toLocaleTimeString(),
+      content: this.state.content,
       createdAt: Date.now(),
     });
+
     StateManager.setState("memos", memos);
   }
 }

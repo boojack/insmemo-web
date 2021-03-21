@@ -25,6 +25,10 @@ export class MemoList extends React.Component {
     });
   }
 
+  public componentWillUnmount() {
+    // do nth
+  }
+
   public render() {
     return (
       <div className="memolist-wrapper">
