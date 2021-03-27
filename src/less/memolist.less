@@ -6,7 +6,11 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow-y: auto;
+  overflow-y: hidden;
+  margin-top: 8px;
 
   .pretty-scroll-bar();
+  &:hover {
+    overflow-y: auto;
+  }
 }
