@@ -1,3 +1,5 @@
+import storage from "./storage";
+
 /**
  * State Manager
  */
@@ -8,22 +10,26 @@ class StateManager {
   constructor() {
     this.data = new Map();
     this.listener = new Map();
-
-    this.init();
   }
 
   /**
    * init data
    */
-  private init() {
-    this.setState<MemoType[]>("memos", [{ id: "123", content: "123123", createdAt: Date.now() }]);
+  public async init() {
+    const data = storage.get(["memo"]);
+
+    if (data.memo) {
+      this.setState<MemoType[]>("memos", data.memo);
+    } else {
+      this.setState<MemoType[]>("memos", []);
+    }
   }
 
   public getState(key: string): BasicType | undefined {
     return this.data.get(key);
   }
 
-  public setState<T>(key: string, value: T | BasicType) {
+  public setState<T = BasicType>(key: string, value: T) {
     this.data.set(key, value);
     this.emitValueChangedEvent(key, value);
   }
@@ -42,6 +48,7 @@ class StateManager {
 
   public unbindStateListener(key: string, context: Object) {
     const lns = this.listener.get(key);
+
     if (lns) {
       for (let i = 0; i < lns.length; ++i) {
         if (lns[i].context === context) {

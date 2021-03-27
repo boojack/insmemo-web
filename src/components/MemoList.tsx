@@ -9,6 +9,7 @@ interface State {
 
 export class MemoList extends React.Component {
   public state: State;
+
   constructor(props: any) {
     super(props);
 

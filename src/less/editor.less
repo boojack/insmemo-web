@@ -1,3 +1,5 @@
+@import "./mixin.less";
+
 .editor-wrapper {
   position: relative;
   width: 100%;
@@ -15,10 +17,14 @@
     width: 100%;
     height: 80px;
     padding: 8px;
+    font-size: 13px;
     resize: none;
     outline: none;
     overflow-y: auto;
+    border: none;
     border-bottom: 1px solid lightgray;
+
+    .pretty-scroll-bar();
   }
 
   > .editor-placeholder {
@@ -27,7 +33,7 @@
     color: gray;
     top: 24px;
     left: 26px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   > .tools-wrapper {

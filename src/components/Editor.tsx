@@ -1,12 +1,12 @@
 import React, { FormEvent } from "react";
 import StateManager from "../helpers/StateManager";
+import storage from "../helpers/storage";
 import "../less/editor.less";
 
 export class Editor extends React.Component {
   public state: {
     content: string;
   };
-  public editorRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: any) {
     super(props);
@@ -15,29 +15,21 @@ export class Editor extends React.Component {
       content: "",
     };
 
-    this.editorRef = React.createRef();
-
-    this.handleContentInput = this.handleContentInput.bind(this);
-    this.handleSendBtnClick = this.handleSendBtnClick.bind(this);
+    this.handleInputerChanged = this.handleInputerChanged.bind(this);
+    this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
   }
 
   public render() {
     return (
       <div className="editor-wrapper">
-        <div
-          ref={this.editorRef}
-          className="editor-inputer"
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          onInput={this.handleContentInput}
-        ></div>
+        <textarea className="editor-inputer" value={this.state.content} onChange={this.handleInputerChanged}></textarea>
         <p className={this.state.content === "" ? "editor-placeholder" : "hidden"}>请输入</p>
         <div className="tools-wrapper">
-          <div className="tools-container">
+          <div className="tools-container">{/* 
             <span>B</span>
             <span>I</span>
-          </div>
-          <button className="save-btn" onClick={this.handleSendBtnClick}>
+             */}</div>
+          <button className="save-btn" onClick={this.handleSaveBtnClick}>
             Send
           </button>
         </div>
@@ -45,25 +37,28 @@ export class Editor extends React.Component {
     );
   }
 
-  protected handleContentInput(e: FormEvent) {
-    const etext = e.currentTarget.textContent;
-
+  protected handleInputerChanged(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({
-      content: etext,
+      content: e.currentTarget.value,
     });
   }
 
-  protected handleSendBtnClick() {
+  protected handleSaveBtnClick() {
+    const content = this.state.content;
+    console.log(content);
     this.setState({
       content: "",
     });
-    this.editorRef.current!.textContent = "";
 
     const memos = StateManager.getState("memos") as MemoType[];
     memos.unshift({
       id: new Date().toLocaleTimeString(),
-      content: this.state.content,
+      content: content,
       createdAt: Date.now(),
+    });
+
+    storage.set({
+      memo: memos,
     });
 
     StateManager.setState("memos", memos);

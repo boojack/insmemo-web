@@ -1,1 +1,20 @@
 @bg-whitegray: #fafafa;
+
+.pretty-scroll-bar(@width: 6px) {
+  &::-webkit-scrollbar {
+    width: 6px;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 6px;
+    border-radius: 10px;
+    background-color: #d5d5d5;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+
+  scrollbar-width: thin;
+}
