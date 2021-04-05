@@ -7,9 +7,9 @@ import StateManager from "./helpers/StateManager";
 import "./less/global.less";
 import "./less/index.less";
 
-await StateManager.init();
-
 function App() {
+  StateManager.init();
+
   return (
     <div id="page-container">
       <Sidebar />
