@@ -38,6 +38,9 @@ export class Memo extends React.Component<Props> {
         <div className="memo-top-wrapper">
           <span className="time-text">{this.state.memo.createdAtStr}</span>
           <div className="btns-container">
+            <span className="text-btn" onClick={this.uponMemo}>
+              Upon
+            </span>
             <span className="text-btn" onClick={this.deleteMemo}>
               Delete
             </span>
@@ -46,6 +49,10 @@ export class Memo extends React.Component<Props> {
         <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: this.state.memo.content }}></div>
       </div>
     );
+  }
+
+  protected uponMemo() {
+    // todo
   }
 
   protected deleteMemo() {
