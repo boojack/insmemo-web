@@ -1,3 +1,4 @@
+import { api } from "./api";
 import storage from "./storage";
 
 /**
@@ -23,6 +24,16 @@ class StateManager {
     } else {
       this.setState<MemoType[]>("memos", []);
     }
+
+    const {
+      data: { data: user },
+    } = await api.getUserInfo();
+
+    if (user) {
+      this.setState<UserType>("user", user);
+    } else {
+      this.setState("user", undefined);
+    }
   }
 
   public getState(key: string): BasicType | undefined {
@@ -42,7 +53,7 @@ class StateManager {
         this.listener.set(key, [{ context, handler }]);
       }
     } else {
-      throw new Error("no key in listenr");
+      throw new Error("no key in listener");
     }
   }
 
