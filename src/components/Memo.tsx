@@ -14,6 +14,7 @@ interface MemoItem extends MemoType {
 
 interface State {
   memo: MemoItem;
+  showConfirmDeleteBtn: false;
 }
 
 export class Memo extends React.Component<Props> {
@@ -28,9 +29,11 @@ export class Memo extends React.Component<Props> {
         content: this.filterMemoContent(props.memo.content),
         createdAtStr: new Date(props.memo.createdAt).toLocaleString(),
       },
+      showConfirmDeleteBtn: false,
     };
 
     this.deleteMemo = this.deleteMemo.bind(this);
+    this.showConfirmDeleteBtn = this.showConfirmDeleteBtn.bind(this);
   }
 
   public render() {
@@ -42,9 +45,15 @@ export class Memo extends React.Component<Props> {
             <span className="text-btn" onClick={this.uponMemo}>
               Upon
             </span>
-            <span className="text-btn" onClick={this.deleteMemo}>
-              Delete
-            </span>
+            {this.state.showConfirmDeleteBtn ? (
+              <span className="text-btn" onClick={this.deleteMemo}>
+                Confirm Delete
+              </span>
+            ) : (
+              <span className="text-btn" onClick={this.showConfirmDeleteBtn}>
+                Delete
+              </span>
+            )}
           </div>
         </div>
         <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: this.state.memo.content }}></div>
@@ -54,6 +63,18 @@ export class Memo extends React.Component<Props> {
 
   protected uponMemo() {
     // todo
+  }
+
+  protected async showConfirmDeleteBtn() {
+    this.setState({
+      showConfirmDeleteBtn: true,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        showConfirmDeleteBtn: false,
+      });
+    }, 3000);
   }
 
   protected async deleteMemo() {
