@@ -15,7 +15,7 @@ export class MemoList extends React.Component {
     super(props);
 
     this.state = {
-      memos: (StateManager.getState("memos") as MemoType[]).reverse(),
+      memos: (StateManager.getState("memos") as MemoType[]) || [],
     };
 
     this.handleDeleteMemoItem = this.handleDeleteMemoItem.bind(this);

@@ -1,4 +1,5 @@
 import React from "react";
+import { api } from "../helpers/api";
 import "../less/memo.less";
 
 interface Props {
@@ -55,8 +56,9 @@ export class Memo extends React.Component<Props> {
     // todo
   }
 
-  protected deleteMemo() {
+  protected async deleteMemo() {
     this.props.deleteHandler(this.props.index);
+    await api.deleteMemo(this.state.memo.id);
   }
 
   private filterMemoContent(content: string): string {

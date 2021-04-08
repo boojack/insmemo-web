@@ -1,6 +1,6 @@
 import React from "react";
+import { api } from "../helpers/api";
 import StateManager from "../helpers/StateManager";
-import storage from "../helpers/storage";
 import "../less/editor.less";
 
 export class Editor extends React.Component {
@@ -52,10 +52,11 @@ export class Editor extends React.Component {
     });
   }
 
-  protected handleSaveBtnClick() {
+  protected async handleSaveBtnClick() {
     const content = this.state.content;
 
     if (content === "") {
+      alert("内容不能为空");
       return;
     }
 
@@ -64,16 +65,9 @@ export class Editor extends React.Component {
     });
 
     // Create Memo
+    const { data: memo } = await api.createMemo(content);
     const memos = StateManager.getState("memos") as MemoType[];
-    memos.unshift({
-      id: new Date().toLocaleTimeString(),
-      content: content,
-      createdAt: Date.now(),
-    });
-
-    storage.set({
-      memo: memos,
-    });
+    memos.unshift(memo);
 
     StateManager.setState("memos", memos);
   }

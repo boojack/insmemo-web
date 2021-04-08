@@ -71,9 +71,7 @@ export class SigninDialog extends React.Component<Props> {
   protected async handleSigninBtnClick() {
     const { username, password } = this.state;
     await api.signin(username, password);
-    const {
-      data: { data: user },
-    } = await api.getUserInfo();
+    const { data: user } = await api.getUserInfo();
 
     if (user) {
       StateManager.setState<UserType>("user", user);
@@ -84,9 +82,7 @@ export class SigninDialog extends React.Component<Props> {
   protected async handleSignupBtnClick() {
     const { username, password } = this.state;
     await api.signup(username, password);
-    const {
-      data: { data: user },
-    } = await api.getUserInfo();
+    const { data: user } = await api.getUserInfo();
 
     if (user) {
       StateManager.setState<UserType>("user", user);
