@@ -8,6 +8,8 @@ import "./less/global.less";
 import "./less/index.less";
 
 function App() {
+  StateManager.init();
+
   return (
     <div id="page-container">
       <Sidebar />
@@ -19,11 +21,9 @@ function App() {
   );
 }
 
-StateManager.init().then(() => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
-});
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root")
+);

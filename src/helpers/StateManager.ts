@@ -17,22 +17,19 @@ class StateManager {
    * init data
    */
   public async init() {
-    const data = storage.get(["memo"]);
+    this.setState<MemoType[]>("memos", []);
+    this.setState<UserType>("user", undefined);
 
-    if (data.memo) {
-      this.setState<MemoType[]>("memos", data.memo);
-    } else {
-      this.setState<MemoType[]>("memos", []);
+    const { data: memos } = await api.getMyMemos();
+
+    if (memos) {
+      this.setState("memos", memos);
     }
 
-    const {
-      data: { data: user },
-    } = await api.getUserInfo();
+    const { data: user } = await api.getUserInfo();
 
     if (user) {
-      this.setState<UserType>("user", user);
-    } else {
-      this.setState("user", undefined);
+      this.setState("user", user);
     }
   }
 
@@ -40,20 +37,20 @@ class StateManager {
     return this.data.get(key);
   }
 
-  public setState<T = BasicType>(key: string, value: T) {
+  public setState<T = BasicType>(key: string, value: T | undefined) {
     this.data.set(key, value);
     this.emitValueChangedEvent(key, value);
   }
 
   public bindStateChange(key: string, context: Object, handler: FunctionType) {
-    if (this.data.has(key)) {
-      if (this.listener.has(key)) {
-        this.listener.get(key)?.push({ context, handler });
-      } else {
-        this.listener.set(key, [{ context, handler }]);
-      }
+    if (!this.data.has(key)) {
+      this.setState(key, undefined);
+    }
+
+    if (this.listener.has(key)) {
+      this.listener.get(key)?.push({ context, handler });
     } else {
-      throw new Error("no key in listener");
+      this.listener.set(key, [{ context, handler }]);
     }
   }
 
