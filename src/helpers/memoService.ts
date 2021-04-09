@@ -1,12 +1,20 @@
 import { api } from "./api";
+import storage from "./storage";
 import { userService } from "./userService";
+import { utils } from "./utils";
 
 class MemoService {
   private memos: Model.Memo[];
   private listeners: Map<Object, (memos: Model.Memo[]) => void>;
 
   constructor() {
-    this.memos = [];
+    const localMemos = storage.get(["memo"]).memo;
+
+    if (localMemos) {
+      this.memos = localMemos;
+    } else {
+      this.memos = [];
+    }
     this.listeners = new Map();
 
     this.init();
@@ -15,10 +23,24 @@ class MemoService {
   public async init() {
     userService.bindStateChange(this, async (user) => {
       if (user) {
-        const { data: memos } = await api.getMyMemos();
-        this.memos = memos;
-      } else {
-        this.memos = [];
+        let { data: memos } = await api.getMyMemos();
+        memos = (memos as Model.Memo[]).map(
+          (m): Model.Memo => {
+            return {
+              id: m.id,
+              content: m.content,
+              uponMemoId: m.uponMemoId,
+              createdAt: new Date(m.createdAt).getTime(),
+              updatedAt: new Date(m.updatedAt).getTime(),
+            };
+          }
+        );
+        this.memos.push(...(memos as Model.Memo[]));
+
+        const keySet = new Set<string>();
+        this.memos = this.memos.filter((item) => !keySet.has(item.id) && keySet.add(item.id));
+        this.memos.sort((a, b) => b.updatedAt - a.updatedAt);
+        this.syncLocalMemos();
       }
 
       this.emitValueChangedEvent();
@@ -52,9 +74,21 @@ class MemoService {
     this.listeners.delete(context);
   }
 
+  public async syncLocalMemos() {
+    for (const memo of this.memos.filter((m) => m.id.indexOf("local") > 0)) {
+      const { data: rawMemo } = await api.saveLocalMemo(memo.content, utils.getTimeString(memo.createdAt), utils.getTimeString(memo.updatedAt));
+      memo.id = rawMemo.id;
+    }
+
+    this.emitValueChangedEvent();
+  }
+
   private emitValueChangedEvent() {
     this.listeners.forEach((handler, ctx) => {
       handler.call(ctx, this.memos);
+    });
+    storage.set({
+      memo: this.memos,
     });
   }
 }

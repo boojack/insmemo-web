@@ -42,6 +42,14 @@ export namespace api {
     });
   }
 
+  export async function saveLocalMemo(content: string, createdAt: string, updatedAt: string) {
+    return post("/api/memo/new/local", {
+      content,
+      createdAt,
+      updatedAt,
+    });
+  }
+
   export async function deleteMemo(memoId: string) {
     return post("/api/memo/delete", {
       memoId,

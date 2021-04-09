@@ -46,8 +46,5 @@ export class MemoList extends React.Component {
   // Handle memo item delete
   private handleDeleteMemoItem(idx: number) {
     memoService.deleteById(this.state.memos[idx].id);
-    storage.set({
-      memo: this.state.memos,
-    });
   }
 }

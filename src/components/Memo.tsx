@@ -79,7 +79,10 @@ export class Memo extends React.Component<Props> {
 
   protected async deleteMemo() {
     this.props.deleteHandler(this.props.index);
-    await api.deleteMemo(this.state.memo.id);
+
+    if (this.state.memo.id.indexOf("local_") < 0) {
+      await api.deleteMemo(this.state.memo.id);
+    }
   }
 
   private filterMemoContent(content: string): string {

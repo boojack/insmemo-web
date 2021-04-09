@@ -2,6 +2,7 @@ import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
+import { utils } from "../helpers/utils";
 import "../less/editor.less";
 
 export class Editor extends React.Component {
@@ -65,12 +66,21 @@ export class Editor extends React.Component {
       content: "",
     });
 
+    let memo: Model.Memo;
+
     if (userService.checkIsSignIn()) {
-      // todo
+      const { data: rawMemo } = await api.createMemo(content);
+      memo = rawMemo;
+    } else {
+      const nowTime = utils.getNowTimeStamp();
+      memo = {
+        id: "$local_" + nowTime,
+        content,
+        createdAt: nowTime,
+        updatedAt: nowTime,
+      };
     }
 
-    const { data: memo } = await api.createMemo(content);
-    // Create Memo
     memoService.push(memo);
   }
 }
