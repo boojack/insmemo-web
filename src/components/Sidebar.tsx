@@ -40,6 +40,10 @@ export class Sidebar extends React.Component {
     });
   }
 
+  public componentWillUnmount() {
+    userService.unbindStateListener(this);
+  }
+
   public render() {
     const { showSigninDialog, userinfo } = this.state;
 
@@ -48,22 +52,22 @@ export class Sidebar extends React.Component {
         {userinfo ? <UserBanner userinfo={userinfo} /> : null}
         {userinfo ? (
           <div className="menu-container">
-            <p className="action-btn" onClick={this.handleSignoutBtnClick}>
+            {/* <p className="action-btn" onClick={this.handleSignoutBtnClick}>
               Settings
-            </p>
-            <p className="action-btn" onClick={this.handleSignoutBtnClick}>
+            </p> */}
+            <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
               Sign out
-            </p>
+            </button>
           </div>
         ) : (
-          <div className="menu-container">
-            <p>Insmemo</p>
-            <p>* Mainly supports local storage of data;</p>
-            <p>
-              * If there is a need for cloud synchronization, you can try to{" "}
-              <span className="action-btn" onClick={this.handleShowSigninDialog}>
+          <div className="features-container">
+            <p className="logo-text">Insmemo</p>
+            <p className="slogan-text">- Mainly supports local storage of data;</p>
+            <p className="slogan-text">
+              - If there is a need for cloud synchronization, you can try to{" "}
+              <button className="text-btn action-btn" onClick={this.handleShowSigninDialog}>
                 sign up/in
-              </span>{" "}
+              </button>{" "}
               to an account;
             </p>
           </div>

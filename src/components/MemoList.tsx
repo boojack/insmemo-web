@@ -30,7 +30,7 @@ export class MemoList extends React.Component {
   }
 
   public componentWillUnmount() {
-    // do nth
+    memoService.unbindStateListener(this);
   }
 
   public render() {

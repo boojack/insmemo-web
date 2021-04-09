@@ -25,7 +25,7 @@ export class Editor extends React.Component {
     return (
       <div className="editor-wrapper">
         <textarea className="editor-inputer" value={this.state.content} onChange={this.handleInputerChanged}></textarea>
-        <p className={this.state.content === "" ? "editor-placeholder" : "hidden"}>请输入想法</p>
+        <p className={this.state.content === "" ? "editor-placeholder" : "hidden"}>Text in here</p>
         <div className="tools-wrapper">
           <div className="tools-container">{/* 
             <span>B</span>

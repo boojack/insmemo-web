@@ -34,6 +34,7 @@ export class Memo extends React.Component<Props> {
 
     this.deleteMemo = this.deleteMemo.bind(this);
     this.showConfirmDeleteBtn = this.showConfirmDeleteBtn.bind(this);
+    this.hideConfirmDeleteBtn = this.hideConfirmDeleteBtn.bind(this);
   }
 
   public render() {
@@ -42,11 +43,11 @@ export class Memo extends React.Component<Props> {
         <div className="memo-top-wrapper">
           <span className="time-text">{this.state.memo.createdAtStr}</span>
           <div className="btns-container">
-            <span className="text-btn" onClick={this.uponMemo}>
+            {/* <span className="text-btn" onClick={this.uponMemo}>
               Upon
-            </span>
+            </span> */}
             {this.state.showConfirmDeleteBtn ? (
-              <span className="text-btn" onClick={this.deleteMemo}>
+              <span className="text-btn" onClick={this.deleteMemo} onMouseLeave={this.hideConfirmDeleteBtn}>
                 Confirm Delete
               </span>
             ) : (
@@ -69,12 +70,12 @@ export class Memo extends React.Component<Props> {
     this.setState({
       showConfirmDeleteBtn: true,
     });
+  }
 
-    setTimeout(() => {
-      this.setState({
-        showConfirmDeleteBtn: false,
-      });
-    }, 3000);
+  protected async hideConfirmDeleteBtn() {
+    this.setState({
+      showConfirmDeleteBtn: false,
+    });
   }
 
   protected async deleteMemo() {

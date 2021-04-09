@@ -31,21 +31,21 @@ export class SigninDialog extends React.Component<Props> {
         <div className="dialog-container signin-dialog">
           <div className="dialog-header-container">
             <p className="title-text">Sign in/up</p>
-            <span className="close-btn" onClick={this.handleDialogCloseBtnClick.bind(this)}>
+            <button className="text-btn close-btn" onClick={this.handleDialogCloseBtnClick.bind(this)}>
               close
-            </span>
+            </button>
           </div>
           <div className="dialog-content-container">
             <input type="text" value={this.state.username} onChange={this.handleUsernameChanged.bind(this)} />
             <input type="password" value={this.state.password} onChange={this.handlePasswordChanged.bind(this)} />
           </div>
           <div className="dialog-footer-container">
-            <span className="text-btn signup-btn" onClick={this.handleSignupBtnClick.bind(this)}>
+            <button className="text-btn signup-btn" onClick={this.handleSignupBtnClick.bind(this)}>
               Sign up
-            </span>
-            <span className="text-btn signin-btn" onClick={this.handleSigninBtnClick.bind(this)}>
+            </button>
+            <button className="text-btn signin-btn" onClick={this.handleSigninBtnClick.bind(this)}>
               Sign in
-            </span>
+            </button>
           </div>
         </div>
       </div>
