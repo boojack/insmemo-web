@@ -3,12 +3,12 @@ import { api } from "../helpers/api";
 import "../less/memo.less";
 
 interface Props {
-  memo: MemoType;
+  memo: Model.Memo;
   index: number;
   deleteHandler: (idx: number) => void;
 }
 
-interface MemoItem extends MemoType {
+interface MemoItem extends Model.Memo {
   createdAtStr: string;
 }
 

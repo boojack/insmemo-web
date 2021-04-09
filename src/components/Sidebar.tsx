@@ -1,5 +1,5 @@
 import React from "react";
-import StateManager from "../helpers/StateManager";
+import { userService } from "../helpers/userService";
 import { api } from "../helpers/api";
 import { UserBanner } from "./UserBanner";
 import { SigninDialog } from "./SigninDialog";
@@ -7,7 +7,7 @@ import "../less/siderbar.less";
 
 interface State {
   showSigninDialog: boolean;
-  userinfo: UserType | undefined;
+  userinfo: Model.User | null;
 }
 
 /**
@@ -21,14 +21,11 @@ export class Sidebar extends React.Component {
 
     this.state = {
       showSigninDialog: false,
-      userinfo: undefined,
+      userinfo: null,
     };
 
-    const user = StateManager.getState("user");
-
-    if (user) {
-      this.state.userinfo = user as UserType;
-    }
+    const user = userService.getUserInfo();
+    this.state.userinfo = user;
 
     this.handleSignoutBtnClick = this.handleSignoutBtnClick.bind(this);
     this.handleShowSigninDialog = this.handleShowSigninDialog.bind(this);
@@ -36,7 +33,7 @@ export class Sidebar extends React.Component {
   }
 
   public componentDidMount() {
-    StateManager.bindStateChange("user", this, (user: UserType | undefined) => {
+    userService.bindStateChange(this, (user) => {
       this.setState({
         userinfo: user,
       });
@@ -52,13 +49,22 @@ export class Sidebar extends React.Component {
         {userinfo ? (
           <div className="menu-container">
             <p className="action-btn" onClick={this.handleSignoutBtnClick}>
+              Settings
+            </p>
+            <p className="action-btn" onClick={this.handleSignoutBtnClick}>
               Sign out
             </p>
           </div>
         ) : (
           <div className="menu-container">
-            <p className="action-btn" onClick={this.handleShowSigninDialog}>
-              Sign in/up
+            <p>Insmemo</p>
+            <p>* Mainly supports local storage of data;</p>
+            <p>
+              * If there is a need for cloud synchronization, you can try to{" "}
+              <span className="action-btn" onClick={this.handleShowSigninDialog}>
+                sign up/in
+              </span>{" "}
+              to an account;
             </p>
           </div>
         )}
@@ -70,7 +76,7 @@ export class Sidebar extends React.Component {
 
   protected async handleSignoutBtnClick() {
     await api.signout();
-    StateManager.setState("user", undefined);
+    userService.doSignOut();
   }
 
   protected handleShowSigninDialog() {

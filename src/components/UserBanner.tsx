@@ -1,9 +1,9 @@
 import React from "react";
-import StateManager from "../helpers/StateManager";
+import { memoService } from "../helpers/memoService";
 import "../less/user-banner.less";
 
 interface Props {
-  userinfo: UserType;
+  userinfo: Model.User;
 }
 
 interface State {
@@ -21,12 +21,12 @@ export class UserBanner extends React.Component<Props> {
 
     this.state = {
       createdDays: Math.ceil((Date.now() - new Date(userinfo.createdAt).getTime()) / 1000 / 3600 / 24),
-      memosAmount: (StateManager.getState("memos") as []).length || 0,
+      memosAmount: memoService.getMemos().length,
     };
   }
 
   public componentDidMount() {
-    StateManager.bindStateChange("memos", this, (memos: MemoType[]) => {
+    memoService.bindStateChange(this, (memos) => {
       this.setState({
         memosAmount: memos.length,
       });
@@ -34,7 +34,7 @@ export class UserBanner extends React.Component<Props> {
   }
 
   public componentWillUnmount() {
-    StateManager.unbindStateListener("memos", this);
+    memoService.unbindStateListener(this);
   }
 
   public render() {

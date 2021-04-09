@@ -1,6 +1,6 @@
 import React from "react";
 import { api } from "../helpers/api";
-import StateManager from "../helpers/StateManager";
+import { userService } from "../helpers/userService";
 import "../less/dialog.less";
 import "../less/signin-dialog.less";
 
@@ -71,10 +71,9 @@ export class SigninDialog extends React.Component<Props> {
   protected async handleSigninBtnClick() {
     const { username, password } = this.state;
     await api.signin(username, password);
-    const { data: user } = await api.getUserInfo();
 
-    if (user) {
-      StateManager.setState<UserType>("user", user);
+    await userService.doSignIn();
+    if (userService.getUserInfo()) {
       this.props.close();
     }
   }
@@ -82,10 +81,9 @@ export class SigninDialog extends React.Component<Props> {
   protected async handleSignupBtnClick() {
     const { username, password } = this.state;
     await api.signup(username, password);
-    const { data: user } = await api.getUserInfo();
 
-    if (user) {
-      StateManager.setState<UserType>("user", user);
+    await userService.doSignIn();
+    if (userService.getUserInfo()) {
       this.props.close();
     }
   }

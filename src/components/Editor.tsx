@@ -1,6 +1,7 @@
 import React from "react";
 import { api } from "../helpers/api";
-import StateManager from "../helpers/StateManager";
+import { memoService } from "../helpers/memoService";
+import { userService } from "../helpers/userService";
 import "../less/editor.less";
 
 export class Editor extends React.Component {
@@ -64,11 +65,12 @@ export class Editor extends React.Component {
       content: "",
     });
 
-    // Create Memo
-    const { data: memo } = await api.createMemo(content);
-    const memos = StateManager.getState("memos") as MemoType[];
-    memos.unshift(memo);
+    if (userService.checkIsSignIn()) {
+      // todo
+    }
 
-    StateManager.setState("memos", memos);
+    const { data: memo } = await api.createMemo(content);
+    // Create Memo
+    memoService.push(memo);
   }
 }

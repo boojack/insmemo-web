@@ -1,11 +1,11 @@
 import React from "react";
-import StateManager from "../helpers/StateManager";
+import { memoService } from "../helpers/memoService";
 import storage from "../helpers/storage";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 
 interface State {
-  memos: MemoType[];
+  memos: Model.Memo[];
 }
 
 export class MemoList extends React.Component {
@@ -15,14 +15,14 @@ export class MemoList extends React.Component {
     super(props);
 
     this.state = {
-      memos: (StateManager.getState("memos") as MemoType[]) || [],
+      memos: memoService.getMemos(),
     };
 
     this.handleDeleteMemoItem = this.handleDeleteMemoItem.bind(this);
   }
 
   public componentDidMount() {
-    StateManager.bindStateChange("memos", this, (memos: MemoType[]) => {
+    memoService.bindStateChange(this, (memos) => {
       this.setState({
         memos,
       });
@@ -45,11 +45,7 @@ export class MemoList extends React.Component {
 
   // Handle memo item delete
   private handleDeleteMemoItem(idx: number) {
-    this.state.memos.splice(idx, 1);
-    this.setState({
-      memos: this.state.memos,
-    });
-    StateManager.setState("memos", this.state.memos);
+    memoService.deleteById(this.state.memos[idx].id);
     storage.set({
       memo: this.state.memos,
     });
