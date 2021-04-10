@@ -22,7 +22,7 @@ class UserService {
   }
 
   public async doSignIn() {
-    const { data: user } = await api.getUserInfo();
+    const user = await api.getUserInfo();
 
     if (user) {
       this.userinfo = user;
@@ -30,7 +30,8 @@ class UserService {
     }
   }
 
-  public doSignOut() {
+  public async doSignOut() {
+    await api.signout();
     this.userinfo = null;
     this.emitValueChangedEvent();
   }

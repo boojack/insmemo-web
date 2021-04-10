@@ -66,13 +66,15 @@ export class Editor extends React.Component {
       content: "",
     });
 
-    let memo: Model.Memo;
+    let memo: Model.Memo | undefined = undefined;
 
     if (userService.checkIsSignIn()) {
-      const { data: rawMemo } = await api.createMemo(content);
-      memo = rawMemo;
-    } else {
+      memo = await api.createMemo(content);
+    }
+
+    if (!memo) {
       const nowTime = utils.getNowTimeStamp();
+
       memo = {
         id: "$local_" + nowTime,
         content,

@@ -1,23 +1,35 @@
 import axios from "axios";
 
 const BASE_URL = window.location.host.indexOf(":3000") > -1 ? "http://localhost:8080" : "";
+const REQ_CONFIG = window.location.host.indexOf(":3000") > -1 ? { withCredentials: true } : {};
+
+type ResponseType = Partial<{
+  status: number;
+  message: string;
+  data: Object;
+}>;
 
 /**
  * api
  */
 export namespace api {
-  export async function get(url: string): Promise<any> {
-    const res = await axios.get(BASE_URL + url, { withCredentials: true });
-    return res.data;
+  export async function get(url: string): Promise<ResponseType> {
+    const res = await axios.get(BASE_URL + url, REQ_CONFIG);
+    return res.data as ResponseType;
   }
 
-  export async function post(url: string, data?: BasicType) {
-    const res = await axios.post(BASE_URL + url, data, { withCredentials: true });
-    return res.data;
+  export async function post(url: string, data?: BasicType): Promise<ResponseType> {
+    const res = await axios.post(BASE_URL + url, data, REQ_CONFIG);
+    return res.data as ResponseType;
   }
 
-  export async function getUserInfo() {
-    return get("/api/user/me");
+  export async function getUserInfo(): Promise<Model.User> {
+    const { data } = await get("/api/user/me");
+
+    if (data) {
+      return data as Model.User;
+    }
+    return Promise.reject();
   }
 
   export async function signin(username: string, password: string) {
@@ -37,17 +49,27 @@ export namespace api {
   }
 
   export async function createMemo(content: string) {
-    return post("/api/memo/new", {
+    const { data } = await post("/api/memo/new", {
       content,
     });
+
+    if (data) {
+      return data as Model.Memo;
+    }
+    return Promise.reject();
   }
 
-  export async function saveLocalMemo(content: string, createdAt: string, updatedAt: string) {
-    return post("/api/memo/new/local", {
+  export async function saveLocalMemo(content: string, createdAt: string, updatedAt: string): Promise<Model.Memo> {
+    const { data } = await post("/api/memo/new/local", {
       content,
       createdAt,
       updatedAt,
     });
+
+    if (data) {
+      return data as Model.Memo;
+    }
+    return Promise.reject();
   }
 
   export async function deleteMemo(memoId: string) {

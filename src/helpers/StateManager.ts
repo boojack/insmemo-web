@@ -2,7 +2,7 @@ import { api } from "./api";
 import storage from "./storage";
 
 /**
- * State Manager()
+ * State Manager() discard
  */
 class StateManager {
   private data: Map<string, BasicType>;
@@ -24,7 +24,7 @@ class StateManager {
   }
 
   public async trySignin() {
-    const { data: user } = await api.getUserInfo();
+    const user = await api.getUserInfo();
     let localMemos = storage.get(["memo"]).memo as Model.Memo[];
 
     if (user) {
@@ -99,4 +99,4 @@ class StateManager {
   }
 }
 
-export default new StateManager();
+// export default new StateManager();

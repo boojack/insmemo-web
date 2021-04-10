@@ -74,6 +74,7 @@ export class SigninDialog extends React.Component<Props> {
 
     await userService.doSignIn();
     if (userService.getUserInfo()) {
+      console.log("succeed in sign in");
       this.props.close();
     }
   }
@@ -84,6 +85,7 @@ export class SigninDialog extends React.Component<Props> {
 
     await userService.doSignIn();
     if (userService.getUserInfo()) {
+      console.log("succeed in sign up");
       this.props.close();
     }
   }

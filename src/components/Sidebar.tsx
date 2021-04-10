@@ -79,8 +79,7 @@ export class Sidebar extends React.Component {
   }
 
   protected async handleSignoutBtnClick() {
-    await api.signout();
-    userService.doSignOut();
+    await userService.doSignOut();
   }
 
   protected handleShowSigninDialog() {

@@ -76,7 +76,7 @@ class MemoService {
 
   public async syncLocalMemos() {
     for (const memo of this.memos.filter((m) => m.id.indexOf("local") > 0)) {
-      const { data: rawMemo } = await api.saveLocalMemo(memo.content, utils.getTimeString(memo.createdAt), utils.getTimeString(memo.updatedAt));
+      const rawMemo = await api.saveLocalMemo(memo.content, utils.getTimeString(memo.createdAt), utils.getTimeString(memo.updatedAt));
       memo.id = rawMemo.id;
     }
 
