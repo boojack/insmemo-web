@@ -1,5 +1,6 @@
 import React from "react";
 import { api } from "../helpers/api";
+import { stateManager } from "../helpers/StateManager";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
@@ -8,6 +9,8 @@ import "../less/editor.less";
 export class Editor extends React.Component {
   public state: {
     content: string;
+    uponMemoId: string;
+    uponMemoContent: string;
   };
 
   constructor(props: any) {
@@ -15,22 +18,47 @@ export class Editor extends React.Component {
 
     this.state = {
       content: "",
+      uponMemoId: "",
+      uponMemoContent: "",
     };
 
     this.handleInputerChanged = this.handleInputerChanged.bind(this);
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
+    this.handleClearUponMemoClick = this.handleClearUponMemoClick.bind(this);
+  }
+
+  public componentDidMount() {
+    stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
+      let uponMemoContent = "";
+      if (uponMemoId) {
+        const memo = await api.getMemoById(uponMemoId);
+        uponMemoContent = filterMemoContent(memo.content);
+      }
+
+      this.setState({
+        uponMemoId,
+        uponMemoContent,
+      });
+    });
+  }
+
+  public componentWillUnmount() {
+    stateManager.unbindStateListener("uponMemoId", this);
   }
 
   public render() {
+    const { content, uponMemoId, uponMemoContent } = this.state;
     return (
       <div className="editor-wrapper">
-        <textarea className="editor-inputer" value={this.state.content} onChange={this.handleInputerChanged}></textarea>
-        <p className={this.state.content === "" ? "editor-placeholder" : "hidden"}>Text in here</p>
+        <textarea className="editor-inputer" value={content} onChange={this.handleInputerChanged}></textarea>
+        <p className={content ? "editor-placeholder" : "hidden"}>Text in here</p>
         <div className="tools-wrapper">
-          <div className="tools-container">{/* 
-            <span>B</span>
-            <span>I</span>
-             */}</div>
+          <div className="tools-container">
+            <span className={uponMemoId ? "clear-upon-btn" : "hidden"} onClick={this.handleClearUponMemoClick}>
+              🙅‍♂
+            </span>
+            <p className={uponMemoId ? "upon-memo-content" : "hidden"} dangerouslySetInnerHTML={{ __html: uponMemoContent }}></p>
+          </div>
           <button className="save-btn" onClick={this.handleSaveBtnClick}>
             Mark 🖊
           </button>
@@ -55,7 +83,7 @@ export class Editor extends React.Component {
   }
 
   protected async handleSaveBtnClick() {
-    const content = this.state.content;
+    const { content, uponMemoId } = this.state;
 
     if (content === "") {
       alert("内容不能为空");
@@ -64,12 +92,13 @@ export class Editor extends React.Component {
 
     this.setState({
       content: "",
+      uponMemoId: "",
     });
 
     let memo: Model.Memo | undefined = undefined;
 
     if (userService.checkIsSignIn()) {
-      memo = await api.createMemo(content);
+      memo = await api.createMemo(content, uponMemoId);
     }
 
     if (!memo) {
@@ -78,6 +107,7 @@ export class Editor extends React.Component {
       memo = {
         id: "$local_" + nowTime,
         content,
+        uponMemoId,
         createdAt: nowTime,
         updatedAt: nowTime,
       };
@@ -85,4 +115,12 @@ export class Editor extends React.Component {
 
     memoService.push(memo);
   }
+
+  protected handleClearUponMemoClick() {
+    stateManager.setState("uponMemoId", "");
+  }
+}
+
+function filterMemoContent(content: string): string {
+  return content.replaceAll("\n", "<br>");
 }

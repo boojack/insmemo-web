@@ -48,9 +48,10 @@ export namespace api {
     return get(`/api/memo/all?offset=${offset}`);
   }
 
-  export async function createMemo(content: string) {
+  export async function createMemo(content: string, uponMemoId?: string) {
     const { data } = await post("/api/memo/new", {
       content,
+      uponMemoId,
     });
 
     if (data) {
@@ -65,6 +66,15 @@ export namespace api {
       createdAt,
       updatedAt,
     });
+
+    if (data) {
+      return data as Model.Memo;
+    }
+    return Promise.reject();
+  }
+
+  export async function getMemoById(id: string): Promise<Model.Memo> {
+    const { data } = await get("/api/memo/i/" + id);
 
     if (data) {
       return data as Model.Memo;

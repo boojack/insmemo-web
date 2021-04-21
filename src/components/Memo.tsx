@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
+import { stateManager } from "../helpers/StateManager";
 import "../less/memo.less";
 
 interface Props {
@@ -12,81 +13,82 @@ interface MemoItem extends Model.Memo {
   createdAtStr: string;
 }
 
-interface State {
-  memo: MemoItem;
-  showConfirmDeleteBtn: false;
-}
+export function Memo(props: Props) {
+  const memo = {
+    ...props.memo,
+    content: filterMemoContent(props.memo.content),
+    createdAtStr: new Date(props.memo.createdAt).toLocaleString(),
+  };
 
-export class Memo extends React.Component<Props> {
-  public state: State;
+  const [uponMemo, setUponMemo] = useState<MemoItem>();
+  const [showConfirmDeleteBtn, setShowConfirmDeleteBtn] = useState(false);
 
-  constructor(props: Props) {
-    super(props);
+  useEffect(() => {
+    const fetchUponMemo = async () => {
+      const { uponMemoId } = memo;
 
-    this.state = {
-      memo: {
-        ...props.memo,
-        content: this.filterMemoContent(props.memo.content),
-        createdAtStr: new Date(props.memo.createdAt).toLocaleString(),
-      },
-      showConfirmDeleteBtn: false,
+      if (uponMemoId) {
+        const uponMemoData = await api.getMemoById(uponMemoId);
+
+        setUponMemo({
+          ...uponMemoData,
+          content: filterMemoContent(uponMemoData.content),
+          createdAtStr: new Date(uponMemoData.createdAt).toLocaleString(),
+        });
+      }
     };
 
-    this.deleteMemo = this.deleteMemo.bind(this);
-    this.showConfirmDeleteBtn = this.showConfirmDeleteBtn.bind(this);
-    this.hideConfirmDeleteBtn = this.hideConfirmDeleteBtn.bind(this);
-  }
+    fetchUponMemo();
+  }, []);
 
-  public render() {
-    return (
-      <div className="memo-wrapper">
-        <div className="memo-top-wrapper">
-          <span className="time-text">{this.state.memo.createdAtStr}</span>
-          <div className="btns-container">
-            {/* <span className="text-btn" onClick={this.uponMemo}>
-              Upon
-            </span> */}
-            {this.state.showConfirmDeleteBtn ? (
-              <span className="text-btn" onClick={this.deleteMemo} onMouseLeave={this.hideConfirmDeleteBtn}>
-                Confirm Delete
-              </span>
-            ) : (
-              <span className="text-btn" onClick={this.showConfirmDeleteBtn}>
-                Delete
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: this.state.memo.content }}></div>
-      </div>
-    );
-  }
+  const uponThisMemo = () => {
+    stateManager.setState("uponMemoId", memo.id);
+  };
 
-  protected uponMemo() {
-    // todo
-  }
+  const deleteMemo = async () => {
+    props.deleteHandler(props.index);
 
-  protected async showConfirmDeleteBtn() {
-    this.setState({
-      showConfirmDeleteBtn: true,
-    });
-  }
-
-  protected async hideConfirmDeleteBtn() {
-    this.setState({
-      showConfirmDeleteBtn: false,
-    });
-  }
-
-  protected async deleteMemo() {
-    this.props.deleteHandler(this.props.index);
-
-    if (this.state.memo.id.indexOf("local_") < 0) {
-      await api.deleteMemo(this.state.memo.id);
+    if (memo.id.indexOf("local_") < 0) {
+      await api.deleteMemo(memo.id);
     }
-  }
+  };
 
-  private filterMemoContent(content: string): string {
-    return content.replaceAll("\n", "<br>");
-  }
+  const toggleConfirmDeleteBtn = () => {
+    setShowConfirmDeleteBtn(!showConfirmDeleteBtn);
+  };
+
+  return (
+    <div className="memo-wrapper">
+      <div className="memo-top-wrapper">
+        <span className="time-text">{memo.createdAtStr}</span>
+        <div className="btns-container">
+          {uponMemo ? null : (
+            <span className="text-btn" onClick={uponThisMemo}>
+              Upon
+            </span>
+          )}
+          {showConfirmDeleteBtn ? (
+            <span className="text-btn" onClick={deleteMemo} onMouseLeave={toggleConfirmDeleteBtn}>
+              Confirm Delete
+            </span>
+          ) : (
+            <span className="text-btn" onClick={toggleConfirmDeleteBtn}>
+              Delete
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.content }}></div>
+      {uponMemo ? (
+        <div className="uponmemo-container">
+          <p>Upon from:</p>
+          <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.content }}></div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function filterMemoContent(content: string): string {
+  return content.replaceAll("\n", "<br>");
 }

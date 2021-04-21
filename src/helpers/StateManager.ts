@@ -1,8 +1,5 @@
-import { api } from "./api";
-import storage from "./storage";
-
 /**
- * State Manager() discard
+ * State Manager()
  */
 class StateManager {
   private data: Map<string, BasicType>;
@@ -11,34 +8,15 @@ class StateManager {
   constructor() {
     this.data = new Map();
     this.listener = new Map();
+
+    this.init();
   }
 
   /**
    * init data
    */
   public init() {
-    this.setState<Model.User>("user", undefined);
-    this.setState<Model.Memo[]>("memos", []);
-
-    this.trySignin();
-  }
-
-  public async trySignin() {
-    const user = await api.getUserInfo();
-    let localMemos = storage.get(["memo"]).memo as Model.Memo[];
-
-    if (user) {
-      this.setState("user", user);
-
-      const { data: memos } = await api.getMyMemos();
-      if (memos instanceof Array && memos.length > 0) {
-        localMemos.push(...memos);
-      }
-      const keySet = new Set<string>();
-      localMemos.filter((item) => !keySet.has(item.id) && keySet.add(item.id)).sort((a, b) => a.createdAt - b.createdAt);
-    }
-
-    this.setState("memos", localMemos);
+    this.setState<string>("uponMemoId", "");
   }
 
   public getState(key: string): BasicType | undefined {
@@ -99,4 +77,4 @@ class StateManager {
   }
 }
 
-// export default new StateManager();
+export const stateManager = new StateManager();

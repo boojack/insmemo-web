@@ -46,6 +46,36 @@
     align-items: center;
     border-top: 1px solid lightgray;
 
+    > .tools-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      > .clear-upon-btn {
+        max-height: 36px;
+        color: black;
+        font-size: 12px;
+        line-height: 18px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      > .upon-memo-content {
+        max-height: 36px;
+        color: gray;
+        font-size: 12px;
+        line-height: 18px;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+    }
+
     > .save-btn {
       user-select: none;
       cursor: pointer;
