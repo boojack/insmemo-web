@@ -1,23 +1,31 @@
 # Insmemo roadmap
 
+## TODO
+
+- [x] 数据本地存储逻辑；
+- [x] 补充 memo；
+- [x] memo 标签；
+- [ ] toast 提示；
+- [ ] 移动端样式适配；
+
 ## Versions
+
+### v0.1.0
+
+- memo 标签；
+- 操作结果伴随着 toast 提示；
+- 移动端适配；
+- 样式美化；
 
 ### v0.0.1
 
 - Memo 模块：
   - 增加、删除、修改、查；
   - localStorage 存储；
-  <!-- - 补充随笔； -->
+  - 补充随笔;
 - Account 模块 (Done)：
   - 登录；
   - 注销；
-
-## TODO
-
-- [x] 数据本地存储逻辑；
-- [x] 补充 memo；
-- [ ] memo 标签；
-- [ ] 移动端样式适配；
 
 ## Daily Plan
 

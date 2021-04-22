@@ -94,4 +94,44 @@ export namespace api {
       content,
     });
   }
+
+  export async function createTag(text: string) {
+    const { data } = await post("/api/tag/new", {
+      text,
+    });
+
+    if (data) {
+      return data as Model.Tag;
+    }
+    return Promise.reject();
+  }
+
+  export async function createMemoTag(memoId: string, tagId: string) {
+    return post("/api/tag/con", {
+      memoId,
+      tagId,
+    });
+  }
+
+  export async function getTagsByMemoId(memoId: string) {
+    const { data } = await get("/api/tag/memo/" + memoId);
+
+    if (data) {
+      return data as Model.Tag[];
+    }
+    return Promise.reject();
+  }
+
+  export async function getMyTags() {
+    const { data } = await get("/api/tag/all");
+
+    if (data) {
+      return data as Model.Tag[];
+    }
+    return Promise.reject();
+  }
+
+  export async function deleteTagById(tagId: string) {
+    return post("/api/tag/delete", { tagId });
+  }
 }

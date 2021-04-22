@@ -38,5 +38,35 @@
         }
       }
     }
+
+    > .tags-container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: wrap;
+
+      > .container-text {
+        width: 100%;
+        color: gray;
+        line-height: 36px;
+      }
+
+      > .tag-item-container {
+        padding: 2px 6px;
+        border: 1px solid lightgray;
+        margin-right: 5px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-size: 12px;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: line-through;
+          border-color: gray;
+        }
+      }
+    }
   }
 }

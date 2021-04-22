@@ -51,7 +51,7 @@ export class Editor extends React.Component {
     return (
       <div className="editor-wrapper">
         <textarea className="editor-inputer" value={content} onChange={this.handleInputerChanged}></textarea>
-        <p className={content ? "editor-placeholder" : "hidden"}>Text in here</p>
+        <p className={content === "" ? "editor-placeholder" : "hidden"}>Text in here</p>
         <div className="tools-wrapper">
           <div className="tools-container">
             <span className={uponMemoId ? "clear-upon-btn" : "hidden"} onClick={this.handleClearUponMemoClick}>
@@ -83,20 +83,42 @@ export class Editor extends React.Component {
   }
 
   protected async handleSaveBtnClick() {
-    const { content, uponMemoId } = this.state;
+    const uponMemoId = this.state.uponMemoId;
+    let content = this.state.content;
 
     if (content === "") {
       alert("内容不能为空");
       return;
     }
 
-    this.setState({
-      content: "",
-      uponMemoId: "",
-    });
+    const contentRows = content.split("\n");
+    const tagsId = [];
+
+    if (contentRows.length > 1) {
+      const tagReg = /#\s[\w|\s]*(?!#)/g;
+      let tags = contentRows[0].match(tagReg)?.map((t) => t.replace("# ", "").trim());
+
+      // 保存标签
+      if (tags) {
+        tags = utils.dedupe(tags);
+
+        if (tags.length > 0) {
+          contentRows.shift();
+          content = contentRows.join("\n");
+
+          for (const t of tags) {
+            const tag = await api.createTag(t);
+            if (tag && tag.id) {
+              tagsId.push(tag.id);
+            }
+          }
+        }
+      }
+    }
 
     let memo: Model.Memo | undefined = undefined;
 
+    // 保存 Memo
     if (userService.checkIsSignIn()) {
       memo = await api.createMemo(content, uponMemoId);
     }
@@ -111,9 +133,18 @@ export class Editor extends React.Component {
         createdAt: nowTime,
         updatedAt: nowTime,
       };
+    } else {
+      // 保存 Memo_Tag
+      for (const tagId of tagsId) {
+        await api.createMemoTag(memo.id, tagId);
+      }
     }
 
     memoService.push(memo);
+    this.setState({
+      content: "",
+      uponMemoId: "",
+    });
   }
 
   protected handleClearUponMemoClick() {

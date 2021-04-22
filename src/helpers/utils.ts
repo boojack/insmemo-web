@@ -9,4 +9,8 @@ export namespace utils {
 
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   }
+
+  export function dedupe<T>(data: T[]): T[] {
+    return Array.from(new Set(data));
+  }
 }

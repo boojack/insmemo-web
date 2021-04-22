@@ -21,9 +21,19 @@ export function Memo(props: Props) {
   };
 
   const [uponMemo, setUponMemo] = useState<MemoItem>();
+  const [tags, setTags] = useState<Model.Tag[]>([]);
   const [showConfirmDeleteBtn, setShowConfirmDeleteBtn] = useState(false);
 
   useEffect(() => {
+    const fetchTags = async () => {
+      const { id } = memo;
+
+      if (id) {
+        const tags = await api.getTagsByMemoId(id);
+        setTags(tags);
+      }
+    };
+
     const fetchUponMemo = async () => {
       const { uponMemoId } = memo;
 
@@ -38,7 +48,12 @@ export function Memo(props: Props) {
       }
     };
 
-    fetchUponMemo();
+    const fetchData = async () => {
+      await fetchTags();
+      await fetchUponMemo();
+    };
+
+    fetchData();
   }, []);
 
   const uponThisMemo = () => {
@@ -62,11 +77,9 @@ export function Memo(props: Props) {
       <div className="memo-top-wrapper">
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container">
-          {uponMemo ? null : (
-            <span className="text-btn" onClick={uponThisMemo}>
-              Upon
-            </span>
-          )}
+          <span className="text-btn" onClick={uponThisMemo}>
+            Upon
+          </span>
           {showConfirmDeleteBtn ? (
             <span className="text-btn" onClick={deleteMemo} onMouseLeave={toggleConfirmDeleteBtn}>
               Confirm Delete
@@ -85,6 +98,13 @@ export function Memo(props: Props) {
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.content }}></div>
         </div>
       ) : null}
+      <div className="tags-container">
+        {tags.map((t) => (
+          <span key={t.id} className="tag-item-container">
+            {t.text}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

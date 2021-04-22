@@ -23,8 +23,9 @@ class MemoService {
   public async init() {
     userService.bindStateChange(this, async (user) => {
       if (user) {
-        let { data: memos } = await api.getMyMemos();
-        memos = (memos as Model.Memo[]).map(
+        const { data: memos } = await api.getMyMemos();
+        this.memos.push(...(memos as Model.Memo[]));
+        this.memos = this.memos.map(
           (m): Model.Memo => {
             return {
               id: m.id,
@@ -35,15 +36,13 @@ class MemoService {
             };
           }
         );
-        this.memos.push(...(memos as Model.Memo[]));
 
         const keySet = new Set<string>();
         this.memos = this.memos.filter((item) => !keySet.has(item.id) && keySet.add(item.id));
         this.memos.sort((a, b) => b.updatedAt - a.updatedAt);
         this.syncLocalMemos();
+        this.emitValueChangedEvent();
       }
-
-      this.emitValueChangedEvent();
     });
   }
 
@@ -87,6 +86,7 @@ class MemoService {
     this.listeners.forEach((handler, ctx) => {
       handler.call(ctx, this.memos);
     });
+
     storage.set({
       memo: this.memos,
     });

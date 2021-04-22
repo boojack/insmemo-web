@@ -13,4 +13,9 @@ declare namespace Model {
     content: string;
     uponMemoId?: string;
   }
+
+  interface Tag {
+    id: string;
+    text: string;
+  }
 }
