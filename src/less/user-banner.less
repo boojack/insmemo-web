@@ -1,3 +1,5 @@
+@import "./mixin.less";
+
 .user-banner-wrapper {
   width: 100%;
   display: flex;
@@ -15,26 +17,36 @@
     align-items: flex-start;
 
     > .username-text {
-      color: black;
       font-weight: bold;
       font-size: 24px;
       line-height: 40px;
+      color: #5f5f5f;
     }
 
     > .status-text-container {
+      margin: 16px 0;
       width: 100%;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: flex-start;
 
       > .status-text {
-        color: gray;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
 
         > .amount-text {
           font-weight: bold;
-          font-size: 20px;
+          font-size: 28px;
           line-height: 36px;
+          color: gray;
+        }
+
+        > .type-text {
+          color: gray;
+          font-size: 12px;
         }
       }
     }
@@ -46,11 +58,12 @@
       justify-content: flex-start;
       align-items: flex-start;
       flex-wrap: wrap;
+      margin-top: 10px;
 
-      > .container-text {
+      > .title-text {
         width: 100%;
-        color: gray;
-        line-height: 36px;
+        margin: 10px 0;
+        font-size: 14px;
       }
 
       > .tag-item-container {

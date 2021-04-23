@@ -14,7 +14,7 @@ declare namespace Model {
     uponMemoId?: string;
   }
 
-  interface Tag {
+  interface Tag extends BaseModel {
     id: string;
     text: string;
   }

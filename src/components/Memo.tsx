@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { stateManager } from "../helpers/StateManager";
+import { utils } from "../helpers/utils";
 import "../less/memo.less";
 
 interface Props {
@@ -17,7 +18,7 @@ export function Memo(props: Props) {
   const memo = {
     ...props.memo,
     content: filterMemoContent(props.memo.content),
-    createdAtStr: new Date(props.memo.createdAt).toLocaleString(),
+    createdAtStr: utils.getTimeString(props.memo.createdAt),
   };
 
   const [uponMemo, setUponMemo] = useState<MemoItem>();
@@ -43,7 +44,7 @@ export function Memo(props: Props) {
         setUponMemo({
           ...uponMemoData,
           content: filterMemoContent(uponMemoData.content),
-          createdAtStr: new Date(uponMemoData.createdAt).toLocaleString(),
+          createdAtStr: utils.getTimeString(uponMemoData.createdAt),
         });
       }
     };

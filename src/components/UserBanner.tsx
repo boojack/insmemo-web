@@ -29,7 +29,12 @@ export class UserBanner extends React.Component<Props> {
   }
 
   public async componentDidMount() {
-    const tags = await api.getMyTags();
+    let tags = await api.getMyTags();
+    tags = tags
+      .map((t) => {
+        return { ...t, createdAt: new Date(t.createdAt).getTime() };
+      })
+      .sort((a, b) => b.createdAt - a.createdAt);
     this.setState({
       tags,
     });
@@ -54,15 +59,21 @@ export class UserBanner extends React.Component<Props> {
         <div className="userinfo-container">
           <p className="username-text">{userinfo.username}</p>
           <div className="status-text-container">
-            <p className="status-text memos-text">
-              memo: <span className="amount-text">{memosAmount}</span>
-            </p>
-            <p className="status-text duration-text">
-              day: <span className="amount-text">{createdDays}</span>
-            </p>
+            <div className="status-text memos-text">
+              <span className="amount-text">{memosAmount}</span>
+              <span className="type-text">MEMO</span>
+            </div>
+            <div className="status-text tags-text">
+              <span className="amount-text">{tags.length}</span>
+              <span className="type-text">TAG</span>
+            </div>
+            <div className="status-text duration-text">
+              <span className="amount-text">{createdDays}</span>
+              <span className="type-text">DAY</span>
+            </div>
           </div>
           <div className="tags-container">
-            <p className="container-text">tags:</p>
+            <p className="title-text">TAGS</p>
             {tags.map((t, index) => (
               <div
                 key={t.id}

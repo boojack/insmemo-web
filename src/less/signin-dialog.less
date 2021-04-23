@@ -1,9 +1,14 @@
-.signin-dialog {
+.dialog-wrapper > .signin-dialog {
+  border-radius: 10px;
+  padding: 24px 16px;
+
   > .dialog-content-container {
     > input {
-      width: 200px;
+      width: 240px;
       padding: 5px 10px;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+      border: 1px solid gray;
 
       &:last-child {
         margin-bottom: 0;
@@ -14,7 +19,14 @@
   > .dialog-footer-container {
     > .text-btn {
       margin-left: 10px;
+      padding: 4px 8px;
+      font-size: 14px;
+      border-radius: 4px;
       cursor: pointer;
+
+      &:hover {
+        background-color: lightgray;
+      }
     }
   }
 }

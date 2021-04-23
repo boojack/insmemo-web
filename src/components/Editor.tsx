@@ -95,7 +95,7 @@ export class Editor extends React.Component {
     const tagsId = [];
 
     if (contentRows.length > 1) {
-      const tagReg = /#\s[\w|\s]*(?!#)/g;
+      const tagReg = /#\s.*(?!#)/g;
       let tags = contentRows[0].match(tagReg)?.map((t) => t.replace("# ", "").trim());
 
       // 保存标签
