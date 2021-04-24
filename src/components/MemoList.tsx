@@ -1,6 +1,5 @@
 import React from "react";
 import { memoService } from "../helpers/memoService";
-import storage from "../helpers/storage";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 

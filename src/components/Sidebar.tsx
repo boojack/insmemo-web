@@ -1,6 +1,5 @@
 import React from "react";
 import { userService } from "../helpers/userService";
-import { api } from "../helpers/api";
 import { UserBanner } from "./UserBanner";
 import { SigninDialog } from "./SigninDialog";
 import "../less/siderbar.less";

@@ -4,4 +4,6 @@ interface ToastItem {
   content: string;
 }
 
-export function Toast() {}
+function Toast() {}
+
+export function ToastContainer() {}
