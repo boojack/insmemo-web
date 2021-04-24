@@ -31,7 +31,7 @@ export class Editor extends React.Component {
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       let uponMemoContent = "";
       if (uponMemoId) {
-        const memo = await api.getMemoById(uponMemoId);
+        const { data: memo } = await api.getMemoById(uponMemoId);
         uponMemoContent = filterMemoContent(memo.content);
       }
 
@@ -107,10 +107,8 @@ export class Editor extends React.Component {
           content = contentRows.join("\n");
 
           for (const t of tags) {
-            const tag = await api.createTag(t);
-            if (tag && tag.id) {
-              tagsId.push(tag.id);
-            }
+            const { data: tag } = await api.createTag(t);
+            tagsId.push(tag.id);
           }
         }
       }
@@ -120,7 +118,8 @@ export class Editor extends React.Component {
 
     // 保存 Memo
     if (userService.checkIsSignIn()) {
-      memo = await api.createMemo(content, uponMemoId);
+      const { data } = await api.createMemo(content, uponMemoId);
+      memo = data;
     }
 
     if (!memo) {

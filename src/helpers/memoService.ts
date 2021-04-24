@@ -24,7 +24,7 @@ class MemoService {
     userService.bindStateChange(this, async (user) => {
       if (user) {
         const { data: memos } = await api.getMyMemos();
-        this.memos.push(...(memos as Model.Memo[]));
+        this.memos.push(...memos);
         this.memos = this.memos.map(
           (m): Model.Memo => {
             return {
@@ -75,7 +75,7 @@ class MemoService {
 
   public async syncLocalMemos() {
     for (const memo of this.memos.filter((m) => m.id.indexOf("local") > 0)) {
-      const rawMemo = await api.saveLocalMemo(memo.content, utils.getTimeString(memo.createdAt), utils.getTimeString(memo.updatedAt));
+      const { data: rawMemo } = await api.saveLocalMemo(memo.content, utils.getTimeString(memo.createdAt), utils.getTimeString(memo.updatedAt));
       memo.id = rawMemo.id;
     }
 

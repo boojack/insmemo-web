@@ -1,3 +1,7 @@
-import React from "react";
+interface ToastItem {
+  type: "normal" | "info" | "error";
+  title: string;
+  content: string;
+}
 
-export class Toast extends React.Component {}
+export function Toast() {}

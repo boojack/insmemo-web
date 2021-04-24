@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { stateManager } from "../helpers/StateManager";
+import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
+import { useToggle } from "../hooks/useToggle";
 import "../less/memo.less";
 
 interface Props {
@@ -23,14 +25,14 @@ export function Memo(props: Props) {
 
   const [uponMemo, setUponMemo] = useState<MemoItem>();
   const [tags, setTags] = useState<Model.Tag[]>([]);
-  const [showConfirmDeleteBtn, setShowConfirmDeleteBtn] = useState(false);
+  const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
 
   useEffect(() => {
     const fetchTags = async () => {
       const { id } = memo;
 
       if (id) {
-        const tags = await api.getTagsByMemoId(id);
+        const { data: tags } = await api.getTagsByMemoId(id);
         setTags(tags);
       }
     };
@@ -39,7 +41,7 @@ export function Memo(props: Props) {
       const { uponMemoId } = memo;
 
       if (uponMemoId) {
-        const uponMemoData = await api.getMemoById(uponMemoId);
+        const { data: uponMemoData } = await api.getMemoById(uponMemoId);
 
         setUponMemo({
           ...uponMemoData,
@@ -50,8 +52,10 @@ export function Memo(props: Props) {
     };
 
     const fetchData = async () => {
-      await fetchTags();
-      await fetchUponMemo();
+      if (await userService.checkNewestSigninStatus()) {
+        fetchTags();
+        fetchUponMemo();
+      }
     };
 
     fetchData();
@@ -67,10 +71,6 @@ export function Memo(props: Props) {
     if (memo.id.indexOf("local_") < 0) {
       await api.deleteMemo(memo.id);
     }
-  };
-
-  const toggleConfirmDeleteBtn = () => {
-    setShowConfirmDeleteBtn(!showConfirmDeleteBtn);
   };
 
   return (

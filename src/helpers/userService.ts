@@ -14,7 +14,11 @@ class UserService {
   }
 
   public async init() {
-    await this.doSignIn();
+    try {
+      await this.doSignIn();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public getUserInfo() {
@@ -22,18 +26,24 @@ class UserService {
   }
 
   public async doSignIn() {
-    const user = await api.getUserInfo();
+    const { data: user } = await api.getUserInfo();
 
-    if (user) {
-      this.userinfo = user;
-      this.emitValueChangedEvent();
-    }
+    this.userinfo = user;
+    this.emitValueChangedEvent();
   }
 
   public async doSignOut() {
     await api.signout();
     this.userinfo = null;
     this.emitValueChangedEvent();
+  }
+
+  public async checkNewestSigninStatus(): Promise<boolean> {
+    if (!this.userinfo) {
+      await this.doSignIn();
+    }
+
+    return this.userinfo !== null;
   }
 
   public checkIsSignIn(): boolean {

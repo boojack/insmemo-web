@@ -29,7 +29,7 @@ export class UserBanner extends React.Component<Props> {
   }
 
   public async componentDidMount() {
-    let tags = await api.getMyTags();
+    let { data: tags } = await api.getMyTags();
     tags = tags
       .map((t) => {
         return { ...t, createdAt: new Date(t.createdAt).getTime() };
