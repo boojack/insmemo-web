@@ -3,12 +3,12 @@
 
 .pretty-scroll-bar(@width: 6px) {
   &::-webkit-scrollbar {
-    width: 6px;
+    width: @width;
     cursor: pointer;
   }
 
   &::-webkit-scrollbar-thumb {
-    width: 6px;
+    width: @width;
     border-radius: 10px;
     background-color: #d5d5d5;
 

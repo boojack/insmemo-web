@@ -20,6 +20,11 @@
   height: 100%;
   padding-top: 20px;
 
+  > .sidebar-wrapper {
+    width: 200px;
+    height: 100%;
+  }
+
   > .content-wrapper {
     width: 600px;
     height: 100%;
@@ -28,5 +33,33 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #page-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 840px;
+    max-width: 100%;
+    height: 100%;
+    padding-top: 20px;
+
+    > .sidebar-wrapper {
+      display: none;
+    }
+
+    > .content-wrapper {
+      width: 100%;
+      height: 100%;
+      padding: 0 10px;
+      margin-left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
   }
 }
