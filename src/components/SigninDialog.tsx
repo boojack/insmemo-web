@@ -52,9 +52,9 @@ export function SigninDialog(props: Props) {
     <div className="dialog-wrapper">
       <div className="dialog-container signin-dialog">
         <div className="dialog-header-container">
-          <p className="title-text">Sign in/up</p>
+          <p className="title-text">👋 账号注册/登录</p>
           <button className="text-btn close-btn" onClick={close}>
-            close
+            ❌
           </button>
         </div>
         <div className="dialog-content-container">
@@ -63,10 +63,10 @@ export function SigninDialog(props: Props) {
         </div>
         <div className="dialog-footer-container">
           <button className="text-btn signup-btn" onClick={() => handleSigninBtnClick("signup")}>
-            Sign up
+            注册
           </button>
           <button className="text-btn signin-btn" onClick={() => handleSigninBtnClick("signin")}>
-            Sign in
+            登录
           </button>
         </div>
       </div>

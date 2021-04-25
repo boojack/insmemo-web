@@ -59,15 +59,14 @@ export class Sidebar extends React.Component {
             </button>
           </div>
         ) : (
-          <div className="features-container">
+          <div className="slogan-container">
             <p className="logo-text">Insmemo</p>
-            <p className="slogan-text">- Mainly supports local storage of data;</p>
+            <p className="slogan-text">💾 主要并且完全支持数据的本地化存储</p>
             <p className="slogan-text">
-              - If there is a need for cloud synchronization, you can try to{" "}
+              💬 当然，如果有数据存储的需求，可以试试
               <button className="text-btn action-btn" onClick={this.handleShowSigninDialog}>
-                sign up/in
-              </button>{" "}
-              to an account;
+                注册/登录
+              </button>
             </p>
           </div>
         )}

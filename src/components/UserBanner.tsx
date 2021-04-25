@@ -1,6 +1,7 @@
 import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
+import { toast } from "./Toast";
 import "../less/user-banner.less";
 
 interface Props {
@@ -73,7 +74,7 @@ export class UserBanner extends React.Component<Props> {
             </div>
           </div>
           <div className="tags-container">
-            <p className="title-text">TAGS</p>
+            <p className="title-text">常用标签</p>
             {tags.map((t, index) => (
               <div
                 key={t.id}
@@ -82,7 +83,7 @@ export class UserBanner extends React.Component<Props> {
                   this.handleTagDelete(index, t.id);
                 }}
               >
-                <span>{t.text}</span>
+                <span># {t.text}</span>
               </div>
             ))}
           </div>
@@ -92,12 +93,12 @@ export class UserBanner extends React.Component<Props> {
   }
 
   protected async handleTagDelete(index: number, tagId: string) {
-    await api.deleteTagById(tagId);
-
-    const { tags } = this.state;
-    tags.splice(index, 1);
-    this.setState({
-      tags,
-    });
+    // toast.info("应该删除这个标签？");
+    // await api.deleteTagById(tagId);
+    // const { tags } = this.state;
+    // tags.splice(index, 1);
+    // this.setState({
+    //   tags,
+    // });
   }
 }
