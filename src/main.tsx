@@ -21,6 +21,7 @@ function App() {
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <div className="toast-list-container"></div>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -33,7 +33,10 @@ export function Memo(props: Props) {
 
       if (id) {
         const { data: tags } = await api.getTagsByMemoId(id);
-        setTags(tags);
+
+        if (tags) {
+          setTags(tags);
+        }
       }
     };
 
@@ -43,11 +46,13 @@ export function Memo(props: Props) {
       if (uponMemoId) {
         const { data: uponMemoData } = await api.getMemoById(uponMemoId);
 
-        setUponMemo({
-          ...uponMemoData,
-          content: filterMemoContent(uponMemoData.content),
-          createdAtStr: utils.getTimeString(uponMemoData.createdAt),
-        });
+        if (uponMemoData) {
+          setUponMemo({
+            ...uponMemoData,
+            content: filterMemoContent(uponMemoData.content),
+            createdAtStr: utils.getTimeString(uponMemoData.createdAt),
+          });
+        }
       }
     };
 
@@ -79,15 +84,15 @@ export function Memo(props: Props) {
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container">
           <span className="text-btn" onClick={uponThisMemo}>
-            Upon
+            Mark
           </span>
           {showConfirmDeleteBtn ? (
             <span className="text-btn" onClick={deleteMemo} onMouseLeave={toggleConfirmDeleteBtn}>
-              Confirm Delete
+              确定删除
             </span>
           ) : (
             <span className="text-btn" onClick={toggleConfirmDeleteBtn}>
-              Delete
+              删除
             </span>
           )}
         </div>

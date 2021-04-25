@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
+import { toast } from "./Toast";
 import "../less/dialog.less";
 import "../less/signin-dialog.less";
 
@@ -24,9 +25,17 @@ export function SigninDialog(props: Props) {
   const handleSigninBtnClick = async (action: "signin" | "signup") => {
     try {
       if (action === "signin") {
-        await api.signin(username, password);
+        const { succeed, message } = await api.signin(username, password);
+        if (!succeed && message) {
+          toast.info(message);
+          return;
+        }
       } else {
-        await api.signup(username, password);
+        const { succeed, message } = await api.signup(username, password);
+        if (!succeed && message) {
+          toast.info(message);
+          return;
+        }
       }
 
       await userService.doSignIn();
@@ -34,8 +43,8 @@ export function SigninDialog(props: Props) {
         close();
       }
     } catch (error) {
-      // NOTE: 在这里处理响应错误
-      alert(error.message);
+      console.log(error);
+      toast.info(error.message);
     }
   };
 

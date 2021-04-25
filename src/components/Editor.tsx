@@ -4,6 +4,7 @@ import { stateManager } from "../helpers/StateManager";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
+import { toast } from "./Toast";
 import "../less/editor.less";
 
 export class Editor extends React.Component {
@@ -48,19 +49,20 @@ export class Editor extends React.Component {
 
   public render() {
     const { content, uponMemoId, uponMemoContent } = this.state;
+
     return (
       <div className="editor-wrapper">
         <textarea className="editor-inputer" value={content} onChange={this.handleInputerChanged}></textarea>
-        <p className={content === "" ? "editor-placeholder" : "hidden"}>Text in here</p>
+        <p className={content === "" ? "editor-placeholder" : "hidden"}>记录你的想法...</p>
         <div className="tools-wrapper">
           <div className="tools-container">
             <span className={uponMemoId ? "clear-upon-btn" : "hidden"} onClick={this.handleClearUponMemoClick}>
-              🙅‍♂
+              ✖️
             </span>
             <p className={uponMemoId ? "upon-memo-content" : "hidden"} dangerouslySetInnerHTML={{ __html: uponMemoContent }}></p>
           </div>
-          <button className="save-btn" onClick={this.handleSaveBtnClick}>
-            Mark 🖊
+          <button className={"save-btn " + (content === "" ? "disabled" : "")} onClick={this.handleSaveBtnClick}>
+            记下✍️
           </button>
         </div>
       </div>
@@ -68,15 +70,6 @@ export class Editor extends React.Component {
   }
 
   protected handleInputerChanged(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    // const MAX_SCROLL_HEIGHT = 400;
-    // const scrollHeight = e.currentTarget.scrollHeight;
-    // console.log(e.currentTarget.scrollHeight, e.currentTarget.clientHeight);
-
-    // if (scrollHeight <= MAX_SCROLL_HEIGHT) {
-    //   e.currentTarget.style.height = scrollHeight + "px";
-    // } else {
-    //   e.currentTarget.style.height = MAX_SCROLL_HEIGHT + "px";
-    // }
     this.setState({
       content: e.currentTarget.value,
     });
@@ -87,7 +80,7 @@ export class Editor extends React.Component {
     let content = this.state.content;
 
     if (content === "") {
-      alert("内容不能为空");
+      toast.info("内容不能为空呀");
       return;
     }
 

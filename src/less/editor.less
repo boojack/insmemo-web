@@ -85,6 +85,16 @@
       border: 1px solid lightgray;
       border-radius: 4px;
 
+      &.disabled {
+        cursor: not-allowed;
+        color: gray;
+        background-color: #fafafa;
+
+        &:hover {
+          border-color: lightgray;
+        }
+      }
+
       &:hover {
         border-color: black;
       }
