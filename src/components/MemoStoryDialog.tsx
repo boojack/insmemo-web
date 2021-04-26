@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
@@ -66,6 +67,17 @@ export function MemoStoryDialog(props: Props) {
       </div>
     </div>
   );
+}
+
+export function showMemoStoryDialog(memoId: string) {
+  const div = document.createElement("div");
+  document.body.append(div);
+
+  const destory = () => {
+    ReactDOM.unmountComponentAtNode(div);
+    div.remove();
+  };
+  ReactDOM.render(<MemoStoryDialog memoId={memoId} destory={destory} />, div);
 }
 
 function filterMemoContent(content: string): string {

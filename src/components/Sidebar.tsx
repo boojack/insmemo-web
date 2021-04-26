@@ -1,8 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { userService } from "../helpers/userService";
 import { UserBanner } from "./UserBanner";
-import { SigninDialog } from "./SigninDialog";
+import { showSigninDialog } from "./SigninDialog";
 import "../less/siderbar.less";
 
 interface State {
@@ -78,14 +77,6 @@ export class Sidebar extends React.Component {
   }
 
   protected handleShowSigninDialog() {
-    const div = document.createElement("div");
-    document.body.append(div);
-
-    const destory = () => {
-      ReactDOM.unmountComponentAtNode(div);
-      div.remove();
-    };
-
-    ReactDOM.render(<SigninDialog destory={destory} />, div);
+    showSigninDialog();
   }
 }

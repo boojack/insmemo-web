@@ -2,7 +2,7 @@
  * Define storage data type
  */
 interface StorageData {
-  memo: Model.Memo[];
+  test: string;
 }
 
 type StorageKey = keyof StorageData;

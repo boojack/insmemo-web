@@ -1,3 +1,4 @@
+import { showSigninDialog } from "../components/SigninDialog";
 import { api } from "./api";
 
 type UserInfoStatus = Model.User | null;
@@ -14,6 +15,10 @@ class UserService {
   public async init() {
     try {
       await this.doSignIn();
+
+      if (!this.checkIsSignIn()) {
+        showSigninDialog();
+      }
     } catch (error) {
       console.log(error);
     }

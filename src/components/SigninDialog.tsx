@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
 import { toast } from "./Toast";
@@ -13,6 +14,10 @@ export function SigninDialog(props: Props) {
   const { destory } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleCloseBtnClick = () => {
+    toast.info("请先登录/注册");
+  };
 
   const handleUsernameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value);
@@ -49,7 +54,7 @@ export function SigninDialog(props: Props) {
       <div className="dialog-container">
         <div className="dialog-header-container">
           <p className="title-text">👋 账号注册/登录</p>
-          <button className="text-btn close-btn" onClick={destory}>
+          <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
             ❌
           </button>
         </div>
@@ -68,4 +73,16 @@ export function SigninDialog(props: Props) {
       </div>
     </div>
   );
+}
+
+export function showSigninDialog() {
+  const div = document.createElement("div");
+  document.body.append(div);
+
+  const destory = () => {
+    ReactDOM.unmountComponentAtNode(div);
+    div.remove();
+  };
+
+  ReactDOM.render(<SigninDialog destory={destory} />, div);
 }

@@ -1,8 +1,7 @@
 import React from "react";
 import { api } from "../helpers/api";
-import { stateManager } from "../helpers/StateManager";
+import { stateManager } from "../helpers/stateManager";
 import { memoService } from "../helpers/memoService";
-import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { toast } from "./Toast";
 import "../less/editor.less";
@@ -38,9 +37,11 @@ export class Editor extends React.Component {
 
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       let uponMemoContent = "";
+
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
         uponMemoContent = filterMemoContent(memo.content);
+        this.editorRef.current?.focus();
       }
 
       this.setState({
@@ -83,7 +84,12 @@ export class Editor extends React.Component {
   }
 
   protected handleInputerChanged(e: React.FormEvent<HTMLDivElement>) {
-    const content = e.currentTarget.innerHTML;
+    const textContent = e.currentTarget.textContent;
+    let content = e.currentTarget.innerHTML;
+
+    if (textContent === "") {
+      content = "";
+    }
     this.setState({
       content,
     });
@@ -112,29 +118,11 @@ export class Editor extends React.Component {
       }
     }
 
-    let memo: Model.Memo | undefined = undefined;
+    const { data: memo } = await api.createMemo(content, uponMemoId);
 
-    // 保存 Memo
-    if (userService.checkIsSignIn()) {
-      const { data } = await api.createMemo(content, uponMemoId);
-      memo = data;
-    }
-
-    if (!memo) {
-      const nowTime = utils.getNowTimeStamp();
-
-      memo = {
-        id: "$local_" + nowTime,
-        content,
-        uponMemoId,
-        createdAt: nowTime,
-        updatedAt: nowTime,
-      };
-    } else {
-      // 保存 Memo_Tag
-      for (const tagId of tagsId) {
-        await api.createMemoTag(memo.id, tagId);
-      }
+    // 保存 Memo_Tag
+    for (const tagId of tagsId) {
+      await api.createMemoTag(memo.id, tagId);
     }
 
     memoService.push(memo);

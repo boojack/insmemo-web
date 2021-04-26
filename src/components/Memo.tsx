@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import { api } from "../helpers/api";
-import { stateManager } from "../helpers/StateManager";
+import { stateManager } from "../helpers/stateManager";
 import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
-import { MemoStoryDialog } from "./MemoStoryDialog";
+import { showMemoStoryDialog } from "./MemoStoryDialog";
 import "../less/memo.less";
 
 interface Props {
@@ -66,15 +65,8 @@ export function Memo(props: Props) {
     fetchData();
   }, []);
 
-  const showMemoStoryDialog = () => {
-    const div = document.createElement("div");
-    document.body.append(div);
-
-    const destory = () => {
-      ReactDOM.unmountComponentAtNode(div);
-      div.remove();
-    };
-    ReactDOM.render(<MemoStoryDialog memoId={memo.id} destory={destory} />, div);
+  const showStoryDialog = () => {
+    showMemoStoryDialog(memo.id);
   };
 
   const uponThisMemo = () => {
@@ -95,7 +87,7 @@ export function Memo(props: Props) {
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container">
           {uponMemo ? (
-            <span className="text-btn" onClick={showMemoStoryDialog}>
+            <span className="text-btn" onClick={showStoryDialog}>
               All
             </span>
           ) : null}

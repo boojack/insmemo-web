@@ -66,14 +66,6 @@ export namespace api {
     });
   }
 
-  export function saveLocalMemo(content: string, createdAt: string, updatedAt: string) {
-    return post<Model.Memo>("/api/memo/new/local", {
-      content,
-      createdAt,
-      updatedAt,
-    });
-  }
-
   export function getMemoById(id: string) {
     return get<Model.Memo>("/api/memo/?id=" + id);
   }

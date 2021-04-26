@@ -1,8 +1,8 @@
 /**
- * storage controller
+ * storage
  */
-class Storage {
-  public get(keys: StorageKey[]): Partial<StorageData> {
+export namespace storage {
+  export function get(keys: StorageKey[]): Partial<StorageData> {
     const data = {} as Partial<StorageData>;
 
     for (const key of keys) {
@@ -20,7 +20,7 @@ class Storage {
     return data;
   }
 
-  public set(data: Partial<StorageData>) {
+  export function set(data: Partial<StorageData>) {
     let key: StorageKey;
 
     for (key in data) {
@@ -33,7 +33,7 @@ class Storage {
     }
   }
 
-  public getAsync(keys: StorageKey[]): Promise<Partial<StorageData>> {
+  export function getAsync(keys: StorageKey[]): Promise<Partial<StorageData>> {
     return new Promise((resolve, reject) => {
       const data = {} as Partial<StorageData>;
 
@@ -54,7 +54,7 @@ class Storage {
     });
   }
 
-  public setAsync(data: Partial<StorageData>): Promise<void> {
+  export function setAsync(data: Partial<StorageData>): Promise<void> {
     return new Promise((resolve, reject) => {
       let key: StorageKey;
 
@@ -72,5 +72,3 @@ class Storage {
     });
   }
 }
-
-export default new Storage();

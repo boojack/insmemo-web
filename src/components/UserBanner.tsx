@@ -29,17 +29,23 @@ export class UserBanner extends React.Component<Props> {
   }
 
   public async componentDidMount() {
-    let { data: tags } = await api.getMyTags();
-    tags = tags
-      .map((t) => {
-        return { ...t, createdAt: new Date(t.createdAt).getTime() };
-      })
-      .sort((a, b) => b.createdAt - a.createdAt);
-    this.setState({
-      tags,
-    });
+    const fetchTags = async () => {
+      let { data: tags } = await api.getMyTags();
+      tags = tags
+        .map((t) => {
+          return {
+            ...t,
+            createdAt: new Date(t.createdAt).getTime(),
+          };
+        })
+        .sort((a, b) => b.createdAt - a.createdAt);
+      this.setState({
+        tags,
+      });
+    };
 
-    memoService.bindStateChange(this, (memos) => {
+    memoService.bindStateChange(this, async (memos) => {
+      fetchTags();
       this.setState({
         memosAmount: memos.length,
       });
