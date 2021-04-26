@@ -98,7 +98,7 @@ export class Editor extends React.Component {
       return;
     }
 
-    const tagReg = /#(\w+) /g;
+    const tagReg = /#(.+?)#/g;
     const tagsId = [];
     let tags = content.match(tagReg);
 
@@ -107,7 +107,7 @@ export class Editor extends React.Component {
 
       // 保存标签
       for (const t of tags) {
-        const { data: tag } = await api.createTag(t.replace("#", "").trim());
+        const { data: tag } = await api.createTag(t.replaceAll(tagReg, "$1").trim());
         tagsId.push(tag.id);
       }
     }

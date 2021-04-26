@@ -108,6 +108,6 @@ export function Memo(props: Props) {
 }
 
 function filterMemoContent(content: string): string {
-  const tagReg = /#(\w+) /g;
+  const tagReg = /#(.+?)#/g;
   return content.replaceAll("\n", "<br>").replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
 }
