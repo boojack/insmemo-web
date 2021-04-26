@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Editor } from "./components/Editor";
 import { MemoList } from "./components/MemoList";
 import { Sidebar } from "./components/Sidebar";
+import { showSigninDialog } from "./components/SigninDialog";
 import { userService } from "./helpers/userService";
 import { useToggle } from "./hooks/useToggle";
 import "./less/global.less";
@@ -14,6 +15,9 @@ function App() {
   useEffect(() => {
     userService.init().then(() => {
       toggleLoading();
+      if (!userService.checkIsSignIn()) {
+        showSigninDialog();
+      }
     });
   }, []);
 

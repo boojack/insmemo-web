@@ -1,16 +1,14 @@
 @import "./mixin.less";
 
 .memolist-wrapper {
+  flex-grow: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow-y: hidden;
+  overflow-y: auto;
   margin-top: 8px;
 
   .pretty-scroll-bar(0px);
-  &:hover {
-    overflow-y: auto;
-  }
 }

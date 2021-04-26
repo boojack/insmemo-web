@@ -8,9 +8,6 @@ interface State {
   userinfo: Model.User | null;
 }
 
-/**
- * 在这里进行 登录态 的管理
- */
 export class Sidebar extends React.Component {
   public state: State;
 
