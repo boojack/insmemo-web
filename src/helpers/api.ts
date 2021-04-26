@@ -75,7 +75,7 @@ export namespace api {
   }
 
   export function getMemoById(id: string) {
-    return get<Model.Memo>("/api/memo/i/" + id);
+    return get<Model.Memo>("/api/memo/?id=" + id);
   }
 
   export function deleteMemo(memoId: string) {
@@ -98,14 +98,14 @@ export namespace api {
   }
 
   export function createMemoTag(memoId: string, tagId: string) {
-    return post("/api/tag/con", {
+    return post("/api/tag/link", {
       memoId,
       tagId,
     });
   }
 
   export function getTagsByMemoId(memoId: string) {
-    return get<Model.Tag[]>("/api/tag/memo/" + memoId);
+    return get<Model.Tag[]>("/api/tag/memo?id=" + memoId);
   }
 
   export function getMyTags() {
