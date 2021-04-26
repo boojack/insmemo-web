@@ -1,7 +1,6 @@
 import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
-import { toast } from "./Toast";
 import "../less/user-banner.less";
 
 interface Props {

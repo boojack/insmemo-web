@@ -6,11 +6,11 @@ import "../less/dialog.less";
 import "../less/signin-dialog.less";
 
 interface Props {
-  close: FunctionType;
+  destory: FunctionType;
 }
 
 export function SigninDialog(props: Props) {
-  const { close } = props;
+  const { destory } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,7 +34,7 @@ export function SigninDialog(props: Props) {
 
       await userService.doSignIn();
       if (userService.checkIsSignIn()) {
-        close();
+        destory();
       } else {
         toast.error("不知道发生了什么错误😟");
       }
@@ -45,11 +45,11 @@ export function SigninDialog(props: Props) {
   };
 
   return (
-    <div className="dialog-wrapper">
-      <div className="dialog-container signin-dialog">
+    <div className="dialog-wrapper signin-dialog">
+      <div className="dialog-container">
         <div className="dialog-header-container">
           <p className="title-text">👋 账号注册/登录</p>
-          <button className="text-btn close-btn" onClick={close}>
+          <button className="text-btn close-btn" onClick={destory}>
             ❌
           </button>
         </div>

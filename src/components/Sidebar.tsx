@@ -1,11 +1,11 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { userService } from "../helpers/userService";
 import { UserBanner } from "./UserBanner";
 import { SigninDialog } from "./SigninDialog";
 import "../less/siderbar.less";
 
 interface State {
-  showSigninDialog: boolean;
   userinfo: Model.User | null;
 }
 
@@ -19,7 +19,6 @@ export class Sidebar extends React.Component {
     super(props);
 
     this.state = {
-      showSigninDialog: false,
       userinfo: null,
     };
 
@@ -27,8 +26,6 @@ export class Sidebar extends React.Component {
     this.state.userinfo = user;
 
     this.handleSignoutBtnClick = this.handleSignoutBtnClick.bind(this);
-    this.handleShowSigninDialog = this.handleShowSigninDialog.bind(this);
-    this.handleSigninDialogClose = this.handleSigninDialogClose.bind(this);
   }
 
   public componentDidMount() {
@@ -44,7 +41,7 @@ export class Sidebar extends React.Component {
   }
 
   public render() {
-    const { showSigninDialog, userinfo } = this.state;
+    const { userinfo } = this.state;
 
     return (
       <div className="sidebar-wrapper">
@@ -72,8 +69,6 @@ export class Sidebar extends React.Component {
             </p>
           </div>
         )}
-
-        {showSigninDialog ? <SigninDialog close={this.handleSigninDialogClose} /> : null}
       </div>
     );
   }
@@ -83,14 +78,14 @@ export class Sidebar extends React.Component {
   }
 
   protected handleShowSigninDialog() {
-    this.setState({
-      showSigninDialog: true,
-    });
-  }
+    const div = document.createElement("div");
+    document.body.append(div);
 
-  protected handleSigninDialogClose() {
-    this.setState({
-      showSigninDialog: false,
-    });
+    const destory = () => {
+      ReactDOM.unmountComponentAtNode(div);
+      div.remove();
+    };
+
+    ReactDOM.render(<SigninDialog destory={destory} />, div);
   }
 }
