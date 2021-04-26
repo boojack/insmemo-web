@@ -61,6 +61,14 @@
     line-height: 1.7;
     word-wrap: break-word;
     word-break: break-all;
+
+    .tag-span {
+      padding: 1px 4px;
+      border: 1px solid lightgray;
+      margin-right: 4px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
   }
 
   > .uponmemo-container {
@@ -80,7 +88,7 @@
       max-height: 36px;
       color: gray;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.6;
       word-wrap: break-word;
       word-break: break-all;
       overflow: hidden;
@@ -88,23 +96,14 @@
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
-    }
-  }
 
-  > .tags-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-top: 10px;
-    font-size: 10px;
-
-    > .tag-item-container {
-      padding: 1px 4px;
-      border: 1px solid lightgray;
-      margin-right: 4px;
-      border-radius: 4px;
+      .tag-span {
+        padding: 1px 4px;
+        border: 1px solid lightgray;
+        margin-right: 4px;
+        border-radius: 4px;
+        font-size: 10px;
+      }
     }
   }
 }

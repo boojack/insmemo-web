@@ -96,25 +96,18 @@ export function Memo(props: Props) {
         </div>
       </div>
       {/* TODO: 编辑 memo */}
-      {/* <textarea name="" id="" value={memo.content}></textarea> */}
       <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
       {uponMemo ? (
         <div className="uponmemo-container">
           <span className="icon-text">🧷</span>
-          <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.content }}></div>
+          <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.formatedContent }}></div>
         </div>
       ) : null}
-      <div className="tags-container">
-        {tags.map((t) => (
-          <span key={t.id} className="tag-item-container">
-            {t.text}
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
 
 function filterMemoContent(content: string): string {
-  return content.replaceAll("\n", "<br>");
+  const tagReg = /#(\w+) /g;
+  return content.replaceAll("\n", "<br>").replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
 }

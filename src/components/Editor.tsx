@@ -13,6 +13,7 @@ export class Editor extends React.Component {
     uponMemoId: string;
     uponMemoContent: string;
   };
+  private editorRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: any) {
     super(props);
@@ -23,12 +24,18 @@ export class Editor extends React.Component {
       uponMemoContent: "",
     };
 
+    this.editorRef = React.createRef<HTMLDivElement>();
+
+    this.handleInputerPasted = this.handleInputerPasted.bind(this);
     this.handleInputerChanged = this.handleInputerChanged.bind(this);
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
     this.handleClearUponMemoClick = this.handleClearUponMemoClick.bind(this);
   }
 
   public componentDidMount() {
+    // note: contenteditable div 换行时会自动生成 div，这里换成 p
+    document.execCommand("defaultParagraphSeparator", false, "p");
+
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       let uponMemoContent = "";
       if (uponMemoId) {
@@ -52,7 +59,7 @@ export class Editor extends React.Component {
 
     return (
       <div className="editor-wrapper">
-        <textarea className="editor-inputer" value={content} onChange={this.handleInputerChanged}></textarea>
+        <div className="editor-inputer" contentEditable ref={this.editorRef} onPaste={this.handleInputerPasted} onInput={this.handleInputerChanged}></div>
         <p className={content === "" ? "editor-placeholder" : "hidden"}>记录你的想法...</p>
         <div className="tools-wrapper">
           <div className="tools-container">
@@ -69,41 +76,39 @@ export class Editor extends React.Component {
     );
   }
 
-  protected handleInputerChanged(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  protected handleInputerPasted(e: React.ClipboardEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const content = e.clipboardData.getData("text/plain");
+    document.execCommand("insertText", false, content);
+  }
+
+  protected handleInputerChanged(e: React.FormEvent<HTMLDivElement>) {
+    const content = e.currentTarget.innerHTML;
     this.setState({
-      content: e.currentTarget.value,
+      content,
     });
   }
 
   protected async handleSaveBtnClick() {
     const uponMemoId = this.state.uponMemoId;
-    let content = this.state.content;
+    const content = this.state.content.replaceAll("&nbsp;", " ");
 
     if (content === "") {
       toast.error("内容不能为空呀");
       return;
     }
 
-    const contentRows = content.split("\n");
+    const tagReg = /#(\w+) /g;
     const tagsId = [];
+    let tags = content.match(tagReg);
 
-    if (contentRows.length > 1) {
-      const tagReg = /#\s.*(?!#)/g;
-      let tags = contentRows[0].match(tagReg)?.map((t) => t.replace("# ", "").trim());
+    if (tags && tags.length > 0) {
+      tags = utils.dedupe(tags);
 
       // 保存标签
-      if (tags) {
-        tags = utils.dedupe(tags);
-
-        if (tags.length > 0) {
-          contentRows.shift();
-          content = contentRows.join("\n");
-
-          for (const t of tags) {
-            const { data: tag } = await api.createTag(t);
-            tagsId.push(tag.id);
-          }
-        }
+      for (const t of tags) {
+        const { data: tag } = await api.createTag(t.replace("#", "").trim());
+        tagsId.push(tag.id);
       }
     }
 
@@ -137,6 +142,8 @@ export class Editor extends React.Component {
       content: "",
       uponMemoId: "",
     });
+
+    this.editorRef.current!.innerHTML = "";
   }
 
   protected handleClearUponMemoClick() {
