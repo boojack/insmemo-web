@@ -9,8 +9,6 @@ class UserService {
   constructor() {
     this.userinfo = null;
     this.listeners = new Map();
-
-    this.init();
   }
 
   public async init() {
@@ -36,14 +34,6 @@ class UserService {
     await api.signout();
     this.userinfo = null;
     this.emitValueChangedEvent();
-  }
-
-  public async checkNewestSigninStatus(): Promise<boolean> {
-    if (!this.userinfo) {
-      await this.doSignIn();
-    }
-
-    return this.userinfo !== null;
   }
 
   public checkIsSignIn(): boolean {

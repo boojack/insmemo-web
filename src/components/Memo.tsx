@@ -13,13 +13,14 @@ interface Props {
 }
 
 interface MemoItem extends Model.Memo {
+  formatedContent: string;
   createdAtStr: string;
 }
 
 export function Memo(props: Props) {
   const memo = {
     ...props.memo,
-    content: filterMemoContent(props.memo.content),
+    formatedContent: filterMemoContent(props.memo.content),
     createdAtStr: utils.getTimeString(props.memo.createdAt),
   };
 
@@ -33,10 +34,7 @@ export function Memo(props: Props) {
 
       if (id) {
         const { data: tags } = await api.getTagsByMemoId(id);
-
-        if (tags) {
-          setTags(tags);
-        }
+        setTags(tags ?? []);
       }
     };
 
@@ -49,7 +47,7 @@ export function Memo(props: Props) {
         if (uponMemoData) {
           setUponMemo({
             ...uponMemoData,
-            content: filterMemoContent(uponMemoData.content),
+            formatedContent: filterMemoContent(uponMemoData.content),
             createdAtStr: utils.getTimeString(uponMemoData.createdAt),
           });
         }
@@ -57,7 +55,7 @@ export function Memo(props: Props) {
     };
 
     const fetchData = async () => {
-      if (await userService.checkNewestSigninStatus()) {
+      if (userService.checkIsSignIn()) {
         fetchTags();
         fetchUponMemo();
       }
@@ -97,10 +95,12 @@ export function Memo(props: Props) {
           )}
         </div>
       </div>
-      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.content }}></div>
+      {/* TODO: 编辑 memo */}
+      {/* <textarea name="" id="" value={memo.content}></textarea> */}
+      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
       {uponMemo ? (
         <div className="uponmemo-container">
-          <p>Upon from:</p>
+          <span className="icon-text">🧷</span>
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.content }}></div>
         </div>
       ) : null}

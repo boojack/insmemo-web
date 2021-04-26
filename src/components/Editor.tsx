@@ -80,7 +80,7 @@ export class Editor extends React.Component {
     let content = this.state.content;
 
     if (content === "") {
-      toast.info("内容不能为空呀");
+      toast.error("内容不能为空呀");
       return;
     }
 

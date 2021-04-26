@@ -1,5 +1,6 @@
 /**
- * State Manager()
+ * State Manager
+ * 全局状态管理
  */
 class StateManager {
   private data: Map<string, BasicType>;

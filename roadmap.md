@@ -1,14 +1,21 @@
 # Insmemo roadmap
 
+flomo + 知识星球
+
+## 特点
+
+- 主要并且完全支持数据的本地化存储；
+- 仅简单的文字输入，无任何格式；
+
 ## TODO
 
 - [x] 数据本地存储逻辑；
 - [x] 补充 memo；
 - [x] memo 标签；
 - [x] 错误处理 & toast 提示；
-- [ ] editor 优化；
+- [x] editor 优化；
+- [x] 移动端样式适配；
 - [ ] memo 编辑；
-- [ ] 移动端样式适配；
 
 ## Versions
 

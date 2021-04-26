@@ -24,27 +24,23 @@ export function SigninDialog(props: Props) {
 
   const handleSigninBtnClick = async (action: "signin" | "signup") => {
     try {
-      if (action === "signin") {
-        const { succeed, message } = await api.signin(username, password);
-        if (!succeed && message) {
-          toast.info(message);
-          return;
-        }
-      } else {
-        const { succeed, message } = await api.signup(username, password);
-        if (!succeed && message) {
-          toast.info(message);
-          return;
-        }
+      const actionFunc = action === "signin" ? api.signin : api.signup;
+      const { succeed, message } = await actionFunc(username, password);
+
+      if (!succeed && message) {
+        toast.error(message);
+        return;
       }
 
       await userService.doSignIn();
-      if (userService.getUserInfo()) {
+      if (userService.checkIsSignIn()) {
         close();
+      } else {
+        toast.error("不知道发生了什么错误😟");
       }
     } catch (error) {
       console.log(error);
-      toast.info(error.message);
+      toast.error(error.message);
     }
   };
 

@@ -48,16 +48,18 @@ export class Sidebar extends React.Component {
 
     return (
       <div className="sidebar-wrapper">
-        {userinfo ? <UserBanner userinfo={userinfo} /> : null}
         {userinfo ? (
-          <div className="menu-container">
-            {/* <p className="action-btn" onClick={this.handleSignoutBtnClick}>
-              Settings
-            </p> */}
-            <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
-              Sign out
-            </button>
-          </div>
+          <>
+            <UserBanner userinfo={userinfo} />
+            <div className="menu-container">
+              {/* <p className="action-btn" onClick={this.handleSignoutBtnClick}>
+                Settings
+              </p> */}
+              <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
+                👋 退出
+              </button>
+            </div>
+          </>
         ) : (
           <div className="slogan-container">
             <p className="logo-text">Insmemo</p>
