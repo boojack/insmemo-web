@@ -36,14 +36,14 @@ export class MemoList extends React.Component {
     return (
       <div className="memolist-wrapper">
         {this.state.memos.map((memo, idx) => {
-          return <Memo key={memo.id} index={idx} memo={memo} deleteHandler={this.handleDeleteMemoItem} />;
+          return <Memo key={memo.id} index={idx} memo={memo} delete={this.handleDeleteMemoItem} />;
         })}
       </div>
     );
   }
 
   // Handle memo item delete
-  private handleDeleteMemoItem(idx: number) {
-    memoService.deleteById(this.state.memos[idx].id);
+  private async handleDeleteMemoItem(idx: number) {
+    await memoService.deleteById(this.state.memos[idx].id);
   }
 }

@@ -28,7 +28,7 @@ class MemoService {
               };
             }
           )
-          .sort((a, b) => b.updatedAt - a.updatedAt);
+          .sort((a, b) => b.createdAt - a.createdAt);
 
         this.emitValueChangedEvent();
       }
@@ -44,10 +44,12 @@ class MemoService {
     this.emitValueChangedEvent();
   }
 
-  public deleteById(id: string) {
+  public async deleteById(id: string) {
     for (let i = 0; i < this.memos.length; ++i) {
       if (this.memos[i].id === id) {
         this.memos.splice(i, 1);
+        await api.deleteMemo(id);
+
         this.emitValueChangedEvent();
         break;
       }

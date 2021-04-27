@@ -10,7 +10,7 @@ import "../less/memo.less";
 interface Props {
   memo: Model.Memo;
   index: number;
-  deleteHandler: (idx: number) => void;
+  delete: (idx: number) => Promise<void>;
 }
 
 interface MemoItem extends Model.Memo {
@@ -19,15 +19,17 @@ interface MemoItem extends Model.Memo {
 }
 
 export function Memo(props: Props) {
-  const memo = {
+  const [memo, setMemo] = useState<MemoItem>({
     ...props.memo,
     formatedContent: filterMemoContent(props.memo.content),
     createdAtStr: utils.getTimeString(props.memo.createdAt),
-  };
-
+  });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
   const [tags, setTags] = useState<Model.Tag[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
+  const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
+
+  let edidContent = memo.content;
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -74,15 +76,52 @@ export function Memo(props: Props) {
   };
 
   const deleteMemo = async () => {
-    props.deleteHandler(props.index);
+    await props.delete(props.index);
+  };
 
-    if (memo.id.indexOf("local_") < 0) {
-      await api.deleteMemo(memo.id);
+  const editMemo = () => {
+    toggleEditActionBtn();
+  };
+
+  const handleEditorContentChanged = (e: React.FormEvent<HTMLDivElement>) => {
+    const textContent = e.currentTarget.textContent;
+    let rawContent = e.currentTarget.innerHTML;
+
+    if (textContent === "") {
+      rawContent = "";
+    }
+
+    edidContent = rawContent;
+  };
+
+  const saveEditedMemo = async () => {
+    toggleEditActionBtn();
+    if (edidContent === memo.content) {
+      return;
+    }
+
+    await api.updateMemo(memo.id, edidContent);
+
+    setMemo({
+      ...memo,
+      content: edidContent,
+      formatedContent: filterMemoContent(edidContent),
+    });
+  };
+
+  const cancelEditMemo = () => {
+    edidContent = memo.content;
+    toggleEditActionBtn();
+  };
+
+  const handleMouseLeaveMemoWrapper = () => {
+    if (showEditActionBtn) {
+      cancelEditMemo();
     }
   };
 
   return (
-    <div className="memo-wrapper">
+    <div className="memo-wrapper" onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container">
@@ -94,6 +133,22 @@ export function Memo(props: Props) {
           <span className="text-btn" onClick={uponThisMemo}>
             Mark
           </span>
+          {/* Memo 编辑相关 */}
+          {showEditActionBtn ? (
+            <>
+              <span className="text-btn" onClick={saveEditedMemo}>
+                保存
+              </span>
+              <span className="text-btn" onClick={cancelEditMemo}>
+                撤销
+              </span>
+            </>
+          ) : (
+            <span className="text-btn" onClick={editMemo}>
+              编辑
+            </span>
+          )}
+          {/* Memo 删除相关 */}
           {showConfirmDeleteBtn ? (
             <span className="text-btn" onClick={deleteMemo} onMouseLeave={toggleConfirmDeleteBtn}>
               确定删除
@@ -105,8 +160,17 @@ export function Memo(props: Props) {
           )}
         </div>
       </div>
-      {/* TODO: 编辑 memo */}
-      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
+      {showEditActionBtn ? (
+        <div
+          key="memo-editor"
+          className="memo-editor memo-content-text"
+          contentEditable
+          onInput={handleEditorContentChanged}
+          dangerouslySetInnerHTML={{ __html: memo.content }}
+        ></div>
+      ) : (
+        <div key="memo-content" className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
+      )}
       {uponMemo ? (
         <div className="uponmemo-container">
           <span className="icon-text">🧷</span>
