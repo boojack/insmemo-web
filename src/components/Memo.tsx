@@ -95,8 +95,8 @@ export function Memo(props: Props) {
   };
 
   const saveEditedMemo = async () => {
-    toggleEditActionBtn();
     if (edidContent === memo.content) {
+      toggleEditActionBtn();
       return;
     }
 
@@ -107,6 +107,7 @@ export function Memo(props: Props) {
       content: edidContent,
       formatedContent: filterMemoContent(edidContent),
     });
+    toggleEditActionBtn();
   };
 
   const cancelEditMemo = () => {
