@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = window.location.host.indexOf(":3000") > -1 ? "http://localhost:8080" : "";
-const REQ_CONFIG = window.location.host.indexOf(":3000") > -1 ? { withCredentials: true } : {};
+const BASE_URL = window.location.origin.indexOf(":3000") > -1 ? window.location.origin.replace(":3000", ":8080") : "";
+const REQ_CONFIG = window.location.origin.indexOf(":3000") > -1 ? { withCredentials: true } : {};
 
 type ResponseType<T = any> = {
   succeed: boolean;

@@ -118,6 +118,9 @@ export function Memo(props: Props) {
     if (showEditActionBtn) {
       cancelEditMemo();
     }
+    if (showConfirmDeleteBtn) {
+      toggleConfirmDeleteBtn();
+    }
   };
 
   return (
@@ -133,7 +136,7 @@ export function Memo(props: Props) {
           <span className="text-btn" onClick={uponThisMemo}>
             Mark
           </span>
-          {/* Memo 编辑相关 */}
+          {/* Memo 编辑相关按钮 */}
           {showEditActionBtn ? (
             <>
               <span className="text-btn" onClick={saveEditedMemo}>
@@ -148,9 +151,9 @@ export function Memo(props: Props) {
               编辑
             </span>
           )}
-          {/* Memo 删除相关 */}
+          {/* Memo 删除相关按钮 */}
           {showConfirmDeleteBtn ? (
-            <span className="text-btn" onClick={deleteMemo} onMouseLeave={toggleConfirmDeleteBtn}>
+            <span className="text-btn" onClick={deleteMemo}>
               确定删除
             </span>
           ) : (
@@ -160,6 +163,7 @@ export function Memo(props: Props) {
           )}
         </div>
       </div>
+      {/* 这里如果不设置 key，react 会尝试重用 */}
       {showEditActionBtn ? (
         <div
           key="memo-editor"
