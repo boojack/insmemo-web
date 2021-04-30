@@ -15,7 +15,7 @@ export function MemoList() {
       key: Date.now(),
     };
     memoService.bindStateChange(ctx, (newMemos) => {
-      setMemos(newMemos);
+      setMemos([...newMemos]);
     });
 
     return () => {

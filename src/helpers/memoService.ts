@@ -12,25 +12,10 @@ class MemoService {
     this.init();
   }
 
-  public async init() {
+  public init() {
     userService.bindStateChange(this, async (user) => {
       if (user) {
-        const { data: memos } = await api.getMyMemos();
-        this.memos = memos
-          .map(
-            (m): Model.Memo => {
-              return {
-                id: m.id,
-                content: m.content,
-                uponMemoId: m.uponMemoId,
-                createdAt: new Date(m.createdAt).getTime(),
-                updatedAt: new Date(m.updatedAt).getTime(),
-              };
-            }
-          )
-          .sort((a, b) => b.createdAt - a.createdAt);
-
-        this.emitValueChangedEvent();
+        await this.fetchMoreMemos();
       }
     });
   }
