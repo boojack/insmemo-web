@@ -55,8 +55,8 @@ export namespace api {
     return post("/api/user/signout");
   }
 
-  export function getMyMemos(offset: number = 0) {
-    return get<Model.Memo[]>(`/api/memo/all?offset=${offset}`);
+  export function getMyMemos(offset: number = 0, amount: number = 20) {
+    return get<Model.Memo[]>(`/api/memo/all?offset=${offset}&amount=${amount}`);
   }
 
   export function createMemo(content: string, uponMemoId?: string) {

@@ -35,6 +35,30 @@ class MemoService {
     });
   }
 
+  public async fetchMoreMemos() {
+    const { data } = await api.getMyMemos(this.memos.length);
+    const memos = data
+      .map(
+        (m): Model.Memo => {
+          return {
+            id: m.id,
+            content: m.content,
+            uponMemoId: m.uponMemoId,
+            createdAt: new Date(m.createdAt).getTime(),
+            updatedAt: new Date(m.updatedAt).getTime(),
+          };
+        }
+      )
+      .sort((a, b) => b.createdAt - a.createdAt);
+
+    if (memos.length > 0) {
+      this.memos.push(...memos);
+      this.emitValueChangedEvent();
+    }
+
+    return memos;
+  }
+
   public getMemos() {
     return this.memos;
   }

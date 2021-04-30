@@ -26,4 +26,34 @@ export namespace utils {
   export function dedupe<T>(data: T[]): T[] {
     return Array.from(new Set(data));
   }
+
+  // 防抖
+  export function debounce(fn: FunctionType, delay: number) {
+    let timer: number | null = null;
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = setTimeout(fn, delay);
+      } else {
+        timer = setTimeout(fn, delay);
+      }
+    };
+  }
+
+  // 节流
+  export function throttle(fn: FunctionType, delay: number) {
+    let valid = true;
+
+    return () => {
+      if (!valid) {
+        return false;
+      }
+      valid = false;
+      setTimeout(() => {
+        fn();
+        valid = true;
+      }, delay);
+    };
+  }
 }

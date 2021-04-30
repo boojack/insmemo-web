@@ -1,49 +1,65 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { memoService } from "../helpers/memoService";
 import { Memo } from "./Memo";
+import { utils } from "../helpers/utils";
 import "../less/memolist.less";
 
-interface State {
-  memos: Model.Memo[];
-}
+export function MemoList() {
+  const [memos, setMemos] = useState(memoService.getMemos());
+  const [isFetching, setFetchStatus] = useState(false);
+  const [isComplete, setCompleteStatus] = useState(false);
+  const wrapperElement = useRef<HTMLDivElement>(null);
 
-export class MemoList extends React.Component {
-  public state: State;
-
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      memos: memoService.getMemos(),
+  useEffect(() => {
+    const ctx = {
+      key: Date.now(),
     };
-
-    this.handleDeleteMemoItem = this.handleDeleteMemoItem.bind(this);
-  }
-
-  public componentDidMount() {
-    memoService.bindStateChange(this, (memos) => {
-      this.setState({
-        memos,
-      });
+    memoService.bindStateChange(ctx, (newMemos) => {
+      setMemos(newMemos);
     });
-  }
 
-  public componentWillUnmount() {
-    memoService.unbindStateListener(this);
-  }
+    return () => {
+      memoService.unbindStateListener(ctx);
+    };
+  }, []);
 
-  public render() {
-    return (
-      <div className="memolist-wrapper">
-        {this.state.memos.map((memo, idx) => {
-          return <Memo key={memo.id} index={idx} memo={memo} delete={this.handleDeleteMemoItem} />;
-        })}
-      </div>
-    );
-  }
+  const handleDeleteMemoItem = async (idx: number) => {
+    await memoService.deleteById(memos[idx].id);
+  };
 
-  // Handle memo item delete
-  private async handleDeleteMemoItem(idx: number) {
-    await memoService.deleteById(this.state.memos[idx].id);
-  }
+  const handleFetchScroll = async () => {
+    if (isFetching || isComplete) {
+      return;
+    }
+
+    const el = wrapperElement.current;
+    const { offsetHeight, scrollTop, scrollHeight } = el!;
+
+    if (offsetHeight + scrollTop + 1 > scrollHeight) {
+      setFetchStatus(true);
+      const newMemos = await memoService.fetchMoreMemos();
+      setFetchStatus(false);
+      if (newMemos.length === 0) {
+        setCompleteStatus(true);
+      }
+    }
+  };
+
+  return (
+    <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
+      {memos.map((memo, idx) => {
+        return <Memo key={memo.id} index={idx} memo={memo} delete={handleDeleteMemoItem} />;
+      })}
+      {/* {isFetching ? (
+        <div className="status-text-container">
+          <p className="status-text">加载更多数据中...</p>
+        </div>
+      ) : null} */}
+      {isComplete ? (
+        <div className="status-text-container">
+          <p className="status-text">所有数据加载完啦 🎉</p>
+        </div>
+      ) : null}
+    </div>
+  );
 }
