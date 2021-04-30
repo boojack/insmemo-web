@@ -37,11 +37,10 @@ export function MemoStoryDialog(props: Props) {
 
           if (memo.uponMemoId) {
             memoIdList.push(memo.uponMemoId);
+            setMemos([...memoList]);
           }
         }
       }
-
-      setMemos(memoList);
     };
 
     fetchMemos();

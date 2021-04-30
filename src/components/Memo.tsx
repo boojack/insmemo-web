@@ -36,8 +36,8 @@ export function Memo(props: Props) {
       const { id } = memo;
 
       if (id) {
-        const { data: tags } = await api.getTagsByMemoId(id);
-        setTags(tags ?? []);
+        const { data } = await api.getTagsByMemoId(id);
+        setTags([...data]);
       }
     };
 
