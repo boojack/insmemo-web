@@ -60,7 +60,13 @@ export class Editor extends React.Component {
 
     return (
       <div className="editor-wrapper">
-        <div className="editor-inputer" contentEditable ref={this.editorRef} onPaste={this.handleInputerPasted} onInput={this.handleInputerChanged}></div>
+        <div
+          className="editor-inputer"
+          contentEditable
+          ref={this.editorRef}
+          onPaste={this.handleInputerPasted}
+          onInput={this.handleInputerChanged}
+        ></div>
         <p className={content === "" ? "editor-placeholder" : "hidden"}>记录你的想法...</p>
         <div className="tools-wrapper">
           <div className="tools-container">

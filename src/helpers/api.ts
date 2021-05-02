@@ -83,6 +83,10 @@ export namespace api {
     });
   }
 
+  export function getMemosCount() {
+    return get("/api/memo/count");
+  }
+
   export function createTag(text: string) {
     return post<Model.Tag>("/api/tag/new", {
       text,

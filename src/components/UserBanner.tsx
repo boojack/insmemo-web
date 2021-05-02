@@ -44,11 +44,16 @@ export class UserBanner extends React.Component<Props> {
       });
     };
 
+    const fetchMemosCount = async () => {
+      const { data } = await api.getMemosCount();
+      this.setState({
+        memosAmount: data,
+      });
+    };
+
     memoService.bindStateChange(this, async (memos) => {
       fetchTags();
-      this.setState({
-        memosAmount: memos.length,
-      });
+      fetchMemosCount();
     });
   }
 
