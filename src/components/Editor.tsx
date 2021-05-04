@@ -70,10 +70,13 @@ export class Editor extends React.Component {
         <p className={content === "" ? "editor-placeholder" : "hidden"}>记录你的想法...</p>
         <div className="tools-wrapper">
           <div className="tools-container">
-            <span className={uponMemoId ? "clear-upon-btn" : "hidden"} onClick={this.handleClearUponMemoClick}>
-              ✖️
-            </span>
-            <p className={uponMemoId ? "upon-memo-content" : "hidden"} dangerouslySetInnerHTML={{ __html: uponMemoContent }}></p>
+            {uponMemoId ? (
+              <p
+                className="upon-memo-content"
+                onClick={this.handleClearUponMemoClick}
+                dangerouslySetInnerHTML={{ __html: uponMemoContent }}
+              ></p>
+            ) : null}
           </div>
           <button className={"save-btn " + (content === "" ? "disabled" : "")} onClick={this.handleSaveBtnClick}>
             记下✍️

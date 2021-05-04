@@ -56,15 +56,6 @@
       justify-content: flex-start;
       align-items: center;
 
-      > .clear-upon-btn {
-        max-height: 36px;
-        color: black;
-        font-size: 12px;
-        line-height: 18px;
-        margin-right: 10px;
-        cursor: pointer;
-      }
-
       > .upon-memo-content {
         max-width: 300px;
         max-height: 36px;
@@ -78,6 +69,16 @@
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
+
+        &::before {
+          content: "🧷";
+          padding-right: 4px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          text-decoration: line-through;
+        }
       }
     }
 
