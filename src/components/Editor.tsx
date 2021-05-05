@@ -67,7 +67,7 @@ export class Editor extends React.Component {
           onPaste={this.handleInputerPasted}
           onInput={this.handleInputerChanged}
         ></div>
-        <p className={content === "" ? "editor-placeholder" : "hidden"}>记录你的想法...</p>
+        <p className={content === "" ? "editor-placeholder" : "hidden"}>现在的想法是...</p>
         <div className="tools-wrapper">
           <div className="tools-container">
             {uponMemoId ? (
