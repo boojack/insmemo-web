@@ -13,11 +13,32 @@
   align-items: flex-end;
 
   > .toast-container {
+    position: relative;
     margin-top: 30px;
     padding: 10px 20px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     font-size: 13px;
+    transition: all 1.6s ease;
+
+    &.destory {
+      opacity: 0;
+    }
+
+    > .content-text {
+      max-width: 128px;
+      word-wrap: break-word;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      right: -8px;
+      border-left: 8px solid white;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+    }
   }
 }

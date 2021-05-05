@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "../less/toast.less";
 
+const ANIMATION_DURATION = 1600;
+
 type ToastItemProps = {
   type: "normal" | "info" | "error";
   content: string;
@@ -29,8 +31,12 @@ export namespace toast {
 
     const cbs = {
       destory: () => {
-        ReactDOM.unmountComponentAtNode(div);
-        div.remove();
+        div.classList.add("destory");
+
+        setTimeout(() => {
+          ReactDOM.unmountComponentAtNode(div);
+          div.remove();
+        }, ANIMATION_DURATION);
       },
     };
 
