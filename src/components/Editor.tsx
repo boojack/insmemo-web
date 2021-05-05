@@ -93,12 +93,8 @@ export class Editor extends React.Component {
   }
 
   protected handleInputerChanged(e: React.FormEvent<HTMLDivElement>) {
-    const textContent = e.currentTarget.textContent;
-    let content = e.currentTarget.innerHTML;
+    const content = e.currentTarget.innerHTML;
 
-    if (textContent === "") {
-      content = "";
-    }
     this.setState({
       content,
     });
