@@ -2,6 +2,7 @@ import React from "react";
 import { userService } from "../helpers/userService";
 import { UserBanner } from "./UserBanner";
 import { showSigninDialog } from "./SigninDialog";
+import { toast } from "./Toast";
 import "../less/siderbar.less";
 
 interface State {
@@ -20,8 +21,6 @@ export class Sidebar extends React.Component {
 
     const user = userService.getUserInfo();
     this.state.userinfo = user;
-
-    this.handleSignoutBtnClick = this.handleSignoutBtnClick.bind(this);
   }
 
   public componentDidMount() {
@@ -45,9 +44,9 @@ export class Sidebar extends React.Component {
           <>
             <UserBanner userinfo={userinfo} />
             <div className="menu-container">
-              {/* <p className="action-btn" onClick={this.handleSignoutBtnClick}>
-                Settings
-              </p> */}
+              <p className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
+                😀 关于
+              </p>
               <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
                 👋 退出
               </button>
@@ -70,11 +69,15 @@ export class Sidebar extends React.Component {
     );
   }
 
-  protected async handleSignoutBtnClick() {
+  protected handleSignoutBtnClick = async () => {
     await userService.doSignOut();
-  }
+  };
 
-  protected handleShowSigninDialog() {
+  protected handleAboutBtnClick = async () => {
+    toast.info("Hello world~");
+  };
+
+  protected handleShowSigninDialog = () => {
     showSigninDialog();
-  }
+  };
 }

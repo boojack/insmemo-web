@@ -84,12 +84,7 @@ export function Memo(props: Props) {
   };
 
   const handleEditorContentChanged = (e: React.FormEvent<HTMLDivElement>) => {
-    const textContent = e.currentTarget.textContent;
-    let rawContent = e.currentTarget.innerHTML;
-
-    if (textContent === "") {
-      rawContent = "";
-    }
+    const rawContent = e.currentTarget.innerHTML;
 
     edidContent = rawContent;
   };

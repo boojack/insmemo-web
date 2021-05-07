@@ -24,11 +24,6 @@ export class Editor extends React.Component {
     };
 
     this.editorRef = React.createRef<HTMLDivElement>();
-
-    this.handleInputerPasted = this.handleInputerPasted.bind(this);
-    this.handleInputerChanged = this.handleInputerChanged.bind(this);
-    this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
-    this.handleClearUponMemoClick = this.handleClearUponMemoClick.bind(this);
   }
 
   public componentDidMount() {
@@ -86,23 +81,22 @@ export class Editor extends React.Component {
     );
   }
 
-  protected handleInputerPasted(e: React.ClipboardEvent<HTMLDivElement>) {
+  protected handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     const content = e.clipboardData.getData("text/plain");
     document.execCommand("insertText", false, content);
-  }
+  };
 
-  protected handleInputerChanged(e: React.FormEvent<HTMLDivElement>) {
+  protected handleInputerChanged = (e: React.FormEvent<HTMLDivElement>) => {
     const content = e.currentTarget.innerHTML;
 
     this.setState({
       content,
     });
-  }
+  };
 
-  protected async handleSaveBtnClick() {
-    const uponMemoId = this.state.uponMemoId;
-    const content = this.state.content.replaceAll("&nbsp;", " ");
+  protected handleSaveBtnClick = async () => {
+    const { content, uponMemoId } = this.state;
 
     if (content === "") {
       toast.error("内容不能为空呀");
@@ -137,11 +131,11 @@ export class Editor extends React.Component {
     });
 
     this.editorRef.current!.innerHTML = "";
-  }
+  };
 
-  protected handleClearUponMemoClick() {
+  protected handleClearUponMemoClick = () => {
     stateManager.setState("uponMemoId", "");
-  }
+  };
 }
 
 function filterMemoContent(content: string): string {
