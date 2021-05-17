@@ -1,6 +1,8 @@
-import React from "react";
+import React, { ReactEventHandler } from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
+import { userService } from "../helpers/userService";
+import { toast } from "./Toast";
 import "../less/user-banner.less";
 
 interface Props {
@@ -11,6 +13,7 @@ interface State {
   createdDays: number;
   memosAmount: number;
   tags: Model.Tag[];
+  showBtnsDialog: boolean;
 }
 
 export class UserBanner extends React.Component<Props> {
@@ -25,6 +28,7 @@ export class UserBanner extends React.Component<Props> {
       createdDays: Math.ceil((Date.now() - new Date(userinfo.createdAt).getTime()) / 1000 / 3600 / 24),
       memosAmount: memoService.getMemos().length,
       tags: [],
+      showBtnsDialog: false,
     };
   }
 
@@ -63,12 +67,25 @@ export class UserBanner extends React.Component<Props> {
 
   public render() {
     const { userinfo } = this.props;
-    const { memosAmount, createdDays, tags } = this.state;
+    const { memosAmount, createdDays, tags, showBtnsDialog } = this.state;
 
     return (
       <div className="user-banner-wrapper">
         <div className="userinfo-container">
-          <p className="username-text">{userinfo.username}</p>
+          <div className="userinfo-header-container">
+            <p className="username-text">{userinfo.username}</p>
+            <span className="action-btn" onClick={this.toggleBtnsDialog}>
+              ···
+            </span>
+            <div className={"action-btns-dialog " + (showBtnsDialog ? "" : "hidden")}>
+              <p className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
+                <span className="icon">😀</span> 关于
+              </p>
+              <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
+                <span className="icon">👋</span> 退出
+              </button>
+            </div>
+          </div>
           <div className="status-text-container">
             <div className="status-text memos-text">
               <span className="amount-text">{memosAmount}</span>
@@ -101,6 +118,34 @@ export class UserBanner extends React.Component<Props> {
       </div>
     );
   }
+
+  protected toggleBtnsDialog = (ev: React.MouseEvent) => {
+    ev.stopPropagation();
+    const nextState = !this.state.showBtnsDialog;
+
+    if (nextState) {
+      const bodyClickHandler = () => {
+        this.setState({
+          showBtnsDialog: false,
+        });
+        document.body.removeEventListener("click", bodyClickHandler);
+      };
+
+      document.body.addEventListener("click", bodyClickHandler);
+    }
+
+    this.setState({
+      showBtnsDialog: nextState,
+    });
+  };
+
+  protected handleSignoutBtnClick = async () => {
+    await userService.doSignOut();
+  };
+
+  protected handleAboutBtnClick = async () => {
+    toast.info("Hello world~");
+  };
 
   protected async handleTagDelete(index: number, tagId: string) {
     // toast.info("应该删除这个标签？");
