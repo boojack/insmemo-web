@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import "../less/memo-story-dialog.less";

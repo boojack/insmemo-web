@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Editor } from "./components/Editor";
+import { MainEditor } from "./components/MainEditor";
 import { MemoList } from "./components/MemoList";
 import { Sidebar } from "./components/Sidebar";
 import { showSigninDialog } from "./components/SigninDialog";
@@ -29,7 +29,7 @@ function App() {
         <>
           <Sidebar />
           <div className="content-wrapper">
-            <Editor />
+            <MainEditor />
             <MemoList />
           </div>
         </>

@@ -1,0 +1,57 @@
+@import "./mixin.less";
+
+.main-editor-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: white;
+  padding: 16px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+
+  > .main-editor {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: white;
+  }
+
+  > .uponmemo-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 300px;
+    max-height: 36px;
+    color: gray;
+    font-size: 12px;
+    line-height: 18px;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: line-through;
+    }
+
+    > .icon-text {
+      margin-right: 2px;
+    }
+
+    > .uponmemo-content-text {
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+}

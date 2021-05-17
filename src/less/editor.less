@@ -1,6 +1,6 @@
 @import "./mixin.less";
 
-.editor-wrapper {
+.common-editor-wrapper {
   position: relative;
   width: 100%;
   height: auto;
@@ -9,16 +9,12 @@
   justify-content: flex-start;
   align-items: flex-start;
   background-color: white;
-  padding: 16px;
-  border: 2px solid lightgray;
-  border-radius: 8px;
 
-  > .editor-inputer {
+  > .common-editor-inputer {
     display: inline-block;
     width: 100%;
     min-height: 24px;
     max-height: 300px;
-    padding: 8px;
     font-size: 14px;
     line-height: 1.7;
     resize: none;
@@ -32,16 +28,16 @@
     .pretty-scroll-bar();
   }
 
-  > .editor-placeholder {
+  > .common-editor-placeholder {
     position: absolute;
     user-select: none;
     color: gray;
-    top: 26px;
-    left: 26px;
     font-size: 14px;
+    line-height: 24px;
+    padding-left: 2px;
   }
 
-  > .tools-wrapper {
+  > .common-tools-wrapper {
     padding-top: 8px;
     width: 100%;
     display: flex;
@@ -49,39 +45,14 @@
     justify-content: space-between;
     align-items: center;
 
-    > .tools-container {
+    > .common-tools-container {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
-
-      > .upon-memo-content {
-        max-width: 300px;
-        max-height: 36px;
-        color: gray;
-        font-size: 12px;
-        line-height: 18px;
-        word-wrap: break-word;
-        word-break: break-all;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-
-        &::before {
-          content: "🧷";
-          padding-right: 4px;
-        }
-
-        &:hover {
-          cursor: pointer;
-          text-decoration: line-through;
-        }
-      }
     }
 
-    > .save-btn {
+    > .confirm-btn {
       user-select: none;
       cursor: pointer;
       padding: 4px 10px;

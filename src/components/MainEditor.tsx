@@ -4,15 +4,16 @@ import { stateManager } from "../helpers/stateManager";
 import { memoService } from "../helpers/memoService";
 import { utils } from "../helpers/utils";
 import { toast } from "./Toast";
-import "../less/editor.less";
+import { EditorProps, Editor } from "./Editor/Editor";
+import "../less/main-editor.less";
 
-export class Editor extends React.Component {
+export class MainEditor extends React.Component {
   public state: {
     content: string;
     uponMemoId: string;
     uponMemoContent: string;
   };
-  private editorRef: React.RefObject<HTMLDivElement>;
+  public editorConfig: EditorProps;
 
   constructor(props: any) {
     super(props);
@@ -23,20 +24,25 @@ export class Editor extends React.Component {
       uponMemoContent: "",
     };
 
-    this.editorRef = React.createRef<HTMLDivElement>();
+    // 编辑器配置
+    this.editorConfig = {
+      className: "main-editor",
+      content: "",
+      placeholder: "现在的想法是...",
+      showConfirmBtn: true,
+      handleConfirmBtnClick: this.handleSaveBtnClick,
+      showTools: true,
+    };
   }
 
   public componentDidMount() {
-    // note: contenteditable div 换行时会自动生成 div，这里换成 p
-    document.execCommand("defaultParagraphSeparator", false, "p");
-
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       let uponMemoContent = "";
 
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
         uponMemoContent = filterMemoContent(memo.content);
-        this.editorRef.current?.focus();
+        // this.editorRef.current?.focus();
       }
 
       this.setState({
@@ -51,52 +57,23 @@ export class Editor extends React.Component {
   }
 
   public render() {
-    const { content, uponMemoId, uponMemoContent } = this.state;
+    const { uponMemoId, uponMemoContent } = this.state;
 
     return (
-      <div className="editor-wrapper">
-        <div
-          className="editor-inputer"
-          contentEditable
-          ref={this.editorRef}
-          onPaste={this.handleInputerPasted}
-          onInput={this.handleInputerChanged}
-        ></div>
-        <p className={content === "" ? "editor-placeholder" : "hidden"}>现在的想法是...</p>
-        <div className="tools-wrapper">
-          <div className="tools-container">
-            {uponMemoId ? (
-              <p
-                className="upon-memo-content"
-                onClick={this.handleClearUponMemoClick}
-                dangerouslySetInnerHTML={{ __html: uponMemoContent }}
-              ></p>
-            ) : null}
+      <div className="main-editor-wrapper">
+        <Editor {...this.editorConfig}></Editor>
+        {uponMemoId ? (
+          <div className="uponmemo-container" onClick={this.handleClearUponMemoClick}>
+            <span className="icon-text">🧷</span>
+            <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
           </div>
-          <button className={"save-btn " + (content === "" ? "disabled" : "")} onClick={this.handleSaveBtnClick}>
-            记下✍️
-          </button>
-        </div>
+        ) : null}
       </div>
     );
   }
 
-  protected handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const content = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, content);
-  };
-
-  protected handleInputerChanged = (e: React.FormEvent<HTMLDivElement>) => {
-    const content = e.currentTarget.innerHTML;
-
-    this.setState({
-      content,
-    });
-  };
-
-  protected handleSaveBtnClick = async () => {
-    const { content, uponMemoId } = this.state;
+  protected handleSaveBtnClick = async (content: string) => {
+    const { uponMemoId } = this.state;
 
     if (content === "") {
       toast.error("内容不能为空呀");
@@ -129,8 +106,6 @@ export class Editor extends React.Component {
       content: "",
       uponMemoId: "",
     });
-
-    this.editorRef.current!.innerHTML = "";
   };
 
   protected handleClearUponMemoClick = () => {
