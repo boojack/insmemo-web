@@ -1,4 +1,4 @@
-import React, { ReactEventHandler } from "react";
+import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
@@ -79,7 +79,7 @@ export class UserBanner extends React.Component<Props> {
             </span>
             <div className={"action-btns-dialog " + (showBtnsDialog ? "" : "hidden")}>
               <p className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
-                <span className="icon">😀</span> 关于
+                <span className="icon">😀</span> 关于 insmemo
               </p>
               <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
                 <span className="icon">👋</span> 退出
