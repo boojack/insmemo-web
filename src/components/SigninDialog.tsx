@@ -54,13 +54,13 @@ export function SigninDialog(props: Props) {
       <div className="dialog-container">
         <div className="dialog-header-container">
           <p className="title-text">👋 账号注册/登录</p>
-          <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-            ❌
-          </button>
+          {/* <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+            ✖️
+          </button> */}
         </div>
         <div className="dialog-content-container">
-          <input type="text" value={username} onChange={handleUsernameChanged} />
-          <input type="password" value={password} onChange={handlePasswordChanged} />
+          <input type="text" value={username} placeholder="用户名" onChange={handleUsernameChanged} />
+          <input type="password" value={password} placeholder="密码" onChange={handlePasswordChanged} />
         </div>
         <div className="dialog-footer-container">
           <button className="text-btn signup-btn" onClick={() => handleSigninBtnClick("signup")}>

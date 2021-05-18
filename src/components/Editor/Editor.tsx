@@ -34,9 +34,12 @@ export function Editor(props: EditorProps = DEFAULT_EDITOR_PROPS) {
     setContent(content);
   };
 
-  const handleSaveBtnClick = () => {
+  const handleCommonConfirmBtnClick = () => {
     if (handleConfirmBtnClick) {
       handleConfirmBtnClick(content);
+      // 清空内容
+      editorRef.current!.innerHTML = "";
+      setContent("");
     }
   };
 
@@ -53,7 +56,7 @@ export function Editor(props: EditorProps = DEFAULT_EDITOR_PROPS) {
       <div className="common-tools-wrapper">
         {showTools ? <div className={"common-tools-container"}>{/* nth */}</div> : null}
         {showConfirmBtn ? (
-          <button className={"confirm-btn " + (content === "" ? "disabled" : "")} onClick={handleSaveBtnClick}>
+          <button className={"confirm-btn " + (content === "" ? "disabled" : "")} onClick={handleCommonConfirmBtnClick}>
             记下✍️
           </button>
         ) : null}
