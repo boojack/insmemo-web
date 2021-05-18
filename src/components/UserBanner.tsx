@@ -78,9 +78,12 @@ export class UserBanner extends React.Component<Props> {
               ···
             </span>
             <div className={"action-btns-dialog " + (showBtnsDialog ? "" : "hidden")}>
-              <p className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
-                <span className="icon">😀</span> 关于 insmemo
-              </p>
+              <button className="text-btn action-btn" onClick={this.handleSourceCodeBtnClick}>
+                <span className="icon">👀</span> 项目地址
+              </button>
+              <button className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
+                <span className="icon">😀</span> 关于
+              </button>
               <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
                 <span className="icon">👋</span> 退出
               </button>
@@ -152,8 +155,12 @@ export class UserBanner extends React.Component<Props> {
     toast.info("Hello world~");
   };
 
+  protected handleSourceCodeBtnClick = () => {
+    window.open("https://github.com/boojack/insmemo-web/");
+  };
+
   protected async handleTagDelete(index: number, tagId: string) {
-    toast.info("🤐 按标签分类功能 todo");
+    toast.info("🤐 按标签分类（TODO）");
     // await api.deleteTagById(tagId);
     // const { tags } = this.state;
     // tags.splice(index, 1);
