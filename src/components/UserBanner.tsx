@@ -113,6 +113,11 @@ export class UserBanner extends React.Component<Props> {
                 <span># {t.text}</span>
               </div>
             ))}
+            {tags.length <= 3 ? (
+              <p className="tag-tip-container">
+                输入<span>#Tag#</span>来创建标签吧~
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -148,7 +153,7 @@ export class UserBanner extends React.Component<Props> {
   };
 
   protected async handleTagDelete(index: number, tagId: string) {
-    // toast.info("应该删除这个标签？");
+    toast.info("🤐 按标签分类功能 todo");
     // await api.deleteTagById(tagId);
     // const { tags } = this.state;
     // tags.splice(index, 1);

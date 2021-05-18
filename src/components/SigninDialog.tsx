@@ -10,30 +10,26 @@ interface Props {
   destory: FunctionType;
 }
 
-export function SigninDialog(props: Props) {
+function SigninDialog(props: Props) {
   const { destory } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCloseBtnClick = () => {
-    toast.info("请先登录/注册");
-  };
-
-  const handleUsernameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value);
   };
 
-  const handlePasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.currentTarget.value);
   };
 
-  const handleSigninBtnClick = async (action: "signin" | "signup") => {
+  const handleActionBtnClick = async (action: "signin" | "signup") => {
     try {
       const actionFunc = action === "signin" ? api.signin : api.signup;
       const { succeed, message } = await actionFunc(username, password);
 
       if (!succeed && message) {
-        toast.error(message);
+        toast.error("😟 " + message);
         return;
       }
 
@@ -41,11 +37,11 @@ export function SigninDialog(props: Props) {
       if (userService.checkIsSignIn()) {
         destory();
       } else {
-        toast.error("不知道发生了什么错误😟");
+        toast.error("😟 不知道发生了什么错误");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error("😟 " + error.message);
     }
   };
 
@@ -59,14 +55,15 @@ export function SigninDialog(props: Props) {
           </button> */}
         </div>
         <div className="dialog-content-container">
-          <input type="text" value={username} placeholder="用户名" onChange={handleUsernameChanged} />
-          <input type="password" value={password} placeholder="密码" onChange={handlePasswordChanged} />
+          <input type="text" value={username} placeholder="用户名" onChange={handleUsernameInputChanged} />
+          <input type="password" value={password} placeholder="密码" onChange={handlePasswordInputChanged} />
         </div>
         <div className="dialog-footer-container">
-          <button className="text-btn signup-btn" onClick={() => handleSigninBtnClick("signup")}>
+          <button className="text-btn signup-btn" onClick={() => handleActionBtnClick("signup")}>
             注册
           </button>
-          <button className="text-btn signin-btn" onClick={() => handleSigninBtnClick("signin")}>
+          <span className="split-text">/</span>
+          <button className="text-btn signin-btn" onClick={() => handleActionBtnClick("signin")}>
             登录
           </button>
         </div>
@@ -76,13 +73,13 @@ export function SigninDialog(props: Props) {
 }
 
 export function showSigninDialog() {
-  const div = document.createElement("div");
-  document.body.append(div);
+  const tempDiv = document.createElement("div");
+  document.body.append(tempDiv);
 
   const destory = () => {
-    ReactDOM.unmountComponentAtNode(div);
-    div.remove();
+    ReactDOM.unmountComponentAtNode(tempDiv);
+    tempDiv.remove();
   };
 
-  ReactDOM.render(<SigninDialog destory={destory} />, div);
+  ReactDOM.render(<SigninDialog destory={destory} />, tempDiv);
 }

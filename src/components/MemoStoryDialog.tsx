@@ -49,9 +49,9 @@ export function MemoStoryDialog(props: Props) {
     <div className="dialog-wrapper memo-story-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">有 {memos.length} 个 Memo 😀</p>
+          <p className="title-text">😀 有 {memos.length} 个 Memo</p>
           <button className="text-btn close-btn" onClick={props.destory}>
-            ❌
+            ✖️
           </button>
         </div>
         <div className="dialog-content-container">

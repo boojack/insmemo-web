@@ -50,6 +50,7 @@ export function MemoList() {
       {memos.map((memo, idx) => {
         return <Memo key={memo.id} index={idx} memo={memo} delete={handleDeleteMemoItem} />;
       })}
+
       {isFetching ? (
         <div className="status-text-container">
           <p className="status-text">加载更多数据中...</p>
