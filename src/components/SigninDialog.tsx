@@ -49,7 +49,7 @@ function SigninDialog(props: Props) {
     <div className="dialog-wrapper signin-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">👋 账号注册/登录</p>
+          <p className="title-text">👋 账号注册 / 登录</p>
           {/* <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
             ✖️
           </button> */}
