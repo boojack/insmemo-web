@@ -2,8 +2,9 @@ import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
+import { historyService } from "../helpers/historyService";
 import { showAboutSiteDialog } from "./AboutSiteDialog";
-import { toast } from "./Toast";
+import { TagList } from "./TagList";
 import "../less/user-banner.less";
 
 interface Props {
@@ -74,7 +75,9 @@ export class UserBanner extends React.Component<Props> {
       <div className="user-banner-wrapper">
         <div className="user-banner-container">
           <div className="userinfo-header-container">
-            <p className="username-text">{userinfo.username}</p>
+            <p className="username-text" onClick={this.handleUsernameClick}>
+              {userinfo.username}
+            </p>
             <button className="action-btn" onClick={this.toggleBtnsDialog}>
               ···
             </button>
@@ -104,25 +107,8 @@ export class UserBanner extends React.Component<Props> {
               <span className="type-text">DAY</span>
             </div>
           </div>
-          <div className="tags-container">
-            <p className="title-text">常用标签</p>
-            {tags.map((t, index) => (
-              <div
-                key={t.id}
-                className="tag-item-container"
-                onClick={() => {
-                  this.handleTagDelete(index, t.id);
-                }}
-              >
-                <span># {t.text}</span>
-              </div>
-            ))}
-            {tags.length <= 3 ? (
-              <p className="tag-tip-container">
-                输入<span>#Tag#</span>来创建标签吧~
-              </p>
-            ) : null}
-          </div>
+
+          <TagList tags={tags}></TagList>
         </div>
       </div>
     );
@@ -148,6 +134,10 @@ export class UserBanner extends React.Component<Props> {
     });
   };
 
+  protected handleUsernameClick = () => {
+    historyService.setParamsState({ tag: "" });
+  };
+
   protected handleSignoutBtnClick = async () => {
     await userService.doSignOut();
     location.reload();
@@ -160,14 +150,4 @@ export class UserBanner extends React.Component<Props> {
   protected handleAboutBtnClick = () => {
     showAboutSiteDialog();
   };
-
-  protected async handleTagDelete(index: number, tagId: string) {
-    toast.info("🤐 按标签分类（TODO）");
-    // await api.deleteTagById(tagId);
-    // const { tags } = this.state;
-    // tags.splice(index, 1);
-    // this.setState({
-    //   tags,
-    // });
-  }
 }

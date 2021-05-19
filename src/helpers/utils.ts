@@ -56,4 +56,30 @@ export namespace utils {
       }, delay);
     };
   }
+
+  export function iterObjectToParamsString(object: IterObject): string {
+    const params = [];
+
+    const keys = Object.keys(object);
+    const vals = Object.values(object);
+
+    for (let i = 0; i < keys.length; ++i) {
+      if (vals[i]) {
+        params.push(`${keys[i]}=${vals[i]}`);
+      }
+    }
+
+    return params.join("&");
+  }
+
+  export function filterMemoContent(content: string): string {
+    const tagReg = /#(.+?)#/g;
+    const linkReg = /(https?:\/\/[^\s]+)/g;
+
+    content = content.replaceAll("\n", "<br>");
+    content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
+    content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
+
+    return content;
+  }
 }

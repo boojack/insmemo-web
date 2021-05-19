@@ -1,0 +1,53 @@
+@import "./mixin.less";
+
+.tags-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 8px;
+
+  > .title-text {
+    width: 100%;
+    margin: 10px 0;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ded1b7;
+  }
+
+  > .tag-item-container {
+    width: 100%;
+    padding: 8px 16px;
+    line-height: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ddd;
+    }
+
+    &.active {
+      background-color: @text-green !important;
+
+      > span {
+        color: white;
+      }
+    }
+  }
+
+  > .tag-tip-container {
+    color: gray;
+    width: 100%;
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+
+    > span {
+      color: @text-blue;
+      padding: 0 2px;
+    }
+  }
+}

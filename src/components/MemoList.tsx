@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { memoService } from "../helpers/memoService";
-import { Memo } from "./Memo";
 import { utils } from "../helpers/utils";
+import { memoService } from "../helpers/memoService";
+import { historyService } from "../helpers/historyService";
+import { Memo } from "./Memo";
 import "../less/memolist.less";
 
 export function MemoList() {
   const [memos, setMemos] = useState(memoService.getMemos());
+  const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
@@ -17,9 +19,13 @@ export function MemoList() {
     memoService.bindStateChange(ctx, (newMemos) => {
       setMemos([...newMemos]);
     });
+    historyService.bindStateChange(ctx, (querys) => {
+      setTagQuery(querys.tag);
+    });
 
     return () => {
       memoService.unbindStateListener(ctx);
+      historyService.unbindStateListener(ctx);
     };
   }, []);
 
@@ -45,15 +51,33 @@ export function MemoList() {
     }
   };
 
+  let shownMemoCount = 0;
+  const memosTemp = memos.map((m) => {
+    let shouldShow = false;
+
+    if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
+      shouldShow = true;
+    }
+
+    if (shouldShow) {
+      shownMemoCount++;
+    }
+
+    return {
+      ...m,
+      shouldShow,
+    };
+  });
+
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
-      {memos.map((memo, idx) => {
-        return <Memo key={memo.id} index={idx} memo={memo} delete={handleDeleteMemoItem} />;
+      {memosTemp.map((memo, idx) => {
+        return memo.shouldShow ? <Memo key={memo.id} index={idx} memo={memo} delete={handleDeleteMemoItem} /> : null;
       })}
 
       {isFetching ? (
         <div className="status-text-container">
-          <p className="status-text">加载更多数据中...</p>
+          <p className="status-text">努力请求数据中...</p>
         </div>
       ) : null}
       {isComplete ? (

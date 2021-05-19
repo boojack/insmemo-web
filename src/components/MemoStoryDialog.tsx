@@ -30,7 +30,7 @@ export function MemoStoryDialog(props: Props) {
 
           memoList.push({
             ...memo,
-            formatedContent: filterMemoContent(memo.content),
+            formatedContent: utils.filterMemoContent(memo.content),
             createdAtStr: utils.getTimeString(memo.createdAt),
           });
 
@@ -76,9 +76,4 @@ export function showMemoStoryDialog(memoId: string) {
     div.remove();
   };
   ReactDOM.render(<MemoStoryDialog memoId={memoId} destory={destory} />, div);
-}
-
-function filterMemoContent(content: string): string {
-  const tagReg = /#(.+?)#/g;
-  return content.replaceAll("\n", "<br>").replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
 }

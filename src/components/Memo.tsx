@@ -19,28 +19,19 @@ interface MemoItem extends Model.Memo {
 }
 
 export function Memo(props: Props) {
+  const { memo: propsMemo } = props;
   const [memo, setMemo] = useState<MemoItem>({
-    ...props.memo,
-    formatedContent: filterMemoContent(props.memo.content),
-    createdAtStr: utils.getTimeString(props.memo.createdAt),
+    ...propsMemo,
+    formatedContent: utils.filterMemoContent(propsMemo.content),
+    createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
-  const [tags, setTags] = useState<Model.Tag[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
 
   let edidContent = memo.content;
 
   useEffect(() => {
-    const fetchTags = async () => {
-      const { id } = memo;
-
-      if (id) {
-        const { data } = await api.getTagsByMemoId(id);
-        setTags([...data]);
-      }
-    };
-
     const fetchUponMemo = async () => {
       const { uponMemoId } = memo;
 
@@ -50,7 +41,7 @@ export function Memo(props: Props) {
         if (uponMemoData) {
           setUponMemo({
             ...uponMemoData,
-            formatedContent: filterMemoContent(uponMemoData.content),
+            formatedContent: utils.filterMemoContent(uponMemoData.content),
             createdAtStr: utils.getTimeString(uponMemoData.createdAt),
           });
         }
@@ -58,10 +49,7 @@ export function Memo(props: Props) {
     };
 
     const fetchData = async () => {
-      if (userService.checkIsSignIn()) {
-        fetchTags();
-        fetchUponMemo();
-      }
+      await fetchUponMemo();
     };
 
     fetchData();
@@ -100,7 +88,7 @@ export function Memo(props: Props) {
     setMemo({
       ...memo,
       content: edidContent,
-      formatedContent: filterMemoContent(edidContent),
+      formatedContent: utils.filterMemoContent(edidContent),
     });
     toggleEditActionBtn();
   };
@@ -179,15 +167,4 @@ export function Memo(props: Props) {
       ) : null}
     </div>
   );
-}
-
-function filterMemoContent(content: string): string {
-  const tagReg = /#(.+?)#/g;
-  const linkReg = /(https?:\/\/[^\s]+)/g;
-
-  content = content.replaceAll("\n", "<br>");
-  content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
-  content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
-
-  return content;
 }

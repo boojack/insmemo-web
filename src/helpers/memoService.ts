@@ -23,20 +23,24 @@ class MemoService {
   public async fetchMoreMemos() {
     const { data } = await api.getMyMemos(this.memos.length);
     const memos = data
-      .map(
-        (m): Model.Memo => {
-          return {
-            id: m.id,
-            content: m.content,
-            uponMemoId: m.uponMemoId,
-            createdAt: new Date(m.createdAt).getTime(),
-            updatedAt: new Date(m.updatedAt).getTime(),
-          };
-        }
-      )
+      .map((m): Model.Memo => {
+        return {
+          id: m.id,
+          content: m.content,
+          uponMemoId: m.uponMemoId,
+          tags: [],
+          createdAt: new Date(m.createdAt).getTime(),
+          updatedAt: new Date(m.updatedAt).getTime(),
+        };
+      })
       .sort((a, b) => b.createdAt - a.createdAt);
 
     if (memos.length > 0) {
+      for (const m of memos) {
+        const { data: tags } = await api.getTagsByMemoId(m.id);
+        m.tags = tags;
+      }
+
       this.memos.push(...memos);
       this.emitValueChangedEvent();
     }
@@ -48,7 +52,10 @@ class MemoService {
     return this.memos;
   }
 
-  public push(memo: Model.Memo) {
+  public async push(memo: Model.Memo) {
+    const { data: tags } = await api.getTagsByMemoId(memo.id);
+    memo.tags = tags;
+
     this.memos.unshift(memo);
     this.emitValueChangedEvent();
   }

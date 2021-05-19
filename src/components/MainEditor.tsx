@@ -41,7 +41,7 @@ export class MainEditor extends React.Component {
 
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
-        uponMemoContent = filterMemoContent(memo.content);
+        uponMemoContent = utils.filterMemoContent(memo.content);
         // this.editorRef.current?.focus();
       }
 
@@ -111,8 +111,4 @@ export class MainEditor extends React.Component {
   protected handleClearUponMemoClick = () => {
     stateManager.setState("uponMemoId", "");
   };
-}
-
-function filterMemoContent(content: string): string {
-  return content.replaceAll("\n", "<br>");
 }

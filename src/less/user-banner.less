@@ -7,7 +7,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 16px;
   margin-bottom: 20px;
 
   > .user-banner-container {
@@ -19,6 +18,7 @@
 
     > .userinfo-header-container {
       width: 100%;
+      padding: 0 16px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -34,6 +34,7 @@
         max-width: 140px;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
       }
 
       > .action-btn {
@@ -92,6 +93,7 @@
 
     > .status-text-container {
       margin: 16px 0;
+      padding: 0 16px;
       width: 100%;
       display: flex;
       flex-direction: row;
@@ -115,49 +117,6 @@
           color: gray;
           font-size: 10px;
           line-height: 16px;
-        }
-      }
-    }
-
-    > .tags-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      margin-top: 8px;
-
-      > .title-text {
-        width: 100%;
-        margin: 10px 0;
-        font-size: 13px;
-        font-weight: bold;
-        color: #ded1b7;
-      }
-
-      > .tag-item-container {
-        padding: 2px 0;
-        margin-top: 5px;
-        line-height: 20px;
-        cursor: pointer;
-        border-bottom: 1px solid transparent;
-
-        &:hover {
-          border-color: gray;
-        }
-      }
-
-      > .tag-tip-container {
-        color: gray;
-        width: 100%;
-        margin-top: 8px;
-        font-size: 12px;
-        line-height: 1.6;
-
-        > span {
-          color: @text-blue;
-          padding: 0 2px;
         }
       }
     }

@@ -3,3 +3,7 @@ type BasicType = undefined | null | boolean | number | string | Object | Array<B
 type TimeStamp = number;
 
 type FunctionType = (...args: any) => any;
+
+interface IterObject {
+  [key: string]: any;
+}
