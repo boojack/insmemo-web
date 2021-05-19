@@ -37,13 +37,15 @@ function AboutSizeDialog(props: Props) {
           <ul>
             <li>
               👀 开源，
-              <a target="_blank" href="https://github.com/boojack/insmemo-web/">
+              <a target="_blank" href="https://github.com/boojack/insmemo/">
                 项目地址
               </a>
+              ；
             </li>
-            <li>📑 随时随手记一记</li>
-            <li>😋 更好的交互逻辑</li>
+            <li>📑 随时随手记一记；</li>
+            <li>😋 更好的交互逻辑；</li>
           </ul>
+          <p>小小产品，欢迎使用~</p>
         </div>
         <div className="dialog-footer-container"></div>
       </div>

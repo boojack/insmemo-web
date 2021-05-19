@@ -183,5 +183,11 @@ export function Memo(props: Props) {
 
 function filterMemoContent(content: string): string {
   const tagReg = /#(.+?)#/g;
-  return content.replaceAll("\n", "<br>").replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
+  const linkReg = /(https?:\/\/[^\s]+)/g;
+
+  content = content.replaceAll("\n", "<br>");
+  content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
+  content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
+
+  return content;
 }

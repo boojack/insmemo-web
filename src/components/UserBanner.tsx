@@ -82,6 +82,9 @@ export class UserBanner extends React.Component<Props> {
               <button className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
                 <span className="icon">😀</span> 关于
               </button>
+              <button className="text-btn action-btn" onClick={this.handleFeedbackBtnClick}>
+                <span className="icon">🐛</span> 问题反馈
+              </button>
               <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
                 <span className="icon">👋</span> 退出
               </button>
@@ -148,6 +151,10 @@ export class UserBanner extends React.Component<Props> {
   protected handleSignoutBtnClick = async () => {
     await userService.doSignOut();
     location.reload();
+  };
+
+  protected handleFeedbackBtnClick = () => {
+    window.open("https://github.com/boojack/insmemo/issues/new");
   };
 
   protected handleAboutBtnClick = () => {
