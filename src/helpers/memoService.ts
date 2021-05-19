@@ -52,6 +52,15 @@ class MemoService {
     const { data: tags } = await api.getTagsByMemoId(memo.id);
     memo.tags = tags;
 
+    if (memo.uponMemoId) {
+      for (const m of this.memos) {
+        if (m.id === memo.uponMemoId) {
+          memo.uponMemo = m;
+          break;
+        }
+      }
+    }
+
     this.memos.unshift(memo);
     this.emitValueChangedEvent();
   }
