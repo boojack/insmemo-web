@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../less/editor.less";
 
 export interface EditorProps {
@@ -22,6 +22,10 @@ export function Editor(props: EditorProps = DEFAULT_EDITOR_PROPS) {
   const { className, content: initialContent, placeholder, showConfirmBtn, showTools, handleConfirmBtnClick } = props;
   const [content, setContent] = useState<string>(initialContent);
   const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.execCommand("defaultParagraphSeparator", false, "p");
+  }, []);
 
   const handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();

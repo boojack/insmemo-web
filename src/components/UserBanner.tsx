@@ -75,13 +75,10 @@ export class UserBanner extends React.Component<Props> {
         <div className="userinfo-container">
           <div className="userinfo-header-container">
             <p className="username-text">{userinfo.username}</p>
-            <span className="action-btn" onClick={this.toggleBtnsDialog}>
+            <button className="action-btn" onClick={this.toggleBtnsDialog}>
               ···
-            </span>
+            </button>
             <div className={"action-btns-dialog " + (showBtnsDialog ? "" : "hidden")}>
-              <button className="text-btn action-btn" onClick={this.handleSourceCodeBtnClick}>
-                <span className="icon">👀</span> 项目地址
-              </button>
               <button className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
                 <span className="icon">😀</span> 关于
               </button>
@@ -154,10 +151,6 @@ export class UserBanner extends React.Component<Props> {
 
   protected handleAboutBtnClick = () => {
     showAboutSiteDialog();
-  };
-
-  protected handleSourceCodeBtnClick = () => {
-    window.open("https://github.com/boojack/insmemo-web/");
   };
 
   protected async handleTagDelete(index: number, tagId: string) {

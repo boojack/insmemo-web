@@ -26,6 +26,12 @@ function AboutSizeDialog(props: Props) {
         <div className="dialog-content-container">
           <p>无名：知识星球 + flomo</p>
           <ul>
+            <li>
+              👀{" "}
+              <a target="_blank" href="https://github.com/boojack/insmemo-web/">
+                开源项目
+              </a>
+            </li>
             <li>📑 随时随手记一记</li>
             <li>😋 更好的交互逻辑</li>
           </ul>
