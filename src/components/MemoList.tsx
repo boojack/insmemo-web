@@ -80,7 +80,7 @@ export function MemoList() {
           <p className="status-text">努力请求数据中...</p>
         </div>
       ) : null}
-      {isComplete ? (
+      {tagQuery === "" && isComplete ? (
         <div className="status-text-container">
           <p className="status-text">所有数据加载完啦 🎉</p>
         </div>

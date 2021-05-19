@@ -25,13 +25,13 @@ function AboutSizeDialog(props: Props) {
         </div>
         <div className="dialog-content-container">
           <p>
-            (无名)：
-            <a target="_blank" href="https://www.zsxq.com/">
-              知识星球
-            </a>{" "}
-            +{" "}
+            (暂无名)：
             <a target="_blank" href="https://flomoapp.com/">
               flomo
+            </a>{" "}
+            +{" "}
+            <a target="_blank" href="https://www.zsxq.com/">
+              知识星球
             </a>
           </p>
           <ul>
@@ -42,10 +42,10 @@ function AboutSizeDialog(props: Props) {
               </a>
               ；
             </li>
-            <li>📑 随时随手记一记；</li>
-            <li>😋 更好的交互逻辑；</li>
+            <li>📑 更好的交互逻辑；</li>
+            <li>😋 更可观的样式；</li>
           </ul>
-          <p>小小产品，欢迎使用~</p>
+          <p>Have fun~</p>
         </div>
         <div className="dialog-footer-container"></div>
       </div>

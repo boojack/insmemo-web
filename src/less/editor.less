@@ -53,20 +53,25 @@
     > .confirm-btn {
       user-select: none;
       cursor: pointer;
-      padding: 4px 10px;
-      border: 1px solid lightgray;
+      padding: 6px 10px;
       border-radius: 4px;
       font-size: 13px;
+      border: none;
+      background-color: @text-green;
+      color: white;
 
       &:disabled {
         cursor: not-allowed;
         color: #aaa;
-        background-color: #fafafa;
-        border-color: lightgray !important;
+        background-color: #eee;
+
+        &:hover {
+          opacity: 1;
+        }
       }
 
       &:hover {
-        border-color: black;
+        opacity: 0.9;
       }
     }
   }
