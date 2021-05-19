@@ -58,14 +58,11 @@
       border-radius: 4px;
       font-size: 13px;
 
-      &.disabled {
+      &:disabled {
         cursor: not-allowed;
-        color: gray;
+        color: #aaa;
         background-color: #fafafa;
-
-        &:hover {
-          border-color: lightgray;
-        }
+        border-color: lightgray !important;
       }
 
       &:hover {

@@ -64,7 +64,7 @@ export class MainEditor extends React.Component {
         <Editor {...this.editorConfig}></Editor>
         {uponMemoId ? (
           <div className="uponmemo-container" onClick={this.handleClearUponMemoClick}>
-            <span className="icon-text">🧷</span>
+            <span className="icon-text">📌</span>
             <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
           </div>
         ) : null}

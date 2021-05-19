@@ -173,7 +173,7 @@ export function Memo(props: Props) {
       )}
       {uponMemo ? (
         <div className="uponmemo-container">
-          <span className="icon-text">🧷</span>
+          <span className="icon-text">📌</span>
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.formatedContent }}></div>
         </div>
       ) : null}

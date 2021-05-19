@@ -72,7 +72,7 @@ export class UserBanner extends React.Component<Props> {
 
     return (
       <div className="user-banner-wrapper">
-        <div className="userinfo-container">
+        <div className="user-banner-container">
           <div className="userinfo-header-container">
             <p className="username-text">{userinfo.username}</p>
             <button className="action-btn" onClick={this.toggleBtnsDialog}>
@@ -147,6 +147,7 @@ export class UserBanner extends React.Component<Props> {
 
   protected handleSignoutBtnClick = async () => {
     await userService.doSignOut();
+    location.reload();
   };
 
   protected handleAboutBtnClick = () => {

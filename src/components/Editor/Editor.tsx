@@ -60,7 +60,7 @@ export function Editor(props: EditorProps = DEFAULT_EDITOR_PROPS) {
       <div className="common-tools-wrapper">
         {showTools ? <div className={"common-tools-container"}>{/* nth */}</div> : null}
         {showConfirmBtn ? (
-          <button className={"confirm-btn " + (content === "" ? "disabled" : "")} onClick={handleCommonConfirmBtnClick}>
+          <button className="confirm-btn" disabled={content.length === 0} onClick={handleCommonConfirmBtnClick}>
             记下✍️
           </button>
         ) : null}
