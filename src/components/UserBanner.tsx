@@ -2,6 +2,7 @@ import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
+import { showAboutSiteDialog } from "./AboutSiteDialog";
 import { toast } from "./Toast";
 import "../less/user-banner.less";
 
@@ -151,8 +152,8 @@ export class UserBanner extends React.Component<Props> {
     await userService.doSignOut();
   };
 
-  protected handleAboutBtnClick = async () => {
-    toast.info("Hello world~");
+  protected handleAboutBtnClick = () => {
+    showAboutSiteDialog();
   };
 
   protected handleSourceCodeBtnClick = () => {
