@@ -48,6 +48,10 @@
     padding-top: 10px;
 
     > .sidebar-wrapper {
+      z-index: 10;
+      position: absolute;
+      top: 10px;
+      left: 0;
       width: 100%;
       height: 40px;
       overflow-y: unset;
@@ -62,11 +66,16 @@
       width: 100%;
       height: 100%;
       padding: 0 10px;
+      padding-top: 40px;
       margin-left: 0;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+
+      > .memolist-wrapper {
+        margin-bottom: 0px;
+      }
     }
   }
 
