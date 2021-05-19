@@ -24,12 +24,21 @@ function AboutSizeDialog(props: Props) {
           </button>
         </div>
         <div className="dialog-content-container">
-          <p>无名：知识星球 + flomo</p>
+          <p>
+            (无名)：
+            <a target="_blank" href="https://www.zsxq.com/">
+              知识星球
+            </a>{" "}
+            +{" "}
+            <a target="_blank" href="https://flomoapp.com/">
+              flomo
+            </a>
+          </p>
           <ul>
             <li>
-              👀{" "}
+              👀 开源，
               <a target="_blank" href="https://github.com/boojack/insmemo-web/">
-                开源项目
+                项目地址
               </a>
             </li>
             <li>📑 随时随手记一记</li>
