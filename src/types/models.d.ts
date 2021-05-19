@@ -13,6 +13,7 @@ declare namespace Model {
     content: string;
     tags: Tag[];
     uponMemoId?: string;
+    uponMemo?: Memo;
   }
 
   interface Tag extends BaseModel {

@@ -28,7 +28,8 @@ class MemoService {
           id: m.id,
           content: m.content,
           uponMemoId: m.uponMemoId,
-          tags: [],
+          tags: m.tags,
+          uponMemo: m.uponMemo,
           createdAt: new Date(m.createdAt).getTime(),
           updatedAt: new Date(m.updatedAt).getTime(),
         };
@@ -36,11 +37,6 @@ class MemoService {
       .sort((a, b) => b.createdAt - a.createdAt);
 
     if (memos.length > 0) {
-      for (const m of memos) {
-        const { data: tags } = await api.getTagsByMemoId(m.id);
-        m.tags = tags;
-      }
-
       this.memos.push(...memos);
       this.emitValueChangedEvent();
     }

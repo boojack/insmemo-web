@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import { stateManager } from "../helpers/stateManager";
-import { userService } from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
+import { stateManager } from "../helpers/stateManager";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import "../less/memo.less";
 
@@ -29,30 +28,20 @@ export function Memo(props: Props) {
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
 
-  let edidContent = memo.content;
-
   useEffect(() => {
-    const fetchUponMemo = async () => {
-      const { uponMemoId } = memo;
+    const { uponMemoId } = memo;
 
-      if (uponMemoId) {
-        const { data: uponMemoData } = await api.getMemoById(uponMemoId);
+    if (uponMemoId) {
+      const { uponMemo: uponMemoData } = memo;
 
-        if (uponMemoData) {
-          setUponMemo({
-            ...uponMemoData,
-            formatedContent: utils.filterMemoContent(uponMemoData.content),
-            createdAtStr: utils.getTimeString(uponMemoData.createdAt),
-          });
-        }
+      if (uponMemoData) {
+        setUponMemo({
+          ...uponMemoData,
+          formatedContent: utils.filterMemoContent(uponMemoData.content),
+          createdAtStr: utils.getTimeString(uponMemoData.createdAt),
+        });
       }
-    };
-
-    const fetchData = async () => {
-      await fetchUponMemo();
-    };
-
-    fetchData();
+    }
   }, []);
 
   const showStoryDialog = () => {
@@ -70,6 +59,8 @@ export function Memo(props: Props) {
   const editMemo = () => {
     toggleEditActionBtn();
   };
+
+  let edidContent = memo.content;
 
   const handleEditorContentChanged = (e: React.FormEvent<HTMLDivElement>) => {
     const rawContent = e.currentTarget.innerHTML;
