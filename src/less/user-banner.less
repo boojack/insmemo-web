@@ -1,123 +1,114 @@
 @import "./mixin.less";
 
-.user-banner-wrapper {
+.user-banner-container {
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 20px;
 
-  > .user-banner-container {
+  > .userinfo-header-container {
     width: 100%;
+    padding: 0 16px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
 
-    > .userinfo-header-container {
-      width: 100%;
-      padding: 0 16px;
+    > .username-text {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 36px;
+      color: #5f5f5f;
+      margin-right: 8px;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    > .action-btn {
+      font-size: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+      user-select: none;
+      border: none;
+      outline: none;
+      background-color: unset;
+    }
+
+    > .action-btns-dialog {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: nowrap;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: absolute;
+      top: 36px;
+      right: 8px;
+      background-color: white;
+      width: 180px;
+      padding: 8px 0;
+      border-radius: 5px;
+      z-index: 10;
+      box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 
-      > .username-text {
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 36px;
-        color: #5f5f5f;
-        margin-right: 8px;
-        max-width: 140px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: pointer;
+      &::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        right: 10px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid white;
       }
 
       > .action-btn {
-        font-size: 20px;
+        width: 100%;
         cursor: pointer;
-        flex-shrink: 0;
-        user-select: none;
+        padding: 8px 16px;
         border: none;
-        outline: none;
         background-color: unset;
-      }
+        text-align: left;
 
-      > .action-btns-dialog {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        position: absolute;
-        top: 36px;
-        right: 8px;
-        background-color: white;
-        width: 180px;
-        padding: 8px 0;
-        border-radius: 5px;
-        z-index: 10;
-        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: -8px;
-          right: 10px;
-          border-left: 8px solid transparent;
-          border-right: 8px solid transparent;
-          border-bottom: 8px solid white;
+        > .icon {
+          margin-right: 4px;
         }
 
-        > .action-btn {
-          width: 100%;
-          cursor: pointer;
-          padding: 8px 16px;
-          border: none;
-          background-color: unset;
-          text-align: left;
-
-          > .icon {
-            margin-right: 4px;
-          }
-
-          &:hover {
-            background-color: lightgray;
-          }
+        &:hover {
+          background-color: lightgray;
         }
       }
     }
+  }
 
-    > .status-text-container {
-      margin: 16px 0;
-      padding: 0 16px;
-      width: 100%;
+  > .status-text-container {
+    margin: 16px 0;
+    padding: 0 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    > .status-text {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: flex-start;
       align-items: flex-start;
 
-      > .status-text {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+      > .amount-text {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 36px;
+        color: gray;
+      }
 
-        > .amount-text {
-          font-weight: bold;
-          font-size: 24px;
-          line-height: 36px;
-          color: gray;
-        }
-
-        > .type-text {
-          color: gray;
-          font-size: 10px;
-          line-height: 16px;
-        }
+      > .type-text {
+        color: gray;
+        font-size: 10px;
+        line-height: 16px;
       }
     }
   }

@@ -138,7 +138,7 @@ export function Memo(props: Props) {
               </span>
             </>
           ) : null}
-          <span className="text-btn more-action-btns" onClick={toggleMoreActionBtns}>
+          <span className={"text-btn more-action-btns " + (showMoreActionBtns ? "active" : "")} onClick={toggleMoreActionBtns}>
             ···
           </span>
         </div>

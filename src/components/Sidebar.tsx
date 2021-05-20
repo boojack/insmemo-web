@@ -3,6 +3,7 @@ import { userService } from "../helpers/userService";
 import { UserBanner } from "./UserBanner";
 import { showSigninDialog } from "./SigninDialog";
 import "../less/siderbar.less";
+import { TagList } from "./TagList";
 
 interface State {
   userinfo: Model.User | null;
@@ -42,6 +43,7 @@ export class Sidebar extends React.Component {
         {userinfo ? (
           <>
             <UserBanner userinfo={userinfo} />
+            <TagList></TagList>
           </>
         ) : (
           <div className="slogan-container">

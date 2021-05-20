@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { api } from "../helpers/api";
 import { historyService } from "../helpers/historyService";
 import "../less/tag-list.less";
 
-interface Props {
-  tags: Model.Tag[];
-}
-
-export function TagList(props: Props) {
-  const { tags } = props;
+export function TagList() {
+  const [tags, setTags] = useState<Model.Tag[]>([]);
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      let { data: tags } = await api.getMyTags();
+      tags = tags
+        .map((t) => {
+          return {
+            ...t,
+            createdAt: new Date(t.createdAt).getTime(),
+          };
+        })
+        .sort((a, b) => b.createdAt - a.createdAt);
+
+      setTags(tags);
+    };
+
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     const ctx = {
