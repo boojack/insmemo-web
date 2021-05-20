@@ -27,6 +27,7 @@ export function Memo(props: Props) {
   const [uponMemo, setUponMemo] = useState<MemoItem>();
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
+  const [showMoreActionBtns, toggleMoreActionBtns] = useToggle(false);
 
   useEffect(() => {
     const { uponMemoId } = memo;
@@ -52,12 +53,12 @@ export function Memo(props: Props) {
     stateManager.setState("uponMemoId", memo.id);
   };
 
-  const deleteMemo = async () => {
-    await props.delete(props.index);
-  };
-
-  const editMemo = () => {
-    toggleEditActionBtn();
+  const handleDeleteMemoClick = async () => {
+    if (showConfirmDeleteBtn) {
+      await props.delete(props.index);
+    } else {
+      toggleConfirmDeleteBtn();
+    }
   };
 
   let edidContent = memo.content;
@@ -96,6 +97,9 @@ export function Memo(props: Props) {
     if (showConfirmDeleteBtn) {
       toggleConfirmDeleteBtn();
     }
+    if (showMoreActionBtns) {
+      toggleMoreActionBtns();
+    }
   };
 
   return (
@@ -111,31 +115,32 @@ export function Memo(props: Props) {
           <span className="text-btn" onClick={uponThisMemo}>
             Mark
           </span>
-          {/* Memo 编辑相关按钮 */}
-          {showEditActionBtn ? (
+          {showMoreActionBtns ? (
             <>
-              <span className="text-btn" onClick={saveEditedMemo}>
-                保存
-              </span>
-              <span className="text-btn" onClick={cancelEditMemo}>
-                撤销
+              {/* Memo 编辑相关按钮 */}
+              {showEditActionBtn ? (
+                <>
+                  <span className="text-btn" onClick={saveEditedMemo}>
+                    保存
+                  </span>
+                  <span className="text-btn" onClick={cancelEditMemo}>
+                    撤销
+                  </span>
+                </>
+              ) : (
+                <span className="text-btn" onClick={toggleEditActionBtn}>
+                  编辑
+                </span>
+              )}
+              {/* Memo 删除相关按钮 */}
+              <span className="text-btn" onClick={handleDeleteMemoClick}>
+                {showConfirmDeleteBtn ? "确定删除" : "删除"}
               </span>
             </>
-          ) : (
-            <span className="text-btn" onClick={editMemo}>
-              编辑
-            </span>
-          )}
-          {/* Memo 删除相关按钮 */}
-          {showConfirmDeleteBtn ? (
-            <span className="text-btn" onClick={deleteMemo}>
-              确定删除
-            </span>
-          ) : (
-            <span className="text-btn" onClick={toggleConfirmDeleteBtn}>
-              删除
-            </span>
-          )}
+          ) : null}
+          <span className="text-btn more-action-btns" onClick={toggleMoreActionBtns}>
+            ···
+          </span>
         </div>
       </div>
       {/* 这里如果不设置 key，react 会尝试重用 */}
