@@ -18,7 +18,7 @@ function AboutSizeDialog(props: Props) {
     <div className="dialog-wrapper about-site-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">👋 关于</p>
+          <p className="title-text">😀 关于</p>
           <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
             ✖️
           </button>
@@ -44,6 +44,11 @@ function AboutSizeDialog(props: Props) {
             </li>
             <li>📑 更好的交互逻辑；</li>
             <li>😋 更可观的样式；</li>
+            <li>
+              <a target="_blank" href="https://github.com/boojack/insmemo/issues/new">
+                🐛 问题反馈
+              </a>
+            </li>
           </ul>
           <p>Have fun~</p>
         </div>

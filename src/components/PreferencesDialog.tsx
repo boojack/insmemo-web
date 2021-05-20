@@ -62,7 +62,7 @@ function PreferencesDialog(props: Props) {
         <div className="dialog-content-container">
           <div className="section-container account-section-container">
             <p className="title-text">账号设置</p>
-            <p className="tip-text">to be continue</p>
+            <p className="tip-text">waiting to start</p>
           </div>
           <div className="section-container preferences-section-container">
             <p className="title-text">特殊设置</p>
@@ -70,10 +70,11 @@ function PreferencesDialog(props: Props) {
               <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
               <span>中英文之间加空格</span>
             </label>
-            <label className="checkbox-form-label">
+            <p className="tip-text">...to be continue</p>
+            {/* <label className="checkbox-form-label">
               <input type="checkbox" checked={shouldMaxMemoHeight} disabled onChange={handleMaxHeightValueChanged} />
               <span>Memo 过长折叠</span>
-            </label>
+            </label> */}
           </div>
         </div>
         <div className="dialog-footer-container"></div>
