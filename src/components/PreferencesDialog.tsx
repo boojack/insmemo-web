@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { storage } from "../helpers/storage";
-import { toast } from "./Toast";
 import "../less/preferences-dialog.less";
 
 interface Props {
@@ -13,6 +12,8 @@ interface Props {
  * 1. 中英文分开；
  * 2.
  */
+export const preferences = storage.get(["shouldSplitMemoWord", "shouldMaxMemoHeight"]);
+
 function PreferencesDialog(props: Props) {
   const [shouldSplitMemoWord, setShouldSplitWord] = useState(false);
   const [shouldMaxMemoHeight, setShouldMaxHeight] = useState(false);
@@ -36,21 +37,24 @@ function PreferencesDialog(props: Props) {
   const handleSplitWordsValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
     setShouldSplitWord(nextStatus);
+    preferences.shouldSplitMemoWord = nextStatus;
     storage.set({ shouldSplitMemoWord: nextStatus });
-    toast.info("刷新后才能看到效果哦~");
+    storage.emitStorageChangedEvent();
   };
 
   const handleMaxHeightValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
     setShouldMaxHeight(nextStatus);
+    preferences.shouldMaxMemoHeight = nextStatus;
     storage.set({ shouldMaxMemoHeight: nextStatus });
+    storage.emitStorageChangedEvent();
   };
 
   return (
     <div className="dialog-wrapper preferences-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">偏好设置</p>
+          <p className="title-text">🤟 偏好设置</p>
           <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
             ✖️
           </button>
@@ -59,21 +63,17 @@ function PreferencesDialog(props: Props) {
           <div className="section-container account-section-container">
             <p className="title-text">账号设置</p>
             <p className="tip-text">to be continue</p>
-            {/* <label className="checkbox-form-label">
-              <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
-              <span>中英文之间加空格</span>
-            </label> */}
           </div>
           <div className="section-container preferences-section-container">
-            <p className="title-text">偏好设置</p>
+            <p className="title-text">特殊设置</p>
             <label className="checkbox-form-label">
               <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
               <span>中英文之间加空格</span>
             </label>
-            {/* <label className="checkbox-form-label">
+            <label className="checkbox-form-label">
               <input type="checkbox" checked={shouldMaxMemoHeight} disabled onChange={handleMaxHeightValueChanged} />
               <span>Memo 过长折叠</span>
-            </label> */}
+            </label>
           </div>
         </div>
         <div className="dialog-footer-container"></div>

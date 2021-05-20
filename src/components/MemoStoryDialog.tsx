@@ -30,7 +30,7 @@ export function MemoStoryDialog(props: Props) {
 
           memoList.push({
             ...memo,
-            formatedContent: utils.filterMemoContent(memo.content),
+            formatedContent: utils.formatMemoContent(memo.content),
             createdAtStr: utils.getTimeString(memo.createdAt),
           });
 

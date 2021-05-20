@@ -9,6 +9,7 @@ import "../less/memo.less";
 interface Props {
   memo: Model.Memo;
   index: number;
+  shouldSplitMemoWord: boolean;
   delete: (idx: number) => Promise<void>;
 }
 
@@ -18,10 +19,10 @@ interface MemoItem extends Model.Memo {
 }
 
 export function Memo(props: Props) {
-  const { memo: propsMemo } = props;
+  const { memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<MemoItem>({
     ...propsMemo,
-    formatedContent: utils.filterMemoContent(propsMemo.content),
+    formatedContent: utils.formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
@@ -38,12 +39,19 @@ export function Memo(props: Props) {
       if (uponMemoData) {
         setUponMemo({
           ...uponMemoData,
-          formatedContent: utils.filterMemoContent(uponMemoData.content),
+          formatedContent: utils.formatMemoContent(uponMemoData.content),
           createdAtStr: utils.getTimeString(uponMemoData.createdAt),
         });
       }
     }
   }, []);
+
+  useEffect(() => {
+    setMemo({
+      ...memo,
+      formatedContent: utils.formatMemoContent(memo.content),
+    });
+  }, [shouldSplitMemoWord]);
 
   const showStoryDialog = () => {
     showMemoStoryDialog(memo.id);
@@ -80,7 +88,7 @@ export function Memo(props: Props) {
     setMemo({
       ...memo,
       content: edidContent,
-      formatedContent: utils.filterMemoContent(edidContent),
+      formatedContent: utils.formatMemoContent(edidContent),
     });
     toggleEditActionBtn();
   };

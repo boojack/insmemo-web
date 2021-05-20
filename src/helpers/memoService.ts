@@ -1,5 +1,4 @@
 import { api } from "./api";
-import { storage } from "./storage";
 import { userService } from "./userService";
 
 class MemoService {
@@ -25,12 +24,6 @@ class MemoService {
     const { data } = await api.getMyMemos(this.memos.length);
     const memos = data
       .map((m): Model.Memo => {
-        const { shouldSplitMemoWord } = storage.get(["shouldSplitMemoWord"]);
-
-        if (shouldSplitMemoWord) {
-          m.content = m.content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
-        }
-
         return {
           id: m.id,
           content: m.content,

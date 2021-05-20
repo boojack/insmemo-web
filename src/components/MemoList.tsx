@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { utils } from "../helpers/utils";
+import { preferences } from "./PreferencesDialog";
 import { memoService } from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { Memo } from "./Memo";
@@ -11,6 +12,7 @@ export function MemoList() {
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
+  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
 
   useEffect(() => {
     const ctx = {
@@ -27,7 +29,21 @@ export function MemoList() {
       memoService.unbindStateListener(ctx);
       historyService.unbindStateListener(ctx);
     };
-  }, []);
+  }, [shouldSplitMemoWord]);
+
+  useEffect(() => {
+    const handleStorageDataChanged = () => {
+      if (preferences.shouldSplitMemoWord !== undefined && preferences.shouldSplitMemoWord !== shouldSplitMemoWord) {
+        setShouldSplitMemoWord(preferences.shouldSplitMemoWord);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageDataChanged);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageDataChanged);
+    };
+  }, [shouldSplitMemoWord]);
 
   const handleDeleteMemoItem = async (idx: number) => {
     await memoService.deleteById(memos[idx].id);
@@ -72,7 +88,9 @@ export function MemoList() {
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
       {memosTemp.map((memo, idx) => {
-        return memo.shouldShow ? <Memo key={memo.id} index={idx} memo={memo} delete={handleDeleteMemoItem} /> : null;
+        return memo.shouldShow ? (
+          <Memo key={memo.id} shouldSplitMemoWord={shouldSplitMemoWord} index={idx} memo={memo} delete={handleDeleteMemoItem} />
+        ) : null;
       })}
 
       {isFetching ? (

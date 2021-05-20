@@ -41,7 +41,7 @@ export class MainEditor extends React.Component {
 
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
-        uponMemoContent = utils.filterMemoContent(memo.content);
+        uponMemoContent = utils.formatMemoContent(memo.content);
         // this.editorRef.current?.focus();
       }
 

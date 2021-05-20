@@ -1,3 +1,5 @@
+import { preferences } from "../components/PreferencesDialog";
+
 export namespace utils {
   export function getNowTimeStamp(): number {
     return Date.now();
@@ -72,13 +74,18 @@ export namespace utils {
     return params.join("&");
   }
 
-  export function filterMemoContent(content: string): string {
+  export function formatMemoContent(content: string): string {
     const tagReg = /#(.+?)#/g;
     const linkReg = /(https?:\/\/[^\s]+)/g;
 
     content = content.replaceAll("\n", "<br>");
     content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
     content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
+
+    // 中英文之间加空格
+    if (preferences.shouldSplitMemoWord) {
+      content = content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+    }
 
     return content;
   }
