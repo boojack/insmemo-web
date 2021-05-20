@@ -1,0 +1,51 @@
+@import "./mixin.less";
+
+.preferences-dialog {
+  > .dialog-container {
+    width: 480px;
+    border-radius: 8px;
+
+    > .dialog-content-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      > .section-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        > .title-text {
+          font-weight: bold;
+          margin-bottom: 8px;
+        }
+
+        > .tip-text {
+          color: gray;
+          margin-bottom: 8px;
+        }
+
+        > .checkbox-form-label {
+          margin-bottom: 8px;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          cursor: pointer;
+
+          > input {
+            margin-right: 8px;
+          }
+
+          &:hover {
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+  }
+}

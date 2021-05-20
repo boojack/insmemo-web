@@ -2,7 +2,8 @@
  * Define storage data type
  */
 interface StorageData {
-  test: string;
+  shouldSplitMemoWord: boolean;
+  shouldMaxMemoHeight: boolean;
 }
 
 type StorageKey = keyof StorageData;

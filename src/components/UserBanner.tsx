@@ -1,9 +1,8 @@
 import React from "react";
 import { api } from "../helpers/api";
 import { memoService } from "../helpers/memoService";
-import { userService } from "../helpers/userService";
 import { historyService } from "../helpers/historyService";
-import { showAboutSiteDialog } from "./AboutSiteDialog";
+import { ToolsBtnPopup } from "./ToolsBtnPopup";
 import "../less/user-banner.less";
 
 interface Props {
@@ -71,17 +70,7 @@ export class UserBanner extends React.Component<Props> {
           <button className="action-btn" onClick={this.toggleBtnsDialog}>
             ···
           </button>
-          <div className={"action-btns-dialog " + (showBtnsDialog ? "" : "hidden")}>
-            <button className="text-btn action-btn" onClick={this.handleAboutBtnClick}>
-              <span className="icon">😀</span> 关于
-            </button>
-            <button className="text-btn action-btn" onClick={this.handleFeedbackBtnClick}>
-              <span className="icon">🐛</span> 问题反馈
-            </button>
-            <button className="text-btn action-btn" onClick={this.handleSignoutBtnClick}>
-              <span className="icon">👋</span> 退出
-            </button>
-          </div>
+          <ToolsBtnPopup visibility={showBtnsDialog} />
         </div>
         <div className="status-text-container">
           <div className="status-text memos-text">
@@ -123,18 +112,5 @@ export class UserBanner extends React.Component<Props> {
 
   protected handleUsernameClick = () => {
     historyService.setParamsState({ tag: "" });
-  };
-
-  protected handleSignoutBtnClick = async () => {
-    await userService.doSignOut();
-    location.reload();
-  };
-
-  protected handleFeedbackBtnClick = () => {
-    window.open("https://github.com/boojack/insmemo/issues/new");
-  };
-
-  protected handleAboutBtnClick = () => {
-    showAboutSiteDialog();
   };
 }

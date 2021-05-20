@@ -1,0 +1,49 @@
+@import "./mixin.less";
+
+.tools-btn-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 36px;
+  right: 8px;
+  background-color: white;
+  width: 180px;
+  padding: 8px 0;
+  border-radius: 5px;
+  z-index: 10;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 10px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+  }
+
+  > .action-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    padding: 8px 16px;
+    border: none;
+    background-color: unset;
+    text-align: left;
+
+    > .icon {
+      display: block;
+      width: 30px;
+    }
+
+    &:hover {
+      background-color: lightgray;
+    }
+  }
+}
