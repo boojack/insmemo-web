@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { historyService } from "../helpers/historyService";
+import { memoService } from "../helpers/memoService";
 import "../less/tag-list.less";
 
 export function TagList() {
@@ -8,6 +9,10 @@ export function TagList() {
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
 
   useEffect(() => {
+    const ctx = {
+      key: Date.now(),
+    };
+
     const fetchTags = async () => {
       let { data: tags } = await api.getMyTags();
       tags = tags
@@ -17,18 +22,26 @@ export function TagList() {
             createdAt: new Date(t.createdAt).getTime(),
           };
         })
-        .sort((a, b) => b.createdAt - a.createdAt);
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .sort((a, b) => b.level - a.level);
 
       setTags(tags);
     };
 
-    fetchTags();
+    memoService.bindStateChange(ctx, () => {
+      fetchTags();
+    });
+
+    return () => {
+      memoService.unbindStateListener(ctx);
+    };
   }, []);
 
   useEffect(() => {
     const ctx = {
       key: Date.now(),
     };
+
     historyService.bindStateChange(ctx, (querys) => {
       setTagQuery(querys.tag);
     });
@@ -43,7 +56,10 @@ export function TagList() {
 
     if (tagText === tagQuery) {
       tagText = "";
+    } else {
+      api.polishTag(tags[index].id);
     }
+
     historyService.setParamsState({
       tag: tagText,
     });

@@ -111,4 +111,8 @@ export namespace api {
   export function deleteTagById(tagId: string) {
     return post("/api/tag/delete", { tagId });
   }
+
+  export function polishTag(tagId: string) {
+    return post("/api/tag/polish", { tagId });
+  }
 }

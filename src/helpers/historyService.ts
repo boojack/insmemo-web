@@ -39,7 +39,7 @@ class HistoryService {
     } else {
       nextQueryString = "/";
     }
-    history.pushState(null, "", nextQueryString);
+    history.replaceState(null, "", nextQueryString);
     this.emitValueChangedEvent();
   }
 
