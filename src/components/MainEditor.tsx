@@ -37,18 +37,18 @@ export class MainEditor extends React.Component {
 
   public componentDidMount() {
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
-      let uponMemoContent = "";
-
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
-        uponMemoContent = utils.formatMemoContent(memo.content);
-        // this.editorRef.current?.focus();
+        const uponMemoContent = utils.formatMemoContent(memo.content);
+        this.setState({
+          uponMemoId,
+          uponMemoContent,
+        });
+      } else {
+        this.setState({
+          uponMemoId: "",
+        });
       }
-
-      this.setState({
-        uponMemoId,
-        uponMemoContent,
-      });
     });
   }
 
@@ -61,13 +61,11 @@ export class MainEditor extends React.Component {
 
     return (
       <div className="main-editor-wrapper">
-        <Editor {...this.editorConfig}></Editor>
-        {uponMemoId ? (
-          <div className="uponmemo-container" onClick={this.handleClearUponMemoClick}>
-            <span className="icon-text">📌</span>
-            <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
-          </div>
-        ) : null}
+        <Editor {...this.editorConfig} />
+        <div className={"uponmemo-container " + (uponMemoId ? "" : "hidden")} onClick={this.handleClearUponMemoClick}>
+          <span className="icon-text">📌</span>
+          <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
+        </div>
       </div>
     );
   }

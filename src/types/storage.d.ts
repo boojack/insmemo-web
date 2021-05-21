@@ -3,7 +3,6 @@
  */
 interface StorageData {
   shouldSplitMemoWord: boolean;
-  shouldMaxMemoHeight: boolean;
 }
 
 type StorageKey = keyof StorageData;

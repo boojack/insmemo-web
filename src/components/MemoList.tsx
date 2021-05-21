@@ -11,8 +11,8 @@ export function MemoList() {
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
-  const wrapperElement = useRef<HTMLDivElement>(null);
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
+  const wrapperElement = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = {
@@ -33,9 +33,8 @@ export function MemoList() {
 
   useEffect(() => {
     const handleStorageDataChanged = () => {
-      if (preferences.shouldSplitMemoWord !== undefined && preferences.shouldSplitMemoWord !== shouldSplitMemoWord) {
-        setShouldSplitMemoWord(preferences.shouldSplitMemoWord);
-      }
+      const shouldSplitMemoWord = preferences.shouldSplitMemoWord ?? false;
+      setShouldSplitMemoWord(shouldSplitMemoWord);
     };
 
     window.addEventListener("storage", handleStorageDataChanged);
@@ -43,10 +42,19 @@ export function MemoList() {
     return () => {
       window.removeEventListener("storage", handleStorageDataChanged);
     };
-  }, [shouldSplitMemoWord]);
+  }, []);
 
   const handleDeleteMemoItem = async (idx: number) => {
     await memoService.deleteById(memos[idx].id);
+  };
+
+  const fetchMoreMemos = async () => {
+    setFetchStatus(true);
+    const newMemos = await memoService.fetchMoreMemos();
+    setFetchStatus(false);
+    if (newMemos.length === 0) {
+      setCompleteStatus(true);
+    }
   };
 
   const handleFetchScroll = async () => {
@@ -58,12 +66,7 @@ export function MemoList() {
     const { offsetHeight, scrollTop, scrollHeight } = el!;
 
     if (offsetHeight + scrollTop + 1 > scrollHeight) {
-      setFetchStatus(true);
-      const newMemos = await memoService.fetchMoreMemos();
-      setFetchStatus(false);
-      if (newMemos.length === 0) {
-        setCompleteStatus(true);
-      }
+      await fetchMoreMemos();
     }
   };
 
@@ -93,16 +96,12 @@ export function MemoList() {
         ) : null;
       })}
 
-      {isFetching ? (
-        <div className="status-text-container">
-          <p className="status-text">努力请求数据中...</p>
-        </div>
-      ) : null}
-      {tagQuery === "" && isComplete ? (
-        <div className="status-text-container">
-          <p className="status-text">所有数据加载完啦 🎉</p>
-        </div>
-      ) : null}
+      <div className={"status-text-container " + (isFetching ? "" : "hidden")}>
+        <p className="status-text">努力请求数据中...</p>
+      </div>
+      <div className={"status-text-container " + (isComplete ? "" : "hidden")}>
+        <p className="status-text">所有数据加载完啦 🎉</p>
+      </div>
     </div>
   );
 }

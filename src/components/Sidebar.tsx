@@ -1,68 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { userService } from "../helpers/userService";
 import { UserBanner } from "./UserBanner";
-import { showSigninDialog } from "./SigninDialog";
-import "../less/siderbar.less";
 import { TagList } from "./TagList";
+import "../less/siderbar.less";
 
-interface State {
-  userinfo: Model.User | null;
-}
+export function Sidebar() {
+  const [userinfo, setUserinfo] = useState<Model.User>(userService.getUserInfo() as Model.User);
 
-export class Sidebar extends React.Component {
-  public state: State;
-
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      userinfo: null,
+  useEffect(() => {
+    const ctx = {
+      key: Date.now(),
     };
 
-    const user = userService.getUserInfo();
-    this.state.userinfo = user;
-  }
-
-  public componentDidMount() {
-    userService.bindStateChange(this, (user) => {
-      this.setState({
-        userinfo: user,
-      });
+    userService.bindStateChange(ctx, (userinfo) => {
+      if (userinfo) {
+        setUserinfo(userinfo);
+      }
     });
-  }
 
-  public componentWillUnmount() {
-    userService.unbindStateListener(this);
-  }
+    return () => {
+      userService.unbindStateListener(ctx);
+    };
+  }, []);
 
-  public render() {
-    const { userinfo } = this.state;
-
-    return (
-      <div className="sidebar-wrapper">
-        {userinfo ? (
-          <>
-            <UserBanner userinfo={userinfo} />
-            <TagList></TagList>
-          </>
-        ) : (
-          <div className="slogan-container">
-            <p className="logo-text">insmemo</p>
-            {/* <p className="slogan-text">📑 随时随手记一记</p>
-            <p className="slogan-text">😋 更好的交互逻辑</p>
-            <p className="slogan-text">
-              💬 来吧~
-              <button className="text-btn action-btn" onClick={this.handleShowSigninDialog}>
-                注册/登录
-              </button>
-            </p> */}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  protected handleShowSigninDialog = () => {
-    showSigninDialog();
-  };
+  return (
+    <div className="sidebar-wrapper">
+      {userinfo ? (
+        <>
+          <UserBanner userinfo={userinfo} />
+          <TagList />
+        </>
+      ) : (
+        <div className="slogan-container">
+          <p className="logo-text">insmemo</p>
+          {/* <p className="slogan-text">📑 随时随手记一记</p>
+          <p className="slogan-text">😋 更好的交互逻辑</p>
+          <p className="slogan-text">
+            💬 来吧~
+            <button className="text-btn action-btn" onClick={this.handleShowSigninDialog}>
+              注册/登录
+            </button>
+          </p> */}
+        </div>
+      )}
+    </div>
+  );
 }

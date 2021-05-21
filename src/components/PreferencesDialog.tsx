@@ -10,24 +10,15 @@ interface Props {
 /**
  * 设置选项：
  * 1. 中英文分开；
- * 2.
+ * 2. todo
  */
-export const preferences = storage.get(["shouldSplitMemoWord", "shouldMaxMemoHeight"]);
+export const preferences = storage.get(["shouldSplitMemoWord"]);
 
 function PreferencesDialog(props: Props) {
-  const [shouldSplitMemoWord, setShouldSplitWord] = useState(false);
-  const [shouldMaxMemoHeight, setShouldMaxHeight] = useState(false);
+  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
 
   useEffect(() => {
-    const { shouldSplitMemoWord, shouldMaxMemoHeight } = storage.get(["shouldSplitMemoWord", "shouldMaxMemoHeight"]);
-
-    if (shouldSplitMemoWord !== undefined) {
-      setShouldSplitWord(shouldSplitMemoWord);
-    }
-
-    if (shouldMaxMemoHeight !== undefined) {
-      setShouldMaxHeight(shouldMaxMemoHeight);
-    }
+    // do nth
   }, []);
 
   const handleCloseBtnClick = () => {
@@ -39,14 +30,6 @@ function PreferencesDialog(props: Props) {
     setShouldSplitWord(nextStatus);
     preferences.shouldSplitMemoWord = nextStatus;
     storage.set({ shouldSplitMemoWord: nextStatus });
-    storage.emitStorageChangedEvent();
-  };
-
-  const handleMaxHeightValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextStatus = e.target.checked;
-    setShouldMaxHeight(nextStatus);
-    preferences.shouldMaxMemoHeight = nextStatus;
-    storage.set({ shouldMaxMemoHeight: nextStatus });
     storage.emitStorageChangedEvent();
   };
 
@@ -71,10 +54,6 @@ function PreferencesDialog(props: Props) {
               <span>中英文之间加空格</span>
             </label>
             <p className="tip-text">...to be continue</p>
-            {/* <label className="checkbox-form-label">
-              <input type="checkbox" checked={shouldMaxMemoHeight} disabled onChange={handleMaxHeightValueChanged} />
-              <span>Memo 过长折叠</span>
-            </label> */}
           </div>
         </div>
         <div className="dialog-footer-container"></div>

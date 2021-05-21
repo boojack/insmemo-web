@@ -24,7 +24,7 @@ class HistoryService {
 
   public init() {
     const urlParams = new URLSearchParams(window.location.search);
-    this.querys["tag"] = urlParams.get("tag") ?? "";
+    this.querys.tag = urlParams.get("tag") ?? "";
   }
 
   public setParamsState(querys: Partial<UrlQueryObject>) {

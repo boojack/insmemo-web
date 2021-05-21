@@ -17,7 +17,6 @@ declare namespace Model {
   }
 
   interface Tag extends BaseModel {
-    id: string;
     text: string;
     level: number;
   }

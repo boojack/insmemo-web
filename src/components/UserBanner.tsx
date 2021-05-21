@@ -13,7 +13,7 @@ interface State {
   createdDays: number;
   memosAmount: number;
   tagsAmount: number;
-  showBtnsDialog: boolean;
+  showToolsBtnDialog: boolean;
 }
 
 export class UserBanner extends React.Component<Props> {
@@ -21,35 +21,34 @@ export class UserBanner extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-
-    const { userinfo } = this.props;
+    const { userinfo } = props;
 
     this.state = {
       createdDays: Math.ceil((Date.now() - new Date(userinfo.createdAt).getTime()) / 1000 / 3600 / 24),
-      memosAmount: memoService.getMemos().length,
+      memosAmount: 0,
       tagsAmount: 0,
-      showBtnsDialog: false,
+      showToolsBtnDialog: false,
     };
   }
 
   public async componentDidMount() {
-    const fetchTags = async () => {
+    const fetchTagsAmount = async () => {
       const { data: tags } = await api.getMyTags();
       this.setState({
         tagsAmount: tags.length,
       });
     };
 
-    const fetchMemosCount = async () => {
+    const fetchMemosAmount = async () => {
       const { data } = await api.getMemosCount();
       this.setState({
         memosAmount: data,
       });
     };
 
-    memoService.bindStateChange(this, async (memos) => {
-      fetchTags();
-      fetchMemosCount();
+    memoService.bindStateChange(this, () => {
+      fetchTagsAmount();
+      fetchMemosAmount();
     });
   }
 
@@ -59,7 +58,7 @@ export class UserBanner extends React.Component<Props> {
 
   public render() {
     const { userinfo } = this.props;
-    const { memosAmount, createdDays, tagsAmount, showBtnsDialog } = this.state;
+    const { memosAmount, createdDays, tagsAmount, showToolsBtnDialog } = this.state;
 
     return (
       <div className="user-banner-container">
@@ -70,7 +69,7 @@ export class UserBanner extends React.Component<Props> {
           <button className="action-btn" onClick={this.toggleBtnsDialog}>
             ···
           </button>
-          <ToolsBtnPopup visibility={showBtnsDialog} />
+          <ToolsBtnPopup visibility={showToolsBtnDialog} />
         </div>
         <div className="status-text-container">
           <div className="status-text memos-text">
@@ -92,12 +91,12 @@ export class UserBanner extends React.Component<Props> {
 
   protected toggleBtnsDialog = (ev: React.MouseEvent) => {
     ev.stopPropagation();
-    const nextState = !this.state.showBtnsDialog;
+    const nextState = !this.state.showToolsBtnDialog;
 
     if (nextState) {
       const bodyClickHandler = () => {
         this.setState({
-          showBtnsDialog: false,
+          showToolsBtnDialog: false,
         });
         document.body.removeEventListener("click", bodyClickHandler);
       };
@@ -106,7 +105,7 @@ export class UserBanner extends React.Component<Props> {
     }
 
     this.setState({
-      showBtnsDialog: nextState,
+      showToolsBtnDialog: nextState,
     });
   };
 

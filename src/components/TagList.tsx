@@ -32,26 +32,17 @@ export function TagList() {
       fetchTags();
     });
 
-    return () => {
-      memoService.unbindStateListener(ctx);
-    };
-  }, []);
-
-  useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
-
     historyService.bindStateChange(ctx, (querys) => {
       setTagQuery(querys.tag);
     });
 
     return () => {
+      memoService.unbindStateListener(ctx);
       historyService.unbindStateListener(ctx);
     };
-  }, [tagQuery]);
+  }, []);
 
-  const handleTagItemClick = (index: number, tagId: string) => {
+  const handleTagItemClick = (index: number) => {
     let tagText = tags[index].text;
 
     if (tagText === tagQuery) {
@@ -73,7 +64,7 @@ export function TagList() {
           key={t.id}
           className={"tag-item-container " + (tagQuery === t.text ? "active" : "")}
           onClick={() => {
-            handleTagItemClick(index, t.id);
+            handleTagItemClick(index);
           }}
         >
           <span># {t.text}</span>
