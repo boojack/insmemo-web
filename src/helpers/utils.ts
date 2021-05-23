@@ -1,5 +1,3 @@
-import { preferences } from "../components/PreferencesDialog";
-
 export namespace utils {
   export function getNowTimeStamp(): number {
     return Date.now();
@@ -72,21 +70,5 @@ export namespace utils {
     }
 
     return params.join("&");
-  }
-
-  export function formatMemoContent(content: string): string {
-    const tagReg = /#(.+?)#/g;
-    const linkReg = /(https?:\/\/[^\s]+)/g;
-
-    content = content.replaceAll("\n", "<br>");
-    content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
-    content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
-
-    // 中英文之间加空格，这里只是简单的用正则分开了，可优化
-    if (preferences.shouldSplitMemoWord) {
-      content = content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
-    }
-
-    return content;
   }
 }

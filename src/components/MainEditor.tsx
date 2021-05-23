@@ -5,6 +5,7 @@ import { memoService } from "../helpers/memoService";
 import { utils } from "../helpers/utils";
 import { toast } from "./Toast";
 import { EditorProps, Editor } from "./Editor/Editor";
+import { formatMemoContent } from "./Memo";
 import "../less/main-editor.less";
 
 export class MainEditor extends React.Component {
@@ -39,7 +40,7 @@ export class MainEditor extends React.Component {
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
-        const uponMemoContent = utils.formatMemoContent(memo.content);
+        const uponMemoContent = formatMemoContent(memo.content);
         this.setState({
           uponMemoId,
           uponMemoContent,

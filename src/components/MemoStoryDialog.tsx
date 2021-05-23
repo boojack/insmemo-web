@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
+import { formatMemoContent } from "./Memo";
 import "../less/memo-story-dialog.less";
 
 interface Props {
@@ -30,7 +31,7 @@ export function MemoStoryDialog(props: Props) {
 
           memoList.push({
             ...memo,
-            formatedContent: utils.formatMemoContent(memo.content),
+            formatedContent: formatMemoContent(memo.content),
             createdAtStr: utils.getTimeString(memo.createdAt),
           });
 

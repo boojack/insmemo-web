@@ -5,6 +5,7 @@ import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import "../less/memo.less";
+import { preferences } from "./PreferencesDialog";
 
 interface Props {
   memo: Model.Memo;
@@ -22,7 +23,7 @@ export function Memo(props: Props) {
   const { memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<MemoItem>({
     ...propsMemo,
-    formatedContent: utils.formatMemoContent(propsMemo.content),
+    formatedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
@@ -39,7 +40,7 @@ export function Memo(props: Props) {
       if (uponMemoData) {
         setUponMemo({
           ...uponMemoData,
-          formatedContent: utils.formatMemoContent(uponMemoData.content),
+          formatedContent: formatMemoContent(uponMemoData.content),
           createdAtStr: utils.getTimeString(uponMemoData.createdAt),
         });
       }
@@ -49,7 +50,7 @@ export function Memo(props: Props) {
   useEffect(() => {
     setMemo({
       ...memo,
-      formatedContent: utils.formatMemoContent(memo.content),
+      formatedContent: formatMemoContent(memo.content),
     });
   }, [shouldSplitMemoWord]);
 
@@ -88,7 +89,7 @@ export function Memo(props: Props) {
     setMemo({
       ...memo,
       content: edidContent,
-      formatedContent: utils.formatMemoContent(edidContent),
+      formatedContent: formatMemoContent(edidContent),
     });
     toggleEditActionBtn();
   };
@@ -171,4 +172,20 @@ export function Memo(props: Props) {
       ) : null}
     </div>
   );
+}
+
+export function formatMemoContent(content: string): string {
+  const tagReg = /#(.+?)#/g;
+  const linkReg = /(https?:\/\/[^\s]+)/g;
+
+  content = content.replaceAll("\n", "<br>");
+  content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
+  content = content.replaceAll(linkReg, "<a target='_blank' href='$1'>$1</a>");
+
+  // 中英文之间加空格，这里只是简单的用正则分开了，可优化
+  if (preferences.shouldSplitMemoWord) {
+    content = content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+  }
+
+  return content;
 }
