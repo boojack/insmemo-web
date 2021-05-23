@@ -5,22 +5,11 @@
     <link rel="icon" href="/src/asserts/logo.svg" sizes="64x64" type="image/*" />
     <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;" />
     <title>Memos</title>
+    <!-- polyfill js file -->
+    <script src="/src/asserts/js/polyfill.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/App.tsx"></script>
-
-    <!-- polyfill -->
-    <script>
-      if (!String.prototype.replaceAll) {
-        String.prototype.replaceAll = function (str, newStr) {
-          if (Object.prototype.toString.call(str).toLowerCase() === "[object regexp]") {
-            return this.replace(str, newStr);
-          }
-
-          return this.replace(new RegExp(str, "g"), newStr);
-        };
-      }
-    </script>
   </body>
 </html>
