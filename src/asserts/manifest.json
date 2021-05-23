@@ -1,0 +1,16 @@
+{
+  "name": "flomo",
+  "short_name": "flomo",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#FAFAFA",
+  "background_color": "#FAFAFA",
+  "icons": [
+    {
+      "src": "./icons/write-fill.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

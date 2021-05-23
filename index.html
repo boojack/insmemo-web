@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/src/asserts/logo.svg" sizes="64x64" type="image/*" />
     <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;" />
+    <link rel="manifest" href="/src/asserts/manifest.json" />
     <title>Memos</title>
     <!-- polyfill js file -->
     <script src="/src/asserts/js/polyfill.js"></script>
@@ -11,5 +12,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/App.tsx"></script>
+    <script defer>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/src/asserts/js/sw.js").then(function () {
+          console.log("Service Worker Registered");
+        });
+      }
+    </script>
   </body>
 </html>
