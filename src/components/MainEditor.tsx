@@ -3,6 +3,7 @@ import { api } from "../helpers/api";
 import { stateManager } from "../helpers/stateManager";
 import { memoService } from "../helpers/memoService";
 import { utils } from "../helpers/utils";
+import { storage } from "../helpers/storage";
 import { toast } from "./Toast";
 import { EditorProps, Editor } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
@@ -28,11 +29,12 @@ export class MainEditor extends React.Component {
     // 编辑器配置
     this.editorConfig = {
       className: "main-editor",
-      content: "",
+      content: this.getEditorContentCache(),
       placeholder: "现在的想法是...",
       showConfirmBtn: true,
       handleConfirmBtnClick: this.handleSaveBtnClick,
       showTools: true,
+      handleContentChange: this.handleContentChange,
     };
   }
 
@@ -71,6 +73,10 @@ export class MainEditor extends React.Component {
     );
   }
 
+  protected handleContentChange = (content: string) => {
+    this.setEditorContentCache(content);
+  };
+
   protected handleSaveBtnClick = async (content: string) => {
     const { uponMemoId } = this.state;
 
@@ -105,9 +111,20 @@ export class MainEditor extends React.Component {
       content: "",
       uponMemoId: "",
     });
+    this.setEditorContentCache("");
   };
 
   protected handleClearUponMemoClick = () => {
     stateManager.setState("uponMemoId", "");
+  };
+
+  private getEditorContentCache = (): string => {
+    return storage.get(["editorContentCache"]).editorContentCache ?? "";
+  };
+
+  private setEditorContentCache = (content: string) => {
+    storage.set({
+      editorContentCache: content,
+    });
   };
 }

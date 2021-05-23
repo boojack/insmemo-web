@@ -4,8 +4,8 @@ import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
-import "../less/memo.less";
 import { preferences } from "./PreferencesDialog";
+import "../less/memo.less";
 
 interface Props {
   memo: Model.Memo;

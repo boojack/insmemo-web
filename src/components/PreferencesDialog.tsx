@@ -49,10 +49,25 @@ function PreferencesDialog(props: Props) {
           </div>
           <div className="section-container preferences-section-container">
             <p className="title-text">特殊设置</p>
-            <label className="checkbox-form-label">
+            <label className="form-label checkbox-form-label">
+              <span className="normal-text">中英文之间加空格</span>
               <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
-              <span>中英文之间加空格</span>
             </label>
+            {/* <label className="form-label checkbox-form-label">
+              <span className="normal-text">缓存输入</span>
+              <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
+            </label> */}
+            {/* <label className="form-label checkbox-form-label">
+              <span className="normal-text">点击标签动作</span>
+              <label className="form-label">
+                <input type="radio" name="tag-text-click" />
+                <span>复制文字</span>
+              </label>
+              <label className="form-label">
+                <input type="radio" name="tag-text-click" />
+                <span>加入编辑器</span>
+              </label>
+            </label> */}
             <p className="tip-text">...to be continue</p>
           </div>
         </div>

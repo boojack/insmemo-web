@@ -35,7 +35,7 @@
           margin-bottom: 8px;
         }
 
-        > .checkbox-form-label {
+        > .form-label {
           margin-bottom: 8px;
           display: flex;
           flex-direction: row;
@@ -43,10 +43,36 @@
           align-items: center;
           cursor: pointer;
 
-          > input {
+          > .normal-text {
             margin-right: 8px;
           }
 
+          > input {
+            margin-right: 8px;
+            cursor: pointer;
+          }
+
+          > .form-label {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 8px;
+
+            > .normal-text {
+              margin-right: 8px;
+            }
+
+            > input {
+              margin-right: 8px;
+              cursor: pointer;
+            }
+
+            &:hover {
+              opacity: 0.9;
+            }
+          }
           &:hover {
             opacity: 0.9;
           }
