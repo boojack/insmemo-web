@@ -19,7 +19,7 @@ type ToastItemProps = {
   destory: FunctionType;
 };
 
-function Toast(props: ToastItemProps) {
+export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
   const { destory, duration } = props;
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function Toast(props: ToastItemProps) {
       <p className="content-text">{props.content}</p>
     </div>
   );
-}
+};
 
 export namespace toast {
   let toastContainerDiv: Element | null = null;

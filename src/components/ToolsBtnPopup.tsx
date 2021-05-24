@@ -8,7 +8,7 @@ interface Props {
   visibility: boolean;
 }
 
-export function ToolsBtnPopup(props: Props) {
+export const ToolsBtnPopup: React.FunctionComponent<Props> = (props) => {
   const { visibility } = props;
 
   const handlePreferencesBtnClick = () => {
@@ -37,4 +37,4 @@ export function ToolsBtnPopup(props: Props) {
       </button>
     </div>
   );
-}
+};

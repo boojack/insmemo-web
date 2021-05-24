@@ -4,7 +4,7 @@ import { UserBanner } from "./UserBanner";
 import { TagList } from "./TagList";
 import "../less/siderbar.less";
 
-export function Sidebar() {
+export const Sidebar: React.FunctionComponent = () => {
   const [userinfo, setUserinfo] = useState<Model.User>(userService.getUserInfo() as Model.User);
 
   useEffect(() => {
@@ -45,4 +45,4 @@ export function Sidebar() {
       )}
     </div>
   );
-}
+};

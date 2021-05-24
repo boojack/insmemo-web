@@ -4,7 +4,7 @@ import { historyService } from "../helpers/historyService";
 import { memoService } from "../helpers/memoService";
 import "../less/tag-list.less";
 
-export function TagList() {
+export const TagList: React.FunctionComponent = () => {
   const [tags, setTags] = useState<Model.Tag[]>([]);
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
 
@@ -56,8 +56,16 @@ export function TagList() {
     });
   };
 
+  const removeMobileViewClassName = () => {
+    const pageContainerEl = document.querySelector("div#page-container");
+
+    if (pageContainerEl) {
+      pageContainerEl.classList.remove("show-user-banner-dialog");
+    }
+  };
+
   return (
-    <div className="tags-container">
+    <div className="tags-container" onClick={removeMobileViewClassName}>
       <p className="title-text">常用标签</p>
       {tags.map((t, index) => (
         <div
@@ -78,4 +86,4 @@ export function TagList() {
       ) : null}
     </div>
   );
-}
+};

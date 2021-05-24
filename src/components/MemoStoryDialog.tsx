@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
+import { showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
 
@@ -16,7 +16,7 @@ interface MemoItem extends Model.Memo {
   createdAtStr: string;
 }
 
-export function MemoStoryDialog(props: Props) {
+export const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   const [memos, setMemos] = useState<MemoItem[]>([]);
 
   useEffect(() => {
@@ -48,36 +48,33 @@ export function MemoStoryDialog(props: Props) {
   }, []);
 
   return (
-    <div className="dialog-wrapper memo-story-dialog">
-      <div className="dialog-container">
-        <div className="dialog-header-container">
-          <p className="title-text">
-            <span className="icon-text">😀</span>有 {memos.length} 个 Memo
-          </p>
-          <button className="text-btn close-btn" onClick={props.destory}>
-            <img className="icon-img" src={CloseIcon} />
-          </button>
-        </div>
-        <div className="dialog-content-container">
-          {memos.map((m) => (
-            <div className="memo-container" key={m.id}>
-              <p className="time-text">{m.createdAtStr}</p>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formatedContent }}></div>
-            </div>
-          ))}
-        </div>
+    <>
+      <div className="dialog-header-container">
+        <p className="title-text">
+          <span className="icon-text">😀</span>有 {memos.length} 个 Memo
+        </p>
+        <button className="text-btn close-btn" onClick={props.destory}>
+          <img className="icon-img" src={CloseIcon} />
+        </button>
       </div>
-    </div>
+      <div className="dialog-content-container">
+        {memos.map((m) => (
+          <div className="memo-container" key={m.id}>
+            <p className="time-text">{m.createdAtStr}</p>
+            <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formatedContent }}></div>
+          </div>
+        ))}
+      </div>
+    </>
   );
-}
+};
 
 export function showMemoStoryDialog(memoId: string) {
-  const div = document.createElement("div");
-  document.body.append(div);
-
-  const destory = () => {
-    ReactDOM.unmountComponentAtNode(div);
-    div.remove();
-  };
-  ReactDOM.render(<MemoStoryDialog memoId={memoId} destory={destory} />, div);
+  showDialog(
+    {
+      className: "memo-story-dialog",
+    },
+    MemoStoryDialog,
+    { memoId }
+  );
 }

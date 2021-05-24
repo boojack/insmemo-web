@@ -24,6 +24,7 @@
   > .sidebar-wrapper {
     width: 220px;
     height: 100%;
+    transition: all 0.4s ease;
   }
 
   > .content-wrapper {
@@ -58,20 +59,16 @@
         padding-bottom: 32px;
         overflow-y: auto;
 
-        > .tags-container {
-          display: flex;
-
-          > .tag-item-container {
-            font-size: 15px;
-          }
-        }
-
         > .user-banner-container {
           > * {
             display: flex;
           }
 
           > .userinfo-header-container {
+            > .username-text {
+              font-size: 22px;
+            }
+
             > .action-btn {
               display: block;
               margin: 0 6px;
@@ -80,6 +77,29 @@
                 margin-right: 0;
               }
             }
+          }
+
+          > .status-text-container {
+            > .status-text {
+              > .amount-text {
+                font-size: 30px;
+              }
+              > .type-text {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        > .tags-container {
+          display: flex;
+
+          > .title-text {
+            font-size: 12px;
+          }
+
+          > .tag-item-container {
+            font-size: 14px;
           }
         }
       }

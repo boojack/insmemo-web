@@ -19,7 +19,7 @@ interface MemoItem extends Model.Memo {
   createdAtStr: string;
 }
 
-export function Memo(props: Props) {
+export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   const { memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<MemoItem>({
     ...propsMemo,
@@ -172,7 +172,7 @@ export function Memo(props: Props) {
       ) : null}
     </div>
   );
-}
+};
 
 export function formatMemoContent(content: string): string {
   const tagReg = /#(.+?)#/g;

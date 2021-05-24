@@ -6,7 +6,7 @@ import { historyService } from "../helpers/historyService";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 
-export function MemoList() {
+export const MemoList: React.FunctionComponent = () => {
   const [memos, setMemos] = useState(memoService.getMemos());
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
   const [isFetching, setFetchStatus] = useState(false);
@@ -108,4 +108,4 @@ export function MemoList() {
       </div>
     </div>
   );
-}
+};

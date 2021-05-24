@@ -97,7 +97,6 @@ export namespace utils {
       const textarea = document.createElement("textarea");
       textarea.textContent = text;
       textarea.style.position = "fixed";
-      textarea.style.visibility = "hidden";
       textarea.style.zIndex = "-1";
       document.body.appendChild(textarea);
       textarea.select();
