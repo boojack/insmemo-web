@@ -1,5 +1,6 @@
 import React from "react";
 import { api } from "../helpers/api";
+import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { memoService } from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { ToolsBtnPopup } from "./ToolsBtnPopup";
@@ -110,12 +111,12 @@ export class UserBanner extends React.Component<Props> {
   };
 
   protected handleMoreActionBtnClick = () => {
-    const pageContainerEl = document.querySelector("div#page-container");
+    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
 
-    if (pageContainerEl?.classList.contains("show-user-banner-dialog")) {
-      pageContainerEl?.classList.remove("show-user-banner-dialog");
+    if (pageContainerEl?.classList.contains(MOBILE_ADDTION_CLASSNAME)) {
+      pageContainerEl?.classList.remove(MOBILE_ADDTION_CLASSNAME);
     } else {
-      pageContainerEl?.classList.add("show-user-banner-dialog");
+      pageContainerEl?.classList.add(MOBILE_ADDTION_CLASSNAME);
     }
   };
 }

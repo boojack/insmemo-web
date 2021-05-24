@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { FETCH_MEMO_AMOUNT, MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { preferences } from "./PreferencesDialog";
 import { memoService } from "../helpers/memoService";
@@ -56,9 +57,9 @@ export const MemoList: React.FunctionComponent = () => {
       setTagQuery(querys.tag);
 
       // 删除移动端样式
-      const pageContainerEl = document.querySelector("div#page-container");
+      const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
       if (pageContainerEl) {
-        pageContainerEl.classList.remove("show-user-banner-dialog");
+        pageContainerEl.classList.remove(MOBILE_ADDTION_CLASSNAME);
       }
     });
 
@@ -84,7 +85,7 @@ export const MemoList: React.FunctionComponent = () => {
     }
     setFetchStatus(true);
     const newMemos = await memoService.fetchMoreMemos();
-    if (newMemos && newMemos.length === 0) {
+    if (newMemos && newMemos.length < FETCH_MEMO_AMOUNT) {
       setCompleteStatus(true);
     }
     setFetchStatus(false);

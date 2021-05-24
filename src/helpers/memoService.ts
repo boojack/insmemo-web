@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { FETCH_MEMO_AMOUNT } from "./consts";
 import { userService } from "./userService";
 import { utils } from "./utils";
 
@@ -28,7 +29,7 @@ class MemoService {
     }
 
     this.isFetching = true;
-    const { data } = await api.getMyMemos(this.memos.length);
+    const { data } = await api.getMyMemos(this.memos.length, FETCH_MEMO_AMOUNT);
     const memos = data
       .map((m) => ({
         id: m.id,
