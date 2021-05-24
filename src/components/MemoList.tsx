@@ -14,6 +14,37 @@ export const MemoList: React.FunctionComponent = () => {
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
+  let shownMemoCount = 0;
+  const memosTemp = memos.map((m) => {
+    let shouldShow = false;
+
+    if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
+      shouldShow = true;
+    }
+
+    if (shouldShow) {
+      shownMemoCount++;
+    }
+
+    return {
+      ...m,
+      shouldShow,
+    };
+  });
+
+  useEffect(() => {
+    const handleStorageDataChanged = () => {
+      const shouldSplitMemoWord = preferences.shouldSplitMemoWord ?? false;
+      setShouldSplitMemoWord(shouldSplitMemoWord);
+    };
+
+    window.addEventListener("storage", handleStorageDataChanged);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageDataChanged);
+    };
+  }, []);
+
   useEffect(() => {
     const ctx = {
       key: Date.now(),
@@ -38,17 +69,10 @@ export const MemoList: React.FunctionComponent = () => {
   }, [shouldSplitMemoWord]);
 
   useEffect(() => {
-    const handleStorageDataChanged = () => {
-      const shouldSplitMemoWord = preferences.shouldSplitMemoWord ?? false;
-      setShouldSplitMemoWord(shouldSplitMemoWord);
-    };
-
-    window.addEventListener("storage", handleStorageDataChanged);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageDataChanged);
-    };
-  }, []);
+    if (tagQuery !== "" && !isFetching && !isComplete) {
+      fetchMoreMemos();
+    }
+  }, [tagQuery, isFetching, isComplete]);
 
   const handleDeleteMemoItem = async (idx: number) => {
     await memoService.deleteById(memos[idx].id);
@@ -60,7 +84,7 @@ export const MemoList: React.FunctionComponent = () => {
     }
     setFetchStatus(true);
     const newMemos = await memoService.fetchMoreMemos();
-    if (newMemos.length === 0) {
+    if (newMemos && newMemos.length === 0) {
       setCompleteStatus(true);
     }
     setFetchStatus(false);
@@ -78,28 +102,6 @@ export const MemoList: React.FunctionComponent = () => {
       fetchMoreMemos();
     }
   };
-
-  let shownMemoCount = 0;
-  const memosTemp = memos.map((m) => {
-    let shouldShow = false;
-
-    if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
-      shouldShow = true;
-    }
-
-    if (shouldShow) {
-      shownMemoCount++;
-    }
-
-    return {
-      ...m,
-      shouldShow,
-    };
-  });
-
-  if (tagQuery !== "" && shownMemoCount < 10 && !isFetching && !isComplete) {
-    fetchMoreMemos();
-  }
 
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>

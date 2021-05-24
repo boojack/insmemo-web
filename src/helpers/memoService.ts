@@ -5,6 +5,7 @@ import { utils } from "./utils";
 class MemoService {
   private memos: Model.Memo[];
   private listeners: Map<Object, (memos: Model.Memo[]) => void>;
+  private isFetching: boolean = false;
 
   constructor() {
     this.memos = [];
@@ -22,6 +23,11 @@ class MemoService {
   }
 
   public async fetchMoreMemos() {
+    if (this.isFetching) {
+      return false;
+    }
+
+    this.isFetching = true;
     const { data } = await api.getMyMemos(this.memos.length);
     const memos = data
       .map((m) => ({
@@ -40,6 +46,8 @@ class MemoService {
       this.memos = utils.dedupeIDObject(this.memos);
       this.emitValueChangedEvent();
     }
+
+    this.isFetching = false;
 
     return memos;
   }
