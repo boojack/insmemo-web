@@ -2,8 +2,8 @@
 
 .toast-list-container {
   position: fixed;
-  top: 0;
-  right: 20px;
+  top: 8px;
+  right: 16px;
   z-index: 1000;
   max-height: 100%;
 
@@ -14,17 +14,21 @@
 
   > .toast-wrapper {
     position: relative;
-    margin-top: 30px;
-    padding: 10px 20px;
+    left: 0;
+    min-width: 6em;
+    margin-top: 24px;
+    padding: 8px 16px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     font-size: 13px;
     line-height: 24px;
-    transition: all 1.6s ease;
+    transition: all 1.2s ease;
+    cursor: pointer;
 
     &.destory {
-      opacity: 0;
+      left: calc(100% + 32px);
+      opacity: 0.2;
     }
 
     > .toast-container {
@@ -37,7 +41,7 @@
     &::before {
       content: "";
       position: absolute;
-      top: 14px;
+      top: 12px;
       right: -8px;
       border-left: 8px solid white;
       border-top: 8px solid transparent;

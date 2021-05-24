@@ -4,6 +4,7 @@ import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/co
 import { memoService } from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { ToolsBtnPopup } from "./ToolsBtnPopup";
+import FoldIcon from "../assets/icons/fold.svg";
 import "../less/user-banner.less";
 
 interface Props {
@@ -61,7 +62,7 @@ export class UserBanner extends React.Component<Props> {
             {userinfo.username}
           </p>
           <button className="action-btn more-action-btn" onClick={this.handleMoreActionBtnClick}>
-            ##
+            <img className="icon-img" src={FoldIcon} alt="fold" />
           </button>
           <button className="action-btn tools-dialog-btn" onClick={this.toggleBtnsDialog}>
             ···

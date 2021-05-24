@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import { ANIMATION_DURATION } from "../helpers/consts";
 import "../less/toast.less";
-
-const ANIMATION_DURATION = 1600;
 
 type ToastType = "normal" | "info" | "error";
 
@@ -16,17 +15,26 @@ type ToastItemProps = {
   type: ToastType;
   content: string;
   duration: number;
-  destory: FunctionType;
+  containerDiv: HTMLDivElement;
 };
 
 export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
-  const { destory, duration } = props;
+  const { containerDiv, duration } = props;
 
   useEffect(() => {
     if (duration > 0) {
       setTimeout(destory, duration);
     }
   }, []);
+
+  const destory = () => {
+    containerDiv.classList.add("destory");
+
+    setTimeout(() => {
+      ReactDOM.unmountComponentAtNode(containerDiv);
+      containerDiv.remove();
+    }, ANIMATION_DURATION);
+  };
 
   return (
     <div className="toast-container" onClick={destory}>
@@ -58,7 +66,7 @@ export namespace toast {
       },
     };
 
-    ReactDOM.render(<Toast {...config} destory={cbs.destory} />, div);
+    ReactDOM.render(<Toast {...config} containerDiv={div} />, div);
 
     return cbs;
   }
