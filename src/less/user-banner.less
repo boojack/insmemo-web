@@ -27,9 +27,12 @@
       overflow: hidden;
       text-overflow: ellipsis;
       cursor: pointer;
+      flex-grow: 1;
     }
 
     > .action-btn {
+      padding: 0 4px;
+      min-width: 16px;
       font-size: 20px;
       cursor: pointer;
       flex-shrink: 0;
@@ -37,6 +40,10 @@
       border: none;
       outline: none;
       background-color: unset;
+
+      &.more-action-btn {
+        display: none;
+      }
     }
   }
 

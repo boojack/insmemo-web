@@ -66,6 +66,9 @@ export class UserBanner extends React.Component<Props> {
           <p className="username-text" onClick={this.handleUsernameClick}>
             {userinfo.username}
           </p>
+          <button className="action-btn more-action-btn" onClick={this.handleMoreActionBtnClick}>
+            ##
+          </button>
           <button className="action-btn" onClick={this.toggleBtnsDialog}>
             ···
           </button>
@@ -111,5 +114,14 @@ export class UserBanner extends React.Component<Props> {
 
   protected handleUsernameClick = () => {
     historyService.setParamsState({ tag: "" });
+  };
+
+  protected handleMoreActionBtnClick = () => {
+    const pageContainerEl = document.querySelector("div#page-container");
+    if (pageContainerEl?.classList.contains("show-user-banner-dialog")) {
+      pageContainerEl?.classList.remove("show-user-banner-dialog");
+    } else {
+      pageContainerEl?.classList.add("show-user-banner-dialog");
+    }
   };
 }
