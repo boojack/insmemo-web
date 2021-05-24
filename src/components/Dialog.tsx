@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "../less/dialog.less";
 
 interface DialogConfig {
   className: string;

@@ -1,3 +1,5 @@
+@import "./mixin.less";
+
 .dialog-wrapper {
   position: absolute;
   top: 0;
@@ -67,6 +69,17 @@
       justify-content: flex-end;
       align-items: center;
       margin-top: 16px;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .dialog-wrapper {
+    width: 100%;
+    padding: 0 16px;
+
+    > .dialog-container {
+      max-width: 100%;
     }
   }
 }

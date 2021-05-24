@@ -3,7 +3,6 @@ import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
 import { toast } from "./Toast";
 import { showDialog } from "./Dialog";
-import "../less/dialog.less";
 import "../less/signin-dialog.less";
 
 interface Props {

@@ -1,7 +1,6 @@
 import React from "react";
 import { showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
-import "../less/dialog.less";
 import "../less/about-site-dialog.less";
 
 interface Props {
