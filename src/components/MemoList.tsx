@@ -23,6 +23,12 @@ export const MemoList: React.FunctionComponent = () => {
     });
     historyService.bindStateChange(ctx, (querys) => {
       setTagQuery(querys.tag);
+
+      // 删除移动端样式
+      const pageContainerEl = document.querySelector("div#page-container");
+      if (pageContainerEl) {
+        pageContainerEl.classList.remove("show-user-banner-dialog");
+      }
     });
 
     return () => {

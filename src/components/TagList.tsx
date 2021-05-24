@@ -56,16 +56,8 @@ export const TagList: React.FunctionComponent = () => {
     });
   };
 
-  const removeMobileViewClassName = () => {
-    const pageContainerEl = document.querySelector("div#page-container");
-
-    if (pageContainerEl) {
-      pageContainerEl.classList.remove("show-user-banner-dialog");
-    }
-  };
-
   return (
-    <div className="tags-container" onClick={removeMobileViewClassName}>
+    <div className="tags-container">
       <p className="title-text">常用标签</p>
       {tags.map((t, index) => (
         <div
