@@ -69,7 +69,7 @@ export class UserBanner extends React.Component<Props> {
           <button className="action-btn more-action-btn" onClick={this.handleMoreActionBtnClick}>
             ##
           </button>
-          <button className="action-btn" onClick={this.toggleBtnsDialog}>
+          <button className="action-btn tools-dialog-btn" onClick={this.toggleBtnsDialog}>
             ···
           </button>
           <ToolsBtnPopup visibility={showToolsBtnDialog} />
