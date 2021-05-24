@@ -118,6 +118,7 @@ export class UserBanner extends React.Component<Props> {
 
   protected handleMoreActionBtnClick = () => {
     const pageContainerEl = document.querySelector("div#page-container");
+
     if (pageContainerEl?.classList.contains("show-user-banner-dialog")) {
       pageContainerEl?.classList.remove("show-user-banner-dialog");
     } else {
