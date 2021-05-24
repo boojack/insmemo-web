@@ -6,6 +6,8 @@ interface StorageData {
   editorContentCache: string;
   // 分词开关
   shouldSplitMemoWord: boolean;
+  // 标签点击动作
+  tagTextClickedAction: "copy" | "insert";
 }
 
 type StorageKey = keyof StorageData;

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
+import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
 
 interface Props {
@@ -50,9 +51,11 @@ export function MemoStoryDialog(props: Props) {
     <div className="dialog-wrapper memo-story-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">😀 有 {memos.length} 个 Memo</p>
+          <p className="title-text">
+            <span className="icon-text">😀</span>有 {memos.length} 个 Memo
+          </p>
           <button className="text-btn close-btn" onClick={props.destory}>
-            ✖️
+            <img className="icon-img" src={CloseIcon} />
           </button>
         </div>
         <div className="dialog-content-container">

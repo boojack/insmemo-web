@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import CloseIcon from "../assets/icons/close.svg";
 import "../less/dialog.less";
 import "../less/about-site-dialog.less";
 
@@ -18,9 +19,11 @@ function AboutSizeDialog(props: Props) {
     <div className="dialog-wrapper about-site-dialog">
       <div className="dialog-container">
         <div className="dialog-header-container">
-          <p className="title-text">😀 关于</p>
+          <p className="title-text">
+            <span className="icon-text">😀</span>关于
+          </p>
           <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-            ✖️
+            <img className="icon-img" src={CloseIcon} />
           </button>
         </div>
         <div className="dialog-content-container">

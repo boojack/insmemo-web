@@ -27,6 +27,20 @@ export namespace utils {
     return Array.from(new Set(data));
   }
 
+  export function dedupeIDObject<T extends { id: string }>(data: T[]): T[] {
+    const idSet = new Set<string>();
+    const result = [];
+
+    for (const d of data) {
+      if (!idSet.has(d.id)) {
+        idSet.add(d.id);
+        result.push(d);
+      }
+    }
+
+    return result;
+  }
+
   // 防抖
   export function debounce(fn: FunctionType, delay: number) {
     let timer: number | null = null;
@@ -70,5 +84,42 @@ export namespace utils {
     }
 
     return params.join("&");
+  }
+
+  export function copyTextToClipboard(text: string) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        navigator.clipboard.writeText(text);
+      } catch (error) {
+        console.warn("Copy to clipboard failed.", error);
+      }
+    } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+      const textarea = document.createElement("textarea");
+      textarea.textContent = text;
+      textarea.style.position = "fixed";
+      textarea.style.visibility = "hidden";
+      textarea.style.zIndex = "-1";
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        return document.execCommand("copy"); // Security exception may be thrown by some browsers.
+      } catch (error) {
+        console.warn("Copy to clipboard failed.", error);
+        return false;
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    } else {
+      console.warn("Copy to clipboard failed, methods not supports.");
+    }
+  }
+
+  export function parseHTMLToRawString(html: string): string {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    const rawText = div.innerText;
+
+    return rawText;
   }
 }

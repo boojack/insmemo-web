@@ -2,9 +2,11 @@ import React from "react";
 import { api } from "../helpers/api";
 import { stateManager } from "../helpers/stateManager";
 import { memoService } from "../helpers/memoService";
+import { historyService } from "../helpers/historyService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { toast } from "./Toast";
+import { preferences } from "./PreferencesDialog";
 import { EditorProps, Editor } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
 import "../less/main-editor.less";
@@ -35,6 +37,7 @@ export class MainEditor extends React.Component {
       handleConfirmBtnClick: this.handleSaveBtnClick,
       showTools: true,
       handleContentChange: this.handleContentChange,
+      editorRef: React.createRef(),
     };
   }
 
@@ -42,7 +45,8 @@ export class MainEditor extends React.Component {
     stateManager.bindStateChange("uponMemoId", this, async (uponMemoId: string) => {
       if (uponMemoId) {
         const { data: memo } = await api.getMemoById(uponMemoId);
-        const uponMemoContent = formatMemoContent(memo.content);
+        const uponMemoContent = utils.parseHTMLToRawString(formatMemoContent(memo.content));
+        // this.editorConfig.editorRef?.current?.focus();
         this.setState({
           uponMemoId,
           uponMemoContent,
@@ -53,10 +57,23 @@ export class MainEditor extends React.Component {
         });
       }
     });
+
+    historyService.bindStateChange(this, (querys) => {
+      const tagText = querys.tag;
+
+      if (tagText) {
+        if (preferences.tagTextClickedAction === "insert") {
+          this.editorConfig.editorRef?.current?.insertText(`#${tagText}#`);
+        } else {
+          utils.copyTextToClipboard(`#${tagText}#`);
+        }
+      }
+    });
   }
 
   public componentWillUnmount() {
     stateManager.unbindStateListener("uponMemoId", this);
+    historyService.unbindStateListener(this);
   }
 
   public render() {

@@ -49,15 +49,18 @@ export function MemoList() {
   };
 
   const fetchMoreMemos = async () => {
+    if (isFetching || isComplete) {
+      return;
+    }
     setFetchStatus(true);
     const newMemos = await memoService.fetchMoreMemos();
-    setFetchStatus(false);
     if (newMemos.length === 0) {
       setCompleteStatus(true);
     }
+    setFetchStatus(false);
   };
 
-  const handleFetchScroll = async () => {
+  const handleFetchScroll = () => {
     if (isFetching || isComplete) {
       return;
     }
@@ -66,7 +69,7 @@ export function MemoList() {
     const { offsetHeight, scrollTop, scrollHeight } = el!;
 
     if (offsetHeight + scrollTop + 1 > scrollHeight) {
-      await fetchMoreMemos();
+      fetchMoreMemos();
     }
   };
 
@@ -88,6 +91,10 @@ export function MemoList() {
     };
   });
 
+  if (shownMemoCount < 10 && !isFetching && !isComplete) {
+    fetchMoreMemos();
+  }
+
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
       {memosTemp.map((memo, idx) => {
@@ -96,11 +103,8 @@ export function MemoList() {
         ) : null;
       })}
 
-      <div className={"status-text-container " + (isFetching ? "" : "hidden")}>
-        <p className="status-text">努力请求数据中...</p>
-      </div>
-      <div className={"status-text-container " + (isComplete ? "" : "hidden")}>
-        <p className="status-text">所有数据加载完啦 🎉</p>
+      <div className={"status-text-container " + (isFetching || isComplete ? "" : "invisible") + (tagQuery ? " invisible" : "")}>
+        <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
       </div>
     </div>
   );

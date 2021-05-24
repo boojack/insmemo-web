@@ -27,11 +27,24 @@
       align-items: center;
       margin-bottom: 16px;
 
+      > .title-text {
+        > .icon-text {
+          margin-right: 4px;
+          font-size: 16px;
+        }
+      }
+
       > .close-btn {
+        width: 24px;
+        height: 24px;
+        padding: 2px;
         cursor: pointer;
-        padding: 4px 8px;
-        font-size: 13px;
         border-radius: 4px;
+
+        > .icon-img {
+          width: 20px;
+          height: 20px;
+        }
 
         &:hover {
           background-color: lightgray;

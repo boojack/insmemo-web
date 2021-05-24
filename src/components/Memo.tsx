@@ -40,7 +40,7 @@ export function Memo(props: Props) {
       if (uponMemoData) {
         setUponMemo({
           ...uponMemoData,
-          formatedContent: formatMemoContent(uponMemoData.content),
+          formatedContent: utils.parseHTMLToRawString(formatMemoContent(uponMemoData.content)),
           createdAtStr: utils.getTimeString(uponMemoData.createdAt),
         });
       }

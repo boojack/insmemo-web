@@ -29,11 +29,11 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    max-width: 300px;
+    max-width: 80%;
     max-height: 36px;
     color: gray;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 1.6;
 
     &:hover {
       cursor: pointer;
@@ -45,6 +45,8 @@
     }
 
     > .uponmemo-content-text {
+      color: gray !important;
+      max-height: 1.6em;
       word-wrap: break-word;
       word-break: break-all;
       overflow: hidden;
@@ -52,6 +54,12 @@
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
+
+      * {
+        color: gray !important;
+        font-weight: unset !important;
+        font-style: unset !important;
+      }
     }
   }
 }
