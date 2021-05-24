@@ -91,7 +91,7 @@ export const MemoList: React.FunctionComponent = () => {
     };
   });
 
-  if (shownMemoCount < 10 && !isFetching && !isComplete) {
+  if (tagQuery !== "" && shownMemoCount < 10 && !isFetching && !isComplete) {
     fetchMoreMemos();
   }
 

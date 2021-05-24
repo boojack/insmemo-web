@@ -115,4 +115,8 @@ export namespace api {
   export function polishTag(tagId: string) {
     return post("/api/tag/polish", { tagId });
   }
+
+  export function getMyDataAmount() {
+    return get<DataAmounts>("/api/user/amount");
+  }
 }

@@ -24,9 +24,7 @@ function App() {
 
   return (
     <div id="page-container">
-      {loading ? (
-        ""
-      ) : (
+      {loading ? null : (
         <>
           <Sidebar />
           <div className="content-wrapper">

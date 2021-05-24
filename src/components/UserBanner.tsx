@@ -32,23 +32,16 @@ export class UserBanner extends React.Component<Props> {
   }
 
   public async componentDidMount() {
-    const fetchTagsAmount = async () => {
-      const { data: tags } = await api.getMyTags();
-      this.setState({
-        tagsAmount: tags.length,
-      });
-    };
+    const fetchDataAmount = async () => {
+      const { data } = await api.getMyDataAmount();
 
-    const fetchMemosAmount = async () => {
-      const { data } = await api.getMemosCount();
       this.setState({
-        memosAmount: data,
+        ...data,
       });
     };
 
     memoService.bindStateChange(this, () => {
-      fetchTagsAmount();
-      fetchMemosAmount();
+      fetchDataAmount();
     });
   }
 
