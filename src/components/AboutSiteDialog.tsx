@@ -43,15 +43,15 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
             </a>
             ；
           </li>
-          <li>📑 更好的交互逻辑；</li>
           <li>😋 更可观的样式；</li>
+          <li>📑 更好的交互逻辑；</li>
           <li>
             <a target="_blank" href="https://github.com/boojack/insmemo/issues/new">
               🐛 问题反馈
             </a>
           </li>
         </ul>
-        <p>Have fun~</p>
+        <p>Enjoy it and have fun~</p>
       </div>
     </>
   );

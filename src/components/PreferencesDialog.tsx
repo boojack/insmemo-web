@@ -73,7 +73,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
               <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
             </label> */}
           <label className="form-label checkbox-form-label">
-            <span className="normal-text">标签点击处理</span>
+            <span className="normal-text">标签点击处理:</span>
             <label className="form-label">
               <input
                 className="hidden"
