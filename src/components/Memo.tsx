@@ -4,6 +4,7 @@ import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
+import { showGenMemoImageDialog } from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
 import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/memo.less";
@@ -15,7 +16,7 @@ interface Props {
   delete: (idx: number) => Promise<void>;
 }
 
-interface MemoItem extends Model.Memo {
+export interface MemoItem extends Model.Memo {
   formatedContent: string;
   createdAtStr: string;
 }
@@ -112,6 +113,10 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
     }
   };
 
+  const handleGenMemoImageBtnClick = () => {
+    showGenMemoImageDialog(memo);
+  };
+
   return (
     <div className="memo-wrapper" onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
@@ -127,6 +132,9 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
           </span>
           {showMoreActionBtns ? (
             <>
+              <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
+                分享
+              </span>
               {/* Memo 编辑相关按钮 */}
               {showEditActionBtn ? (
                 <>
