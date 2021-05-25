@@ -35,9 +35,16 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
             知识星球
           </a>
         </p>
+        <blockquote>
+          <p>尽量多的无压力的记录下来自己的想法。</p>
+          <p>
+            <b>降低输入摩擦，提高输入动机。</b>
+          </p>
+        </blockquote>
+        <p>Features:</p>
         <ul>
           <li>
-            ✨ 完全开源，👉
+            ✨ 完全开源，
             <a target="_blank" href="https://github.com/boojack/insmemo/">
               项目地址
             </a>
@@ -51,6 +58,7 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
             </a>
           </li>
         </ul>
+        <hr />
         <p>Enjoy it and have fun~</p>
       </div>
     </>
