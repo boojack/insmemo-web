@@ -61,11 +61,11 @@ export class UserBanner extends React.Component<Props> {
           <p className="username-text" onClick={this.handleUsernameClick}>
             {userinfo.username}
           </p>
-          <button className="action-btn more-action-btn" onClick={this.handleMoreActionBtnClick}>
-            <img className="icon-img" src={FoldIcon} alt="fold" />
-          </button>
           <button className="action-btn tools-dialog-btn" onClick={this.toggleBtnsDialog}>
             ···
+          </button>
+          <button className="action-btn more-action-btn" onClick={this.handleMoreActionBtnClick}>
+            <img className="icon-img" src={FoldIcon} alt="fold" />
           </button>
           <ToolsBtnPopup visibility={showToolsBtnDialog} />
         </div>

@@ -5,6 +5,7 @@ import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import { preferences } from "./PreferencesDialog";
+import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/memo.less";
 
 interface Props {
@@ -166,7 +167,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
       )}
       {uponMemo ? (
         <div className="uponmemo-container">
-          <span className="icon-text">📌</span>
+          <img src={MagnetIcon} className="icon-img" />
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.formatedContent }}></div>
         </div>
       ) : null}

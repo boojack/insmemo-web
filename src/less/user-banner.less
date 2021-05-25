@@ -75,8 +75,8 @@
 
       > .amount-text {
         font-weight: bold;
-        font-size: 24px;
-        line-height: 36px;
+        font-size: 26px;
+        line-height: 1.5;
         color: gray;
       }
 
@@ -84,6 +84,24 @@
         color: gray;
         font-size: 10px;
         line-height: 16px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .user-banner-container {
+    .tools-btn-popup {
+      right: 40px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        right: 10px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid white;
       }
     }
   }
