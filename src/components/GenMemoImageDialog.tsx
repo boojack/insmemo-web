@@ -44,7 +44,10 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="dialog-content-container">
         {imgUrl ? (
-          <img className="memo-img" src={imgUrl} />
+          <>
+            <p className="tip-text">生成完成，可右键或长按保存图片 👇</p>
+            <img className="memo-img" src={imgUrl} />
+          </>
         ) : (
           <>
             <div className="cover-container">
