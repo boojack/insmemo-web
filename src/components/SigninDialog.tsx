@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
+import { validate, ValidatorConfig } from "../helpers/validator";
 import { toast } from "./Toast";
 import { showDialog } from "./Dialog";
 import "../less/signin-dialog.less";
@@ -8,6 +9,13 @@ import "../less/signin-dialog.less";
 interface Props {
   destory: FunctionType;
 }
+
+const validateConfig: ValidatorConfig = {
+  minLength: 4,
+  maxLength: 24,
+  noSpace: true,
+  noChinese: true,
+};
 
 const SigninDialog: React.FunctionComponent<Props> = (props) => {
   const { destory } = props;
@@ -23,6 +31,18 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
   };
 
   const handleActionBtnClick = async (action: "signin" | "signup") => {
+    const usernameValidResult = validate(username, validateConfig);
+    if (!usernameValidResult.result) {
+      toast.error("用户名 " + usernameValidResult.reason);
+      return;
+    }
+
+    const passwordValidResult = validate(password, validateConfig);
+    if (!passwordValidResult.result) {
+      toast.error("密码 " + passwordValidResult.reason);
+      return;
+    }
+
     try {
       const actionFunc = action === "signin" ? api.signin : api.signup;
       const { succeed, message } = await actionFunc(username, password);
@@ -53,8 +73,8 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
           </button> */}
       </div>
       <div className="dialog-content-container">
-        <input type="text" value={username} placeholder="用户名" onChange={handleUsernameInputChanged} />
-        <input type="password" value={password} placeholder="密码" onChange={handlePasswordInputChanged} />
+        <input type="text" value={username} minLength={4} maxLength={24} placeholder="用户名" onChange={handleUsernameInputChanged} />
+        <input type="password" value={password} minLength={4} maxLength={24} placeholder="密码" onChange={handlePasswordInputChanged} />
       </div>
       <div className="dialog-footer-container">
         <button className="text-btn signup-btn" onClick={() => handleActionBtnClick("signup")}>
