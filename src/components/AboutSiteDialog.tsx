@@ -37,7 +37,7 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
         </p>
         <ul>
           <li>
-            👀 开源，
+            ✨ 完全开源，👉
             <a target="_blank" href="https://github.com/boojack/insmemo/">
               项目地址
             </a>
