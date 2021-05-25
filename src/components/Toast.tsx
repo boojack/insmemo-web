@@ -44,11 +44,13 @@ export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
 };
 
 export namespace toast {
-  let toastContainerDiv: Element | null = null;
+  let toastContainerDiv: Element;
 
   function show(config: ToastConfig) {
     if (!toastContainerDiv) {
-      toastContainerDiv = document.querySelector("body > #root > .toast-list-container") as Element;
+      toastContainerDiv = document.createElement("div");
+      toastContainerDiv.className = "toast-list-container";
+      document.body.appendChild(toastContainerDiv);
     }
 
     const div = document.createElement("div");

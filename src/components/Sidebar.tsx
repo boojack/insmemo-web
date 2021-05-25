@@ -33,14 +33,6 @@ export const Sidebar: React.FunctionComponent = () => {
       ) : (
         <div className="slogan-container">
           <p className="logo-text">insmemo</p>
-          {/* <p className="slogan-text">📑 随时随手记一记</p>
-          <p className="slogan-text">😋 更好的交互逻辑</p>
-          <p className="slogan-text">
-            💬 来吧~
-            <button className="text-btn action-btn" onClick={this.handleShowSigninDialog}>
-              注册/登录
-            </button>
-          </p> */}
         </div>
       )}
     </div>
