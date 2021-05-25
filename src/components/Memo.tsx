@@ -127,12 +127,12 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
               All
             </span>
           ) : null}
-          <span className="text-btn" onClick={uponThisMemo}>
+          <span className={"text-btn " + (showEditActionBtn ? "hidden" : "")} onClick={uponThisMemo}>
             Mark
           </span>
           {showMoreActionBtns ? (
             <>
-              <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
+              <span className={"text-btn " + (showEditActionBtn ? "hidden" : "")} onClick={handleGenMemoImageBtnClick}>
                 分享
               </span>
               {/* Memo 编辑相关按钮 */}

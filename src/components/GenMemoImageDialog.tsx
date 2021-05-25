@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { userService } from "../helpers/userService";
-import { useToggle } from "../hooks/useToggle";
 import { showDialog } from "./Dialog";
 import { MemoItem } from "./Memo";
 import CloseIcon from "../assets/icons/close.svg";
@@ -15,7 +14,6 @@ interface Props {
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { memo, destory } = props;
   const [imgUrl, setImgUrl] = useState("");
-  const [isGenerating, toggleStatus] = useToggle(true);
   const userinfo = userService.getUserInfo();
   const memoElRef = useRef<HTMLDivElement>(null);
 
@@ -26,7 +24,6 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
         scale: 4,
       }).then((canvas) => {
         setImgUrl(canvas.toDataURL());
-        toggleStatus();
       });
     }
   }, []);
@@ -39,24 +36,28 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">😀</span>
-          {isGenerating ? "生成中" : "分享卡片"}
+          <span className="icon-text">😀</span>分享 Memo
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src={CloseIcon} />
         </button>
       </div>
-      <div className="dialog-content-container" ref={memoElRef}>
+      <div className="dialog-content-container">
         {imgUrl ? (
           <img className="memo-img" src={imgUrl} />
         ) : (
           <>
-            <span className="time-text">{memo.createdAtStr}</span>
-            <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
-            <div className="watermark-container">
-              <span className="normal-text">
-                via <span className="name-text">{userinfo?.username}</span>
-              </span>
+            <div className="cover-container">
+              <p className="loading-text">生成中...</p>
+            </div>
+            <div className="memo-container" ref={memoElRef}>
+              <span className="time-text">{memo.createdAtStr}</span>
+              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
+              <div className="watermark-container">
+                <span className="normal-text">
+                  via <span className="name-text">{userinfo?.username}</span>
+                </span>
+              </div>
             </div>
           </>
         )}
