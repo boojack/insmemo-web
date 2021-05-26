@@ -10,6 +10,7 @@ import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/memo.less";
 
 interface Props {
+  className: string;
   memo: Model.Memo;
   index: number;
   shouldSplitMemoWord: boolean;
@@ -22,7 +23,7 @@ export interface MemoItem extends Model.Memo {
 }
 
 export const Memo: React.FunctionComponent<Props> = (props: Props) => {
-  const { memo: propsMemo, shouldSplitMemoWord } = props;
+  const { className, memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<MemoItem>({
     ...propsMemo,
     formatedContent: formatMemoContent(propsMemo.content),
@@ -118,7 +119,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <div className="memo-wrapper" onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container">

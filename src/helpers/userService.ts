@@ -32,8 +32,6 @@ class UserService {
 
   public async doSignOut() {
     await api.signout();
-    this.userinfo = null;
-    this.emitValueChangedEvent();
   }
 
   public checkIsSignIn(): boolean {

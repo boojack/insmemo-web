@@ -19,8 +19,8 @@ export const ToolsBtnPopup: React.FunctionComponent<Props> = (props) => {
     showAboutSiteDialog();
   };
 
-  const handleSignoutBtnClick = async () => {
-    await userService.doSignOut();
+  const handleSignoutBtnClick = () => {
+    userService.doSignOut();
     location.reload();
   };
 

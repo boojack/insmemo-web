@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FETCH_MEMO_AMOUNT, MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { preferences } from "./PreferencesDialog";
 import { memoService } from "../helpers/memoService";
@@ -15,16 +15,11 @@ export const MemoList: React.FunctionComponent = () => {
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
-  let shownMemoCount = 0;
   const memosTemp = memos.map((m) => {
     let shouldShow = false;
 
     if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
       shouldShow = true;
-    }
-
-    if (shouldShow) {
-      shownMemoCount++;
     }
 
     return {
@@ -55,12 +50,6 @@ export const MemoList: React.FunctionComponent = () => {
     });
     historyService.bindStateChange(ctx, (querys) => {
       setTagQuery(querys.tag);
-
-      // 删除移动端样式
-      const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-      if (pageContainerEl) {
-        pageContainerEl.classList.remove(MOBILE_ADDTION_CLASSNAME);
-      }
     });
 
     return () => {
@@ -106,11 +95,16 @@ export const MemoList: React.FunctionComponent = () => {
 
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
-      {memosTemp.map((memo, idx) => {
-        return memo.shouldShow ? (
-          <Memo key={memo.id} shouldSplitMemoWord={shouldSplitMemoWord} index={idx} memo={memo} delete={handleDeleteMemoItem} />
-        ) : null;
-      })}
+      {memosTemp.map((memo, idx) => (
+        <Memo
+          key={memo.id}
+          className={memo.shouldShow ? "" : "hidden"}
+          shouldSplitMemoWord={shouldSplitMemoWord}
+          index={idx}
+          memo={memo}
+          delete={handleDeleteMemoItem}
+        />
+      ))}
 
       <div className={"status-text-container " + (isFetching || isComplete ? "" : "invisible") + (tagQuery ? " invisible" : "")}>
         <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>

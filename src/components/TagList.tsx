@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
+import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { historyService } from "../helpers/historyService";
 import { memoService } from "../helpers/memoService";
 import "../less/tag-list.less";
@@ -34,6 +35,12 @@ export const TagList: React.FunctionComponent = () => {
 
     historyService.bindStateChange(ctx, (querys) => {
       setTagQuery(querys.tag);
+
+      // 删除移动端样式
+      const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
+      if (pageContainerEl) {
+        pageContainerEl.classList.remove(MOBILE_ADDTION_CLASSNAME);
+      }
     });
 
     return () => {
