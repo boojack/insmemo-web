@@ -33,19 +33,23 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
   useEffect(() => {
     document.execCommand("defaultParagraphSeparator", false, "p");
 
-    if (content) {
-      editorRef.current!.innerHTML = content;
+    if (content && editorRef.current) {
+      editorRef.current.innerHTML = content;
     }
   }, []);
 
   useImperativeHandle(props.editorRef, () => ({
     focus: () => {
-      editorRef.current!.focus();
+      if (editorRef.current) {
+        editorRef.current.focus();
+      }
     },
     insertText: (text: string) => {
       if (!content.includes(text)) {
         setContent(content + text);
-        editorRef.current!.innerHTML = content + text;
+        if (editorRef.current) {
+          editorRef.current.innerHTML = content + text;
+        }
       }
     },
   }));
@@ -73,7 +77,9 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
     if (handleConfirmBtnClick) {
       handleConfirmBtnClick(content);
       // 清空内容
-      editorRef.current!.innerHTML = "";
+      if (editorRef.current) {
+        editorRef.current.innerHTML = "";
+      }
       setContent("");
     }
   };

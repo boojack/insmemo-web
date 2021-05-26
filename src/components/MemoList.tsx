@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import useDebounce from "../hooks/useDebounce";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
-import { utils } from "../helpers/utils";
-import { preferences } from "./PreferencesDialog";
 import { memoService } from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
+import { preferences } from "./PreferencesDialog";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 
@@ -80,21 +80,27 @@ export const MemoList: React.FunctionComponent = () => {
     setFetchStatus(false);
   };
 
-  const handleFetchScroll = () => {
-    if (isFetching || isComplete) {
-      return;
-    }
+  const handleFetchScroll = useDebounce(
+    () => {
+      if (isFetching || isComplete) {
+        return;
+      }
 
-    const el = wrapperElement.current;
-    const { offsetHeight, scrollTop, scrollHeight } = el!;
+      const el = wrapperElement.current;
+      if (el) {
+        const { offsetHeight, scrollTop, scrollHeight } = el;
 
-    if (offsetHeight + scrollTop + 1 > scrollHeight) {
-      fetchMoreMemos();
-    }
-  };
+        if (offsetHeight + scrollTop + 1 > scrollHeight) {
+          fetchMoreMemos();
+        }
+      }
+    },
+    200,
+    [isFetching, isComplete]
+  );
 
   return (
-    <div className="memolist-wrapper" ref={wrapperElement} onScroll={utils.debounce(handleFetchScroll, 200)}>
+    <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleFetchScroll}>
       {memosTemp.map((memo, idx) => (
         <Memo
           key={memo.id}
