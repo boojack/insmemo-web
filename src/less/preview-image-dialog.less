@@ -1,0 +1,94 @@
+@import "./mixin.less";
+
+.preview-image-dialog {
+  > .dialog-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: unset;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+
+    > .close-btn {
+      position: fixed;
+      top: 36px;
+      right: 36px;
+      width: 36px;
+      height: 36px;
+      padding: 4px;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: lightgray;
+
+      > .icon-img {
+        width: 28px;
+        height: 28px;
+      }
+
+      &:hover {
+        background-color: white;
+      }
+    }
+
+    > .img-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      .pretty-scroll-bar(0px);
+
+      > img {
+        padding: 16px;
+        max-width: 140%;
+        height: auto;
+        margin: auto;
+      }
+    }
+
+    > .action-btns-container {
+      position: fixed;
+      bottom: 36px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      > .text-btn {
+        font-size: 24px;
+        color: white;
+        margin-right: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &:hover {
+          background-color: lightgray;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .preview-image-dialog {
+    padding: 0;
+
+    > .dialog-container {
+      max-width: 100%;
+
+      > .img-container {
+        > img {
+          padding: 6px;
+        }
+      }
+    }
+  }
+}

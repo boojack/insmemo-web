@@ -1,11 +1,9 @@
 import React from "react";
-import { showDialog } from "./Dialog";
+import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/about-site-dialog.less";
 
-interface Props {
-  destory: FunctionType;
-}
+interface Props extends DialogProps {}
 
 const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { destory } = props;

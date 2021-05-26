@@ -1,4 +1,5 @@
 import React from "react";
+import { showPreviewImageDialog } from "./PreviewImageDialog";
 import "../less/imagex.less";
 
 interface Props {
@@ -10,7 +11,7 @@ export const ImageX: React.FunctionComponent<Props> = (props: Props) => {
   const { className, imgUrl } = props;
 
   const handleImageClick = () => {
-    // todo
+    showPreviewImageDialog(imgUrl);
   };
 
   return (

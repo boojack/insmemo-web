@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
-import { showDialog } from "./Dialog";
+import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
 
-interface Props {
+interface Props extends DialogProps {
   memoId: string;
-  destory: FunctionType;
 }
 
 interface MemoItem extends Model.Memo {

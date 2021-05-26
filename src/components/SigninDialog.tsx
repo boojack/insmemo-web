@@ -3,12 +3,10 @@ import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import { toast } from "./Toast";
-import { showDialog } from "./Dialog";
+import { DialogProps, showDialog } from "./Dialog";
 import "../less/signin-dialog.less";
 
-interface Props {
-  destory: FunctionType;
-}
+interface Props extends DialogProps {}
 
 const validateConfig: ValidatorConfig = {
   minLength: 4,

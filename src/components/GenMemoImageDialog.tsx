@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { userService } from "../helpers/userService";
-import { showDialog } from "./Dialog";
+import { DialogProps, showDialog } from "./Dialog";
 import { MemoItem } from "./Memo";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/gen-memo-image-dialog.less";
 
-interface Props {
-  destory: FunctionType;
+interface Props extends DialogProps {
   memo: MemoItem;
 }
 
@@ -45,7 +44,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
       <div className="dialog-content-container">
         {imgUrl ? (
           <>
-            <p className="tip-text">生成完成，可右键或长按保存图片 👇</p>
+            <p className="tip-text">右键或长按即可保存图片 👇</p>
             <img className="memo-img" src={imgUrl} />
           </>
         ) : (

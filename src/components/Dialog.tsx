@@ -6,9 +6,11 @@ interface DialogConfig {
   className: string;
 }
 
-interface Props extends DialogConfig {
+export interface DialogProps {
   destory: FunctionType;
 }
+
+interface Props extends DialogConfig, DialogProps {}
 
 const BaseDialog: React.FunctionComponent<Props> = (props) => {
   const { className, destory } = props;

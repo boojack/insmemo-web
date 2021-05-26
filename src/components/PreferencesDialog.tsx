@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../helpers/storage";
-import { showDialog } from "./Dialog";
+import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import CheckIcon from "../assets/icons/check.svg";
 import CheckActiveIcon from "../assets/icons/check-active.svg";
@@ -8,9 +8,7 @@ import RadioIcon from "../assets/icons/radio.svg";
 import RadioActiveIcon from "../assets/icons/radio-active.svg";
 import "../less/preferences-dialog.less";
 
-interface Props {
-  destory: FunctionType;
-}
+interface Props extends DialogProps {}
 
 /**
  * 设置选项：
