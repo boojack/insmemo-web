@@ -36,7 +36,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">😀</span>分享 Memo
+          <span className="icon-text">🥰</span>分享 Memo 图片
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src={CloseIcon} />
@@ -51,7 +51,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
         ) : (
           <>
             <div className="cover-container">
-              <p className="loading-text">生成中...</p>
+              <p className="loading-text">图片生成中...</p>
             </div>
             <div className="memo-container" ref={memoElRef}>
               <span className="time-text">{memo.createdAtStr}</span>
