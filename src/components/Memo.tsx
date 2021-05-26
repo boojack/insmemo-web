@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
+import { LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
+import { ImageX } from "./ImageX";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import { showGenMemoImageDialog } from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
@@ -30,6 +32,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
   const [showMoreActionBtns, toggleMoreActionBtns] = useToggle(false);
@@ -48,6 +51,25 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
         });
       }
     }
+
+    const parseImageUrls = async () => {
+      const links = memo.content.match(LINK_REG);
+
+      if (links) {
+        const urls: string[] = [];
+
+        for (const link of links) {
+          const { data } = await api.getUrlContentType(link);
+
+          if (data.includes("image")) {
+            urls.push(link);
+            setImageUrls([...urls]);
+          }
+        }
+      }
+    };
+
+    parseImageUrls();
   }, []);
 
   useEffect(() => {
@@ -174,6 +196,13 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
       ) : (
         <div key="memo-content" className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
       )}
+      {imageUrls.length > 0 ? (
+        <div className="images-container">
+          {imageUrls.map((imgUrl, idx) => (
+            <ImageX className="memo-img" key={idx} imgUrl={imgUrl} />
+          ))}
+        </div>
+      ) : null}
       {uponMemo ? (
         <div className="uponmemo-container">
           <img src={MagnetIcon} className="icon-img" />

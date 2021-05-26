@@ -1,0 +1,13 @@
+@import "./mixin.less";
+
+.imagex-container {
+  width: 200px;
+  height: auto;
+  overflow-y: auto;
+  .pretty-scroll-bar(2px);
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
+}

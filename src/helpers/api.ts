@@ -17,8 +17,8 @@ type ResponseType<T = any> = {
  * A: 在调用的位置，用 trycatch 块
  */
 export namespace api {
-  export async function get<T>(url: string): Promise<ResponseType<T>> {
-    const res = await axios.get<ResponseType<T>>(BASE_URL + url, REQ_CONFIG);
+  export async function get<T>(url: string, baseUrl = BASE_URL): Promise<ResponseType<T>> {
+    const res = await axios.get<ResponseType<T>>(baseUrl + url, REQ_CONFIG);
 
     if (res.status !== 200) {
       // handler error
@@ -28,8 +28,8 @@ export namespace api {
     return res.data;
   }
 
-  export async function post<T>(url: string, data?: BasicType): Promise<ResponseType<T>> {
-    const res = await axios.post<ResponseType<T>>(BASE_URL + url, data, REQ_CONFIG);
+  export async function post<T>(url: string, data?: BasicType, baseUrl = BASE_URL): Promise<ResponseType<T>> {
+    const res = await axios.post<ResponseType<T>>(baseUrl + url, data, REQ_CONFIG);
 
     if (res.status !== 200) {
       // handler error
@@ -118,5 +118,9 @@ export namespace api {
 
   export function getMyDataAmount() {
     return get<DataAmounts>("/api/user/amount");
+  }
+
+  export function getUrlContentType(url: string) {
+    return get<string>("/api/base/srctype?url=" + url);
   }
 }

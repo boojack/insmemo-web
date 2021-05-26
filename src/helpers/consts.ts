@@ -9,3 +9,6 @@ export const FETCH_MEMO_AMOUNT = 20;
 
 // 动画持续时长
 export const ANIMATION_DURATION = 1200;
+
+// URL 正则
+export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
