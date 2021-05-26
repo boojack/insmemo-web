@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import { LINK_REG } from "../helpers/consts";
+import { IMAGE_URL_REG, LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
@@ -32,7 +32,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemo, setUponMemo] = useState<MemoItem>();
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
   const [showMoreActionBtns, toggleMoreActionBtns] = useToggle(false);
@@ -51,25 +51,6 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
         });
       }
     }
-
-    const parseImageUrls = async () => {
-      const links = memo.content.match(LINK_REG);
-
-      if (links) {
-        const urls: string[] = [];
-
-        for (const link of links) {
-          const { data } = await api.getUrlContentType(link);
-
-          if (data.includes("image")) {
-            urls.push(link);
-            setImageUrls([...urls]);
-          }
-        }
-      }
-    };
-
-    parseImageUrls();
   }, []);
 
   useEffect(() => {

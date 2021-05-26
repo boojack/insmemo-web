@@ -12,3 +12,6 @@ export const ANIMATION_DURATION = 1200;
 
 // URL 正则
 export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
+
+// 图片路由正则
+export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png))/g;
