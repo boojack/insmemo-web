@@ -121,4 +121,29 @@ export namespace utils {
 
     return rawText;
   }
+
+  export function getImageWidth(src: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const imgEl = new Image();
+
+      imgEl.onload = () => {
+        const { width, height } = imgEl;
+
+        if (width > 0 && height > 0) {
+          resolve(width);
+        } else {
+          resolve(0);
+        }
+      };
+
+      imgEl.onerror = () => {
+        resolve(0);
+      };
+
+      imgEl.className = "hidden";
+      imgEl.src = src;
+      document.body.appendChild(imgEl);
+      imgEl.remove();
+    });
+  }
 }

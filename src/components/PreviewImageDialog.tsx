@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { utils } from "../helpers/utils";
 import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/preview-image-dialog.less";
@@ -10,7 +11,16 @@ interface Props extends DialogProps {
 const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { destory, imgUrl } = props;
   const imgRef = useRef<HTMLImageElement>(null);
-  const [imgWidth, setImgWidth] = useState<number>(70);
+  const [imgWidth, setImgWidth] = useState<number>(0);
+  const windowWidth = window.innerWidth;
+
+  useEffect(() => {
+    utils.getImageWidth(imgUrl).then((width) => {
+      console.log(width);
+      const widthRate = (width / windowWidth) * 100;
+      setImgWidth(widthRate > 100 ? 100 : widthRate);
+    });
+  }, []);
 
   const handleCloseBtnClick = () => {
     destory();
@@ -23,7 +33,7 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   const handleIncreaseImageSize = () => {
-    if (imgWidth < 140) {
+    if (imgWidth < 100) {
       setImgWidth(imgWidth + 10);
     }
   };
