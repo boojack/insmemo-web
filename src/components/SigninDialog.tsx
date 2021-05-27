@@ -3,7 +3,6 @@ import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import { toast } from "./Toast";
-import { DialogProps, showDialog } from "./Dialog";
 import "../less/signin-dialog.less";
 
 interface Props extends DialogProps {}
@@ -84,12 +83,4 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showSigninDialog() {
-  showDialog(
-    {
-      className: "signin-dialog",
-    },
-    SigninDialog,
-    {}
-  );
-}
+export default SigninDialog;

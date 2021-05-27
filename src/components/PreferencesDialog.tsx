@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../helpers/storage";
-import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import CheckIcon from "../assets/icons/check.svg";
 import CheckActiveIcon from "../assets/icons/check-active.svg";
@@ -98,12 +97,4 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showPreferencesDialog() {
-  showDialog(
-    {
-      className: "preferences-dialog",
-    },
-    PreferencesDialog,
-    {}
-  );
-}
+export default PreferencesDialog;

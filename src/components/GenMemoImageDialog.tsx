@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { userService } from "../helpers/userService";
-import { DialogProps, showDialog } from "./Dialog";
-import { MemoItem } from "./Memo";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/gen-memo-image-dialog.less";
 
 interface Props extends DialogProps {
-  memo: MemoItem;
+  memo: FormatedMemo;
 }
 
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
@@ -68,12 +66,4 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showGenMemoImageDialog(memo: MemoItem) {
-  showDialog(
-    {
-      className: "gen-memo-image-dialog",
-    },
-    GenMemoImageDialog,
-    { memo }
-  );
-}
+export default GenMemoImageDialog;

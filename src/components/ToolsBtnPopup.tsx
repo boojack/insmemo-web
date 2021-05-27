@@ -1,7 +1,6 @@
 import React from "react";
 import { userService } from "../helpers/userService";
-import { showAboutSiteDialog } from "./AboutSiteDialog";
-import { showPreferencesDialog } from "./PreferencesDialog";
+import { showAboutSiteDialog, showPreferencesDialog } from "./Dialog";
 import "../less/tools-btn-popup.less";
 
 interface Props {

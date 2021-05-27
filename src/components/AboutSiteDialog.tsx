@@ -1,11 +1,10 @@
 import React from "react";
-import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/about-site-dialog.less";
 
 interface Props extends DialogProps {}
 
-const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
+const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { destory } = props;
 
   const handleCloseBtnClick = () => {
@@ -64,12 +63,4 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showAboutSiteDialog() {
-  showDialog(
-    {
-      className: "about-site-dialog",
-    },
-    AboutSizeDialog,
-    {}
-  );
-}
+export default AboutSiteDialog;

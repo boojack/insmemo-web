@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
-import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
 
@@ -10,18 +9,13 @@ interface Props extends DialogProps {
   memoId: string;
 }
 
-interface MemoItem extends Model.Memo {
-  formatedContent: string;
-  createdAtStr: string;
-}
-
-export const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
-  const [memos, setMemos] = useState<MemoItem[]>([]);
+const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
+  const [memos, setMemos] = useState<FormatedMemo[]>([]);
 
   useEffect(() => {
     const fetchMemos = async () => {
       const memoIdList = [props.memoId];
-      const memoList: MemoItem[] = [];
+      const memoList: FormatedMemo[] = [];
 
       while (memoIdList.length > 0) {
         const id = memoIdList.shift();
@@ -68,12 +62,4 @@ export const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showMemoStoryDialog(memoId: string) {
-  showDialog(
-    {
-      className: "memo-story-dialog",
-    },
-    MemoStoryDialog,
-    { memoId }
-  );
-}
+export default MemoStoryDialog;

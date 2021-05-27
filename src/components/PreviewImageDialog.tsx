@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { utils } from "../helpers/utils";
-import { DialogProps, showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/preview-image-dialog.less";
 
@@ -66,12 +65,4 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showPreviewImageDialog(imgUrl: string) {
-  showDialog(
-    {
-      className: "preview-image-dialog",
-    },
-    PreviewImageDialog,
-    { imgUrl }
-  );
-}
+export default PreviewImageDialog;

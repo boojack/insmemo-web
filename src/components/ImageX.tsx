@@ -1,5 +1,5 @@
 import React from "react";
-import { showPreviewImageDialog } from "./PreviewImageDialog";
+import { showPreviewImageDialog } from "./Dialog";
 import "../less/imagex.less";
 
 interface Props {

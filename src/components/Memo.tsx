@@ -5,8 +5,7 @@ import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { stateManager } from "../helpers/stateManager";
 import { ImageX } from "./ImageX";
-import { showMemoStoryDialog } from "./MemoStoryDialog";
-import { showGenMemoImageDialog } from "./GenMemoImageDialog";
+import { showGenMemoImageDialog, showMemoStoryDialog } from "./Dialog";
 import { preferences } from "./PreferencesDialog";
 import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/memo.less";
@@ -19,19 +18,14 @@ interface Props {
   delete: (idx: number) => Promise<void>;
 }
 
-export interface MemoItem extends Model.Memo {
-  formatedContent: string;
-  createdAtStr: string;
-}
-
 export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   const { className, memo: propsMemo, shouldSplitMemoWord } = props;
-  const [memo, setMemo] = useState<MemoItem>({
+  const [memo, setMemo] = useState<FormatedMemo>({
     ...propsMemo,
     formatedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
-  const [uponMemo, setUponMemo] = useState<MemoItem>();
+  const [uponMemo, setUponMemo] = useState<FormatedMemo>();
   const [imageUrls, setImageUrls] = useState<string[]>(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showEditActionBtn, toggleEditActionBtn] = useToggle(false);
