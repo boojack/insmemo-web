@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { userService } from "../helpers/userService";
+import { showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/gen-memo-image-dialog.less";
 
@@ -66,4 +67,12 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export default GenMemoImageDialog;
+export function showGenMemoImageDialog(memo: FormatedMemo) {
+  showDialog(
+    {
+      className: "gen-memo-image-dialog",
+    },
+    GenMemoImageDialog,
+    { memo }
+  );
+}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { api } from "../helpers/api";
 import { userService } from "../helpers/userService";
 import { validate, ValidatorConfig } from "../helpers/validator";
+import { showDialog } from "./Dialog";
 import { toast } from "./Toast";
 import "../less/signin-dialog.less";
 
@@ -83,4 +84,12 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export default SigninDialog;
+export function showSigninDialog() {
+  showDialog(
+    {
+      className: "signin-dialog",
+    },
+    SigninDialog,
+    {}
+  );
+}

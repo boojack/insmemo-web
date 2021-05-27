@@ -1,4 +1,5 @@
 import React from "react";
+import { showDialog } from "./Dialog";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/about-site-dialog.less";
 
@@ -63,4 +64,12 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export default AboutSiteDialog;
+export function showAboutSiteDialog() {
+  showDialog(
+    {
+      className: "about-site-dialog",
+    },
+    AboutSiteDialog,
+    {}
+  );
+}

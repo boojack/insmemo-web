@@ -4,7 +4,7 @@ import { userService } from "./helpers/userService";
 import { MainEditor } from "./components/MainEditor";
 import { MemoList } from "./components/MemoList";
 import { Sidebar } from "./components/Sidebar";
-import { showSigninDialog } from "./components/Dialog";
+import { showSigninDialog } from "./components/SigninDialog";
 import "./helpers/polyfill";
 import "./less/global.less";
 import "./less/index.less";

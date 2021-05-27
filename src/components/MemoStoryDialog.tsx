@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
+import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
@@ -62,4 +63,12 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export default MemoStoryDialog;
+export function showMemoStoryDialog(memoId: string) {
+  showDialog(
+    {
+      className: "memo-story-dialog",
+    },
+    MemoStoryDialog,
+    { memoId }
+  );
+}
