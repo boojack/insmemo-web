@@ -73,11 +73,11 @@ export namespace toast {
     return cbs;
   }
 
-  export function info(content: string, duration: number = 3000) {
+  export function info(content: string, duration: number = 2400) {
     return show({ type: "normal", content, duration });
   }
 
-  export function error(content: string, duration: number = 3000) {
+  export function error(content: string, duration: number = 2400) {
     return show({ type: "error", content, duration });
   }
 }

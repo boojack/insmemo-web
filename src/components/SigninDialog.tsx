@@ -66,9 +66,6 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">👋 账号注册 / 登录</p>
-        {/* <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-            ✖️
-          </button> */}
       </div>
       <div className="dialog-content-container">
         <input type="text" value={username} minLength={4} maxLength={24} placeholder="用户名" onChange={handleUsernameInputChanged} />

@@ -24,7 +24,7 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="dialog-content-container">
         <p>
-          (暂无名)：
+          <i>(暂无名)</i> ：
           <a target="_blank" href="https://flomoapp.com/">
             flomo
           </a>{" "}
@@ -34,10 +34,11 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
           </a>
         </p>
         <blockquote>
-          <p>尽量多的无压力的记录下来自己的想法。</p>
           <p>
             <b>降低输入摩擦，提高输入动机。</b>
           </p>
+          <p>尽量多的无压力的记录下来自己的想法。</p>
+          --- flomo
         </blockquote>
         <p>Features:</p>
         <ul>
@@ -48,7 +49,7 @@ const AboutSizeDialog: React.FunctionComponent<Props> = (props: Props) => {
             </a>
             ；
           </li>
-          <li>😋 更可观的样式；</li>
+          <li>😋 更可观的视觉样式；</li>
           <li>📑 更好的交互逻辑；</li>
           <li>
             <a target="_blank" href="https://github.com/boojack/insmemo/issues/new">
