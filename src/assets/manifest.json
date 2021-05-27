@@ -1,0 +1,16 @@
+{
+  "name": "insmemo",
+  "short_name": "insmemo",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#FAFAFA",
+  "background_color": "#FAFAFA",
+  "icons": [
+    {
+      "src": "./icons/logo-fill.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
