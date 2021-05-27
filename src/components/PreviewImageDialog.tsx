@@ -11,14 +11,15 @@ interface Props extends DialogProps {
 const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { destory, imgUrl } = props;
   const imgRef = useRef<HTMLImageElement>(null);
-  const [imgWidth, setImgWidth] = useState<number>(0);
-  const windowWidth = window.innerWidth;
+  const [imgWidth, setImgWidth] = useState<number>(-1);
 
   useEffect(() => {
-    utils.getImageWidth(imgUrl).then((width) => {
-      console.log(width);
-      const widthRate = (width / windowWidth) * 100;
-      setImgWidth(widthRate > 100 ? 100 : widthRate);
+    utils.getImageSize(imgUrl).then(([width, height]) => {
+      if (width !== 0) {
+        setImgWidth(80);
+      } else {
+        setImgWidth(0);
+      }
     });
   }, []);
 
@@ -45,7 +46,9 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
       </button>
 
       <div className="img-container">
-        <img ref={imgRef} width={imgWidth + "%"} src={imgUrl} />
+        <img className={imgWidth <= 0 ? "hidden" : ""} ref={imgRef} width={imgWidth + "%"} src={imgUrl} />
+        <span className={"loading-text " + (imgWidth === -1 ? "" : "hidden")}>图片加载中...</span>
+        <span className={"loading-text " + (imgWidth === 0 ? "" : "hidden")}>😟 图片加载失败，可能是无效的链接</span>
       </div>
 
       <div className="action-btns-container">
@@ -55,7 +58,7 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
         <button className="text-btn" onClick={handleIncreaseImageSize}>
           ➕
         </button>
-        <button className="text-btn" onClick={() => setImgWidth(70)}>
+        <button className="text-btn" onClick={() => setImgWidth(80)}>
           ⭕
         </button>
       </div>

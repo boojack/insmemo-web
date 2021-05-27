@@ -29,7 +29,7 @@
       }
 
       &:hover {
-        background-color: white;
+        opacity: 0.8;
       }
     }
 
@@ -47,6 +47,14 @@
         height: auto;
         margin: auto;
       }
+
+      > .loading-text {
+        color: white;
+        font-size: 24px;
+        margin: auto;
+        border-bottom: 2px solid white;
+        padding: 8px 4px;
+      }
     }
 
     > .action-btns-container {
@@ -58,20 +66,22 @@
       align-items: center;
 
       > .text-btn {
-        font-size: 22px;
+        font-size: 20px;
         color: white;
-        margin-right: 12px;
+        margin-right: 16px;
         padding: 8px;
         border-radius: 8px;
         cursor: pointer;
         background-color: lightgray;
+        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 
         &:last-child {
           margin-right: 0;
         }
 
-        &:hover {
-          background-color: white;
+        &:hover,
+        &:active {
+          opacity: 0.8;
         }
       }
     }

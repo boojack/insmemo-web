@@ -52,3 +52,21 @@
     }
   }
 }
+
+@media only screen and (max-width: 600px) {
+  #page-container {
+    &.show-user-banner-dialog {
+      .tags-container {
+        display: flex !important;
+
+        > .title-text {
+          font-size: 13px;
+        }
+
+        > .tag-item-container {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}

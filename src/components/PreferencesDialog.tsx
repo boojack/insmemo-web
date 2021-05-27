@@ -66,10 +66,6 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
             <img className="icon-img" src={shouldSplitMemoWord ? CheckActiveIcon : CheckIcon} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
           </label>
-          {/* <label className="form-label checkbox-form-label">
-              <span className="normal-text">缓存输入</span>
-              <input type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
-            </label> */}
           <label className="form-label checkbox-form-label">
             <span className="normal-text">标签点击处理:</span>
             <label className="form-label">
@@ -78,7 +74,6 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
                 type="radio"
                 value="copy"
                 checked={tagTextClickedAction === "copy"}
-                name="tag-text-click"
                 onChange={handleTagTextClickValueChanged}
               />
               <img className="icon-img" src={tagTextClickedAction === "copy" ? RadioActiveIcon : RadioIcon} />
@@ -90,7 +85,6 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
                 type="radio"
                 value="insert"
                 checked={tagTextClickedAction === "insert"}
-                name="tag-text-click"
                 onChange={handleTagTextClickValueChanged}
               />
               <img className="icon-img" src={tagTextClickedAction === "insert" ? RadioActiveIcon : RadioIcon} />
