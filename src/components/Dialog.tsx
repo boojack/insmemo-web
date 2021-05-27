@@ -1,12 +1,12 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
+import SigninDialog from "./SigninDialog";
+import AboutSiteDialog from "./AboutSiteDialog";
+import PreferencesDialog from "./PreferencesDialog";
+import MemoStoryDialog from "./MemoStoryDialog";
+import GenMemoImageDialog from "./GenMemoImageDialog";
+import PreviewImageDialog from "./PreviewImageDialog";
 import "../less/dialog.less";
-const SigninDialog = React.lazy(() => import("./SigninDialog"));
-const AboutSiteDialog = React.lazy(() => import("./AboutSiteDialog"));
-const PreferencesDialog = React.lazy(() => import("./PreferencesDialog"));
-const MemoStoryDialog = React.lazy(() => import("./MemoStoryDialog"));
-const GenMemoImageDialog = React.lazy(() => import("./GenMemoImageDialog"));
-const PreviewImageDialog = React.lazy(() => import("./PreviewImageDialog"));
 
 interface DialogConfig {
   className: string;
@@ -36,11 +36,9 @@ export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComp
   };
 
   ReactDOM.render(
-    <Suspense fallback={<div className="dialog-wrapper"></div>}>
-      <BaseDialog destory={destory} {...config}>
-        <Fc destory={destory} {...props}></Fc>
-      </BaseDialog>
-    </Suspense>,
+    <BaseDialog destory={destory} {...config}>
+      <Fc destory={destory} {...props}></Fc>
+    </BaseDialog>,
     tempDiv
   );
 }
