@@ -13,8 +13,8 @@
     <div id="root"></div>
     <script type="module" src="/src/App.tsx"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QMWPX445H6"></script>
-    <script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-QMWPX445H6"></script>
+    <script defer>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -24,8 +24,9 @@
       gtag("config", "G-QMWPX445H6");
     </script>
 
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-    <script src="/wxconfig.js"></script>
+    <!-- 微信转发配置项 -->
+    <!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="/wxconfig.js"></script> -->
 
     <!-- 暂时注释掉 pwa -->
     <!-- <script defer>

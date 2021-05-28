@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = window.location.origin.indexOf(":3000") > -1 ? window.location.origin.replace(":3000", ":8080") : "";
-const REQ_CONFIG = window.location.origin.indexOf(":3000") > -1 ? { withCredentials: true } : {};
+const REQ_CONFIG = {};
 
 type ResponseType<T = any> = {
   succeed: boolean;
@@ -17,8 +16,8 @@ type ResponseType<T = any> = {
  * A: 在调用的位置，用 trycatch 块
  */
 export namespace api {
-  export async function get<T>(url: string, baseUrl = BASE_URL): Promise<ResponseType<T>> {
-    const res = await axios.get<ResponseType<T>>(baseUrl + url, REQ_CONFIG);
+  export async function get<T>(url: string): Promise<ResponseType<T>> {
+    const res = await axios.get<ResponseType<T>>(url, REQ_CONFIG);
 
     if (res.status !== 200) {
       // handler error
@@ -28,8 +27,8 @@ export namespace api {
     return res.data;
   }
 
-  export async function post<T>(url: string, data?: BasicType, baseUrl = BASE_URL): Promise<ResponseType<T>> {
-    const res = await axios.post<ResponseType<T>>(baseUrl + url, data, REQ_CONFIG);
+  export async function post<T>(url: string, data?: BasicType): Promise<ResponseType<T>> {
+    const res = await axios.post<ResponseType<T>>(url, data, REQ_CONFIG);
 
     if (res.status !== 200) {
       // handler error
@@ -104,7 +103,7 @@ export namespace api {
   export function removeMemoTag(memoId: string, tagId: string) {
     return post("/api/tag/rmlink", {
       memoId,
-      tagId
+      tagId,
     });
   }
 
