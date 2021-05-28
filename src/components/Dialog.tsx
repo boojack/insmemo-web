@@ -4,15 +4,22 @@ import "../less/dialog.less";
 
 interface DialogConfig {
   className: string;
+  clickSpaceDestory?: boolean;
 }
 
 interface Props extends DialogConfig, DialogProps {}
 
 const BaseDialog: React.FunctionComponent<Props> = (props) => {
-  const { className, destory } = props;
+  const { className, clickSpaceDestory, destory } = props;
+
+  const handleSpaceClicked = () => {
+    if (clickSpaceDestory) {
+      destory();
+    }
+  };
 
   return (
-    <div className={"dialog-wrapper " + className} onClick={destory}>
+    <div className={"dialog-wrapper " + className} onClick={handleSpaceClicked}>
       <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
         {props.children}
       </div>
@@ -30,7 +37,7 @@ export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComp
   };
 
   ReactDOM.render(
-    <BaseDialog destory={destory} {...config}>
+    <BaseDialog destory={destory} clickSpaceDestory={true} {...config}>
       <Fc destory={destory} {...props}></Fc>
     </BaseDialog>,
     tempDiv

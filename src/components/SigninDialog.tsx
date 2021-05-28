@@ -88,6 +88,7 @@ export function showSigninDialog() {
   showDialog(
     {
       className: "signin-dialog",
+      clickSpaceDestory: false,
     },
     SigninDialog,
     {}
