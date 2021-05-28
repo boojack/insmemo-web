@@ -5,7 +5,8 @@
     <link rel="icon" href="/logo.svg" sizes="64x64" type="image/*" />
     <meta name="theme-color" content="#F7F6F4" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
-    <link rel="manifest" href="/manifest.json" />
+    <!-- 暂时注释掉 pwa -->
+    <!-- <link rel="manifest" href="/manifest.json" /> -->
     <title>Memos</title>
   </head>
   <body>
@@ -23,12 +24,13 @@
       gtag("config", "G-QMWPX445H6");
     </script>
 
-    <script defer>
+    <!-- 暂时注释掉 pwa -->
+    <!-- <script defer>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js").then(function () {
           // do nth
         });
       }
-    </script>
+    </script> -->
   </body>
 </html>
