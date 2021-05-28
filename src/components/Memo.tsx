@@ -193,7 +193,7 @@ export function formatMemoContent(content: string): string {
 
   content = content.replaceAll("\n", "<br>");
   content = content.replaceAll(tagReg, "<span class='tag-span'>#$1</span>");
-  content = content.replaceAll(LINK_REG, "<a target='_blank' href='$1'>$1</a>");
+  content = content.replaceAll(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
   if (preferences.shouldSplitMemoWord) {

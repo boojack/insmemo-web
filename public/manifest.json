@@ -3,8 +3,8 @@
   "short_name": "insmemo",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#FAFAFA",
-  "background_color": "#FAFAFA",
+  "theme_color": "#F7F6F4",
+  "background_color": "#F7F6F4",
   "icons": [
     {
       "src": "/logo-fill.png",

@@ -16,7 +16,7 @@ export const ImageX: React.FunctionComponent<Props> = (props: Props) => {
 
   return (
     <div className={"imagex-container " + className} onClick={handleImageClick}>
-      <img src={imgUrl} decoding="async" loading="lazy" />
+      <img src={imgUrl} decoding="async" referrerPolicy="no-referrer" loading="lazy" />
     </div>
   );
 };
