@@ -29,5 +29,7 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  init();
+  if (!location.href.includes("localhost:")) {
+    init();
+  }
 });
