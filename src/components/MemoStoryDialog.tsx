@@ -76,7 +76,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: currentMemo.formatedContent }}></div>
             </div>
             <p className={"action-text " + (downMemos.length === 0 ? "hidden" : "")} onClick={toggleDownMemosStatus}>
-              {downMemos.length} 个 Memo 引用了此内容，点击{showDownMemosContainer ? "收起" : "展开"}
+              下面有 {downMemos.length} 个 Memo，点击{showDownMemosContainer ? "收起" : "展开"}
             </p>
           </>
         ) : null}
