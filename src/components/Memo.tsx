@@ -8,7 +8,6 @@ import { ImageX } from "./ImageX";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import { showGenMemoImageDialog } from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
-import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/memo.less";
 
 interface Props {
@@ -181,7 +180,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
       ) : null}
       {uponMemo ? (
         <div className="uponmemo-container">
-          <img src={MagnetIcon} className="icon-img" />
+          <img className="icon-img" src="/icons/magnet.svg" />
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemo.formatedContent }}></div>
         </div>
       ) : null}

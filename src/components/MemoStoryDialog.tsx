@@ -3,7 +3,6 @@ import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
-import CloseIcon from "../assets/icons/close.svg";
 import "../less/memo-story-dialog.less";
 
 interface Props extends DialogProps {
@@ -48,7 +47,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
           <span className="icon-text">😀</span>有 {memos.length} 个 Memo
         </p>
         <button className="text-btn close-btn" onClick={props.destory}>
-          <img className="icon-img" src={CloseIcon} />
+          <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">

@@ -5,7 +5,6 @@ import { memoService } from "../helpers/memoService";
 import { userService } from "../helpers/userService";
 import { historyService } from "../helpers/historyService";
 import { ToolsBtnPopup } from "./ToolsBtnPopup";
-import FoldIcon from "../assets/icons/fold.svg";
 import "../less/user-banner.less";
 
 interface AmountState {
@@ -94,7 +93,7 @@ export const UserBanner: React.FunctionComponent = () => {
           ···
         </button>
         <button className="action-btn more-action-btn" onClick={handleMoreActionBtnClick}>
-          <img className="icon-img" src={FoldIcon} alt="fold" />
+          <img className="icon-img" src="/icons/fold.svg" alt="fold" />
         </button>
         <ToolsBtnPopup visibility={showToolsBtnDialog} />
       </div>

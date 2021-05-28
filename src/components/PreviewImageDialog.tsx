@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
-import CloseIcon from "../assets/icons/close.svg";
 import "../less/preview-image-dialog.less";
 
 interface Props extends DialogProps {
@@ -42,7 +41,7 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-        <img className="icon-img" src={CloseIcon} />
+        <img className="icon-img" src="/icons/close.svg" />
       </button>
 
       <div className="img-container">

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { userService } from "../helpers/userService";
 import { showDialog } from "./Dialog";
-import CloseIcon from "../assets/icons/close.svg";
 import "../less/gen-memo-image-dialog.less";
 
 interface Props extends DialogProps {
@@ -37,7 +36,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
           <span className="icon-text">🥰</span>分享 Memo 图片
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-          <img className="icon-img" src={CloseIcon} />
+          <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">

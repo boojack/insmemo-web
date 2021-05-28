@@ -1,6 +1,5 @@
 import React from "react";
 import { showDialog } from "./Dialog";
-import CloseIcon from "../assets/icons/close.svg";
 import "../less/about-site-dialog.less";
 
 interface Props extends DialogProps {}
@@ -19,7 +18,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
           <span className="icon-text">😀</span>关于
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-          <img className="icon-img" src={CloseIcon} />
+          <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">

@@ -9,7 +9,6 @@ import { toast } from "./Toast";
 import { preferences } from "./PreferencesDialog";
 import { EditorProps, Editor } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
-import MagnetIcon from "../assets/icons/magnet.svg";
 import "../less/main-editor.less";
 
 export class MainEditor extends React.Component {
@@ -84,7 +83,7 @@ export class MainEditor extends React.Component {
       <div className="main-editor-wrapper">
         <Editor {...this.editorConfig} />
         <div className={"uponmemo-container " + (uponMemoId ? "" : "hidden")} onClick={this.handleClearUponMemoClick}>
-          <img src={MagnetIcon} className="icon-img" />
+          <img className="icon-img" src="/icons/close.svg" />
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
         </div>
       </div>

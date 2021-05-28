@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
-import CloseIcon from "../assets/icons/close.svg";
-import CheckIcon from "../assets/icons/check.svg";
-import CheckActiveIcon from "../assets/icons/check-active.svg";
-import RadioIcon from "../assets/icons/radio.svg";
-import RadioActiveIcon from "../assets/icons/radio-active.svg";
 import "../less/preferences-dialog.less";
 
 interface Props extends DialogProps {}
@@ -51,7 +46,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
           <span className="icon-text">🤟</span>偏好设置
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-          <img className="icon-img" src={CloseIcon} />
+          <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">
@@ -63,7 +58,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
           <p className="title-text">特殊设置</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">中英文之间加空格</span>
-            <img className="icon-img" src={shouldSplitMemoWord ? CheckActiveIcon : CheckIcon} />
+            <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
           </label>
           <label className="form-label checkbox-form-label">
@@ -76,7 +71,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
                 checked={tagTextClickedAction === "copy"}
                 onChange={handleTagTextClickValueChanged}
               />
-              <img className="icon-img" src={tagTextClickedAction === "copy" ? RadioActiveIcon : RadioIcon} />
+              <img className="icon-img" src={tagTextClickedAction === "copy" ? "/icons/radio-active.svg" : "/icons/radio.svg"} />
               <span>复制文字</span>
             </label>
             <label className="form-label">
@@ -87,7 +82,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
                 checked={tagTextClickedAction === "insert"}
                 onChange={handleTagTextClickValueChanged}
               />
-              <img className="icon-img" src={tagTextClickedAction === "insert" ? RadioActiveIcon : RadioIcon} />
+              <img className="icon-img" src={tagTextClickedAction === "insert" ? "/icons/radio-active.svg" : "/icons/radio.svg"} />
               <span>加入编辑器</span>
             </label>
           </label>
