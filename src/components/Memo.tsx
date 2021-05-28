@@ -44,12 +44,20 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
     });
   }, [shouldSplitMemoWord]);
 
-  const showStoryDialog = () => {
+  const handleMemoClick = (e: React.MouseEvent) => {
+    if (["A", "IMG"].includes((e.target as HTMLElement)?.tagName)) {
+      return;
+    }
+
     showMemoStoryDialog(memo.id);
   };
 
   const uponThisMemo = () => {
     stateManager.setState("uponMemoId", memo.id);
+  };
+
+  const handleBtnsContainerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   const handleDeleteMemoClick = async () => {
@@ -78,15 +86,10 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={"memo-wrapper " + className} onClick={handleMemoClick} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text">{memo.createdAtStr}</span>
-        <div className="btns-container">
-          {memo.uponMemoId ? (
-            <span className="text-btn" onClick={showStoryDialog}>
-              All
-            </span>
-          ) : null}
+        <div className="btns-container" onClick={handleBtnsContainerClick}>
           <span className="text-btn" onClick={uponThisMemo}>
             Mark
           </span>
