@@ -1,20 +1,24 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import "../../less/editor.less";
 
-export interface EditorProps {
+export interface EditorRefActions {
+  focus: FunctionType;
+  insertText: (text: string) => void;
+  setContent: (text: string) => void;
+  getContent: () => string;
+}
+
+interface EditorProps {
   className: string;
   content: string;
   placeholder: string;
   showConfirmBtn: boolean;
   handleConfirmBtnClick?: (content: string) => void;
+  showCancelBtn: boolean;
+  handleCancelBtnClick?: () => void;
   showTools: boolean;
   handleContentChange?: (content: string) => void;
   editorRef?: React.RefObject<EditorRefActions>;
-}
-
-interface EditorRefActions {
-  focus: FunctionType;
-  insertText: (text: string) => void;
 }
 
 const DEFAULT_EDITOR_PROPS: EditorProps = {
@@ -22,11 +26,22 @@ const DEFAULT_EDITOR_PROPS: EditorProps = {
   content: "",
   placeholder: "",
   showConfirmBtn: true,
+  showCancelBtn: false,
   showTools: false,
 };
 
 export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_PROPS) {
-  const { className, content: initialContent, placeholder, showConfirmBtn, showTools, handleConfirmBtnClick, handleContentChange } = props;
+  const {
+    className,
+    content: initialContent,
+    placeholder,
+    showConfirmBtn,
+    showCancelBtn,
+    showTools,
+    handleConfirmBtnClick,
+    handleCancelBtnClick,
+    handleContentChange,
+  } = props;
   const [content, setContent] = useState<string>(initialContent);
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -45,12 +60,22 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
       }
     },
     insertText: (text: string) => {
-      if (!content.includes(text)) {
-        setContent(content + text);
-        if (editorRef.current) {
-          editorRef.current.innerHTML = content + text;
-        }
+      setContent(content + text);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = content + text;
       }
+      if (handleContentChange) {
+        handleContentChange(content + text);
+      }
+    },
+    setContent: (text: string) => {
+      setContent(text);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = text;
+      }
+    },
+    getContent: (): string => {
+      return content;
     },
   }));
 
@@ -84,6 +109,12 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
     }
   };
 
+  const handleCommonCancelBtnClick = () => {
+    if (handleCancelBtnClick) {
+      handleCancelBtnClick();
+    }
+  };
+
   return (
     <div className={"common-editor-wrapper " + className}>
       <div
@@ -96,11 +127,18 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
       <p className={content === "" ? "common-editor-placeholder" : "hidden"}>{placeholder}</p>
       <div className="common-tools-wrapper">
         {showTools ? <div className={"common-tools-container"}>{/* nth */}</div> : null}
-        {showConfirmBtn ? (
-          <button className="confirm-btn" disabled={content.length === 0} onClick={handleCommonConfirmBtnClick}>
-            记下<span className="icon-text">✍️</span>
-          </button>
-        ) : null}
+        <div className="btns-right-container">
+          {showCancelBtn ? (
+            <button className="action-btn cancel-btn" disabled={content.length === 0} onClick={handleCommonCancelBtnClick}>
+              退出修改
+            </button>
+          ) : null}
+          {showConfirmBtn ? (
+            <button className="action-btn confirm-btn" disabled={content.length === 0} onClick={handleCommonConfirmBtnClick}>
+              记下<span className="icon-text">✍️</span>
+            </button>
+          ) : null}
+        </div>
       </div>
     </div>
   );

@@ -101,16 +101,21 @@ export const MemoList: React.FunctionComponent = () => {
 
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleFetchScroll}>
-      {memosTemp.map((memo, idx) => (
-        <Memo
-          key={memo.id}
-          className={memo.shouldShow ? "" : "hidden"}
-          shouldSplitMemoWord={shouldSplitMemoWord}
-          index={idx}
-          memo={memo}
-          delete={handleDeleteMemoItem}
-        />
-      ))}
+      {memosTemp.map((memo, idx) => {
+        const key = memo.id + " " + memo.updatedAt;
+        const className = memo.shouldShow ? "" : "hidden";
+
+        return (
+          <Memo
+            key={key}
+            className={className}
+            shouldSplitMemoWord={shouldSplitMemoWord}
+            index={idx}
+            memo={memo}
+            delete={handleDeleteMemoItem}
+          />
+        );
+      })}
 
       <div className={"status-text-container " + (isFetching || isComplete ? "" : "invisible") + (tagQuery ? " invisible" : "")}>
         <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>

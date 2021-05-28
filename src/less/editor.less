@@ -50,32 +50,60 @@
       align-items: center;
     }
 
-    > .confirm-btn {
-      user-select: none;
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      border: none;
-      background-color: @text-green;
-      color: white;
+    > .btns-right-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      flex-grow: 0;
+      flex-shrink: 0;
 
-      &:disabled {
-        cursor: not-allowed;
-        color: #aaa;
-        background-color: #eee;
+      > .action-btn {
+        user-select: none;
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        border: none;
+      }
+
+      > .cancel-btn {
+        color: gray;
+        background-color: transparent;
+        font-size: 13px;
+        margin-right: 8px;
 
         &:hover {
-          opacity: 1;
+          color: black;
         }
       }
 
-      &:hover {
-        opacity: 0.9;
-      }
+      > .confirm-btn {
+        user-select: none;
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        border: none;
+        background-color: @text-green;
+        color: white;
 
-      > .icon-text {
-        margin-left: 2px;
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+
+          &:hover {
+            opacity: 0.5;
+          }
+        }
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+        > .icon-text {
+          margin-left: 2px;
+        }
       }
     }
   }

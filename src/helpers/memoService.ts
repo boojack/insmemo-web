@@ -74,6 +74,14 @@ class MemoService {
     this.emitValueChangedEvent();
   }
 
+  public getMemoById(id: string) {
+    for (const m of this.memos) {
+      if (m.id === id) {
+        return m;
+      }
+    }
+  }
+
   public async deleteById(id: string) {
     for (let i = 0; i < this.memos.length; ++i) {
       if (this.memos[i].id === id) {
@@ -94,7 +102,7 @@ class MemoService {
     this.listeners.delete(context);
   }
 
-  private emitValueChangedEvent() {
+  public emitValueChangedEvent() {
     this.listeners.forEach((handler, ctx) => {
       handler.call(ctx, this.memos);
     });

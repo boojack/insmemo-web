@@ -1,9 +1,11 @@
+type StateKey = "uponMemoId" | "editMemoId";
+
 /**
  * State Manager
  * 全局状态管理
  */
 class StateManager {
-  private data: Map<string, BasicType>;
+  private data: Map<StateKey, BasicType>;
   private listener: Map<string, { context: Object; handler: FunctionType }[]>;
 
   constructor() {
@@ -18,18 +20,19 @@ class StateManager {
    */
   public init() {
     this.setState<string>("uponMemoId", "");
+    this.setState<string>("editMemoId", "");
   }
 
-  public getState(key: string): BasicType | undefined {
+  public getState(key: StateKey): BasicType | undefined {
     return this.data.get(key);
   }
 
-  public setState<T = BasicType>(key: string, value: T | undefined) {
+  public setState<T = BasicType>(key: StateKey, value: T | undefined) {
     this.data.set(key, value);
     this.emitValueChangedEvent(key, value);
   }
 
-  public triggerListeners(key: string) {
+  public triggerListeners(key: StateKey) {
     const handlers = this.listener.get(key);
     const value = this.getState(key);
 
@@ -40,7 +43,7 @@ class StateManager {
     }
   }
 
-  public bindStateChange(key: string, context: Object, handler: FunctionType) {
+  public bindStateChange(key: StateKey, context: Object, handler: FunctionType) {
     if (!this.data.has(key)) {
       this.setState(key, undefined);
     }
@@ -52,7 +55,7 @@ class StateManager {
     }
   }
 
-  public unbindStateListener(key: string, context: Object) {
+  public unbindStateListener(key: StateKey, context: Object) {
     const lns = this.listener.get(key);
 
     if (lns) {

@@ -76,10 +76,11 @@ export namespace api {
     });
   }
 
-  export function updateMemo(memoId: string, content: string) {
-    return post("/api/memo/update", {
+  export function updateMemo(memoId: string, content: string, uponMemoId: string) {
+    return post<Model.Memo>("/api/memo/update", {
       memoId,
       content,
+      uponMemoId,
     });
   }
 
@@ -97,6 +98,13 @@ export namespace api {
     return post("/api/tag/link", {
       memoId,
       tagId,
+    });
+  }
+
+  export function removeMemoTag(memoId: string, tagId: string) {
+    return post("/api/tag/rmlink", {
+      memoId,
+      tagId
     });
   }
 
