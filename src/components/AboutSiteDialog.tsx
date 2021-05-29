@@ -58,7 +58,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
         </ul>
         <hr />
         <p>Enjoy it and have fun~</p>
-        <p className="tip-text">last update at 2021/5/28 22:20:00</p>
+        <p className="tip-text">last update at 2021/5/29 10:21:00</p>
       </div>
     </>
   );

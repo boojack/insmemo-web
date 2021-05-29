@@ -24,12 +24,16 @@ class MemoService {
   }
 
   public async fetchMoreMemos() {
-    if (this.isFetching) {
+    if (!userService.getUserInfo() || this.isFetching) {
       return false;
     }
 
     this.isFetching = true;
     const { data } = await api.getMyMemos(this.memos.length, FETCH_MEMO_AMOUNT);
+    if (!Array.isArray(data)) {
+      return false;
+    }
+
     const memos = data
       .map((m) => ({
         id: m.id,
