@@ -13,11 +13,15 @@
   border-radius: 8px;
 
   &:hover {
-    border-color: lightgray;
-
     > .memo-top-wrapper {
       > .btns-container {
         display: flex;
+
+        > .text-btn {
+          &.mark-btn {
+            display: block;
+          }
+        }
       }
     }
   }
@@ -43,18 +47,21 @@
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
-      display: none;
 
       > .text-btn {
         font-size: 12px;
         cursor: pointer;
         margin-left: 4px;
-        padding: 2px 6px;
+        padding: 3px 6px;
         border-radius: 4px;
         user-select: none;
 
         &:hover {
           background-color: lightgray;
+        }
+
+        &.mark-btn {
+          display: none;
         }
 
         &.more-action-btns {
@@ -75,7 +82,6 @@
     line-height: 1.7;
     word-wrap: break-word;
     word-break: break-all;
-    cursor: pointer;
 
     &.memo-editor {
       padding-bottom: 4px;

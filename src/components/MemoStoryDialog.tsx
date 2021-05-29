@@ -18,45 +18,50 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   const [showDownMemosContainer, toggleDownMemosStatus] = useToggle(false);
 
   useEffect(() => {
-    const fetchMemos = async () => {
-      const memoTemp = memoService.getMemoById(currentMemoId) as Model.Memo;
+    const memoTemp = memoService.getMemoById(currentMemoId);
+
+    if (memoTemp) {
       setCurrentMemo({
         ...memoTemp,
         formatedContent: formatMemoContent(memoTemp.content),
         createdAtStr: utils.getTimeString(memoTemp.createdAt),
       });
+    }
+  }, []);
 
-      const downMemoIdList: string[] = [];
+  useEffect(() => {
+    const fetchDownMemos = async () => {
+      if (!currentMemo || !currentMemo.uponMemoId) {
+        return;
+      }
+
+      const downMemoIdList: string[] = [currentMemo.uponMemoId];
       const downMemoList: FormatedMemo[] = [];
 
-      if (memoTemp.uponMemoId) {
-        downMemoIdList.push(memoTemp.uponMemoId);
+      while (downMemoIdList.length > 0) {
+        const memoId = downMemoIdList.shift();
 
-        while (downMemoIdList.length > 0) {
-          const memoId = downMemoIdList.shift();
+        if (memoId) {
+          const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
 
-          if (memoId) {
-            const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+          if (memoTemp) {
+            downMemoList.push({
+              ...memoTemp,
+              formatedContent: formatMemoContent(memoTemp.content),
+              createdAtStr: utils.getTimeString(memoTemp.createdAt),
+            });
+            setDownMemos([...downMemoList]);
 
-            if (memoTemp) {
-              downMemoList.push({
-                ...memoTemp,
-                formatedContent: formatMemoContent(memoTemp.content),
-                createdAtStr: utils.getTimeString(memoTemp.createdAt),
-              });
-
-              if (memoTemp.uponMemoId) {
-                downMemoIdList.push(memoTemp.uponMemoId);
-                setDownMemos([...downMemoList]);
-              }
+            if (memoTemp.uponMemoId) {
+              downMemoIdList.push(memoTemp.uponMemoId);
             }
           }
         }
       }
     };
 
-    fetchMemos();
-  }, [currentMemoId]);
+    fetchDownMemos();
+  }, [currentMemo]);
 
   return (
     <>
@@ -76,7 +81,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: currentMemo.formatedContent }}></div>
             </div>
             <p className={"action-text " + (downMemos.length === 0 ? "hidden" : "")} onClick={toggleDownMemosStatus}>
-              下面有 {downMemos.length} 个 Memo，点击{showDownMemosContainer ? "收起" : "展开"}
+              下游有 {downMemos.length} 个 Memo，点击{showDownMemosContainer ? "收起" : "展开"}
             </p>
           </>
         ) : null}

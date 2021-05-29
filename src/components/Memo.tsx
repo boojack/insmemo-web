@@ -90,7 +90,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
       <div className="memo-top-wrapper">
         <span className="time-text">{memo.createdAtStr}</span>
         <div className="btns-container" onClick={handleBtnsContainerClick}>
-          <span className="text-btn" onClick={uponThisMemo}>
+          <span className="text-btn mark-btn" onClick={uponThisMemo}>
             Mark
           </span>
           {showMoreActionBtns ? (
