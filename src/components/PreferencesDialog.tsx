@@ -13,7 +13,7 @@ interface Props extends DialogProps {}
 export const preferences = storage.get(["shouldSplitMemoWord", "tagTextClickedAction"]);
 
 const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
-  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
+  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? true);
   const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction ?? "copy");
 
   useEffect(() => {

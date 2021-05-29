@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import { memoService } from "../helpers/memoService";
@@ -8,11 +8,11 @@ import { Memo } from "./Memo";
 import "../less/memolist.less";
 
 export const MemoList: React.FunctionComponent = () => {
-  const [memos, setMemos] = useState(memoService.getMemos());
-  const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
+  const [memos, setMemos] = useState<Model.Memo[]>(memoService.getMemos() ?? []);
+  const [tagQuery, setTagQuery] = useState(historyService.querys.tag ?? "");
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
-  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? false);
+  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
   const memosTemp = memos.map((m) => {
@@ -68,17 +68,18 @@ export const MemoList: React.FunctionComponent = () => {
     await memoService.deleteById(memos[idx].id);
   };
 
-  const fetchMoreMemos = async () => {
+  const fetchMoreMemos = useCallback(async () => {
     if (isFetching || isComplete) {
       return;
     }
+
     setFetchStatus(true);
     const newMemos = await memoService.fetchMoreMemos();
     if (newMemos && newMemos.length < FETCH_MEMO_AMOUNT) {
       setCompleteStatus(true);
     }
     setFetchStatus(false);
-  };
+  }, [isFetching, isComplete]);
 
   const handleFetchScroll = useDebounce(
     () => {

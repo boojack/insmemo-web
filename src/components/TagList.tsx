@@ -3,11 +3,16 @@ import { api } from "../helpers/api";
 import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { historyService } from "../helpers/historyService";
 import { memoService } from "../helpers/memoService";
+import { useToggle } from "../hooks/useToggle";
 import "../less/tag-list.less";
 
+interface TagItem extends Api.Tag {}
+
 export const TagList: React.FunctionComponent = () => {
-  const [tags, setTags] = useState<Model.Tag[]>([]);
+  const [usedTags, setUsedTags] = useState<TagItem[]>([]);
+  const [unusedTags, setUnusedTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
+  const [showUnusedTagsContainer, toggleShowUnusedTagsStatus] = useToggle(false);
 
   useEffect(() => {
     const ctx = {
@@ -15,18 +20,20 @@ export const TagList: React.FunctionComponent = () => {
     };
 
     const fetchTags = async () => {
-      let { data: tags } = await api.getMyTags();
-      tags = tags
-        .map((t) => {
-          return {
-            ...t,
-            createdAt: new Date(t.createdAt).getTime(),
-          };
-        })
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .sort((a, b) => b.level - a.level);
+      const { data: tags } = await api.getMyTags();
+      const usedTags = [];
+      const unusedTags = [];
 
-      setTags(tags);
+      for (const t of tags) {
+        if (t.amount === 0) {
+          unusedTags.push(t);
+        } else {
+          usedTags.push(t);
+        }
+      }
+
+      setUsedTags([...usedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
+      setUnusedTags([...unusedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
     };
 
     memoService.bindStateChange(ctx, () => {
@@ -49,13 +56,13 @@ export const TagList: React.FunctionComponent = () => {
     };
   }, []);
 
-  const handleTagItemClick = (index: number) => {
-    let tagText = tags[index].text;
+  const handleUsedTagClick = (tag: TagItem) => {
+    let tagText = tag.text;
 
     if (tagText === tagQuery) {
       tagText = "";
     } else {
-      api.polishTag(tags[index].id);
+      api.polishTag(tag.id);
     }
 
     historyService.setParamsState({
@@ -63,22 +70,48 @@ export const TagList: React.FunctionComponent = () => {
     });
   };
 
+  const handleUnusedTagClick = async (tag: TagItem, index: number) => {
+    unusedTags.splice(index, 1);
+    setUnusedTags([...unusedTags]);
+    await api.deleteTagById(tag.id);
+  };
+
   return (
     <div className="tags-container">
       <p className="title-text">常用标签</p>
-      {tags.map((t, index) => (
+      {usedTags.map((t) => (
         <div
           key={t.id}
-          className={"tag-item-container " + (tagQuery === t.text ? "active" : "")}
+          className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
           onClick={() => {
-            handleTagItemClick(index);
+            handleUsedTagClick(t);
           }}
         >
           <span># {t.text}</span>
         </div>
       ))}
 
-      {tags.length <= 3 ? (
+      <div className={"unused-tag-wrapper " + (unusedTags.length === 0 || !showUnusedTagsContainer ? "hidden" : "")}>
+        {unusedTags.map((t, index) => (
+          <div key={t.id} className={"tag-item-container unused-tag-container"}>
+            <span># {t.text}</span>
+            <span
+              className="action-btn"
+              onClick={() => {
+                handleUnusedTagClick(t, index);
+              }}
+            >
+              删除
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <p className={"action-text " + (unusedTags.length === 0 ? "hidden" : "")} onClick={toggleShowUnusedTagsStatus}>
+        有 {unusedTags.length} 个未使用的标签，点击{showUnusedTagsContainer ? "隐藏" : "显示"}
+      </p>
+
+      {usedTags.length + unusedTags.length <= 3 ? (
         <p className="tag-tip-container">
           输入<span>#Tag#</span>来创建标签吧~
         </p>

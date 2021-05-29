@@ -112,7 +112,7 @@ export namespace api {
   }
 
   export function getMyTags() {
-    return get<Model.Tag[]>("/api/tag/all");
+    return get<Api.Tag[]>("/api/tag/all");
   }
 
   export function deleteTagById(tagId: string) {
@@ -124,7 +124,7 @@ export namespace api {
   }
 
   export function getMyDataAmount() {
-    return get<DataAmounts>("/api/user/amount");
+    return get<Api.DataAmounts>("/api/user/amount");
   }
 
   export function getUrlContentType(url: string) {
