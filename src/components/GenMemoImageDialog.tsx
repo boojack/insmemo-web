@@ -1,18 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
+import { utils } from "../helpers/utils";
 import { userService } from "../helpers/userService";
 import { showDialog } from "./Dialog";
+import { formatMemoContent } from "./Memo";
 import "../less/gen-memo-image-dialog.less";
 
 interface Props extends DialogProps {
-  memo: FormatedMemo;
+  memo: Model.Memo;
 }
 
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
-  const { memo, destory } = props;
+  const { memo: propsMemo, destory } = props;
   const [imgUrl, setImgUrl] = useState("");
   const userinfo = userService.getUserInfo();
   const memoElRef = useRef<HTMLDivElement>(null);
+  const memo: FormatedMemo = {
+    ...propsMemo,
+    formatedContent: formatMemoContent(propsMemo.content),
+    createdAtStr: utils.getTimeString(propsMemo.createdAt),
+  };
 
   useEffect(() => {
     const memoEl = memoElRef.current;
@@ -66,7 +73,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showGenMemoImageDialog(memo: FormatedMemo) {
+export function showGenMemoImageDialog(memo: Model.Memo) {
   showDialog(
     {
       className: "gen-memo-image-dialog",

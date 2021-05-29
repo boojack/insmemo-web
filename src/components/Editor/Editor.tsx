@@ -130,7 +130,7 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
         <div className="btns-right-container">
           {showCancelBtn ? (
             <button className="action-btn cancel-btn" disabled={content.length === 0} onClick={handleCommonCancelBtnClick}>
-              退出修改
+              撤销修改
             </button>
           ) : null}
           {showConfirmBtn ? (

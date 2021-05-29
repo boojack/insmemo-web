@@ -43,11 +43,13 @@ export const MainEditor: React.FunctionComponent = () => {
 
     stateManager.bindStateChange("editMemoId", ctx, async (editMemoId: string) => {
       if (editMemoId) {
-        const memo = memoService.getMemoById(editMemoId);
+        const editMemo = memoService.getMemoById(editMemoId);
 
-        setEditMemoId(editMemoId);
-        editorRef.current?.setContent(memo?.content ?? "");
-        stateManager.setState("uponMemoId", memo?.uponMemoId ?? "");
+        if (editMemo) {
+          setEditMemoId(editMemoId);
+          editorRef.current?.setContent(editMemo.content ?? "");
+          stateManager.setState("uponMemoId", editMemo.uponMemoId ?? "");
+        }
       } else {
         setEditMemoId("");
       }
@@ -76,64 +78,71 @@ export const MainEditor: React.FunctionComponent = () => {
     };
   }, []);
 
-  const handleSaveBtnClick = async (content: string) => {
-    if (content === "") {
-      toast.error("内容不能为空呀");
-      return;
-    }
+  const handleSaveBtnClick = useCallback(
+    async (content: string) => {
+      if (content === "") {
+        toast.error("内容不能为空呀");
+        return;
+      }
 
-    const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? []));
-    const tags: Model.Tag[] = [];
+      const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replaceAll(TAG_REG, "$1").trim());
+      const tags: Model.Tag[] = [];
 
-    // 保存标签
-    for (const t of tagTexts) {
-      const { data: tag } = await api.createTag(t.replaceAll(TAG_REG, "$1").trim());
-      tags.push(tag);
-    }
+      // 保存标签
+      for (const t of tagTexts) {
+        const { data: tag } = await api.createTag(t);
+        tags.push(tag);
+      }
 
-    if (editMemoId) {
-      const memo = memoService.getMemoById(editMemoId);
-      const prevTags = memo?.tags ?? [];
-      const prevTagTexts = prevTags.map((t) => t.text);
+      if (editMemoId) {
+        const editMemo = memoService.getMemoById(editMemoId);
 
-      for (const t of [...tags, ...prevTags]) {
-        const tagText = `#${t.text}#`;
-        if (!tagTexts.includes(tagText)) {
-          await api.removeMemoTag(editMemoId, t.id);
+        setEditMemoId("");
+        if (!editMemo || (editMemo.content === content && editMemo.uponMemoId === uponMemoId)) {
+          // do nth
         } else {
-          if (!prevTagTexts.includes(tagText)) {
-            await api.createMemoTag(editMemoId, t.id);
+          const prevTags = editMemo.tags ?? [];
+          const prevTagTexts = prevTags.map((t) => t.text);
+
+          for (const t of [...tags, ...prevTags]) {
+            const tagText = t.text;
+
+            if (!tagTexts.includes(tagText)) {
+              api.removeMemoTag(editMemo.id, t.id);
+            } else {
+              if (!prevTagTexts.includes(tagText)) {
+                api.createMemoTag(editMemo.id, t.id);
+              }
+            }
           }
+
+          const { data: editedMemo } = await api.updateMemo(editMemo.id, content, uponMemoId);
+
+          editMemo.content = editedMemo.content ?? "";
+          editMemo.uponMemoId = editedMemo.uponMemoId ?? "";
+          if (editedMemo.uponMemo) {
+            editMemo.uponMemo = editedMemo.uponMemo;
+          }
+          editMemo.updatedAt = Date.now();
+          memoService.emitValueChangedEvent();
         }
-      }
+      } else {
+        const { data: newMemo } = await api.createMemo(content, uponMemoId);
 
-      const { data: editedMemo } = await api.updateMemo(editMemoId, content, uponMemoId);
-
-      if (memo) {
-        memo.content = editedMemo.content ?? "";
-        memo.uponMemoId = editedMemo.uponMemoId ?? "";
-        if (editedMemo.uponMemo) {
-          memo.uponMemo = editedMemo.uponMemo;
+        // link memo and tag
+        for (const t of tags) {
+          await api.createMemoTag(newMemo.id, t.id);
         }
-        memo.updatedAt = Date.now();
-        memoService.emitValueChangedEvent();
-      }
-      setEditMemoId("");
-    } else {
-      const { data: memo } = await api.createMemo(content, uponMemoId);
 
-      // link memo and tag
-      for (const t of tags) {
-        await api.createMemoTag(memo.id, t.id);
+        memoService.push(newMemo);
       }
 
-      memoService.push(memo);
-    }
-
-    setContent("");
-    setUponMemoId("");
-    setEditorContentCache("");
-  };
+      setContent("");
+      setUponMemoId("");
+      setEditorContentCache("");
+    },
+    [editMemoId, uponMemoId]
+  );
 
   const handleCancelBtnClick = () => {
     stateManager.setState("editMemoId", "");
@@ -173,7 +182,7 @@ export const MainEditor: React.FunctionComponent = () => {
 
   return (
     <div className={"main-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>
-      <p className={"edit-memo-container " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
+      <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor {...editorConfig} />
       <div className={"upon-memo-container " + (uponMemoId ? "" : "hidden")} onClick={handleClearUponMemoClick}>
         <img className="icon-img" src="/icons/magnet.svg" />
