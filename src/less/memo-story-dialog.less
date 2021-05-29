@@ -9,7 +9,7 @@
   .pretty-scroll-bar(0px, 0px);
 
   > .dialog-container {
-    width: 620px;
+    width: 580px;
     max-width: 100%;
     margin-bottom: 50px;
     border-radius: 10px;
@@ -42,6 +42,13 @@
       justify-content: flex-start;
       align-items: flex-start;
 
+      > .tip-text {
+        padding: 0 24px;
+        padding-bottom: 8px;
+        color: gray;
+        font-style: italic;
+      }
+
       > .action-text {
         padding: 0 24px;
         padding-bottom: 16px;
@@ -60,24 +67,43 @@
         border-top: 1px solid lightgray;
 
         &.current {
-          padding-bottom: 16px;
+          padding-bottom: 20px;
 
           > .memo-content-text {
-            font-size: 18px;
-            line-height: 1.7;
+            font-size: 16px;
+            line-height: 1.6;
           }
         }
 
-        > .time-text {
-          margin-top: 4px;
-          font-size: 14px;
-          color: gray;
+        > .memo-header-container {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+
+          > .time-text {
+            margin-top: 4px;
+            font-size: 14px;
+            color: gray;
+          }
+
+          > .action-btn {
+            padding: 3px 8px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+
+            &:hover {
+              background-color: lightgray;
+            }
+          }
         }
 
         > .memo-content-text {
           margin-top: 8px;
           width: 100%;
-          font-size: 16px;
+          font-size: 15px;
           line-height: 1.6;
           word-wrap: break-word;
           word-break: break-all;

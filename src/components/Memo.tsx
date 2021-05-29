@@ -86,9 +86,11 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <div className={"memo-wrapper " + className} onClick={handleMemoClick} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
-        <span className="time-text">{memo.createdAtStr}</span>
+        <span className="time-text" onClick={handleMemoClick}>
+          {memo.createdAtStr}
+        </span>
         <div className="btns-container" onClick={handleBtnsContainerClick}>
           <span className="text-btn mark-btn" onClick={uponThisMemo}>
             Mark

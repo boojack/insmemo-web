@@ -4,6 +4,7 @@ import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import { memoService } from "../helpers/memoService";
 import { showDialog } from "./Dialog";
+import { showGenMemoImageDialog } from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";
 import "../less/memo-story-dialog.less";
 
@@ -63,6 +64,12 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
     fetchDownMemos();
   }, [currentMemo]);
 
+  const handleGenMemoImageBtnClick = () => {
+    if (currentMemo) {
+      showGenMemoImageDialog(currentMemo as Model.Memo);
+    }
+  };
+
   return (
     <>
       <div className="dialog-header-container">
@@ -74,10 +81,16 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
+        <p className="tip-text">This is the hidden feature called "Memo Story Dialog" and waiting for continue. </p>
         {currentMemo ? (
           <>
             <div className="memo-container current" key={currentMemo.id}>
-              <p className="time-text">{currentMemo.createdAtStr}</p>
+              <div className="memo-header-container">
+                <p className="time-text">{currentMemo.createdAtStr}</p>
+                <span className="action-btn" onClick={handleGenMemoImageBtnClick}>
+                  Share
+                </span>
+              </div>
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: currentMemo.formatedContent }}></div>
             </div>
             <p className={"action-text " + (downMemos.length === 0 ? "hidden" : "")} onClick={toggleDownMemosStatus}>
@@ -88,7 +101,9 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         <div className={"down-memos-wrapper " + (downMemos.length !== 0 && showDownMemosContainer ? "" : "hidden")}>
           {downMemos.map((m) => (
             <div className={"memo-container " + (m.id === currentMemoId ? "current" : "")} key={m.id}>
-              <p className="time-text">{m.createdAtStr}</p>
+              <div className="memo-header-container">
+                <p className="time-text">{m.createdAtStr}</p>
+              </div>
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formatedContent }}></div>
             </div>
           ))}
