@@ -23,25 +23,54 @@
     }
 
     > .dialog-footer-container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-top: 12px;
 
-      > .text-btn {
-        padding: 4px 10px;
-        font-size: 14px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: center;
+      > .btns-container {
+        > .text-btn {
+          padding: 4px 10px;
+          font-size: 14px;
+          border-radius: 4px;
+          cursor: pointer;
+          text-align: center;
 
-        &:hover {
-          font-weight: bold;
-          background-color: lightgray;
+          &:hover {
+            font-weight: bold;
+            background-color: lightgray;
+          }
+
+          &.disabled {
+            color: lightgray;
+            cursor: not-allowed;
+
+            &:hover {
+              font-weight: unset;
+              background-color: unset;
+            }
+          }
+        }
+
+        > .split-text {
+          color: lightgray;
+          margin: 0 5px;
         }
       }
+    }
 
-      > .split-text {
-        color: lightgray;
-        margin: 0 5px;
-      }
+    > .tip-text {
+      border-top: 1px solid lightgray;
+      color: gray;
+      margin-top: 6px;
+      padding-top: 6px;
+      width: 100%;
+      font-style: italic;
+      font-size: 12px;
+      line-height: 1.6;
+      word-wrap: break-word;
     }
   }
 }

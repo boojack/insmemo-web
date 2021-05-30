@@ -27,7 +27,7 @@ export namespace utils {
     return Array.from(new Set(data));
   }
 
-  export function dedupeIDObject<T extends { id: string }>(data: T[]): T[] {
+  export function dedupeObjectWithId<T extends { id: string }>(data: T[]): T[] {
     const idSet = new Set<string>();
     const result = [];
 

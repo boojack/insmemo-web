@@ -48,7 +48,7 @@ class MemoService {
 
     if (memos.length > 0) {
       this.memos.push(...memos);
-      this.memos = utils.dedupeIDObject(this.memos);
+      this.memos = utils.dedupeObjectWithId(this.memos);
       this.emitValueChangedEvent();
     }
 
