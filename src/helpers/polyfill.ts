@@ -12,4 +12,4 @@
   }
 })();
 
-export {};
+export default null;

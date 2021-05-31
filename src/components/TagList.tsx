@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { historyService } from "../helpers/historyService";
@@ -56,7 +56,7 @@ export const TagList: React.FunctionComponent = () => {
     };
   }, []);
 
-  const handleUsedTagClick = (tag: TagItem) => {
+  const handleUsedTagClick = useCallback((tag: TagItem) => {
     let tagText = tag.text;
 
     if (tagText === tagQuery) {
@@ -68,13 +68,13 @@ export const TagList: React.FunctionComponent = () => {
     historyService.setParamsState({
       tag: tagText,
     });
-  };
+  }, []);
 
-  const handleUnusedTagClick = async (tag: TagItem, index: number) => {
+  const handleUnusedTagClick = useCallback(async (tag: TagItem, index: number) => {
     unusedTags.splice(index, 1);
     setUnusedTags([...unusedTags]);
     await api.deleteTagById(tag.id);
-  };
+  }, []);
 
   return (
     <div className="tags-container">

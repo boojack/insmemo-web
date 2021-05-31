@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import { memoService } from "../helpers/memoService";
@@ -15,18 +15,20 @@ export const MemoList: React.FunctionComponent = () => {
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
-  const memosTemp = memos.map((m) => {
-    let shouldShow = false;
+  const memosTemp = useMemo(() => {
+    return memos.map((m) => {
+      let shouldShow = false;
 
-    if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
-      shouldShow = true;
-    }
+      if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
+        shouldShow = true;
+      }
 
-    return {
-      ...m,
-      shouldShow,
-    };
-  });
+      return {
+        ...m,
+        shouldShow,
+      };
+    });
+  }, [memos]);
 
   useEffect(() => {
     const handleStorageDataChanged = () => {

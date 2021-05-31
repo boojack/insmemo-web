@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
 import { stateManager } from "../helpers/stateManager";
@@ -144,13 +144,13 @@ export const MainEditor: React.FunctionComponent = () => {
     [editMemoId, uponMemoId]
   );
 
-  const handleCancelBtnClick = () => {
+  const handleCancelBtnClick = useCallback(() => {
     stateManager.setState("editMemoId", "");
     editorRef.current?.setContent("");
     setContent("");
     setUponMemoId("");
     setEditorContentCache("");
-  };
+  }, []);
 
   const handleContentChange = useCallback(
     (content: string) => {
@@ -167,18 +167,21 @@ export const MainEditor: React.FunctionComponent = () => {
   };
 
   // 编辑器配置
-  const editorConfig = {
-    className: "main-editor",
-    content: content,
-    placeholder: "现在的想法是...",
-    showConfirmBtn: true,
-    handleConfirmBtnClick: handleSaveBtnClick,
-    showCancelBtn: editMemoId === "" ? false : true,
-    handleCancelBtnClick: handleCancelBtnClick,
-    showTools: true,
-    handleContentChange: handleContentChange,
-    editorRef,
-  };
+  const editorConfig = useMemo(
+    () => ({
+      className: "main-editor",
+      content: content,
+      placeholder: "现在的想法是...",
+      showConfirmBtn: true,
+      handleConfirmBtnClick: handleSaveBtnClick,
+      showCancelBtn: editMemoId === "" ? false : true,
+      handleCancelBtnClick: handleCancelBtnClick,
+      showTools: true,
+      handleContentChange: handleContentChange,
+      editorRef,
+    }),
+    [content, editMemoId]
+  );
 
   return (
     <div className={"main-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>

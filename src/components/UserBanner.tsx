@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import { memoService } from "../helpers/memoService";
@@ -51,27 +51,30 @@ export const UserBanner: React.FunctionComponent = () => {
     };
   }, []);
 
-  const toggleBtnsDialog = (ev: React.MouseEvent) => {
-    ev.stopPropagation();
-    const nextState = !showToolsBtnDialog;
+  const toggleBtnsDialog = useCallback(
+    (ev: React.MouseEvent) => {
+      ev.stopPropagation();
+      const nextState = !showToolsBtnDialog;
 
-    if (nextState) {
-      const bodyClickHandler = () => {
-        setDialogStatus(false);
-        document.body.removeEventListener("click", bodyClickHandler);
-      };
+      if (nextState) {
+        const bodyClickHandler = () => {
+          setDialogStatus(false);
+          document.body.removeEventListener("click", bodyClickHandler);
+        };
 
-      document.body.addEventListener("click", bodyClickHandler);
-    }
+        document.body.addEventListener("click", bodyClickHandler);
+      }
 
-    setDialogStatus(nextState);
-  };
+      setDialogStatus(nextState);
+    },
+    [showToolsBtnDialog]
+  );
 
-  const handleUsernameClick = () => {
+  const handleUsernameClick = useCallback(() => {
     historyService.setParamsState({ tag: "" });
-  };
+  }, []);
 
-  const handleMoreActionBtnClick = () => {
+  const handleMoreActionBtnClick = useCallback(() => {
     const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
 
     if (pageContainerEl) {
@@ -81,7 +84,7 @@ export const UserBanner: React.FunctionComponent = () => {
         pageContainerEl.classList.add(MOBILE_ADDTION_CLASSNAME);
       }
     }
-  };
+  }, []);
 
   return (
     <div className="user-banner-container">
