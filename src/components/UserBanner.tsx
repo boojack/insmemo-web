@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
-import { memoService } from "../helpers/memoService";
-import { userService } from "../helpers/userService";
+import userService from "../helpers/userService";
+import memoService from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { ToolsBtnPopup } from "./ToolsBtnPopup";
 import "../less/user-banner.less";
@@ -13,7 +13,7 @@ interface AmountState {
 }
 
 export const UserBanner: React.FunctionComponent = () => {
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>("unknown");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
@@ -33,21 +33,20 @@ export const UserBanner: React.FunctionComponent = () => {
       });
     };
 
-    memoService.bindStateChange(ctx, () => {
+    const unsubscribeMemoStore = memoService.subscribe(() => {
       fetchDataAmount();
     });
-    userService.bindStateChange(ctx, (userinfo) => {
-      if (userinfo) {
-        setUsername(userinfo.username);
-        setCreatedDays(Math.ceil((Date.now() - new Date(userinfo.createdAt).getTime()) / 1000 / 3600 / 24));
-      } else {
-        setUsername("unknown");
+
+    const unsubscribeUserStore = userService.subscribe(({ user }) => {
+      if (user) {
+        setUsername(user.username);
+        setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
       }
     });
 
     return () => {
-      memoService.unbindStateListener(ctx);
-      userService.unbindStateListener(ctx);
+      unsubscribeMemoStore();
+      unsubscribeUserStore();
     };
   }, []);
 

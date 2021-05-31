@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
+import memoService from "../helpers/memoService";
 import { stateManager } from "../helpers/stateManager";
-import { memoService } from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
@@ -23,6 +23,7 @@ export const MainEditor: React.FunctionComponent = () => {
     const ctx = {
       key: Date.now(),
     };
+
     stateManager.bindStateChange("uponMemoId", ctx, async (uponMemoId: string) => {
       if (uponMemoId) {
         const editMemoId = stateManager.getState("editMemoId");
@@ -124,7 +125,7 @@ export const MainEditor: React.FunctionComponent = () => {
             editMemo.uponMemo = editedMemo.uponMemo;
           }
           editMemo.updatedAt = Date.now();
-          memoService.emitValueChangedEvent();
+          memoService.__emit__();
         }
       } else {
         const { data: newMemo } = await api.createMemo(content, uponMemoId);
@@ -133,8 +134,7 @@ export const MainEditor: React.FunctionComponent = () => {
         for (const t of tags) {
           await api.createMemoTag(newMemo.id, t.id);
         }
-
-        memoService.push(newMemo);
+        memoService.pushMemo(newMemo);
       }
 
       setContent("");

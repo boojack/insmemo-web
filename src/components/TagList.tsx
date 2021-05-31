@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import memoService from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
-import { memoService } from "../helpers/memoService";
 import { useToggle } from "../hooks/useToggle";
 import "../less/tag-list.less";
 
@@ -36,7 +36,7 @@ export const TagList: React.FunctionComponent = () => {
       setUnusedTags([...unusedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
     };
 
-    memoService.bindStateChange(ctx, () => {
+    const unsubscribeMemoStore = memoService.subscribe(() => {
       fetchTags();
     });
 
@@ -51,30 +51,36 @@ export const TagList: React.FunctionComponent = () => {
     });
 
     return () => {
-      memoService.unbindStateListener(ctx);
+      unsubscribeMemoStore();
       historyService.unbindStateListener(ctx);
     };
   }, []);
 
-  const handleUsedTagClick = useCallback((tag: TagItem) => {
-    let tagText = tag.text;
+  const handleUsedTagClick = useCallback(
+    (tag: TagItem) => {
+      let tagText = tag.text;
 
-    if (tagText === tagQuery) {
-      tagText = "";
-    } else {
-      api.polishTag(tag.id);
-    }
+      if (tagText === tagQuery) {
+        tagText = "";
+      } else {
+        api.polishTag(tag.id);
+      }
 
-    historyService.setParamsState({
-      tag: tagText,
-    });
-  }, []);
+      historyService.setParamsState({
+        tag: tagText,
+      });
+    },
+    [tagQuery]
+  );
 
-  const handleUnusedTagClick = useCallback(async (tag: TagItem, index: number) => {
-    unusedTags.splice(index, 1);
-    setUnusedTags([...unusedTags]);
-    await api.deleteTagById(tag.id);
-  }, []);
+  const handleUnusedTagClick = useCallback(
+    async (tag: TagItem, index: number) => {
+      unusedTags.splice(index, 1);
+      setUnusedTags([...unusedTags]);
+      await api.deleteTagById(tag.id);
+    },
+    [unusedTags]
+  );
 
   return (
     <div className="tags-container">

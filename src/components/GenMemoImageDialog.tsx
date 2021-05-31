@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
+import userService from "../helpers/userService";
 import { utils } from "../helpers/utils";
-import { userService } from "../helpers/userService";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import "../less/gen-memo-image-dialog.less";
@@ -13,7 +13,7 @@ interface Props extends DialogProps {
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   const { memo: propsMemo, destory } = props;
   const [imgUrl, setImgUrl] = useState("");
-  const userinfo = userService.getUserInfo();
+  const { user: userinfo } = userService.getState();
   const memoElRef = useRef<HTMLDivElement>(null);
   const memo: FormatedMemo = {
     ...propsMemo,
@@ -23,6 +23,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
 
   useEffect(() => {
     const memoEl = memoElRef.current;
+
     if (memoEl) {
       html2canvas(memoEl, {
         scale: 4,

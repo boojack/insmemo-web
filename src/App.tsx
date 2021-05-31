@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { userService } from "./helpers/userService";
+import userService from "./helpers/userService";
+import memoService from "./helpers/memoService";
 import { MainEditor } from "./components/MainEditor";
 import { MemoList } from "./components/MemoList";
 import { Sidebar } from "./components/Sidebar";
@@ -11,11 +12,22 @@ import "./less/index.less";
 
 function App() {
   useEffect(() => {
-    userService.init().then(() => {
-      if (!userService.checkIsSignIn()) {
+    userService.doSignIn().then(() => {
+      const { user } = userService.getState();
+      if (!user) {
         showSigninDialog();
       }
     });
+
+    const unsubscribeUserStore = userService.subscribe(async ({ user }) => {
+      if (user) {
+        await memoService.fetchMoreMemos();
+      }
+    });
+
+    return () => {
+      unsubscribeUserStore();
+    };
   }, []);
 
   return (

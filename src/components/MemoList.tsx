@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
-import { memoService } from "../helpers/memoService";
+import memoService from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { preferences } from "./PreferencesDialog";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 
 export const MemoList: React.FunctionComponent = () => {
-  const [memos, setMemos] = useState<Model.Memo[]>(memoService.getMemos() ?? []);
+  const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
   const [tagQuery, setTagQuery] = useState(historyService.querys.tag ?? "");
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
@@ -28,9 +28,21 @@ export const MemoList: React.FunctionComponent = () => {
         shouldShow,
       };
     });
-  }, [memos]);
+  }, [memos, tagQuery]);
 
   useEffect(() => {
+    const ctx = {
+      key: Date.now(),
+    };
+
+    const unsubscribeMemoStore = memoService.subscribe(({ memos }) => {
+      setMemos([...memos]);
+    });
+
+    historyService.bindStateChange(ctx, (querys) => {
+      setTagQuery(querys.tag);
+    });
+
     const handleStorageDataChanged = () => {
       const shouldSplitMemoWord = preferences.shouldSplitMemoWord ?? false;
       setShouldSplitMemoWord(shouldSplitMemoWord);
@@ -39,26 +51,11 @@ export const MemoList: React.FunctionComponent = () => {
     window.addEventListener("storage", handleStorageDataChanged);
 
     return () => {
+      unsubscribeMemoStore();
+      historyService.unbindStateListener(ctx);
       window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);
-
-  useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
-    memoService.bindStateChange(ctx, (newMemos) => {
-      setMemos([...newMemos]);
-    });
-    historyService.bindStateChange(ctx, (querys) => {
-      setTagQuery(querys.tag);
-    });
-
-    return () => {
-      memoService.unbindStateListener(ctx);
-      historyService.unbindStateListener(ctx);
-    };
-  }, [shouldSplitMemoWord]);
 
   useEffect(() => {
     if (tagQuery !== "" && !isFetching && !isComplete) {
@@ -67,7 +64,7 @@ export const MemoList: React.FunctionComponent = () => {
   }, [tagQuery, isFetching, isComplete]);
 
   const handleDeleteMemoItem = async (idx: number) => {
-    await memoService.deleteById(memos[idx].id);
+    await memoService.deleteMemoById(memos[idx].id);
   };
 
   const fetchMoreMemos = useCallback(async () => {

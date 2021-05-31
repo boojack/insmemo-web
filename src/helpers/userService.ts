@@ -1,56 +1,27 @@
 import { api } from "./api";
+import userStore from "../stores/userStore";
 
-type UserInfoStatus = Model.User | null;
-
-class UserService {
-  private userinfo: UserInfoStatus;
-  private listeners: Map<Object, (user: UserInfoStatus) => void>;
-
-  constructor() {
-    this.userinfo = null;
-    this.listeners = new Map();
-  }
-
-  public async init() {
-    try {
-      await this.doSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  public getUserInfo() {
-    return this.userinfo;
-  }
-
-  public async doSignIn() {
+const userService = {
+  doSignIn: async () => {
     const { data: user } = await api.getUserInfo();
+    if (user) {
+      userStore.dispatch({
+        type: "SIGN_IN",
+        payload: { user },
+      });
+    }
 
-    this.userinfo = user;
-    this.emitValueChangedEvent();
-  }
+    return user
+  },
 
-  public async doSignOut() {
+  doSignOut: async () => {
     await api.signout();
-  }
-
-  public checkIsSignIn(): boolean {
-    return this.userinfo !== null;
-  }
-
-  public bindStateChange(context: Object, handler: (user: UserInfoStatus) => void) {
-    this.listeners.set(context, handler);
-  }
-
-  public unbindStateListener(context: Object) {
-    this.listeners.delete(context);
-  }
-
-  private emitValueChangedEvent() {
-    this.listeners.forEach((handler, ctx) => {
-      handler.call(ctx, this.userinfo);
+    userStore.dispatch({
+      type: "SIGN_OUT",
+      payload: { user: null },
     });
-  }
-}
+  },
+  ...userStore,
+};
 
-export const userService = new UserService();
+export default userService;

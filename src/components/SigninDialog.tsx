@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../helpers/api";
-import { userService } from "../helpers/userService";
 import { validate, ValidatorConfig } from "../helpers/validator";
+import userService from "../helpers/userService";
 import { showDialog } from "./Dialog";
 import { toast } from "./Toast";
 import "../less/signin-dialog.less";
@@ -55,8 +55,13 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
         return;
       }
 
-      await userService.doSignIn();
-      if (userService.checkIsSignIn()) {
+      const user = await userService.doSignIn();
+
+      if (user) {
+        userService.dispatch({
+          type: "SIGN_IN",
+          payload: { user },
+        });
         destory();
       } else {
         toast.error("😟 不知道发生了什么错误");
