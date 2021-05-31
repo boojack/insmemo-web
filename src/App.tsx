@@ -16,6 +16,7 @@ function App() {
       const { user } = userService.getState();
       if (!user) {
         showSigninDialog();
+        userService.__emit__();
       }
     });
 

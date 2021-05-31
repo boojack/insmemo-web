@@ -13,7 +13,7 @@ interface AmountState {
 }
 
 export const UserBanner: React.FunctionComponent = () => {
-  const [username, setUsername] = useState<string>("unknown");
+  const [username, setUsername] = useState<string>("");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
@@ -41,6 +41,8 @@ export const UserBanner: React.FunctionComponent = () => {
       if (user) {
         setUsername(user.username);
         setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
+      } else {
+        setUsername("unknown");
       }
     });
 
