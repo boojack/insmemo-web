@@ -1,24 +1,24 @@
-import createStore from "./createStore";
+import createStore, { Action } from "./createStore";
 
 interface State {
   memos: Model.Memo[];
 }
 
-interface PushMemoAction {
+interface PushMemoAction extends Action {
   type: "PUSH";
   payload: {
     memo: Model.Memo;
   };
 }
 
-interface PushMemosAction {
+interface PushMemosAction extends Action {
   type: "PUSH_MEMOS";
   payload: {
     memos: Model.Memo[];
   };
 }
 
-interface DeleteMemoByIdAction {
+interface DeleteMemoByIdAction extends Action {
   type: "DELETE_BY_ID";
   payload: {
     id: string;

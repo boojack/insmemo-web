@@ -6,6 +6,7 @@ export interface UrlQueryObject {
 
 /**
  * HistoryService
+ * 类版的 Store
  */
 class HistoryService {
   public query: UrlQueryObject;

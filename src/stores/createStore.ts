@@ -1,11 +1,9 @@
-interface Action {
+export interface Action {
   type: string;
 }
 
 type Reducer<S, A extends Action> = (s: S, a: A) => S;
-
 type Listener<S> = (s: S, ns: S) => void;
-
 type Unsubscribe = () => void;
 
 interface Store<S, A extends Action> {
@@ -15,6 +13,12 @@ interface Store<S, A extends Action> {
   __emit__: () => void;
 }
 
+/**
+ * 简单实现的 Redux
+ * @param preloadedState 初始 state
+ * @param reducer reducer pure function
+ * @returns store
+ */
 function createStore<S, A extends Action>(preloadedState: S, reducer: Reducer<S, A>): Store<S, A> {
   const listeners: Listener<S>[] = [];
   let currentState = preloadedState;

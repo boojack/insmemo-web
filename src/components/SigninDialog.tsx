@@ -58,10 +58,6 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
       const user = await userService.doSignIn();
 
       if (user) {
-        userService.dispatch({
-          type: "SIGN_IN",
-          payload: { user },
-        });
         destroy();
       } else {
         toast.error("😟 不知道发生了什么错误");
