@@ -25,25 +25,26 @@ export const MainEditor: React.FunctionComponent = () => {
     };
 
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
-      if (nextState.uponMemoId && prevState.uponMemoId !== nextState.uponMemoId) {
-        if (nextState.uponMemoId === nextState.editMemoId) {
-          toast.info("不能 mark 自己呀");
-          return;
-        }
-
+      if (nextState.uponMemoId !== prevState.uponMemoId) {
         if (nextState.uponMemoId === "") {
           setUponMemoId("");
           return;
         }
 
-        const memo = memoService.getMemoById(nextState.uponMemoId);
-        const uponMemoContent = utils.parseHTMLToRawString(formatMemoContent(memo?.content ?? ""));
-        // this.editorConfig.editorRef?.current?.focus();
+        if (nextState.uponMemoId === nextState.editMemoId) {
+          toast.info("不能 mark 自己呀");
+          return;
+        }
+
+        const uponMemo = memoService.getMemoById(nextState.uponMemoId);
         setUponMemoId(nextState.uponMemoId);
-        setUponMemoContent(uponMemoContent);
+        if (uponMemo) {
+          const uponMemoContent = utils.parseHTMLToRawString(formatMemoContent(uponMemo?.content ?? ""));
+          setUponMemoContent(uponMemoContent);
+        }
       }
 
-      if (nextState.editMemoId && prevState.editMemoId !== nextState.editMemoId) {
+      if (nextState.editMemoId !== prevState.editMemoId) {
         if (nextState.editMemoId === "") {
           setEditMemoId("");
           return;

@@ -15,7 +15,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">😀</span>关于
+          <span className="icon-text">😀</span>关于 insmemo
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
@@ -23,7 +23,10 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="dialog-content-container">
         <p>
-          <i>(暂无名)</i> ：
+          <b>
+            <i>insmemo</i>
+          </b>{" "}
+          ：
           <a target="_blank" href="https://flomoapp.com/">
             flomo
           </a>{" "}
@@ -58,7 +61,14 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
         </ul>
         <hr />
         <p>Enjoy it and have fun~</p>
-        <p className="tip-text">last update at 2021/6/1 11:15:01 v1.1.2</p>
+        <p className="tip-text">
+          BTW, my personal site:{" "}
+          <a target="_blank" href="https://justsven.top">
+            https://justsven.top
+          </a>{" "}
+          👀
+        </p>
+        <p className="tip-text">last update at 2021/6/1 12:47:01, v1.1.3</p>
       </div>
     </>
   );
