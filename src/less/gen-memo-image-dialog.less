@@ -12,6 +12,7 @@
     width: 432px;
     padding: 0;
     border-radius: 8px;
+    flex-grow: 0;
 
     > .dialog-header-container {
       padding: 8px 16px;
@@ -116,6 +117,22 @@
           }
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .dialog-wrapper.gen-memo-image-dialog {
+    padding: 24px 16px;
+    padding-top: 48px;
+    justify-content: unset;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > .dialog-container {
+      margin: auto;
     }
   }
 }
