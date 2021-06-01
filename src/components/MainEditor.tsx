@@ -99,39 +99,45 @@ export const MainEditor: React.FunctionComponent = () => {
       }
 
       if (editMemoId) {
-        const newMemo = memoService.getMemoById(editMemoId);
+        const prevMemo = memoService.getMemoById(editMemoId);
 
-        if (!newMemo || (newMemo.content === content && newMemo.uponMemoId === uponMemoId)) {
+        if (!prevMemo || (prevMemo.content === content && prevMemo.uponMemoId === uponMemoId)) {
           // do nth
         } else {
-          const prevTags = newMemo.tags ?? [];
+          const prevTags = prevMemo.tags ?? [];
           const prevTagTexts = prevTags.map((t) => t.text);
+          tags.push(...prevTags);
 
-          for (const t of [...tags, ...prevTags]) {
+          for (let i = 0; i < tags.length; ) {
+            const t = tags[i];
             const tagText = t.text;
 
             if (!tagTexts.includes(tagText)) {
-              api.removeMemoTag(newMemo.id, t.id);
+              tags.splice(i, 1);
+              api.removeMemoTag(prevMemo.id, t.id);
             } else {
+              i++;
               if (!prevTagTexts.includes(tagText)) {
-                api.createMemoTag(newMemo.id, t.id);
+                api.createMemoTag(prevMemo.id, t.id);
               }
             }
           }
 
-          const { data: editedMemo } = await api.updateMemo(newMemo.id, content, uponMemoId);
+          const { data: editedMemo } = await api.updateMemo(prevMemo.id, content, uponMemoId);
 
-          newMemo.content = editedMemo.content ?? "";
-          newMemo.uponMemoId = editedMemo.uponMemoId ?? "";
-          if (newMemo.uponMemoId) {
-            newMemo.uponMemo = memoService.getMemoById(newMemo.uponMemoId);
+          prevMemo.tags = tags;
+          prevMemo.content = editedMemo.content ?? "";
+          prevMemo.uponMemoId = editedMemo.uponMemoId ?? "";
+          if (editedMemo.uponMemoId) {
+            prevMemo.uponMemo = memoService.getMemoById(editedMemo.uponMemoId);
           }
-          newMemo.updatedAt = Date.now();
+          prevMemo.updatedAt = Date.now();
           memoService.__emit__();
         }
         globalStateService.setEditMemoId("");
       } else {
         const { data: newMemo } = await api.createMemo(content, uponMemoId);
+
         newMemo.tags = tags;
         if (uponMemoId) {
           newMemo.uponMemo = memoService.getMemoById(uponMemoId);
