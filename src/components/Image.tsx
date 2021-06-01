@@ -1,13 +1,13 @@
 import React from "react";
 import { showPreviewImageDialog } from "./PreviewImageDialog";
-import "../less/imagex.less";
+import "../less/image.less";
 
 interface Props {
   className?: string;
   imgUrl: string;
 }
 
-export const ImageX: React.FunctionComponent<Props> = (props: Props) => {
+export const Image: React.FunctionComponent<Props> = (props: Props) => {
   const { className, imgUrl } = props;
 
   const handleImageClick = () => {
@@ -15,7 +15,7 @@ export const ImageX: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <div className={"imagex-container " + className} onClick={handleImageClick}>
+    <div className={"image-container " + className} onClick={handleImageClick}>
       <img src={imgUrl} decoding="async" referrerPolicy="no-referrer" loading="lazy" />
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IMAGE_URL_REG, LINK_REG, TAG_REG } from "../helpers/consts";
+import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
-import { stateManager } from "../helpers/stateManager";
-import { ImageX } from "./ImageX";
+import { Image } from "./Image";
 import { showMemoStoryDialog } from "./MemoStoryDialog";
 import { showGenMemoImageDialog } from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
@@ -53,7 +53,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   const uponThisMemo = () => {
-    stateManager.setState("uponMemoId", memo.id);
+    globalStateService.setUponMemoId(memo.id);
   };
 
   const handleBtnsContainerClick = (e: React.MouseEvent) => {
@@ -69,7 +69,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   };
 
   const handleEditMemoClick = () => {
-    stateManager.setState("editMemoId", memo.id);
+    globalStateService.setEditMemoId(memo.id);
   };
 
   const handleMouseLeaveMemoWrapper = () => {
@@ -118,7 +118,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
       {imageUrls.length > 0 ? (
         <div className="images-container">
           {imageUrls.map((imgUrl, idx) => (
-            <ImageX className="memo-img" key={idx} imgUrl={imgUrl} />
+            <Image className="memo-img" key={idx} imgUrl={imgUrl} />
           ))}
         </div>
       ) : null}

@@ -22,9 +22,6 @@ export const UserBanner: React.FunctionComponent = () => {
   const [showToolsBtnDialog, setDialogStatus] = useState<boolean>(false);
 
   useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
     const fetchDataAmount = async () => {
       const { data } = await api.getMyDataAmount();
 

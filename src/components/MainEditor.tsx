@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
 import memoService from "../helpers/memoService";
-import { stateManager } from "../helpers/stateManager";
+import globalStateService from "../helpers/globalStateService";
 import { historyService } from "../helpers/historyService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
@@ -24,9 +24,8 @@ export const MainEditor: React.FunctionComponent = () => {
       key: Date.now(),
     };
 
-    stateManager.bindStateChange("uponMemoId", ctx, async (uponMemoId: string) => {
+    const unsubscribeGlobalState = globalStateService.subscribe(({ uponMemoId, editMemoId }) => {
       if (uponMemoId) {
-        const editMemoId = stateManager.getState("editMemoId");
         if (uponMemoId === editMemoId) {
           toast.info("不能 mark 自己呀");
           return;
@@ -40,16 +39,14 @@ export const MainEditor: React.FunctionComponent = () => {
       } else {
         setUponMemoId("");
       }
-    });
 
-    stateManager.bindStateChange("editMemoId", ctx, async (editMemoId: string) => {
       if (editMemoId) {
         const editMemo = memoService.getMemoById(editMemoId);
 
         if (editMemo) {
           setEditMemoId(editMemoId);
           editorRef.current?.setContent(editMemo.content ?? "");
-          stateManager.setState("uponMemoId", editMemo.uponMemoId ?? "");
+          globalStateService.setUponMemoId(editMemo.uponMemoId ?? "");
         }
       } else {
         setEditMemoId("");
@@ -73,8 +70,7 @@ export const MainEditor: React.FunctionComponent = () => {
     });
 
     return () => {
-      stateManager.unbindStateListener("uponMemoId", ctx);
-      stateManager.unbindStateListener("editMemoId", ctx);
+      unsubscribeGlobalState();
       historyService.unbindStateListener(ctx);
     };
   }, []);
@@ -129,7 +125,7 @@ export const MainEditor: React.FunctionComponent = () => {
         }
       } else {
         const { data: newMemo } = await api.createMemo(content, uponMemoId);
-
+        newMemo.tags = tags;
         // link memo and tag
         for (const t of tags) {
           await api.createMemoTag(newMemo.id, t.id);
@@ -145,7 +141,7 @@ export const MainEditor: React.FunctionComponent = () => {
   );
 
   const handleCancelBtnClick = useCallback(() => {
-    stateManager.setState("editMemoId", "");
+    globalStateService.setEditMemoId("");
     editorRef.current?.setContent("");
     setContent("");
     setUponMemoId("");
@@ -163,7 +159,7 @@ export const MainEditor: React.FunctionComponent = () => {
   );
 
   const handleClearUponMemoClick = () => {
-    stateManager.setState("uponMemoId", "");
+    globalStateService.setUponMemoId("");
   };
 
   // 编辑器配置
