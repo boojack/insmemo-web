@@ -82,7 +82,10 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
   const handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     const content = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, content);
+    if (content && editorRef.current) {
+      editorRef.current.innerText = content;
+      setContent(editorRef.current.innerHTML);
+    }
 
     if (handleContentChange) {
       handleContentChange(content);

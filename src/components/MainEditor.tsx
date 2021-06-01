@@ -129,7 +129,7 @@ export const MainEditor: React.FunctionComponent = () => {
           newMemo.updatedAt = Date.now();
           memoService.__emit__();
         }
-        setEditMemoId("");
+        globalStateService.setEditMemoId("");
       } else {
         const { data: newMemo } = await api.createMemo(content, uponMemoId);
         newMemo.tags = tags;
@@ -144,7 +144,7 @@ export const MainEditor: React.FunctionComponent = () => {
       }
 
       setContent("");
-      setUponMemoId("");
+      globalStateService.setUponMemoId("");
       setEditorContentCache("");
     },
     [editMemoId, uponMemoId]

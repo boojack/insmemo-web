@@ -1,6 +1,13 @@
 @import "./mixin.less";
 
 .gen-memo-image-dialog {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding: 64px 0;
+  .pretty-scroll-bar(0px, 0px);
+
   > .dialog-container {
     width: 432px;
     padding: 0;
