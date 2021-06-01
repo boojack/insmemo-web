@@ -9,7 +9,7 @@ import "../less/memolist.less";
 
 export const MemoList: React.FunctionComponent = () => {
   const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
-  const [tagQuery, setTagQuery] = useState(historyService.querys.tag ?? "");
+  const [tagQuery, setTagQuery] = useState(historyService.query.tag ?? "");
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
@@ -39,8 +39,8 @@ export const MemoList: React.FunctionComponent = () => {
       setMemos([...memos]);
     });
 
-    historyService.bindStateChange(ctx, (querys) => {
-      setTagQuery(querys.tag);
+    historyService.bindStateChange(ctx, (query) => {
+      setTagQuery(query.tag);
     });
 
     const handleStorageDataChanged = () => {

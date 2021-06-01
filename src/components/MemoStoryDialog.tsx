@@ -14,8 +14,8 @@ interface Props extends DialogProps {
 
 const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   const { memoId: currentMemoId } = props;
-  const [currentMemo, setCurrentMemo] = useState<FormatedMemo>();
-  const [downMemos, setDownMemos] = useState<FormatedMemo[]>([]);
+  const [currentMemo, setCurrentMemo] = useState<FormattedMemo>();
+  const [downMemos, setDownMemos] = useState<FormattedMemo[]>([]);
   const [showDownMemosContainer, toggleDownMemosStatus] = useToggle(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
     if (memoTemp) {
       setCurrentMemo({
         ...memoTemp,
-        formatedContent: formatMemoContent(memoTemp.content),
+        formattedContent: formatMemoContent(memoTemp.content),
         createdAtStr: utils.getTimeString(memoTemp.createdAt),
       });
     }
@@ -37,7 +37,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
       }
 
       const downMemoIdList: string[] = [currentMemo.uponMemoId];
-      const downMemoList: FormatedMemo[] = [];
+      const downMemoList: FormattedMemo[] = [];
 
       while (downMemoIdList.length > 0) {
         const memoId = downMemoIdList.shift();
@@ -48,7 +48,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
           if (memoTemp) {
             downMemoList.push({
               ...memoTemp,
-              formatedContent: formatMemoContent(memoTemp.content),
+              formattedContent: formatMemoContent(memoTemp.content),
               createdAtStr: utils.getTimeString(memoTemp.createdAt),
             });
             setDownMemos([...downMemoList]);
@@ -76,7 +76,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         <p className="title-text">
           <span className="icon-text">📚</span>Memo Story
         </p>
-        <button className="text-btn close-btn" onClick={props.destory}>
+        <button className="text-btn close-btn" onClick={props.destroy}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
@@ -91,7 +91,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
                   Share
                 </span>
               </div>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: currentMemo.formatedContent }}></div>
+              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: currentMemo.formattedContent }}></div>
             </div>
             <p className={"action-text " + (downMemos.length === 0 ? "hidden" : "")} onClick={toggleDownMemosStatus}>
               下游有 {downMemos.length} 个 Memo，点击{showDownMemosContainer ? "收起" : "展开"}
@@ -104,7 +104,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
               <div className="memo-header-container">
                 <p className="time-text">{m.createdAtStr}</p>
               </div>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formatedContent }}></div>
+              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formattedContent }}></div>
             </div>
           ))}
         </div>

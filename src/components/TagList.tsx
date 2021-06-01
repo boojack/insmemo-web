@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
 import { useToggle } from "../hooks/useToggle";
@@ -11,7 +11,7 @@ interface TagItem extends Api.Tag {}
 export const TagList: React.FunctionComponent = () => {
   const [usedTags, setUsedTags] = useState<TagItem[]>([]);
   const [unusedTags, setUnusedTags] = useState<TagItem[]>([]);
-  const [tagQuery, setTagQuery] = useState(historyService.querys.tag);
+  const [tagQuery, setTagQuery] = useState(historyService.query.tag);
   const [showUnusedTagsContainer, toggleShowUnusedTagsStatus] = useToggle(false);
 
   useEffect(() => {
@@ -40,13 +40,13 @@ export const TagList: React.FunctionComponent = () => {
       fetchTags();
     });
 
-    historyService.bindStateChange(ctx, (querys) => {
-      setTagQuery(querys.tag);
+    historyService.bindStateChange(ctx, (query) => {
+      setTagQuery(query.tag);
 
       // 删除移动端样式
       const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
       if (pageContainerEl) {
-        pageContainerEl.classList.remove(MOBILE_ADDTION_CLASSNAME);
+        pageContainerEl.classList.remove(MOBILE_ADDITION_CLASSNAME);
       }
     });
 

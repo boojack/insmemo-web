@@ -19,9 +19,9 @@ interface Props {
 
 export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   const { className, memo: propsMemo, shouldSplitMemoWord } = props;
-  const [memo, setMemo] = useState<FormatedMemo>({
+  const [memo, setMemo] = useState<FormattedMemo>({
     ...propsMemo,
-    formatedContent: formatMemoContent(propsMemo.content),
+    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
   const [uponMemoContent, setUponMemoContent] = useState("");
@@ -40,7 +40,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
   useEffect(() => {
     setMemo({
       ...memo,
-      formatedContent: formatMemoContent(memo.content),
+      formattedContent: formatMemoContent(memo.content),
     });
   }, [shouldSplitMemoWord]);
 
@@ -114,7 +114,7 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
           </span>
         </div>
       </div>
-      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
+      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
       {imageUrls.length > 0 ? (
         <div className="images-container">
           {imageUrls.map((imgUrl, idx) => (

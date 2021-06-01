@@ -21,7 +21,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    props.destory();
+    props.destroy();
   };
 
   const handleSplitWordsValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

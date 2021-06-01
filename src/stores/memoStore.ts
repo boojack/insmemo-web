@@ -25,31 +25,36 @@ interface DeleteMemoByIdAction {
   };
 }
 
-type Action = PushMemosAction | PushMemoAction | DeleteMemoByIdAction;
+type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction;
 
-function memoReducer(state: State, action: Action): State {
-  if (action.type === "PUSH") {
-    const memo = action.payload.memo;
-    const memos = [memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
+function memoReducer(state: State, action: Actions): State {
+  switch (action.type) {
+    case "PUSH": {
+      const memo = action.payload.memo;
+      const memos = [memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
 
-    return {
-      memos,
-    };
-  } else if (action.type === "PUSH_MEMOS") {
-    const memos = [...action.payload.memos, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
+      return {
+        memos,
+      };
+    }
+    case "PUSH_MEMOS": {
+      const memos = [...action.payload.memos, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
 
-    return {
-      memos,
-    };
-  } else if (action.type === "DELETE_BY_ID") {
-    return {
-      memos: [...state.memos].filter((memo) => memo.id !== action.payload.id),
-    };
-  } else {
-    return state;
+      return {
+        memos,
+      };
+    }
+    case "DELETE_BY_ID": {
+      return {
+        memos: [...state.memos].filter((memo) => memo.id !== action.payload.id),
+      };
+    }
+    default: {
+      return state;
+    }
   }
 }
 
-const memoStore = createStore<State, Action>({ memos: [] }, memoReducer);
+const memoStore = createStore<State, Actions>({ memos: [] }, memoReducer);
 
 export default memoStore;

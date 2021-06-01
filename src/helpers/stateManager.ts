@@ -66,7 +66,7 @@ class StateManager {
         }
       }
     } else {
-      throw new Error("no key in listenr");
+      throw new Error("no key in listener");
     }
   }
 

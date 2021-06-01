@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import { MOBILE_ADDTION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import { historyService } from "../helpers/historyService";
@@ -79,10 +79,10 @@ export const UserBanner: React.FunctionComponent = () => {
     const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
 
     if (pageContainerEl) {
-      if (pageContainerEl.classList.contains(MOBILE_ADDTION_CLASSNAME)) {
-        pageContainerEl.classList.remove(MOBILE_ADDTION_CLASSNAME);
+      if (pageContainerEl.classList.contains(MOBILE_ADDITION_CLASSNAME)) {
+        pageContainerEl.classList.remove(MOBILE_ADDITION_CLASSNAME);
       } else {
-        pageContainerEl.classList.add(MOBILE_ADDTION_CLASSNAME);
+        pageContainerEl.classList.add(MOBILE_ADDITION_CLASSNAME);
       }
     }
   }, []);

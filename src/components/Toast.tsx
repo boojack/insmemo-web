@@ -23,12 +23,12 @@ export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
 
   useEffect(() => {
     if (duration > 0) {
-      setTimeout(destory, duration);
+      setTimeout(destroy, duration);
     }
   }, []);
 
-  const destory = () => {
-    containerDiv.classList.add("destory");
+  const destroy = () => {
+    containerDiv.classList.add("destroy");
 
     setTimeout(() => {
       ReactDOM.unmountComponentAtNode(containerDiv);
@@ -37,7 +37,7 @@ export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
   };
 
   return (
-    <div className="toast-container" onClick={destory}>
+    <div className="toast-container" onClick={destroy}>
       <p className="content-text">{props.content}</p>
     </div>
   );
@@ -58,8 +58,8 @@ export namespace toast {
     toastContainerDiv.appendChild(div);
 
     const cbs = {
-      destory: () => {
-        div.classList.add("destory");
+      destroy: () => {
+        div.classList.add("destroy");
 
         setTimeout(() => {
           ReactDOM.unmountComponentAtNode(div);

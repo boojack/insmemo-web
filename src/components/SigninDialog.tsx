@@ -16,7 +16,7 @@ const validateConfig: ValidatorConfig = {
 };
 
 const SigninDialog: React.FunctionComponent<Props> = (props) => {
-  const { destory } = props;
+  const { destroy } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -62,7 +62,7 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
           type: "SIGN_IN",
           payload: { user },
         });
-        destory();
+        destroy();
       } else {
         toast.error("😟 不知道发生了什么错误");
       }
@@ -110,7 +110,7 @@ export function showSigninDialog() {
   showDialog(
     {
       className: "signin-dialog",
-      clickSpaceDestory: false,
+      clickSpaceDestroy: false,
     },
     SigninDialog,
     {}

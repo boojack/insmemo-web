@@ -5,10 +5,10 @@ import "../less/about-site-dialog.less";
 interface Props extends DialogProps {}
 
 const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
-  const { destory } = props;
+  const { destroy } = props;
 
   const handleCloseBtnClick = () => {
-    destory();
+    destroy();
   };
 
   return (

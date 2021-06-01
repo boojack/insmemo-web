@@ -1,8 +1,8 @@
 interface DialogProps {
-  destory: FunctionType;
+  destroy: FunctionType;
 }
 
-interface FormatedMemo extends Model.Memo {
-  formatedContent: string;
+interface FormattedMemo extends Model.Memo {
+  formattedContent: string;
   createdAtStr: string;
 }

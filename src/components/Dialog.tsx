@@ -4,17 +4,17 @@ import "../less/dialog.less";
 
 interface DialogConfig {
   className: string;
-  clickSpaceDestory?: boolean;
+  clickSpaceDestroy?: boolean;
 }
 
 interface Props extends DialogConfig, DialogProps {}
 
 const BaseDialog: React.FunctionComponent<Props> = (props) => {
-  const { className, clickSpaceDestory, destory } = props;
+  const { className, clickSpaceDestroy, destroy } = props;
 
   const handleSpaceClicked = () => {
-    if (clickSpaceDestory) {
-      destory();
+    if (clickSpaceDestroy) {
+      destroy();
     }
   };
 
@@ -31,14 +31,14 @@ export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComp
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
 
-  const destory = () => {
+  const destroy = () => {
     ReactDOM.unmountComponentAtNode(tempDiv);
     tempDiv.remove();
   };
 
   ReactDOM.render(
-    <BaseDialog destory={destory} clickSpaceDestory={true} {...config}>
-      <Fc destory={destory} {...props}></Fc>
+    <BaseDialog destroy={destroy} clickSpaceDestroy={true} {...config}>
+      <Fc destroy={destroy} {...props}></Fc>
     </BaseDialog>,
     tempDiv
   );

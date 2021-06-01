@@ -8,7 +8,7 @@ interface Props extends DialogProps {
 }
 
 const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
-  const { destory, imgUrl } = props;
+  const { destroy, imgUrl } = props;
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgWidth, setImgWidth] = useState<number>(-1);
 
@@ -23,7 +23,7 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    destory();
+    destroy();
   };
 
   const handleDecreaseImageSize = () => {

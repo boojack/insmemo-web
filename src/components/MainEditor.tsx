@@ -56,8 +56,8 @@ export const MainEditor: React.FunctionComponent = () => {
       }
     });
 
-    historyService.bindStateChange(ctx, (querys) => {
-      const tagText = querys.tag;
+    historyService.bindStateChange(ctx, (query) => {
+      const tagText = query.tag;
 
       if (tagText) {
         if (preferences.tagTextClickedAction === "insert") {

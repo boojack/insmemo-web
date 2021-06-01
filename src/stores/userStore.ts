@@ -14,22 +14,26 @@ interface SignOutAction {
   payload: State;
 }
 
-type Action = SignInAction | SignOutAction;
+type Actions = SignInAction | SignOutAction;
 
-function userReducer(state: State, action: Action): State {
-  if (action.type === "SIGN_IN") {
-    return {
-      user: action.payload.user,
-    };
-  } else if (action.type === "SIGN_OUT") {
-    return {
-      user: null,
-    };
-  } else {
-    return state;
+function userReducer(state: State, action: Actions): State {
+  switch (action.type) {
+    case "SIGN_IN": {
+      return {
+        user: action.payload.user,
+      };
+    }
+    case "SIGN_OUT": {
+      return {
+        user: null,
+      };
+    }
+    default: {
+      return state;
+    }
   }
 }
 
-const userStore = createStore<State, Action>({ user: null }, userReducer);
+const userStore = createStore<State, Actions>({ user: null }, userReducer);
 
 export default userStore;

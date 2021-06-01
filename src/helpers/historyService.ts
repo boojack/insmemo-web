@@ -8,12 +8,12 @@ export interface UrlQueryObject {
  * HistoryService
  */
 class HistoryService {
-  public querys: UrlQueryObject;
+  public query: UrlQueryObject;
   private hash: string;
   private listener: { context: Object; handler: FunctionType }[];
 
   constructor() {
-    this.querys = {
+    this.query = {
       tag: "",
     };
     this.hash = "";
@@ -24,16 +24,16 @@ class HistoryService {
 
   public init() {
     const urlParams = new URLSearchParams(window.location.search);
-    this.querys.tag = urlParams.get("tag") ?? "";
+    this.query.tag = urlParams.get("tag") ?? "";
   }
 
-  public setParamsState(querys: Partial<UrlQueryObject>) {
-    this.querys = {
-      ...this.querys,
-      ...querys,
+  public setParamsState(query: Partial<UrlQueryObject>) {
+    this.query = {
+      ...this.query,
+      ...query,
     };
 
-    let nextQueryString = utils.iterObjectToParamsString(this.querys);
+    let nextQueryString = utils.iterObjectToParamsString(this.query);
     if (Boolean(nextQueryString)) {
       nextQueryString = "?" + nextQueryString;
     } else {
@@ -43,7 +43,7 @@ class HistoryService {
     this.emitValueChangedEvent();
   }
 
-  public bindStateChange(context: Object, handler: (querys: UrlQueryObject, hash: string) => void) {
+  public bindStateChange(context: Object, handler: (query: UrlQueryObject, hash: string) => void) {
     this.listener.push({ context, handler });
   }
 
@@ -58,7 +58,7 @@ class HistoryService {
 
   private emitValueChangedEvent() {
     for (const h of this.listener) {
-      h.handler(this.querys, this.hash);
+      h.handler(this.query, this.hash);
     }
   }
 }

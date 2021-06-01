@@ -19,7 +19,7 @@ export const ToolsBtnPopup: React.FunctionComponent<Props> = (props) => {
     showAboutSiteDialog();
   };
 
-  const handleSignoutBtnClick = () => {
+  const handleSignOutBtnClick = () => {
     userService.doSignOut();
     location.reload();
   };
@@ -32,7 +32,7 @@ export const ToolsBtnPopup: React.FunctionComponent<Props> = (props) => {
       <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
         <span className="icon">😀</span> 关于
       </button>
-      <button className="text-btn action-btn" onClick={handleSignoutBtnClick}>
+      <button className="text-btn action-btn" onClick={handleSignOutBtnClick}>
         <span className="icon">👋</span> 退出
       </button>
     </div>

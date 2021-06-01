@@ -11,13 +11,13 @@ interface Props extends DialogProps {
 }
 
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
-  const { memo: propsMemo, destory } = props;
+  const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
   const { user: userinfo } = userService.getState();
   const memoElRef = useRef<HTMLDivElement>(null);
-  const memo: FormatedMemo = {
+  const memo: FormattedMemo = {
     ...propsMemo,
-    formatedContent: formatMemoContent(propsMemo.content),
+    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   };
 
@@ -34,7 +34,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    destory();
+    destroy();
   };
 
   return (
@@ -60,7 +60,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
             </div>
             <div className="memo-container" ref={memoElRef}>
               <span className="time-text">{memo.createdAtStr}</span>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formatedContent }}></div>
+              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
               <div className="watermark-container">
                 <span className="normal-text">
                   via <span className="name-text">{userinfo?.username}</span>
