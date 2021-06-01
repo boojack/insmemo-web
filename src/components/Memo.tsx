@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IMAGE_URL_REG, LINK_REG, TAG_REG } from "../helpers/consts";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
@@ -44,46 +44,49 @@ export const Memo: React.FunctionComponent<Props> = (props: Props) => {
     });
   }, [shouldSplitMemoWord]);
 
-  const handleMemoClick = (e: React.MouseEvent) => {
-    if (["A", "IMG"].includes((e.target as HTMLElement)?.tagName)) {
-      return;
-    }
+  const handleMemoClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (["A", "IMG"].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
 
-    showMemoStoryDialog(memo.id);
-  };
+      showMemoStoryDialog(memo.id);
+    },
+    [memo]
+  );
 
-  const uponThisMemo = () => {
+  const uponThisMemo = useCallback(() => {
     globalStateService.setUponMemoId(memo.id);
-  };
+  }, [memo]);
 
-  const handleBtnsContainerClick = (e: React.MouseEvent) => {
+  const handleBtnsContainerClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-  };
+  }, []);
 
-  const handleDeleteMemoClick = async () => {
+  const handleDeleteMemoClick = useCallback(async () => {
     if (showConfirmDeleteBtn) {
       await props.delete(props.index);
     } else {
       toggleConfirmDeleteBtn();
     }
-  };
+  }, [showConfirmDeleteBtn]);
 
-  const handleEditMemoClick = () => {
+  const handleEditMemoClick = useCallback(() => {
     globalStateService.setEditMemoId(memo.id);
-  };
+  }, [memo]);
 
-  const handleMouseLeaveMemoWrapper = () => {
+  const handleMouseLeaveMemoWrapper = useCallback(() => {
     if (showConfirmDeleteBtn) {
       toggleConfirmDeleteBtn();
     }
     if (showMoreActionBtns) {
       toggleMoreActionBtns();
     }
-  };
+  }, [showConfirmDeleteBtn, showMoreActionBtns]);
 
-  const handleGenMemoImageBtnClick = () => {
+  const handleGenMemoImageBtnClick = useCallback(() => {
     showGenMemoImageDialog(memo);
-  };
+  }, [memo]);
 
   return (
     <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>

@@ -3,7 +3,7 @@ import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
-import { historyService } from "../helpers/historyService";
+import locationService from "../helpers/locationService";
 import { ToolsBtnPopup } from "./ToolsBtnPopup";
 import "../less/user-banner.less";
 
@@ -39,7 +39,7 @@ export const UserBanner: React.FunctionComponent = () => {
         setUsername(user.username);
         setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
       } else {
-        setUsername("unknown");
+        setUsername("insmemo");
       }
     });
 
@@ -69,7 +69,7 @@ export const UserBanner: React.FunctionComponent = () => {
   );
 
   const handleUsernameClick = useCallback(() => {
-    historyService.setParamsState({ tag: "" });
+    locationService.setTagQuery("");
   }, []);
 
   const handleMoreActionBtnClick = useCallback(() => {

@@ -3,7 +3,7 @@ import { api } from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import globalStateService from "../helpers/globalStateService";
-import { historyService } from "../helpers/historyService";
+import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { toast } from "./Toast";
@@ -20,10 +20,6 @@ export const MainEditor: React.FunctionComponent = () => {
   const editorRef = React.useRef<EditorRefActions>(null);
 
   useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
-
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
       if (nextState.uponMemoId !== prevState.uponMemoId) {
         if (nextState.uponMemoId === "") {
@@ -60,7 +56,7 @@ export const MainEditor: React.FunctionComponent = () => {
       }
     });
 
-    historyService.bindStateChange(ctx, (query) => {
+    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
       const tagText = query.tag;
 
       if (tagText) {
@@ -78,7 +74,7 @@ export const MainEditor: React.FunctionComponent = () => {
 
     return () => {
       unsubscribeGlobalState();
-      historyService.unbindStateListener(ctx);
+      unsubscribeLocationStore();
     };
   }, []);
 

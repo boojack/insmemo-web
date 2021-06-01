@@ -2,14 +2,15 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import useDebounce from "../hooks/useDebounce";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
-import { historyService } from "../helpers/historyService";
+import locationService from "../helpers/locationService";
 import { preferences } from "./PreferencesDialog";
 import { Memo } from "./Memo";
 import "../less/memolist.less";
 
 export const MemoList: React.FunctionComponent = () => {
   const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
-  const [tagQuery, setTagQuery] = useState(historyService.query.tag ?? "");
+  const { query } = locationService.getState();
+  const [tagQuery, setTagQuery] = useState(query.tag);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
@@ -31,15 +32,11 @@ export const MemoList: React.FunctionComponent = () => {
   }, [memos, tagQuery]);
 
   useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
-
     const unsubscribeMemoStore = memoService.subscribe(({ memos }) => {
       setMemos([...memos]);
     });
 
-    historyService.bindStateChange(ctx, (query) => {
+    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
       setTagQuery(query.tag);
     });
 
@@ -52,7 +49,7 @@ export const MemoList: React.FunctionComponent = () => {
 
     return () => {
       unsubscribeMemoStore();
-      historyService.unbindStateListener(ctx);
+      unsubscribeLocationStore();
       window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);

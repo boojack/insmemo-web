@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import memoService from "../helpers/memoService";
-import { historyService } from "../helpers/historyService";
+import locationService from "../helpers/locationService";
 import { useToggle } from "../hooks/useToggle";
 import "../less/tag-list.less";
 
@@ -11,14 +11,11 @@ interface TagItem extends Api.Tag {}
 export const TagList: React.FunctionComponent = () => {
   const [usedTags, setUsedTags] = useState<TagItem[]>([]);
   const [unusedTags, setUnusedTags] = useState<TagItem[]>([]);
-  const [tagQuery, setTagQuery] = useState(historyService.query.tag);
+  const { query } = locationService.getState();
+  const [tagQuery, setTagQuery] = useState(query.tag);
   const [showUnusedTagsContainer, toggleShowUnusedTagsStatus] = useToggle(false);
 
   useEffect(() => {
-    const ctx = {
-      key: Date.now(),
-    };
-
     const fetchTags = async () => {
       const { data: tags } = await api.getMyTags();
       const usedTags = [];
@@ -40,19 +37,17 @@ export const TagList: React.FunctionComponent = () => {
       fetchTags();
     });
 
-    historyService.bindStateChange(ctx, (query) => {
+    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
       setTagQuery(query.tag);
 
       // 删除移动端样式
       const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-      if (pageContainerEl) {
-        pageContainerEl.classList.remove(MOBILE_ADDITION_CLASSNAME);
-      }
+      pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
     });
 
     return () => {
       unsubscribeMemoStore();
-      historyService.unbindStateListener(ctx);
+      unsubscribeLocationStore();
     };
   }, []);
 
@@ -66,9 +61,7 @@ export const TagList: React.FunctionComponent = () => {
         api.polishTag(tag.id);
       }
 
-      historyService.setParamsState({
-        tag: tagText,
-      });
+      locationService.setTagQuery(tagText);
     },
     [tagQuery]
   );

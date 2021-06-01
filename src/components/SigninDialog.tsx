@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import userService from "../helpers/userService";
+import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
 import { toast } from "./Toast";
 import "../less/signin-dialog.less";
@@ -58,6 +59,7 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
       const user = await userService.doSignIn();
 
       if (user) {
+        memoService.fetchMoreMemos();
         destroy();
       } else {
         toast.error("😟 不知道发生了什么错误");

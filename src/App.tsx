@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import userService from "./helpers/userService";
 import memoService from "./helpers/memoService";
+import locationService from "./helpers/locationService";
 import { MainEditor } from "./components/MainEditor";
 import { MemoList } from "./components/MemoList";
 import { Sidebar } from "./components/Sidebar";
@@ -17,18 +18,12 @@ function App() {
       if (!user) {
         showSigninDialog();
         userService.__emit__();
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        locationService.setTagQuery(urlParams.get("tag") ?? "");
+        memoService.fetchMoreMemos();
       }
     });
-
-    const unsubscribeUserStore = userService.subscribe(async ({ user }) => {
-      if (user) {
-        await memoService.fetchMoreMemos();
-      }
-    });
-
-    return () => {
-      unsubscribeUserStore();
-    };
   }, []);
 
   return (
