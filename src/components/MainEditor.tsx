@@ -24,32 +24,38 @@ export const MainEditor: React.FunctionComponent = () => {
       key: Date.now(),
     };
 
-    const unsubscribeGlobalState = globalStateService.subscribe(({ uponMemoId, editMemoId }) => {
-      if (uponMemoId) {
-        if (uponMemoId === editMemoId) {
+    const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
+      if (nextState.uponMemoId && prevState.uponMemoId !== nextState.uponMemoId) {
+        if (nextState.uponMemoId === nextState.editMemoId) {
           toast.info("不能 mark 自己呀");
           return;
         }
 
-        const memo = memoService.getMemoById(uponMemoId);
+        if (nextState.uponMemoId === "") {
+          setUponMemoId("");
+          return;
+        }
+
+        const memo = memoService.getMemoById(nextState.uponMemoId);
         const uponMemoContent = utils.parseHTMLToRawString(formatMemoContent(memo?.content ?? ""));
         // this.editorConfig.editorRef?.current?.focus();
-        setUponMemoId(uponMemoId);
+        setUponMemoId(nextState.uponMemoId);
         setUponMemoContent(uponMemoContent);
-      } else {
-        setUponMemoId("");
       }
 
-      if (editMemoId) {
-        const editMemo = memoService.getMemoById(editMemoId);
+      if (nextState.editMemoId && prevState.editMemoId !== nextState.editMemoId) {
+        if (nextState.editMemoId === "") {
+          setEditMemoId("");
+          return;
+        }
+
+        const editMemo = memoService.getMemoById(nextState.editMemoId);
 
         if (editMemo) {
-          setEditMemoId(editMemoId);
+          setEditMemoId(nextState.editMemoId);
           editorRef.current?.setContent(editMemo.content ?? "");
           globalStateService.setUponMemoId(editMemo.uponMemoId ?? "");
         }
-      } else {
-        setEditMemoId("");
       }
     });
 
@@ -92,40 +98,43 @@ export const MainEditor: React.FunctionComponent = () => {
       }
 
       if (editMemoId) {
-        const editMemo = memoService.getMemoById(editMemoId);
+        const newMemo = memoService.getMemoById(editMemoId);
 
-        setEditMemoId("");
-        if (!editMemo || (editMemo.content === content && editMemo.uponMemoId === uponMemoId)) {
+        if (!newMemo || (newMemo.content === content && newMemo.uponMemoId === uponMemoId)) {
           // do nth
         } else {
-          const prevTags = editMemo.tags ?? [];
+          const prevTags = newMemo.tags ?? [];
           const prevTagTexts = prevTags.map((t) => t.text);
 
           for (const t of [...tags, ...prevTags]) {
             const tagText = t.text;
 
             if (!tagTexts.includes(tagText)) {
-              api.removeMemoTag(editMemo.id, t.id);
+              api.removeMemoTag(newMemo.id, t.id);
             } else {
               if (!prevTagTexts.includes(tagText)) {
-                api.createMemoTag(editMemo.id, t.id);
+                api.createMemoTag(newMemo.id, t.id);
               }
             }
           }
 
-          const { data: editedMemo } = await api.updateMemo(editMemo.id, content, uponMemoId);
+          const { data: editedMemo } = await api.updateMemo(newMemo.id, content, uponMemoId);
 
-          editMemo.content = editedMemo.content ?? "";
-          editMemo.uponMemoId = editedMemo.uponMemoId ?? "";
-          if (editedMemo.uponMemo) {
-            editMemo.uponMemo = editedMemo.uponMemo;
+          newMemo.content = editedMemo.content ?? "";
+          newMemo.uponMemoId = editedMemo.uponMemoId ?? "";
+          if (newMemo.uponMemoId) {
+            newMemo.uponMemo = memoService.getMemoById(newMemo.uponMemoId);
           }
-          editMemo.updatedAt = Date.now();
+          newMemo.updatedAt = Date.now();
           memoService.__emit__();
         }
+        setEditMemoId("");
       } else {
         const { data: newMemo } = await api.createMemo(content, uponMemoId);
         newMemo.tags = tags;
+        if (uponMemoId) {
+          newMemo.uponMemo = memoService.getMemoById(uponMemoId);
+        }
         // link memo and tag
         for (const t of tags) {
           await api.createMemoTag(newMemo.id, t.id);
@@ -176,7 +185,7 @@ export const MainEditor: React.FunctionComponent = () => {
       handleContentChange: handleContentChange,
       editorRef,
     }),
-    [content, editMemoId]
+    [content, editMemoId, uponMemoId]
   );
 
   return (
