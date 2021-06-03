@@ -35,6 +35,54 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+
+    > .mobile-header-container {
+      width: 100%;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      display: none;
+
+      > .username-text {
+        max-width: calc(100% - 32px);
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 36px;
+        color: #5f5f5f;
+        margin-right: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        margin-right: auto;
+        flex-shrink: 0;
+      }
+
+      > .action-btn {
+        width: auto;
+        margin: 0 4px;
+        cursor: pointer;
+        flex-shrink: 0;
+        user-select: none;
+        border: none;
+        outline: none;
+        color: #5f5f5f;
+        background-color: unset;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        &.show-sidebar {
+          > .icon-img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -46,35 +94,31 @@
     align-items: flex-start;
     width: 100%;
     height: 100%;
-    padding: 0 10px;
-    padding-top: 10px;
+    padding: 0 12px;
 
     &.show-user-banner-dialog {
       > .sidebar-wrapper {
-        background-color: @bg-whitegray;
+        background-color: rgba(0, 0, 0, 0.4);
         width: 100%;
         height: 100%;
-        padding: 24px 32px;
         overflow-y: auto;
+        display: flex;
+        padding: 0;
         .pretty-scroll-bar(0px);
 
+        > * {
+          width: 320px;
+          background-color: @bg-whitegray;
+          flex-shrink: 0;
+          padding: 0 24px;
+        }
+
         > .user-banner-container {
-          > * {
-            display: flex;
-          }
+          padding-top: 8px;
 
           > .userinfo-header-container {
             > .username-text {
               font-size: 22px;
-            }
-
-            > .action-btn {
-              display: block;
-              margin: 0 6px;
-
-              &.more-action-btn {
-                margin-right: 0;
-              }
             }
           }
 
@@ -89,54 +133,35 @@
             }
           }
         }
+
+        > .tags-container {
+          flex-grow: 1;
+        }
       }
     }
 
     > .sidebar-wrapper {
       z-index: 10;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: auto;
-      max-height: 100%;
-      padding-top: 10px;
-
-      > .tags-container {
-        display: none;
-      }
-
-      > .user-banner-container {
-        > * {
-          display: none;
-        }
-        > .userinfo-header-container {
-          display: flex;
-
-          > .username-text {
-            max-width: calc(100% - 64px);
-          }
-
-          > .action-btn {
-            display: none;
-
-            &.more-action-btn {
-              display: flex;
-            }
-          }
-        }
-      }
+      height: 100%;
+      display: none;
     }
 
     > .content-wrapper {
       width: 100%;
       height: 100%;
-      padding-top: 40px;
       margin-left: 0;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+
+      > .mobile-header-container {
+        display: flex;
+      }
 
       > .memolist-wrapper {
         margin-bottom: 0px;

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -72,18 +71,6 @@ const UserBanner: React.FunctionComponent = () => {
     locationService.setTagQuery("");
   }, []);
 
-  const handleMoreActionBtnClick = useCallback(() => {
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-
-    if (pageContainerEl) {
-      if (pageContainerEl.classList.contains(MOBILE_ADDITION_CLASSNAME)) {
-        pageContainerEl.classList.remove(MOBILE_ADDITION_CLASSNAME);
-      } else {
-        pageContainerEl.classList.add(MOBILE_ADDITION_CLASSNAME);
-      }
-    }
-  }, []);
-
   return (
     <div className="user-banner-container">
       <div className="userinfo-header-container">
@@ -92,9 +79,6 @@ const UserBanner: React.FunctionComponent = () => {
         </p>
         <button className="action-btn tools-dialog-btn" onClick={toggleBtnsDialog}>
           ···
-        </button>
-        <button className="action-btn more-action-btn" onClick={handleMoreActionBtnClick}>
-          <img className="icon-img" src="/icons/fold.svg" alt="fold" />
         </button>
         <ToolsBtnPopup visibility={showToolsBtnDialog} />
       </div>

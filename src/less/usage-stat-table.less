@@ -24,6 +24,7 @@
   > .day-tip-text-container {
     width: 16px;
     height: 100%;
+    padding-bottom: 2px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -34,6 +35,10 @@
     > .tip-text {
       font-size: 8px;
       line-height: 16px;
+      padding-right: 4px;
+      width: 100%;
+      text-align: right;
+      color: gray;
     }
   }
 
@@ -72,6 +77,38 @@
 
       &.stat-day-L4-bg {
         background-color: @stat-day-L4-bg;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .usage-stat-table-wrapper {
+    height: 156px;
+    padding: 8px 0 !important;
+    padding-left: 4px !important;
+
+    > .day-tip-text-container {
+      visibility: visible;
+      width: 32px;
+      padding-bottom: 4px;
+
+      > .tip-text {
+        padding-right: 4px;
+        width: 100%;
+        font-size: 12px;
+        line-height: unset !important;
+        text-align: right;
+      }
+    }
+
+    > .usage-stat-table {
+      width: 248px;
+
+      > .stat-container {
+        width: 16px;
+        height: 16px;
+        margin-bottom: 4px;
       }
     }
   }
