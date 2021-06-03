@@ -1,0 +1,78 @@
+@import "./mixin.less";
+
+@stat-day-L1-bg: #9be9a8;
+@stat-day-L2-bg: #40c463;
+@stat-day-L3-bg: #30a14e;
+@stat-day-L4-bg: #216e39;
+
+.usage-stat-table-wrapper {
+  width: 100%;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 110px;
+  flex-wrap: wrap;
+
+  &:hover {
+    > .day-tip-text-container {
+      visibility: visible;
+    }
+  }
+
+  > .day-tip-text-container {
+    width: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    visibility: hidden;
+
+    > .tip-text {
+      font-size: 8px;
+      line-height: 16px;
+    }
+  }
+
+  > .usage-stat-table {
+    width: 188px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+
+    > .stat-container {
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #e8e8e8;
+      border-radius: 2px;
+      margin-bottom: 2px;
+
+      &.null {
+        background-color: #efefef;
+      }
+
+      &.stat-day-L1-bg {
+        background-color: @stat-day-L1-bg;
+      }
+
+      &.stat-day-L2-bg {
+        background-color: @stat-day-L2-bg;
+      }
+
+      &.stat-day-L3-bg {
+        background-color: @stat-day-L3-bg;
+      }
+
+      &.stat-day-L4-bg {
+        background-color: @stat-day-L4-bg;
+      }
+    }
+  }
+}
