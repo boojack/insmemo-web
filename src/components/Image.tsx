@@ -1,5 +1,5 @@
 import React from "react";
-import { showPreviewImageDialog } from "./PreviewImageDialog";
+import showPreviewImageDialog from "./PreviewImageDialog";
 import "../less/image.less";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   imgUrl: string;
 }
 
-export const Image: React.FunctionComponent<Props> = (props: Props) => {
+const Image: React.FunctionComponent<Props> = (props: Props) => {
   const { className, imgUrl } = props;
 
   const handleImageClick = () => {
@@ -20,3 +20,5 @@ export const Image: React.FunctionComponent<Props> = (props: Props) => {
     </div>
   );
 };
+
+export default Image;

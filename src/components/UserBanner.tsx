@@ -12,7 +12,7 @@ interface AmountState {
   tagsAmount: number;
 }
 
-export const UserBanner: React.FunctionComponent = () => {
+const UserBanner: React.FunctionComponent = () => {
   const [username, setUsername] = useState<string>("");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({
@@ -115,3 +115,5 @@ export const UserBanner: React.FunctionComponent = () => {
     </div>
   );
 };
+
+export default UserBanner;

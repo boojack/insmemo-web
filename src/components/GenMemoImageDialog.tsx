@@ -74,7 +74,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showGenMemoImageDialog(memo: Model.Memo) {
+export default function showGenMemoImageDialog(memo: Model.Memo) {
   showDialog(
     {
       className: "gen-memo-image-dialog",

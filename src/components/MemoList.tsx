@@ -4,10 +4,10 @@ import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
 import { preferences } from "./PreferencesDialog";
-import { Memo } from "./Memo";
+import Memo from "./Memo";
 import "../less/memolist.less";
 
-export const MemoList: React.FunctionComponent = () => {
+const MemoList: React.FunctionComponent = () => {
   const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
   const { query } = locationService.getState();
   const [tagQuery, setTagQuery] = useState(query.tag);
@@ -120,3 +120,5 @@ export const MemoList: React.FunctionComponent = () => {
     </div>
   );
 };
+
+export default MemoList;

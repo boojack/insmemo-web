@@ -3,9 +3,9 @@ import { IMAGE_URL_REG, LINK_REG, TAG_REG } from "../helpers/consts";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
-import { Image } from "./Image";
-import { showMemoStoryDialog } from "./MemoStoryDialog";
-import { showGenMemoImageDialog } from "./GenMemoImageDialog";
+import Image from "./Image";
+import showMemoStoryDialog from "./MemoStoryDialog";
+import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
 import "../less/memo.less";
 
@@ -17,7 +17,7 @@ interface Props {
   delete: (idx: number) => Promise<void>;
 }
 
-export const Memo: React.FunctionComponent<Props> = (props: Props) => {
+const Memo: React.FunctionComponent<Props> = (props: Props) => {
   const { className, memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<FormattedMemo>({
     ...propsMemo,
@@ -147,3 +147,5 @@ export function formatMemoContent(content: string): string {
 
   return content;
 }
+
+export default Memo;

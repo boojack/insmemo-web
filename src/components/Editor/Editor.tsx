@@ -30,7 +30,7 @@ const DEFAULT_EDITOR_PROPS: EditorProps = {
   showTools: false,
 };
 
-export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_PROPS) {
+const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_PROPS) {
   const {
     className,
     content: initialContent,
@@ -146,3 +146,5 @@ export const Editor = forwardRef(function (props: EditorProps = DEFAULT_EDITOR_P
     </div>
   );
 });
+
+export default Editor;

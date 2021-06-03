@@ -3,16 +3,26 @@ export namespace utils {
     return Date.now();
   }
 
-  // For example: 2021-4-8 17:52:17
-  export function getTimeString(d: Date | number | string): string {
-    const time = new Date(d);
+  export function getTimeStampByDate(t: Date | number | string): number {
+    const d = new Date(t);
 
-    const year = time.getFullYear();
-    const month = time.getMonth() + 1;
-    const date = time.getDate();
-    const hours = time.getHours();
-    const mins = time.getMinutes();
-    const secs = time.getSeconds();
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+
+    return new Date(`${year}-${month}-${date}`).getTime();
+  }
+
+  // For example: 2021-4-8 17:52:17
+  export function getTimeString(t: Date | number | string): string {
+    const d = new Date(t);
+
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+    const hours = d.getHours();
+    const mins = d.getMinutes();
+    const secs = d.getSeconds();
 
     const monthStr = month < 10 ? "0" + month : month;
     const dateStr = date < 10 ? "0" + date : date;

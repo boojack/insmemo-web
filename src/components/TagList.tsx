@@ -8,7 +8,7 @@ import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
 
-export const TagList: React.FunctionComponent = () => {
+const TagList: React.FunctionComponent = () => {
   const [usedTags, setUsedTags] = useState<TagItem[]>([]);
   const [unusedTags, setUnusedTags] = useState<TagItem[]>([]);
   const { query } = locationService.getState();
@@ -118,3 +118,5 @@ export const TagList: React.FunctionComponent = () => {
     </div>
   );
 };
+
+export default TagList;

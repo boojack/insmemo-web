@@ -18,7 +18,7 @@ type ToastItemProps = {
   containerDiv: HTMLDivElement;
 };
 
-export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
+const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
   const { containerDiv, duration } = props;
 
   useEffect(() => {
@@ -43,41 +43,44 @@ export const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
   );
 };
 
-export namespace toast {
-  let toastContainerDiv: Element;
+let toastContainerDiv: Element;
 
-  function show(config: ToastConfig) {
-    if (!toastContainerDiv) {
-      toastContainerDiv = document.createElement("div");
-      toastContainerDiv.className = "toast-list-container";
-      document.body.appendChild(toastContainerDiv);
-    }
-
-    const div = document.createElement("div");
-    div.className = "toast-wrapper " + config.type;
-    toastContainerDiv.appendChild(div);
-
-    const cbs = {
-      destroy: () => {
-        div.classList.add("destroy");
-
-        setTimeout(() => {
-          ReactDOM.unmountComponentAtNode(div);
-          div.remove();
-        }, ANIMATION_DURATION);
-      },
-    };
-
-    ReactDOM.render(<Toast {...config} containerDiv={div} />, div);
-
-    return cbs;
+function show(config: ToastConfig) {
+  if (!toastContainerDiv) {
+    toastContainerDiv = document.createElement("div");
+    toastContainerDiv.className = "toast-list-container";
+    document.body.appendChild(toastContainerDiv);
   }
 
-  export function info(content: string, duration: number = 2400) {
-    return show({ type: "normal", content, duration });
-  }
+  const div = document.createElement("div");
+  div.className = "toast-wrapper " + config.type;
+  toastContainerDiv.appendChild(div);
 
-  export function error(content: string, duration: number = 2400) {
-    return show({ type: "error", content, duration });
-  }
+  const cbs = {
+    destroy: () => {
+      div.classList.add("destroy");
+
+      setTimeout(() => {
+        ReactDOM.unmountComponentAtNode(div);
+        div.remove();
+      }, ANIMATION_DURATION);
+    },
+  };
+
+  ReactDOM.render(<Toast {...config} containerDiv={div} />, div);
+
+  return cbs;
 }
+
+function info(content: string, duration: number = 2400) {
+  return show({ type: "normal", content, duration });
+}
+
+function error(content: string, duration: number = 2400) {
+  return show({ type: "error", content, duration });
+}
+
+export default {
+  info,
+  error,
+};

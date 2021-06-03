@@ -76,7 +76,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showAboutSiteDialog() {
+export default function showAboutSiteDialog() {
   showDialog(
     {
       className: "about-site-dialog",

@@ -93,7 +93,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showPreferencesDialog() {
+export default function showPreferencesDialog() {
   showDialog(
     {
       className: "preferences-dialog",

@@ -4,7 +4,7 @@ import { validate, ValidatorConfig } from "../helpers/validator";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
-import { toast } from "./Toast";
+import toast from "./Toast";
 import "../less/signin-dialog.less";
 
 interface Props extends DialogProps {}
@@ -104,7 +104,7 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showSigninDialog() {
+export default function showSigninDialog() {
   showDialog(
     {
       className: "signin-dialog",

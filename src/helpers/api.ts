@@ -130,4 +130,8 @@ export namespace api {
   export function getUrlContentType(url: string) {
     return get<string>("/api/base/srctype?url=" + url);
   }
+
+  export function getMemosStat() {
+    return get<Api.MemosStat[]>("/api/memo/stat");
+  }
 }

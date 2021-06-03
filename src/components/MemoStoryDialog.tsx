@@ -4,7 +4,7 @@ import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
 import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
-import { showGenMemoImageDialog } from "./GenMemoImageDialog";
+import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";
 import "../less/memo-story-dialog.less";
 
@@ -113,7 +113,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showMemoStoryDialog(memoId: string) {
+export default function showMemoStoryDialog(memoId: string) {
   showDialog(
     {
       className: "memo-story-dialog",

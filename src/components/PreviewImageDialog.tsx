@@ -65,7 +65,7 @@ const PreviewImageDialog: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export function showPreviewImageDialog(imgUrl: string) {
+export default function showPreviewImageDialog(imgUrl: string) {
   showDialog(
     {
       className: "preview-image-dialog",

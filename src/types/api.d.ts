@@ -7,4 +7,9 @@ declare namespace Api {
   interface Tag extends Model.Tag {
     amount: number;
   }
+
+  interface MemosStat {
+    timestamp: string;
+    amount: number;
+  }
 }

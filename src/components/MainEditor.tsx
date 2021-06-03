@@ -6,13 +6,13 @@ import globalStateService from "../helpers/globalStateService";
 import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
-import { toast } from "./Toast";
+import toast from "./Toast";
 import { preferences } from "./PreferencesDialog";
-import { Editor, EditorRefActions } from "./Editor/Editor";
+import Editor, { EditorRefActions } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
 import "../less/main-editor.less";
 
-export const MainEditor: React.FunctionComponent = () => {
+const MainEditor: React.FunctionComponent = () => {
   const [content, setContent] = useState(getEditorContentCache());
   const [uponMemoId, setUponMemoId] = useState("");
   const [editMemoId, setEditMemoId] = useState("");
@@ -212,3 +212,5 @@ function setEditorContentCache(content: string) {
     editorContentCache: content,
   });
 }
+
+export default MainEditor;
