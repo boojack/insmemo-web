@@ -67,16 +67,23 @@ const UsageStatTable = () => {
   }, []);
 
   const handleUsageStatItemMouseEnter = useDebounce((ev: React.MouseEvent, item: UsageStatDaily) => {
-    if (item.count === 0) {
-      return;
-    }
-
     setCurrentStat(item);
+
+    const index = (utils.getTimeStampByDate(item.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
+    let addtionClass = "";
+    if (index > 62) {
+      addtionClass = "right";
+    } else if (index < 21) {
+      addtionClass = "left";
+    }
 
     const targetEl = ev.target as HTMLElement;
     if (popupRef.current) {
       popupRef.current.style.left = targetEl.offsetLeft + "px";
       popupRef.current.style.top = targetEl.offsetTop + "px";
+      popupRef.current.classList.remove("right");
+      popupRef.current.classList.remove("left");
+      popupRef.current.classList.add(addtionClass);
     }
   }, 200);
 
