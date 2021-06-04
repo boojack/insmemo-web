@@ -13,6 +13,16 @@ export namespace utils {
     return new Date(`${year}-${month}-${date}`).getTime();
   }
 
+  export function getDateString(t: Date | number | string): string {
+    const d = new Date(t);
+
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+
+    return `${year}/${month}/${date}`;
+  }
+
   // For example: 2021-4-8 17:52:17
   export function getTimeString(t: Date | number | string): string {
     const d = new Date(t);

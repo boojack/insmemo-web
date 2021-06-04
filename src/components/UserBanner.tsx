@@ -12,7 +12,7 @@ interface AmountState {
 }
 
 const UserBanner: React.FunctionComponent = () => {
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>("insmemo");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
