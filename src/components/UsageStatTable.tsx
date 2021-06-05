@@ -66,7 +66,7 @@ const UsageStatTable = () => {
     };
   }, []);
 
-  const handleUsageStatItemMouseEnter = useDebounce((ev: React.MouseEvent, item: UsageStatDaily) => {
+  const handleUsageStatItemMouseEnter = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setTodayStat(item);
 
     if (popupRef.current) {
@@ -74,7 +74,7 @@ const UsageStatTable = () => {
       popupRef.current.style.left = targetEl.offsetLeft + "px";
       popupRef.current.style.top = targetEl.offsetTop + "px";
     }
-  }, 200);
+  }, []);
 
   const handleUsageStatItemMouseLeave = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setTodayStat(null);
