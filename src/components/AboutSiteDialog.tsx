@@ -70,7 +70,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
           </a>{" "}
           👀
         </p>
-        <p className="tip-text">last update at 2021/6/5 18:00:00, v1.2.4</p>
+        <p className="tip-text">last update at 2021/6/5 19:13:23, v1.2.5</p>
       </div>
     </>
   );

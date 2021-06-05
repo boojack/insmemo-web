@@ -107,7 +107,7 @@ const TagList: React.FunctionComponent = () => {
       </div>
 
       <p className={"action-text " + (unusedTags.length === 0 ? "hidden" : "")} onClick={toggleShowUnusedTagsStatus}>
-        有 {unusedTags.length} 个未使用的标签，点击{showUnusedTagsContainer ? "隐藏" : "显示"}
+        有 {unusedTags.length} 个不常用的标签，点击{showUnusedTagsContainer ? "隐藏" : "显示"}
       </p>
 
       {usedTags.length + unusedTags.length <= 3 ? (

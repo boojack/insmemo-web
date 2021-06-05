@@ -117,7 +117,7 @@ const MemoList: React.FunctionComponent = () => {
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleFetchScroll}>
       <div className="filter-query-container">
-        <span className={"tip-text " + (tagQuery || (duration.from !== 0 && duration.from < duration.to) ? "" : "hidden")}>筛选: </span>
+        <span className={"tip-text " + (tagQuery || (duration.from !== 0 && duration.from < duration.to) ? "" : "hidden")}>筛选：</span>
         <div
           className={"filter-item-container " + (tagQuery ? "" : "hidden")}
           onClick={() => {
