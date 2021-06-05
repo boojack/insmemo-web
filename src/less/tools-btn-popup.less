@@ -6,20 +6,20 @@
   justify-content: flex-start;
   align-items: flex-start;
   position: absolute;
-  top: 36px;
-  right: 8px;
   background-color: white;
   width: 180px;
   padding: 8px 0;
   border-radius: 5px;
   z-index: 1;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  transform: translateX(-50% + 6px);
+  margin-top: 28px;
 
   &::before {
     content: "";
     position: absolute;
     top: -8px;
-    right: 10px;
+    left: calc(50% - 8px);
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid white;
@@ -52,19 +52,6 @@
 
 @media only screen and (max-width: 600px) {
   .tools-btn-popup {
-    right: 24px;
-    top: 52px;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: -8px;
-      right: 10px;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-bottom: 8px solid white;
-    }
-
     > .action-btn {
       font-size: 15px;
     }

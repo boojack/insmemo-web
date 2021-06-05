@@ -2,13 +2,17 @@
 
 .tags-container {
   width: 100%;
+  height: calc(100% - 128px - 110px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   border: none;
   padding-top: 8px;
+  padding-bottom: 16px;
+  overflow-y: auto;
+  .pretty-scroll-bar(0px);
 
   > .title-text {
     width: 100%;
@@ -103,16 +107,16 @@
 }
 
 @media only screen and (max-width: 600px) {
-  #page-container {
-    &.show-user-banner-dialog {
-      .tags-container {
-        > .title-text {
-          font-size: 13px;
-        }
+  #page-container.show-user-banner-dialog {
+    .tags-container {
+      height: calc(100% - 154px - 156px);
 
-        > .tag-item-container {
-          font-size: 15px;
-        }
+      > .title-text {
+        font-size: 13px;
+      }
+
+      > .tag-item-container {
+        font-size: 15px;
       }
     }
   }

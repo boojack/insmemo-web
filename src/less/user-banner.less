@@ -1,8 +1,8 @@
 @import "./mixin.less";
 
 .user-banner-container {
-  position: relative;
   width: 100%;
+  height: 128px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -59,7 +59,7 @@
   }
 
   > .status-text-container {
-    margin: 16px 0;
+    margin: 18px 0;
     padding: 0 16px;
     width: 100%;
     display: flex;
@@ -90,7 +90,10 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .user-banner-container {
-    padding-top: 16px !important;
+  #page-container.show-user-banner-dialog {
+    .user-banner-container {
+      height: 154px;
+      padding-top: 16px;
+    }
   }
 }

@@ -54,6 +54,13 @@ const UserBanner: React.FunctionComponent = () => {
       const nextState = !showToolsBtnDialog;
 
       if (nextState) {
+        const targetEl = ev.target as HTMLElement;
+        if (targetEl) {
+          const popupEl = document.querySelector(".tools-btn-popup") as HTMLElement;
+          popupEl.style.top = targetEl.offsetTop + "px";
+          popupEl.style.left = targetEl.offsetLeft + "px";
+        }
+
         const bodyClickHandler = () => {
           setDialogStatus(false);
           document.body.removeEventListener("click", bodyClickHandler);

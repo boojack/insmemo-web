@@ -108,23 +108,6 @@
       border-right: 4px solid transparent;
       border-top: 4px solid rgba(0, 0, 0, 0.8);
     }
-
-    &.left {
-      transform: translateX(-16px);
-
-      &::before {
-        left: 10px;
-      }
-    }
-
-    &.right {
-      transform: translateX(-100% + 8px);
-
-      &::before {
-        left: unset;
-        right: 8px;
-      }
-    }
   }
 }
 
@@ -164,23 +147,6 @@
 
       &::before {
         left: calc(50% - 4px);
-      }
-
-      &.left {
-        transform: translateX(-16px);
-
-        &::before {
-          left: 12px;
-        }
-      }
-
-      &.right {
-        transform: translateX(-100% + 12px);
-
-        &::before {
-          left: unset;
-          right: 12px;
-        }
       }
     }
   }
