@@ -74,14 +74,18 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">📚</span>Memo Story
+          <span className="icon-text">🧩</span>Memo Story
         </p>
         <button className="text-btn close-btn" onClick={props.destroy}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">
-        <p className="tip-text">This is the hidden feature called "Memo Story Dialog" and waiting for continue. </p>
+        <p className="tip-text">
+          This is the hidden feature called "Memo Story" and waiting for continue.
+          <br />
+          "Every memo is a Jigsaw, make them together would be a Story."
+        </p>
         {currentMemo ? (
           <>
             <div className="memo-container current" key={currentMemo.id}>

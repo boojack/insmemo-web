@@ -196,7 +196,7 @@ const MainEditor: React.FunctionComponent = () => {
       <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor {...editorConfig} />
       <div className={"upon-memo-container " + (uponMemoId ? "" : "hidden")} onClick={handleClearUponMemoClick}>
-        <img className="icon-img" src="/icons/magnet.svg" />
+        <span className="icon-text">🧩</span>
         <div className="upon-memo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
       </div>
     </div>

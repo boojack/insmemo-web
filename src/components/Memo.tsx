@@ -127,7 +127,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
       ) : null}
       {memo.uponMemoId ? (
         <div className="uponmemo-container">
-          <img className="icon-img" src="/icons/magnet.svg" />
+          <span className="icon-text">🧩</span>
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent ?? "" }}></div>
         </div>
       ) : null}

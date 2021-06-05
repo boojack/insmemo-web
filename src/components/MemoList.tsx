@@ -117,14 +117,14 @@ const MemoList: React.FunctionComponent = () => {
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleFetchScroll}>
       <div className="filter-query-container">
-        <span className={"tip-text " + (tagQuery || (duration.from !== 0 && duration.from < duration.to) ? "" : "hidden")}>Filter: </span>
+        <span className={"tip-text " + (tagQuery || (duration.from !== 0 && duration.from < duration.to) ? "" : "hidden")}>筛选: </span>
         <div
           className={"filter-item-container " + (tagQuery ? "" : "hidden")}
           onClick={() => {
             locationService.setTagQuery("");
           }}
         >
-          🏷️ {tagQuery}
+          <span className="icon-text">🏷️</span> {tagQuery}
         </div>
         <div
           className={"filter-item-container " + (duration.from !== 0 && duration.from < duration.to ? "" : "hidden")}
@@ -132,7 +132,7 @@ const MemoList: React.FunctionComponent = () => {
             locationService.setFromAndToQuery(0, 0);
           }}
         >
-          📅 {utils.getDateString(duration.from)} to {utils.getDateString(duration.to)}
+          <span className="icon-text">🗓️</span> {utils.getDateString(duration.from)} 至 {utils.getDateString(duration.to)}
         </div>
       </div>
 
