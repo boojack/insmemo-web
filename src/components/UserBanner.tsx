@@ -68,7 +68,7 @@ const UserBanner: React.FunctionComponent = () => {
   );
 
   const handleUsernameClick = useCallback(() => {
-    locationService.setTagQuery("");
+    locationService.clearQuery();
   }, []);
 
   return (

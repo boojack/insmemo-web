@@ -8,10 +8,38 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
-  margin-top: 8px;
+  margin-top: 4px;
   padding-top: 4px;
 
   .pretty-scroll-bar(0px);
+
+  > .filter-query-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    > .tip-text {
+      margin-left: 4px;
+      font-size: 12px;
+      padding: 2px 4px;
+      margin-bottom: 8px;
+    }
+
+    > .filter-item-container {
+      font-size: 12px;
+      padding: 2px 4px;
+      margin-bottom: 8px;
+      margin-right: 4px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: line-through;
+      }
+    }
+  }
 
   > .status-text-container {
     width: 100%;

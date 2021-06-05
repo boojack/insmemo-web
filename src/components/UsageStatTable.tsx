@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
-import useDebounce from "../hooks/useDebounce";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import userService from "../helpers/userService";
+import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
 import "../less/usage-stat-table.less";
 
@@ -26,6 +26,7 @@ const UsageStatTable = () => {
   const nullCell = new Array(7 - todayDay).fill(0);
   const [allStat, setAllStat] = useState<UsageStatDaily[]>(new Array(usedDaysAmount));
   const [todayStat, setTodayStat] = useState<UsageStatDaily | null>(null);
+  const [currentStat, setCurrentStat] = useState<UsageStatDaily | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,6 +77,21 @@ const UsageStatTable = () => {
     }
   }, []);
 
+  const handleUsageStatItemClick = useCallback(
+    (item: UsageStatDaily) => {
+      if (currentStat === item) {
+        locationService.setFromAndToQuery(0, 0);
+        setCurrentStat(null);
+        return;
+      }
+      if (item.count > 0) {
+        locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
+        setCurrentStat(item);
+      }
+    },
+    [currentStat]
+  );
+
   const handleUsageStatItemMouseLeave = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setTodayStat(null);
   }, []);
@@ -110,12 +126,14 @@ const UsageStatTable = () => {
               : count <= 8
               ? "stat-day-L3-bg"
               : "stat-day-L4-bg";
+
           return (
             <span
-              className={"stat-container " + colorLevel}
+              className={"stat-container " + colorLevel + (currentStat === v ? " current" : " ")}
               key={i}
               onMouseEnter={(e) => handleUsageStatItemMouseEnter(e, v)}
               onMouseLeave={(e) => handleUsageStatItemMouseLeave(e, v)}
+              onClick={() => handleUsageStatItemClick(v)}
             ></span>
           );
         })}

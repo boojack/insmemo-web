@@ -20,8 +20,7 @@ function App() {
       const { user } = userService.getState();
       if (user) {
         setUsername(user.username);
-        const urlParams = new URLSearchParams(window.location.search);
-        locationService.setTagQuery(urlParams.get("tag") ?? "");
+        locationService.initQuery();
         memoService.fetchMoreMemos();
       } else {
         setUsername("insmemo");
@@ -41,7 +40,7 @@ function App() {
   }, []);
 
   const handleUsernameClick = useCallback(() => {
-    locationService.setTagQuery("");
+    locationService.clearQuery();
   }, []);
 
   const handleMoreActionBtnClick = useCallback(() => {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
+import { utils } from "../helpers/utils";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -7,10 +8,16 @@ import { preferences } from "./PreferencesDialog";
 import Memo from "./Memo";
 import "../less/memolist.less";
 
+interface Duration {
+  from: number;
+  to: number;
+}
+
 const MemoList: React.FunctionComponent = () => {
   const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
   const { query } = locationService.getState();
   const [tagQuery, setTagQuery] = useState(query.tag);
+  const [duration, setDuration] = useState<Duration>({ from: query.from, to: query.to });
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
@@ -18,10 +25,14 @@ const MemoList: React.FunctionComponent = () => {
 
   const memosTemp = useMemo(() => {
     return memos.map((m) => {
-      let shouldShow = false;
+      let shouldShow = true;
 
-      if (tagQuery === "" || m.tags?.map((t) => t.text).includes(tagQuery)) {
-        shouldShow = true;
+      if (tagQuery !== "" && !m.tags?.map((t) => t.text).includes(tagQuery)) {
+        shouldShow = false;
+      }
+
+      if (duration.from !== 0 && duration.from < duration.to && (m.createdAt < duration.from || m.createdAt > duration.to)) {
+        shouldShow = false;
       }
 
       return {
@@ -29,7 +40,7 @@ const MemoList: React.FunctionComponent = () => {
         shouldShow,
       };
     });
-  }, [memos, tagQuery]);
+  }, [memos, tagQuery, duration]);
 
   useEffect(() => {
     const unsubscribeMemoStore = memoService.subscribe(({ memos }) => {
@@ -37,7 +48,14 @@ const MemoList: React.FunctionComponent = () => {
     });
 
     const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
-      setTagQuery(query.tag);
+      const { tag, from, to } = query;
+      setTagQuery(tag);
+
+      if (from < to) {
+        setDuration({ from, to });
+      } else {
+        setDuration({ from: 0, to: 0 });
+      }
     });
 
     const handleStorageDataChanged = () => {
@@ -55,10 +73,10 @@ const MemoList: React.FunctionComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (tagQuery !== "" && !isFetching && !isComplete) {
+    if ((tagQuery !== "" || duration.from < duration.to) && !isFetching && !isComplete) {
       fetchMoreMemos();
     }
-  }, [tagQuery, isFetching, isComplete]);
+  }, [tagQuery, duration, isFetching, isComplete]);
 
   const handleDeleteMemoItem = async (idx: number) => {
     await memoService.deleteMemoById(memos[idx].id);
@@ -98,6 +116,26 @@ const MemoList: React.FunctionComponent = () => {
 
   return (
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleFetchScroll}>
+      <div className="filter-query-container">
+        <span className={"tip-text " + (tagQuery || (duration.from !== 0 && duration.from < duration.to) ? "" : "hidden")}>Filter: </span>
+        <div
+          className={"filter-item-container " + (tagQuery ? "" : "hidden")}
+          onClick={() => {
+            locationService.setTagQuery("");
+          }}
+        >
+          🏷️ {tagQuery}
+        </div>
+        <div
+          className={"filter-item-container " + (duration.from !== 0 && duration.from < duration.to ? "" : "hidden")}
+          onClick={() => {
+            locationService.setFromAndToQuery(0, 0);
+          }}
+        >
+          📅 {utils.getDateString(duration.from)} to {utils.getDateString(duration.to)}
+        </div>
+      </div>
+
       {memosTemp.map((memo, idx) => {
         const key = memo.id + " " + memo.updatedAt;
         const className = memo.shouldShow ? "" : "hidden";
@@ -114,7 +152,13 @@ const MemoList: React.FunctionComponent = () => {
         );
       })}
 
-      <div className={"status-text-container " + (isFetching || isComplete ? "" : "invisible") + (tagQuery ? " invisible" : "")}>
+      <div
+        className={
+          "status-text-container " +
+          (isFetching || isComplete ? "" : "invisible") +
+          (tagQuery || duration.from < duration.to ? " invisible" : "")
+        }
+      >
         <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
       </div>
     </div>

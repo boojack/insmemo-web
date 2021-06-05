@@ -106,10 +106,10 @@ export namespace utils {
     return params.join("&");
   }
 
-  export function copyTextToClipboard(text: string) {
+  export async function copyTextToClipboard(text: string) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       try {
-        navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(text);
       } catch (error) {
         console.warn("Copy to clipboard failed.", error);
       }
