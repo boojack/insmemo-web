@@ -1,0 +1,35 @@
+@import "./mixin.less";
+
+.memo-content-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  line-height: 1.7;
+  word-wrap: break-word;
+  word-break: break-all;
+
+  span.tag-span {
+    margin: 0 2px;
+    color: @text-blue;
+  }
+
+  div.dot-li,
+  div.num-li {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 2px;
+
+    .counter-text {
+      flex-shrink: 0;
+      display: inline-block;
+      text-align: center;
+      width: 18px;
+      margin-right: 2px;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+  }
+}

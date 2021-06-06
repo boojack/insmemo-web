@@ -8,6 +8,7 @@ import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
 import "../less/memo.less";
+import marked from "../helpers/marked";
 
 interface Props {
   className: string;
@@ -136,14 +137,24 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 };
 
 export function formatMemoContent(content: string): string {
-  content = content.replaceAll("\n", "<br>");
-  content = content.replaceAll(TAG_REG, "<span class='tag-span'>#$1#</span>");
-  content = content.replaceAll(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
+  content = content.replaceAll("&nbsp;", " ");
+
+  if (preferences.shouldUseMarkdownParser) {
+    content = marked(content);
+  }
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
   if (preferences.shouldSplitMemoWord) {
     content = content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
   }
+
+  content = content
+    .split("\n")
+    .map((t) => "<p>" + t + "<p>")
+    .join("");
+
+  content = content.replaceAll(TAG_REG, "<span class='tag-span'>#$1#</span>");
+  content = content.replaceAll(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
 
   return content;
 }

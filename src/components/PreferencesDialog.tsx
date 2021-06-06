@@ -8,13 +8,20 @@ interface Props extends DialogProps {}
 /**
  * 设置选项：
  * 1. 中英文分开；
- * 2. todo
+ * 2. markdown 解析；
  */
-export const preferences = storage.get(["shouldSplitMemoWord", "tagTextClickedAction"]);
+const cachePrefers = storage.get(["shouldSplitMemoWord", "tagTextClickedAction", "shouldUseMarkdownParser"]);
+export const preferences = {
+  shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? true,
+  shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? true,
+  tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
+};
+storage.set({ ...preferences });
 
 const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
-  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord ?? true);
-  const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction ?? "copy");
+  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
+  const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);
+  const [shouldUseMarkdownParser, setShouldUseMarkdownParser] = useState<boolean>(preferences.shouldUseMarkdownParser);
 
   useEffect(() => {
     // do nth
@@ -29,6 +36,14 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
     setShouldSplitWord(nextStatus);
     preferences.shouldSplitMemoWord = nextStatus;
     storage.set({ shouldSplitMemoWord: nextStatus });
+    storage.emitStorageChangedEvent();
+  };
+
+  const handleUseMarkdownParserChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextStatus = e.target.checked;
+    setShouldUseMarkdownParser(nextStatus);
+    preferences.shouldUseMarkdownParser = nextStatus;
+    storage.set({ shouldUseMarkdownParser: nextStatus });
     storage.emitStorageChangedEvent();
   };
 
@@ -60,6 +75,11 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
             <span className="normal-text">中英文之间加空格</span>
             <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
+          </label>
+          <label className="form-label checkbox-form-label">
+            <span className="normal-text">使用 markdown 解析</span>
+            <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
           </label>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">标签点击处理:</span>

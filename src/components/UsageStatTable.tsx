@@ -18,7 +18,7 @@ interface UsageStatDaily {
 }
 
 const todayTimestamp = utils.getTimeStampByDate(Date.now());
-const todayDay = new Date(todayTimestamp).getDay();
+const todayDay = new Date(todayTimestamp).getDay() || 7;
 const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
 const beginDayTimestemp = todayTimestamp - usedDaysAmount * DAILY_TIMESTAMP;
 

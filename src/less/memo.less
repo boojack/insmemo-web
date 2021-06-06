@@ -1,4 +1,5 @@
 @import "./mixin.less";
+@import "./memo-content.less";
 
 .memo-wrapper {
   width: 100%;
@@ -79,20 +80,12 @@
 
   > .memo-content-text {
     width: 100%;
-    line-height: 1.7;
-    word-wrap: break-word;
-    word-break: break-all;
 
     &.memo-editor {
       padding-bottom: 4px;
       border-bottom: 1px solid black;
       resize: none;
       outline: none;
-    }
-
-    span.tag-span {
-      margin: 0 2px;
-      color: @text-blue;
     }
   }
 
