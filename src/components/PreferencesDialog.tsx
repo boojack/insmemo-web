@@ -12,8 +12,8 @@ interface Props extends DialogProps {}
  */
 const cachePrefers = storage.get(["shouldSplitMemoWord", "tagTextClickedAction", "shouldUseMarkdownParser"]);
 export const preferences = {
-  shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? true,
-  shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? true,
+  shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? false,
+  shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? false,
   tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
 };
 storage.set({ ...preferences });
