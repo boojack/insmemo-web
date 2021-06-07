@@ -28,14 +28,14 @@ function App() {
       }
     });
 
-    const unsubscribeUserStore = userService.subscribe(({ user }) => {
+    const unsubscribeUserService = userService.subscribe(({ user }) => {
       if (user) {
         setUsername(user.username);
       }
     });
 
     return () => {
-      unsubscribeUserStore();
+      unsubscribeUserService();
     };
   }, []);
 

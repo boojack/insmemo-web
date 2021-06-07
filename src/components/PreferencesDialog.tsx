@@ -65,12 +65,8 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <div className="section-container account-section-container">
-          <p className="title-text">账号设置</p>
-          <p className="tip-text">waiting to start</p>
-        </div>
         <div className="section-container preferences-section-container">
-          <p className="title-text">特殊设置</p>
+          <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">中英文之间加空格</span>
             <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
@@ -80,7 +76,11 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
             <span className="normal-text">使用 markdown 解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
+            <span className="tip-text">需要主动刷新网页</span>
           </label>
+        </div>
+        <div className="section-container">
+          <p className="title-text">动作相关</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">标签点击处理:</span>
             <label className="form-label">

@@ -29,11 +29,11 @@ const UserBanner: React.FunctionComponent = () => {
       });
     };
 
-    const unsubscribeMemoStore = memoService.subscribe(() => {
+    const unsubscribeMemoService = memoService.subscribe(() => {
       fetchDataAmount();
     });
 
-    const unsubscribeUserStore = userService.subscribe(({ user }) => {
+    const unsubscribeUserService = userService.subscribe(({ user }) => {
       if (user) {
         setUsername(user.username);
         setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
@@ -43,8 +43,8 @@ const UserBanner: React.FunctionComponent = () => {
     });
 
     return () => {
-      unsubscribeMemoStore();
-      unsubscribeUserStore();
+      unsubscribeMemoService();
+      unsubscribeUserService();
     };
   }, []);
 

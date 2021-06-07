@@ -1,5 +1,6 @@
 import React from "react";
 import userService from "../helpers/userService";
+import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
 import "../less/tools-btn-popup.less";
@@ -26,6 +27,9 @@ export const ToolsBtnPopup: React.FunctionComponent<Props> = (props) => {
 
   return (
     <div className={"tools-btn-popup " + (visibility ? "" : "hidden")}>
+      <button className="text-btn action-btn" onClick={showMyAccountDialog}>
+        <span className="icon">🤠</span> 我的账号
+      </button>
       <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
         <span className="icon">🤟</span> 偏好设置
       </button>

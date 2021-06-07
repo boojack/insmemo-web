@@ -1,0 +1,123 @@
+@import "./mixin.less";
+
+.my-account-dialog {
+  > .dialog-container {
+    width: 480px;
+    border-radius: 8px;
+
+    > .dialog-content-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      hr {
+        margin: 6px 0;
+        width: 100%;
+        height: 1px;
+        background-color: lightgray;
+        border: none;
+      }
+
+      > .section-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 8px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        > .title-text {
+          font-weight: bold;
+          margin-bottom: 8px;
+        }
+
+        > .tip-text {
+          font-style: italic;
+          color: gray;
+          margin-bottom: 8px;
+        }
+
+        > .form-label {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: flex-start;
+          font-size: 14px;
+          line-height: 1.6;
+
+          > .normal-text {
+            padding: 4px 0;
+            flex-shrink: 0;
+          }
+
+          &.input-form-label {
+            > input {
+              padding: 4px 8px;
+              margin-right: 4px;
+              border: none;
+              border-bottom: 1px solid black;
+              font-size: 14px;
+              line-height: 1.6;
+              outline: none;
+              font-weight: bold;
+
+              &:disabled {
+                flex-grow: 1;
+                font-weight: normal;
+                background-color: transparent;
+                border-color: transparent;
+              }
+            }
+          }
+
+          &:hover {
+            opacity: 0.9;
+          }
+
+          &:last-of-type {
+            margin-bottom: 8px;
+          }
+        }
+      }
+
+      > .btns-container {
+        margin-top: 4px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        > .text-btn {
+          font-size: 13px;
+          cursor: pointer;
+          padding: 4px 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+          user-select: none;
+          background-color: lightgray;
+
+          &:hover {
+            opacity: 0.8;
+          }
+
+          &.cancel-btn {
+            background-color: unset;
+          }
+
+          &.confirm-btn {
+            background-color: @text-green;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}

@@ -56,7 +56,7 @@ const MainEditor: React.FunctionComponent = () => {
       }
     });
 
-    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
+    const unsubscribeLocationService = locationService.subscribe(({ query }) => {
       const tagText = query.tag;
 
       if (tagText) {
@@ -74,7 +74,7 @@ const MainEditor: React.FunctionComponent = () => {
 
     return () => {
       unsubscribeGlobalState();
-      unsubscribeLocationStore();
+      unsubscribeLocationService();
     };
   }, []);
 

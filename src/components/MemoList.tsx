@@ -43,19 +43,19 @@ const MemoList: React.FunctionComponent = () => {
   }, [memos, tagQuery, duration]);
 
   useEffect(() => {
-    const unsubscribeMemoStore = memoService.subscribe(({ memos }) => {
+    const unsubscribeMemoService = memoService.subscribe(({ memos }) => {
       setMemos([...memos]);
     });
 
-    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
+    const unsubscribeLocationService = locationService.subscribe(({ query }) => {
       const { tag, from, to } = query;
       setTagQuery(tag);
-
       if (from < to) {
         setDuration({ from, to });
       } else {
         setDuration({ from: 0, to: 0 });
       }
+      wrapperElement.current?.scrollTo({ top: 0 });
     });
 
     const handleStorageDataChanged = () => {
@@ -66,8 +66,8 @@ const MemoList: React.FunctionComponent = () => {
     window.addEventListener("storage", handleStorageDataChanged);
 
     return () => {
-      unsubscribeMemoStore();
-      unsubscribeLocationStore();
+      unsubscribeMemoService();
+      unsubscribeLocationService();
       window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);
@@ -80,6 +80,7 @@ const MemoList: React.FunctionComponent = () => {
 
   const handleDeleteMemoItem = async (idx: number) => {
     await memoService.deleteMemoById(memos[idx].id);
+    await fetchMoreMemos();
   };
 
   const fetchMoreMemos = useCallback(async () => {

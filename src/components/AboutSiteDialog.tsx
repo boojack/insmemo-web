@@ -46,7 +46,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
         <ul>
           <li>
             ✨{" "}
-            <a target="_blank" href="https://github.com/boojack/insmemo/">
+            <a target="_blank" href="https://github.com/boojack/insmemo-web">
               开源项目
             </a>
             ，用于学习；
@@ -55,7 +55,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
           <li>📑 更好的交互逻辑；</li>
           <li>
             🐛{" "}
-            <a target="_blank" href="https://github.com/boojack/insmemo/issues/new">
+            <a target="_blank" href="https://github.com/boojack/insmemo-web/issues/new">
               问题反馈
             </a>
             ；
@@ -70,7 +70,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
           </a>{" "}
           👀
         </p>
-        <p className="tip-text">last update at 2021/6/6 22:27:23, v1.2.6</p>
+        <p className="tip-text">last update at 2021/6/7 11:04:23, v1.2.8</p>
       </div>
     </>
   );

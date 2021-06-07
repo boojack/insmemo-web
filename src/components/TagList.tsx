@@ -33,11 +33,11 @@ const TagList: React.FunctionComponent = () => {
       setUnusedTags([...unusedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
     };
 
-    const unsubscribeMemoStore = memoService.subscribe(() => {
+    const unsubscribeMemoService = memoService.subscribe(() => {
       fetchTags();
     });
 
-    const unsubscribeLocationStore = locationService.subscribe(({ query }) => {
+    const unsubscribeLocationService = locationService.subscribe(({ query }) => {
       setTagQuery(query.tag);
 
       // 删除移动端样式
@@ -46,8 +46,8 @@ const TagList: React.FunctionComponent = () => {
     });
 
     return () => {
-      unsubscribeMemoStore();
-      unsubscribeLocationStore();
+      unsubscribeMemoService();
+      unsubscribeLocationService();
     };
   }, []);
 

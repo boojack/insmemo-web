@@ -58,12 +58,12 @@ const UsageStatTable = () => {
       }
     };
 
-    const unsubscribeMemoStore = memoService.subscribe(() => {
+    const unsubscribeMemoService = memoService.subscribe(() => {
       fetchData();
     });
 
     return () => {
-      unsubscribeMemoStore();
+      unsubscribeMemoService();
     };
   }, []);
 
