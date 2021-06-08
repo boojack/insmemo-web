@@ -44,8 +44,9 @@ const UsageStatTable = () => {
       const { user } = userService.getState();
 
       if (user) {
+        // 简单实现深拷贝
+        const newStat: UsageStatDaily[] = JSON.parse(JSON.stringify(payloadStat));
         const { data } = await api.getMemosStat();
-        const newStat = [...payloadStat];
 
         for (const d of data) {
           const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;

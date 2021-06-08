@@ -142,6 +142,10 @@ const MainEditor: React.FunctionComponent = () => {
         for (const t of tags) {
           await api.createMemoTag(newMemo.id, t.id);
         }
+        const tagQuery = locationService.getState().query.tag;
+        if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
+          locationService.setTagQuery("");
+        }
         memoService.pushMemo(newMemo);
       }
 
