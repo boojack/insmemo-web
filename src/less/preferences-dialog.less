@@ -43,19 +43,21 @@
           justify-content: flex-start;
           align-items: center;
           cursor: pointer;
+          flex-wrap: wrap;
           line-height: 1.6;
 
           > .normal-text {
             margin-right: 8px;
+            flex-shrink: 0;
           }
 
           > .icon-img {
             width: 20px;
             height: 20px;
+            margin-right: 4px;
           }
 
           > .tip-text {
-            margin-left: 8px;
             font-size: 12px;
             color: gray;
           }
@@ -63,6 +65,7 @@
           > input {
             margin-right: 4px;
             cursor: pointer;
+            flex-shrink: 0;
           }
 
           > .form-label {

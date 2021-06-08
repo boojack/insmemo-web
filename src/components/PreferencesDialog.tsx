@@ -76,7 +76,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
             <span className="normal-text">使用 markdown 解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
-            <span className="tip-text">需要主动刷新网页</span>
+            <span className="tip-text">目前仅支持加粗 / 列表，需要主动刷新网页</span>
           </label>
         </div>
         <div className="section-container">
