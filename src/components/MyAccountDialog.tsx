@@ -38,6 +38,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
 
   const handleConfirmEditBtnClick = async () => {
     if (username === user?.username) {
+      setShowEditInputs(false);
       return;
     }
 
@@ -70,7 +71,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
             <input type="text" disabled value={user?.id} />
           </label>
           <label className="form-label input-form-label">
-            <span className="normal-text">创建于：</span>
+            <span className="normal-text">创建时间：</span>
             <input type="text" disabled value={utils.getDateString(user?.createdAt!)} />
           </label>
           <hr />

@@ -77,7 +77,9 @@ const TagList: React.FunctionComponent = () => {
 
   return (
     <div className="tags-container">
-      <p className="title-text">常用标签</p>
+      <p className="title-text">
+        <span className="icon-text">🏷️</span> 标签
+      </p>
       {usedTags.map((t) => (
         <div
           key={t.id}

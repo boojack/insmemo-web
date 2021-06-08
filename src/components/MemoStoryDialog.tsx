@@ -84,7 +84,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         <p className="tip-text">
           This is the hidden feature called "Memo Story" and waiting for continue.
           <br />
-          "Every memo is a Jigsaw, make them together would be a Story."
+          "Each memo is a Jigsaw, make them together would be a Story."
         </p>
         {currentMemo ? (
           <>
