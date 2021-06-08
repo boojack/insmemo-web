@@ -137,7 +137,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 };
 
 export function formatMemoContent(content: string): string {
-  content = content.replaceAll("&nbsp;", " ");
+  content = content.replace(/&nbsp;/g, " ");
 
   if (preferences.shouldUseMarkdownParser) {
     content = marked(content);
@@ -145,7 +145,7 @@ export function formatMemoContent(content: string): string {
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
   if (preferences.shouldSplitMemoWord) {
-    content = content.replaceAll(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+    content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
   }
 
   content = content
@@ -153,8 +153,8 @@ export function formatMemoContent(content: string): string {
     .map((t) => "<p>" + t + "<p>")
     .join("");
 
-  content = content.replaceAll(TAG_REG, "<span class='tag-span'>#$1#</span>");
-  content = content.replaceAll(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
+  content = content.replace(TAG_REG, "<span class='tag-span'>#$1#</span>");
+  content = content.replace(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
 
   return content;
 }

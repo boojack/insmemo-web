@@ -85,7 +85,7 @@ const MainEditor: React.FunctionComponent = () => {
         return;
       }
 
-      const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replaceAll(TAG_REG, "$1").trim());
+      const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
       const tags: Model.Tag[] = [];
 
       // 保存标签
