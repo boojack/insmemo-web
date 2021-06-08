@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import html2canvas from "html2canvas";
 import userService from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
