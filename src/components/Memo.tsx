@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IMAGE_URL_REG, LINK_REG, TAG_REG } from "../helpers/consts";
+import marked from "../helpers/marked";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
@@ -8,7 +9,7 @@ import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
 import "../less/memo.less";
-import marked from "../helpers/marked";
+import JigsawIcon from "../assets/icons/jigsaw.svg";
 
 interface Props {
   className: string;
@@ -128,7 +129,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
       ) : null}
       {memo.uponMemoId ? (
         <div className="uponmemo-container">
-          <span className="icon-text">🧩</span>
+          <img className="icon-img" src={JigsawIcon} />
           <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent ?? "" }}></div>
         </div>
       ) : null}

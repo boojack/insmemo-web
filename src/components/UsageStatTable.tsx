@@ -111,7 +111,7 @@ const UsageStatTable = () => {
 
       {/* popup */}
       <div ref={popupRef} className={"usage-detail-container pop-up " + (todayStat ? "" : "hidden")}>
-        {todayStat?.count} memo on {utils.getDateString(todayStat?.timestamp!)}
+        {todayStat?.count} memos on <span className="date-text">{new Date(todayStat?.timestamp!).toDateString()}</span>
       </div>
 
       <div className="usage-stat-table">

@@ -11,6 +11,7 @@ import { preferences } from "./PreferencesDialog";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
 import "../less/main-editor.less";
+import JigsawIcon from "../assets/icons/jigsaw.svg";
 
 const MainEditor: React.FunctionComponent = () => {
   const [content, setContent] = useState(getEditorContentCache());
@@ -200,7 +201,7 @@ const MainEditor: React.FunctionComponent = () => {
       <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor {...editorConfig} />
       <div className={"upon-memo-container " + (uponMemoId ? "" : "hidden")} onClick={handleClearUponMemoClick}>
-        <span className="icon-text">🧩</span>
+        <img className="icon-img" src={JigsawIcon} />
         <div className="upon-memo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
       </div>
     </div>
