@@ -77,6 +77,21 @@
             }
           }
 
+          &.password-label {
+            align-items: center;
+
+            > .text-btn {
+              color: @text-blue;
+              margin: 0 4px;
+              padding: 4px;
+              cursor: pointer;
+
+              &:hover {
+                opacity: 0.9;
+              }
+            }
+          }
+
           &:hover {
             opacity: 0.9;
           }
@@ -99,6 +114,93 @@
           font-size: 13px;
           cursor: pointer;
           padding: 4px 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+          user-select: none;
+          background-color: lightgray;
+
+          &:hover {
+            opacity: 0.8;
+          }
+
+          &.cancel-btn {
+            background-color: unset;
+          }
+
+          &.confirm-btn {
+            background-color: @text-green;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.change-password-dialog {
+  > .dialog-container {
+    width: 300px;
+    border-radius: 8px;
+
+    > .dialog-content-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      > .form-label {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        line-height: 1.6;
+
+        > .normal-text {
+          padding: 4px 0;
+          flex-shrink: 0;
+          font-size: 13px;
+          color: gray;
+        }
+
+        &.input-form-label {
+          > input {
+            width: 100%;
+            padding: 4px 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            outline: none;
+            border-radius: 4px;
+            border: 1px solid gray;
+          }
+        }
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+        &:last-of-type {
+          margin-bottom: 8px;
+        }
+      }
+
+      > .btns-container {
+        margin-top: 8px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+
+        > .text-btn {
+          font-size: 14px;
+          cursor: pointer;
+          padding: 6px 12px;
           border-radius: 4px;
           margin-right: 8px;
           user-select: none;

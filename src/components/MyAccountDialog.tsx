@@ -74,12 +74,17 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
             <span className="normal-text">创建时间：</span>
             <input type="text" disabled value={utils.getDateString(user?.createdAt!)} />
           </label>
+          <label className="form-label password-label">
+            <span className="normal-text">密码：</span>
+            <span className="text-btn" onClick={showChangePasswordDialog}>
+              修改密码
+            </span>
+          </label>
           <hr />
           <label className="form-label input-form-label">
-            <span className="normal-text">用户名：</span>
+            <span className="normal-text">账号：</span>
             <input type="text" disabled={!showEditInputs} value={username} onChange={handleUsernameChanged} />
           </label>
-          <p className="tip-text">...to be continue</p>
         </div>
         <div className="btns-container">
           <span
@@ -107,6 +112,103 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
     </>
   );
 };
+
+const ChangePasswordDialog: React.FunctionComponent<Props> = (props) => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordAgain, setNewPasswordAgain] = useState("");
+
+  useEffect(() => {
+    // do nth
+  }, []);
+
+  const handleCloseBtnClick = () => {
+    props.destroy();
+  };
+
+  const handleOldPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setOldPassword(text);
+  };
+
+  const handleNewPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setNewPassword(text);
+  };
+
+  const handleNewPasswordAgainChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setNewPasswordAgain(text);
+  };
+
+  const handleSaveBtnClick = async () => {
+    if (oldPassword === "" || newPassword === "" || newPasswordAgain === "") {
+      Toast.error("密码不能为空");
+      return;
+    }
+
+    if (newPassword !== newPasswordAgain) {
+      Toast.error("新密码两次输入不一致");
+      setNewPasswordAgain("");
+      return;
+    }
+
+    const { data } = await api.checkPasswordValid(oldPassword);
+
+    if (!data) {
+      Toast.error("旧密码不匹配");
+      setOldPassword("");
+      return;
+    }
+
+    await api.updateUserinfo("", newPassword);
+    Toast.info("密码修改成功！");
+    handleCloseBtnClick();
+  };
+
+  return (
+    <>
+      <div className="dialog-header-container">
+        <p className="title-text">修改密码</p>
+        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+          <img className="icon-img" src="/icons/close.svg" />
+        </button>
+      </div>
+      <div className="dialog-content-container">
+        <label className="form-label input-form-label">
+          <span className="normal-text">旧密码：</span>
+          <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
+        </label>
+        <label className="form-label input-form-label">
+          <span className="normal-text">新密码：</span>
+          <input type="password" value={newPassword} onChange={handleNewPasswordChanged} />
+        </label>
+        <label className="form-label input-form-label">
+          <span className="normal-text">再次输入新密码：</span>
+          <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
+        </label>
+        <div className="btns-container">
+          <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>
+            取消
+          </span>
+          <span className="text-btn confirm-btn" onClick={handleSaveBtnClick}>
+            保存
+          </span>
+        </div>
+      </div>
+    </>
+  );
+};
+
+function showChangePasswordDialog() {
+  showDialog(
+    {
+      className: "change-password-dialog",
+    },
+    ChangePasswordDialog,
+    {}
+  );
+}
 
 export default function showMyAccountDialog() {
   showDialog(

@@ -58,6 +58,10 @@ export namespace api {
     return get("/api/user/checkusername?username=" + username);
   }
 
+  export function checkPasswordValid(password: string) {
+    return post("/api/user/checkpassword", { password });
+  }
+
   export function updateUserinfo(username: string = "", password: string = "") {
     return post("/api/user/update", {
       username,
