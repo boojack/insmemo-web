@@ -129,7 +129,7 @@ const MainEditor: React.FunctionComponent = () => {
             prevMemo.uponMemo = memoService.getMemoById(editedMemo.uponMemoId);
           }
           prevMemo.updatedAt = Date.now();
-          memoService.__emit__();
+          memoService.editMemo(prevMemo);
         }
         globalStateService.setEditMemoId("");
       } else {

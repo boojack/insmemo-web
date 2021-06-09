@@ -81,10 +81,14 @@ const UsageStatTable = () => {
   const handleUsageStatItemClick = useCallback(
     (item: UsageStatDaily) => {
       if (currentStat === item) {
-        locationService.setFromAndToQuery(0, 0);
-        setCurrentStat(null);
-        return;
+        const query = locationService.getState().query;
+        if (query.from < query.to) {
+          locationService.setFromAndToQuery(0, 0);
+          setCurrentStat(null);
+          return;
+        }
       }
+
       if (item.count > 0) {
         locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
         setCurrentStat(item);

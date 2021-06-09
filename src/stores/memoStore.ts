@@ -25,7 +25,12 @@ interface DeleteMemoByIdAction extends Action {
   };
 }
 
-type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction;
+interface EditMemoByIdAction extends Action {
+  type: "EDIT_MEMO";
+  payload: Model.Memo;
+}
+
+type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
 
 function memoReducer(state: State, action: Actions): State {
   switch (action.type) {
@@ -48,6 +53,15 @@ function memoReducer(state: State, action: Actions): State {
       return {
         memos: [...state.memos].filter((memo) => memo.id !== action.payload.id),
       };
+    }
+    case "EDIT_MEMO": {
+      for (let i = 0; i < state.memos.length; i++) {
+        if (state.memos[i].id === action.payload.id) {
+          state.memos[i] = Object.assign({}, action.payload);
+          break;
+        }
+      }
+      return state;
     }
     default: {
       return state;

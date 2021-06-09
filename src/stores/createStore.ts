@@ -3,7 +3,7 @@ export interface Action {
 }
 
 type Reducer<S, A extends Action> = (s: S, a: A) => S;
-type Listener<S> = (s: S, ns: S) => void;
+type Listener<S> = (ns: S, ps: S) => void;
 type Unsubscribe = () => void;
 
 interface Store<S, A extends Action> {
@@ -53,8 +53,8 @@ function createStore<S, A extends Action>(preloadedState: S, reducer: Reducer<S,
   };
 
   /**
-   * DO NOT USE FREQUENTLY
-   * 主动触发监听回调
+   * DO NOT USE
+   * 慎用
    */
   const __emit__ = () => {
     for (const cb of listeners) {

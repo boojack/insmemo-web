@@ -76,6 +76,13 @@ const memoService = {
     });
   },
 
+  editMemo: (memo: Model.Memo) => {
+    memoStore.dispatch({
+      type: "EDIT_MEMO",
+      payload: memo,
+    });
+  },
+
   ...memoStore,
 };
 
