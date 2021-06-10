@@ -4,6 +4,7 @@ import { validate, ValidatorConfig } from "../helpers/validator";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
+import showAboutSiteDialog from "./AboutSiteDialog";
 import toast from "./Toast";
 import "../less/signin-dialog.less";
 
@@ -27,6 +28,10 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
 
   const handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.currentTarget.value);
+  };
+
+  const handleAboutBtnClick = () => {
+    showAboutSiteDialog();
   };
 
   const handleActionBtnClick = async (action: "signin" | "signup") => {
@@ -92,13 +97,10 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
         </div>
       </div>
       <p className="tip-text">
-        仅用于作品展示，因此注册暂时关闭；
-        <br />
-        可输入 <code>guest, 123456</code> 进行体验。
-        <br />
-        如有进一步使用需求，请邮件联系：
-        <br />
-        <a href="mailto:lishuang@email.justsven.top">lishuang@email.justsven.top</a>
+        仅用于作品展示，注册暂时关闭；可输入 <code>guest, 123456</code> 进行体验。
+        <span className="text-btn" onClick={handleAboutBtnClick}>
+          关于本站
+        </span>
       </p>
     </>
   );

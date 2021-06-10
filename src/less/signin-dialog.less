@@ -1,11 +1,14 @@
+@import "./mixin.less";
+
 .signin-dialog {
   > .dialog-container {
+    width: 360px;
     border-radius: 8px;
     padding: 16px 20px;
 
     > .dialog-content-container {
       > input {
-        width: 256px;
+        width: 100%;
         padding: 8px 10px;
         margin-bottom: 16px;
         border-radius: 4px;
@@ -13,7 +16,7 @@
         outline: none;
 
         &:focus {
-          border-color: #222;
+          border-color: gray;
         }
 
         &:last-child {
@@ -29,34 +32,34 @@
       justify-content: space-between;
       align-items: flex-start;
       margin-top: 12px;
+      margin-bottom: 4px;
 
       > .btns-container {
         > .text-btn {
-          padding: 4px 10px;
+          padding: 6px 12px;
           font-size: 14px;
           border-radius: 4px;
           cursor: pointer;
           text-align: center;
 
           &:hover {
-            font-weight: bold;
-            background-color: lightgray;
+            opacity: 0.8;
           }
 
           &.disabled {
             color: lightgray;
             cursor: not-allowed;
+          }
 
-            &:hover {
-              font-weight: unset;
-              background-color: unset;
-            }
+          &.signin-btn {
+            background-color: @text-green;
+            color: white;
           }
         }
 
         > .split-text {
           color: lightgray;
-          margin: 0 5px;
+          margin: 0 6px;
         }
       }
     }
@@ -71,6 +74,14 @@
       font-size: 12px;
       line-height: 1.6;
       word-wrap: break-word;
+
+      > .text-btn {
+        cursor: pointer;
+        text-align: center;
+        color: @text-green;
+        font-weight: bold;
+        border-bottom: 1px solid @text-green;
+      }
     }
   }
 }
