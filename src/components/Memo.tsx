@@ -8,8 +8,8 @@ import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
-import "../less/memo.less";
 import JigsawIcon from "../assets/icons/jigsaw.svg";
+import "../less/memo.less";
 
 interface Props {
   className: string;
@@ -151,7 +151,13 @@ export function formatMemoContent(content: string): string {
 
   content = content
     .split("\n")
-    .map((t) => "<p>" + t + "<p>")
+    .map((t) => {
+      if (t === "") {
+        return "<br />";
+      } else {
+        return "<p>" + t + "<p>";
+      }
+    })
     .join("");
 
   content = content.replace(TAG_REG, "<span class='tag-span'>#$1#</span>");

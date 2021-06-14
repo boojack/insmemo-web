@@ -10,8 +10,8 @@ import toast from "./Toast";
 import { preferences } from "./PreferencesDialog";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import { formatMemoContent } from "./Memo";
-import "../less/main-editor.less";
 import JigsawIcon from "../assets/icons/jigsaw.svg";
+import "../less/main-editor.less";
 
 const MainEditor: React.FunctionComponent = () => {
   const [content, setContent] = useState(getEditorContentCache());
