@@ -63,14 +63,14 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
         </ul>
         <hr />
         <p>Enjoy it and have fun~</p>
-        <p className="tip-text">
+        <p className="normal-text">
           BTW, my personal site:{" "}
           <a target="_blank" href="https://justsven.top">
             https://justsven.top
           </a>{" "}
           👀
         </p>
-        <p className="tip-text">last update at 2021/6/9 11:39:00, v1.2.12</p>
+        <p className="normal-text">last update at 2021/6/16 16:40:00, v1.2.13</p>
       </div>
     </>
   );

@@ -8,13 +8,10 @@ import "../less/my-account-dialog.less";
 
 interface Props extends DialogProps {}
 
-/**
- * 我的账号
- */
 const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
   const [user, setUser] = useState(userService.getState().user);
   const [username, setUsername] = useState<string>(user?.username ?? "");
-  const [showEditInputs, setShowEditInputs] = useState(false);
+  const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
 
   useEffect(() => {
     const unsubscribeUserServie = userService.subscribe(({ user }) => {
@@ -36,9 +33,9 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
     setUsername(nextUsername);
   };
 
-  const handleConfirmEditBtnClick = async () => {
+  const handleConfirmEditUsernameBtnClick = async () => {
     if (username === user?.username) {
-      setShowEditInputs(false);
+      setShowEditUsernameInputs(false);
       return;
     }
 
@@ -47,7 +44,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
     if (data) {
       await api.updateUserinfo(username);
       await userService.doSignIn();
-      setShowEditInputs(false);
+      setShowEditUsernameInputs(false);
       Toast.info("修改成功~");
     } else {
       Toast.error("用户名无法使用");
@@ -68,11 +65,42 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
         <div className="section-container account-section-container">
           <label className="form-label input-form-label">
             <span className="normal-text">ID：</span>
-            <input type="text" disabled value={user?.id} />
+            <span className="normal-text">{user?.id}</span>
           </label>
           <label className="form-label input-form-label">
             <span className="normal-text">创建时间：</span>
-            <input type="text" disabled value={utils.getDateString(user?.createdAt!)} />
+            <span className="normal-text">{utils.getDateString(user?.createdAt!)}</span>
+          </label>
+          <hr />
+          <label className="form-label input-form-label username-label">
+            <span className="normal-text">账号：</span>
+            <span className={"normal-text username-text " + (showEditUsernameInputs ? "hidden" : "")}>{username}</span>
+            <input type="text" className={showEditUsernameInputs ? "" : "hidden"} value={username} onChange={handleUsernameChanged} />
+            <div className="btns-container">
+              <span
+                className={"text-btn " + (showEditUsernameInputs ? "hidden" : "")}
+                onClick={() => {
+                  setShowEditUsernameInputs(true);
+                }}
+              >
+                修改一下
+              </span>
+              <span
+                className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
+                onClick={() => {
+                  setUsername(user?.username ?? "");
+                  setShowEditUsernameInputs(false);
+                }}
+              >
+                撤销
+              </span>
+              <span
+                className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
+                onClick={handleConfirmEditUsernameBtnClick}
+              >
+                保存
+              </span>
+            </div>
           </label>
           <label className="form-label password-label">
             <span className="normal-text">密码：</span>
@@ -80,33 +108,6 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
               修改密码
             </span>
           </label>
-          <hr />
-          <label className="form-label input-form-label">
-            <span className="normal-text">账号：</span>
-            <input type="text" disabled={!showEditInputs} value={username} onChange={handleUsernameChanged} />
-          </label>
-        </div>
-        <div className="btns-container">
-          <span
-            className={"text-btn " + (showEditInputs ? "hidden" : "")}
-            onClick={() => {
-              setShowEditInputs(true);
-            }}
-          >
-            修改一下
-          </span>
-          <span
-            className={"text-btn cancel-btn " + (showEditInputs ? "" : "hidden")}
-            onClick={() => {
-              setUsername(user?.username ?? "");
-              setShowEditInputs(false);
-            }}
-          >
-            撤销
-          </span>
-          <span className={"text-btn confirm-btn " + (showEditInputs ? "" : "hidden")} onClick={handleConfirmEditBtnClick}>
-            保存
-          </span>
         </div>
       </div>
     </>

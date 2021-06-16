@@ -36,7 +36,7 @@
 
       > .btns-container {
         > .text-btn {
-          padding: 6px 12px;
+          padding: 4px 12px;
           font-size: 14px;
           border-radius: 4px;
           cursor: pointer;
@@ -70,7 +70,6 @@
       margin-top: 6px;
       padding-top: 6px;
       width: 100%;
-      font-style: italic;
       font-size: 12px;
       line-height: 1.6;
       word-wrap: break-word;
@@ -80,7 +79,17 @@
         text-align: center;
         color: @text-green;
         font-weight: bold;
-        border-bottom: 1px solid @text-green;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background-color: #eee;
+
+        > .icon-text {
+          margin-right: 2px;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }

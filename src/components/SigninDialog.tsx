@@ -78,7 +78,9 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div className="dialog-header-container">
-        <p className="title-text">👋 账号注册 / 登录</p>
+        <p className="title-text">
+          <span className="icon-text">👋</span> 账号注册 / 登录
+        </p>
       </div>
       <div className="dialog-content-container">
         <input type="text" value={username} minLength={4} maxLength={24} placeholder="用户名" onChange={handleUsernameInputChanged} />
@@ -99,6 +101,7 @@ const SigninDialog: React.FunctionComponent<Props> = (props) => {
       <p className="tip-text">
         仅用于作品展示，注册暂时关闭；可输入 <code>guest, 123456</code> 进行体验。
         <span className="text-btn" onClick={handleAboutBtnClick}>
+          <span className="icon-text">😀</span>
           关于本站
         </span>
       </p>

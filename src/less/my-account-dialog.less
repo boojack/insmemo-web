@@ -48,7 +48,7 @@
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
-          align-items: flex-start;
+          align-items: center;
           font-size: 14px;
           line-height: 1.6;
 
@@ -77,13 +77,55 @@
             }
           }
 
+          &.username-label {
+            > .username-text {
+              padding: 0 4px;
+            }
+
+            > input {
+              width: 128px;
+              flex-grow: 0 !important;
+            }
+
+            > .btns-container {
+              margin-left: 8px;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              flex-shrink: 0;
+
+              > .text-btn {
+                font-size: 12px;
+                cursor: pointer;
+                padding: 2px 8px;
+                border-radius: 4px;
+                margin-right: 8px;
+                user-select: none;
+                background-color: lightgray;
+
+                &:hover {
+                  opacity: 0.8;
+                }
+
+                &.cancel-btn {
+                  background-color: unset;
+                }
+
+                &.confirm-btn {
+                  background-color: @text-green;
+                  color: white;
+                }
+              }
+            }
+          }
+
           &.password-label {
             align-items: center;
 
             > .text-btn {
               color: @text-blue;
-              margin: 0 4px;
-              padding: 4px;
+              padding: 0 4px;
               cursor: pointer;
 
               &:hover {
@@ -98,38 +140,6 @@
 
           &:last-of-type {
             margin-bottom: 8px;
-          }
-        }
-      }
-
-      > .btns-container {
-        margin-top: 4px;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-
-        > .text-btn {
-          font-size: 13px;
-          cursor: pointer;
-          padding: 4px 8px;
-          border-radius: 4px;
-          margin-right: 8px;
-          user-select: none;
-          background-color: lightgray;
-
-          &:hover {
-            opacity: 0.8;
-          }
-
-          &.cancel-btn {
-            background-color: unset;
-          }
-
-          &.confirm-btn {
-            background-color: @text-green;
-            color: white;
           }
         }
       }
