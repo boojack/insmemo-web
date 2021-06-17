@@ -14,7 +14,7 @@ const TAG_REG = /#([^\n]+?)#/g;
 // URL 正则
 const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
 // 图片路由正则
-const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/;
+const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 // memo 关联正则
 const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 
