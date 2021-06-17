@@ -73,11 +73,8 @@ export namespace api {
     return get<Model.Memo[]>(`/api/memo/all?offset=${offset}&amount=${amount}`);
   }
 
-  export function createMemo(content: string, uponMemoId?: string) {
-    return post<Model.Memo>("/api/memo/new", {
-      content,
-      uponMemoId,
-    });
+  export function createMemo(content: string) {
+    return post<Model.Memo>("/api/memo/new", { content });
   }
 
   export function getMemoById(id: string) {
@@ -90,12 +87,8 @@ export namespace api {
     });
   }
 
-  export function updateMemo(memoId: string, content: string, uponMemoId: string) {
-    return post<Model.Memo>("/api/memo/update", {
-      memoId,
-      content,
-      uponMemoId,
-    });
+  export function updateMemo(memoId: string, content: string) {
+    return post<Model.Memo>("/api/memo/update", { memoId, content });
   }
 
   export function getMemosCount() {

@@ -7,6 +7,7 @@ interface Query {
 }
 
 interface State {
+  hash: string;
   query: Query;
 }
 
@@ -25,12 +26,20 @@ interface SetFromAndToQueryAction extends Action {
   };
 }
 
-type Actions = SetTagQueryAction | SetFromAndToQueryAction;
+interface SetHashAction extends Action {
+  type: "SET_HASH";
+  payload: {
+    hash: string;
+  };
+}
+
+type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetHashAction;
 
 function locationReducer(state: State, action: Actions) {
   switch (action.type) {
     case "SET_TAG_QUERY": {
       return {
+        ...state,
         query: {
           ...state.query,
           tag: action.payload.tag,
@@ -39,11 +48,18 @@ function locationReducer(state: State, action: Actions) {
     }
     case "SET_FROM_TO_QUERY": {
       return {
+        ...state,
         query: {
           ...state.query,
           from: action.payload.from,
           to: action.payload.to,
         },
+      };
+    }
+    case "SET_HASH": {
+      return {
+        ...state,
+        hash: action.payload.hash,
       };
     }
     default: {
@@ -54,6 +70,7 @@ function locationReducer(state: State, action: Actions) {
 
 const locationStore = createStore<State, Actions>(
   {
+    hash: "",
     query: {
       tag: "",
       from: 0,

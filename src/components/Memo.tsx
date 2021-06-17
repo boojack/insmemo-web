@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { IMAGE_URL_REG, LINK_REG, TAG_REG } from "../helpers/consts";
 import marked from "../helpers/marked";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
@@ -8,8 +7,16 @@ import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { preferences } from "./PreferencesDialog";
-import JigsawIcon from "../assets/icons/jigsaw.svg";
 import "../less/memo.less";
+
+// 标签 正则
+const TAG_REG = /#([^\n]+?)#/g;
+// URL 正则
+const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
+// 图片路由正则
+const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/;
+// memo 关联正则
+const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 
 interface Props {
   className: string;
@@ -26,17 +33,12 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
-  const [uponMemoContent, setUponMemoContent] = useState("");
-  const [imageUrls, setImageUrls] = useState<string[]>(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const [showMoreActionBtns, toggleMoreActionBtns] = useToggle(false);
 
   useEffect(() => {
-    const { uponMemoId } = memo;
-
-    if (uponMemoId) {
-      setUponMemoContent(utils.parseHTMLToRawString(formatMemoContent(memo.uponMemo?.content ?? "")));
-    }
+    setImageUrls(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
   }, [memo]);
 
   useEffect(() => {
@@ -57,8 +59,8 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     [memo]
   );
 
-  const uponThisMemo = useCallback(() => {
-    globalStateService.setUponMemoId(memo.id);
+  const markThisMemo = useCallback(() => {
+    globalStateService.setMarkMemoId(memo.id);
   }, [memo]);
 
   const handleBtnsContainerClick = useCallback((e: React.MouseEvent) => {
@@ -91,13 +93,13 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
   }, [memo]);
 
   return (
-    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div id={memo.id} className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleMemoClick}>
           {memo.createdAtStr}
         </span>
         <div className="btns-container" onClick={handleBtnsContainerClick}>
-          <span className="text-btn mark-btn" onClick={uponThisMemo}>
+          <span className="text-btn mark-btn" onClick={markThisMemo}>
             Mark
           </span>
           {showMoreActionBtns ? (
@@ -127,12 +129,6 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
           ))}
         </div>
       ) : null}
-      {memo.uponMemoId ? (
-        <div className="uponmemo-container">
-          <img className="icon-img" src={JigsawIcon} />
-          <div className="uponmemo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent ?? "" }}></div>
-        </div>
-      ) : null}
     </div>
   );
 };
@@ -151,17 +147,20 @@ export function formatMemoContent(content: string): string {
 
   content = content
     .split("\n")
-    .map((t) => {
-      if (t === "") {
+    .map((t, idx, arr) => {
+      if (t !== "") {
+        t = t
+          .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
+          .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
+          .replace(MEMO_LINK_REG, "<a class='memo-link' target='_self' rel='noreferrer' href='/#$2'>$1▸</a>");
+        return "<p>" + t + "<p>";
+      } else if (idx + 1 !== arr.length) {
         return "<br />";
       } else {
-        return "<p>" + t + "<p>";
+        return "";
       }
     })
     .join("");
-
-  content = content.replace(TAG_REG, "<span class='tag-span'>#$1#</span>");
-  content = content.replace(LINK_REG, "<a target='_blank' rel='noreferrer' href='$1'>$1</a>");
 
   return content;
 }

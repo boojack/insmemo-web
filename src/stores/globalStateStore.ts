@@ -1,14 +1,14 @@
 import createStore, { Action } from "./createStore";
 
 interface State {
-  uponMemoId: string;
+  markMemoId: string;
   editMemoId: string;
 }
 
-interface SetUponMemoIdAction extends Action {
-  type: "SET_UPON_MEMO_ID";
+interface SetMarkMemoIdAction extends Action {
+  type: "SET_MARK_MEMO_ID";
   payload: {
-    uponMemoId: string;
+    markMemoId: string;
   };
 }
 
@@ -19,14 +19,14 @@ interface SetEditMemoIdAction extends Action {
   };
 }
 
-type Actions = SetEditMemoIdAction | SetUponMemoIdAction;
+type Actions = SetEditMemoIdAction | SetMarkMemoIdAction;
 
 function globalStateReducer(state: State, action: Actions) {
   switch (action.type) {
-    case "SET_UPON_MEMO_ID": {
+    case "SET_MARK_MEMO_ID": {
       return {
         ...state,
-        uponMemoId: action.payload.uponMemoId,
+        markMemoId: action.payload.markMemoId,
       };
     }
     case "SET_EDIT_MEMO_ID": {
@@ -43,7 +43,7 @@ function globalStateReducer(state: State, action: Actions) {
 
 const globalStateStore = createStore<State, Actions>(
   {
-    uponMemoId: "",
+    markMemoId: "",
     editMemoId: "",
   },
   globalStateReducer

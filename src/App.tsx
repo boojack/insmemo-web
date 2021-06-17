@@ -20,7 +20,7 @@ function App() {
       const { user } = userService.getState();
       if (user) {
         setUsername(user.username);
-        locationService.initQuery();
+        locationService.initLocation();
         memoService.fetchMoreMemos();
       } else {
         setUsername("insmemo");

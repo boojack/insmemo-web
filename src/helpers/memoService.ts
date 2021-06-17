@@ -21,9 +21,7 @@ const memoService = {
     const memos: Model.Memo[] = data.map((m) => ({
       id: m.id,
       content: m.content,
-      uponMemoId: m.uponMemoId,
       tags: m.tags,
-      uponMemo: m.uponMemo,
       createdAt: new Date(m.createdAt).getTime(),
       updatedAt: new Date(m.updatedAt).getTime(),
     }));
@@ -48,9 +46,7 @@ const memoService = {
         memo: {
           id: memo.id,
           content: memo.content,
-          uponMemoId: memo.uponMemoId,
           tags: memo.tags,
-          uponMemo: memo.uponMemo,
           createdAt: new Date(memo.createdAt).getTime(),
           updatedAt: new Date(memo.updatedAt).getTime(),
         },

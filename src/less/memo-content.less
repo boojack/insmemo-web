@@ -10,8 +10,26 @@
   word-break: break-word;
 
   span.tag-span {
+    display: inline-block;
+    font-size: 14px;
+    padding: 0 4px;
     margin: 0 2px;
     color: @text-blue;
+    background-color: #eef3fe;
+    border-radius: 4px;
+  }
+
+  a.memo-link {
+    display: inline-block;
+    color: #5783f7;
+    font-weight: bold;
+    border-bottom: none;
+    text-decoration: none;
+
+    &:hover {
+      background-color: unset;
+      opacity: 0.8;
+    }
   }
 
   div.dot-li,

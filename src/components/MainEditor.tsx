@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../helpers/api";
-import { TAG_REG } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import globalStateService from "../helpers/globalStateService";
 import locationService from "../helpers/locationService";
@@ -9,36 +8,21 @@ import { storage } from "../helpers/storage";
 import toast from "./Toast";
 import { preferences } from "./PreferencesDialog";
 import Editor, { EditorRefActions } from "./Editor/Editor";
-import { formatMemoContent } from "./Memo";
-import JigsawIcon from "../assets/icons/jigsaw.svg";
 import "../less/main-editor.less";
+
+// 标签 正则
+const TAG_REG = /#(.+?)#/g;
 
 const MainEditor: React.FunctionComponent = () => {
   const [content, setContent] = useState(getEditorContentCache());
-  const [uponMemoId, setUponMemoId] = useState("");
   const [editMemoId, setEditMemoId] = useState("");
-  const [uponMemoContent, setUponMemoContent] = useState("");
   const editorRef = React.useRef<EditorRefActions>(null);
 
   useEffect(() => {
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
-      if (nextState.uponMemoId !== prevState.uponMemoId) {
-        if (nextState.uponMemoId === "") {
-          setUponMemoId("");
-          return;
-        }
-
-        if (nextState.uponMemoId === nextState.editMemoId) {
-          toast.info("不能 mark 自己呀");
-          return;
-        }
-
-        const uponMemo = memoService.getMemoById(nextState.uponMemoId);
-        setUponMemoId(nextState.uponMemoId);
-        if (uponMemo) {
-          const uponMemoContent = utils.parseHTMLToRawString(formatMemoContent(uponMemo?.content ?? ""));
-          setUponMemoContent(uponMemoContent);
-        }
+      if (nextState.markMemoId !== "" && memoService.getMemoById(nextState.markMemoId)) {
+        const memoLinkText = `[@MEMO](${nextState.markMemoId})`;
+        editorRef.current?.insertText(`${memoLinkText}\n`);
       }
 
       if (nextState.editMemoId !== prevState.editMemoId) {
@@ -52,7 +36,6 @@ const MainEditor: React.FunctionComponent = () => {
         if (editMemo) {
           setEditMemoId(nextState.editMemoId);
           editorRef.current?.setContent(editMemo.content ?? "");
-          globalStateService.setUponMemoId(editMemo.uponMemoId ?? "");
         }
       }
     });
@@ -98,7 +81,7 @@ const MainEditor: React.FunctionComponent = () => {
       if (editMemoId) {
         const prevMemo = memoService.getMemoById(editMemoId);
 
-        if (!prevMemo || (prevMemo.content === content && prevMemo.uponMemoId === uponMemoId)) {
+        if (!prevMemo || prevMemo.content === content) {
           // do nth
         } else {
           const prevTags = prevMemo.tags ?? [];
@@ -120,25 +103,19 @@ const MainEditor: React.FunctionComponent = () => {
             }
           }
 
-          const { data: editedMemo } = await api.updateMemo(prevMemo.id, content, uponMemoId);
+          const { data: editedMemo } = await api.updateMemo(prevMemo.id, content);
 
           prevMemo.tags = tags;
           prevMemo.content = editedMemo.content ?? "";
-          prevMemo.uponMemoId = editedMemo.uponMemoId ?? "";
-          if (editedMemo.uponMemoId) {
-            prevMemo.uponMemo = memoService.getMemoById(editedMemo.uponMemoId);
-          }
           prevMemo.updatedAt = Date.now();
           memoService.editMemo(prevMemo);
         }
         globalStateService.setEditMemoId("");
       } else {
-        const { data: newMemo } = await api.createMemo(content, uponMemoId);
+        const { data: newMemo } = await api.createMemo(content);
 
         newMemo.tags = tags;
-        if (uponMemoId) {
-          newMemo.uponMemo = memoService.getMemoById(uponMemoId);
-        }
+
         // link memo and tag
         for (const t of tags) {
           await api.createMemoTag(newMemo.id, t.id);
@@ -151,17 +128,15 @@ const MainEditor: React.FunctionComponent = () => {
       }
 
       setContent("");
-      globalStateService.setUponMemoId("");
       setEditorContentCache("");
     },
-    [editMemoId, uponMemoId]
+    [editMemoId]
   );
 
   const handleCancelBtnClick = useCallback(() => {
     globalStateService.setEditMemoId("");
     editorRef.current?.setContent("");
     setContent("");
-    setUponMemoId("");
     setEditorContentCache("");
   }, []);
 
@@ -174,10 +149,6 @@ const MainEditor: React.FunctionComponent = () => {
     },
     [editMemoId]
   );
-
-  const handleClearUponMemoClick = () => {
-    globalStateService.setUponMemoId("");
-  };
 
   // 编辑器配置
   const editorConfig = useMemo(
@@ -193,17 +164,13 @@ const MainEditor: React.FunctionComponent = () => {
       handleContentChange: handleContentChange,
       editorRef,
     }),
-    [content, editMemoId, uponMemoId]
+    [content, editMemoId]
   );
 
   return (
     <div className={"main-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>
       <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor {...editorConfig} />
-      <div className={"upon-memo-container " + (uponMemoId ? "" : "hidden")} onClick={handleClearUponMemoClick}>
-        <img className="icon-img" src={JigsawIcon} />
-        <div className="upon-memo-content-text" dangerouslySetInnerHTML={{ __html: uponMemoContent }}></div>
-      </div>
     </div>
   );
 };

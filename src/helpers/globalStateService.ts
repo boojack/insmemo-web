@@ -10,11 +10,11 @@ const globalStateService = {
     });
   },
 
-  setUponMemoId: (uponMemoId: string) => {
+  setMarkMemoId: (markMemoId: string) => {
     globalStateStore.dispatch({
-      type: "SET_UPON_MEMO_ID",
+      type: "SET_MARK_MEMO_ID",
       payload: {
-        uponMemoId,
+        markMemoId,
       },
     });
   },
