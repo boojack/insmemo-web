@@ -22,7 +22,7 @@ const todayDay = new Date(todayTimestamp).getDay() || 7;
 const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
 const beginDayTimestemp = todayTimestamp - usedDaysAmount * DAILY_TIMESTAMP;
 
-const UsageStatTable = () => {
+const UsageStatTable: React.FunctionComponent = () => {
   const nullCell = new Array(7 - todayDay).fill(0);
   const [allStat, setAllStat] = useState<UsageStatDaily[]>(new Array(usedDaysAmount));
   const [todayStat, setTodayStat] = useState<UsageStatDaily | null>(null);

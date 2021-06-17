@@ -9,7 +9,7 @@ interface Props extends DialogProps {
   memo: Model.Memo;
 }
 
-const GenMemoImageDialog: React.FunctionComponent<Props> = (props: Props) => {
+const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
   const { user: userinfo } = userService.getState();

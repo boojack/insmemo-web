@@ -10,7 +10,7 @@ interface DialogConfig {
 interface Props extends DialogConfig, DialogProps {}
 
 const BaseDialog: React.FunctionComponent<Props> = (props) => {
-  const { className, clickSpaceDestroy, destroy } = props;
+  const { children, className, clickSpaceDestroy, destroy } = props;
 
   const handleSpaceClicked = () => {
     if (clickSpaceDestroy) {
@@ -21,7 +21,7 @@ const BaseDialog: React.FunctionComponent<Props> = (props) => {
   return (
     <div className={"dialog-wrapper " + className} onClick={handleSpaceClicked}>
       <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
-        {props.children}
+        {children}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import "../less/my-account-dialog.less";
 
 interface Props extends DialogProps {}
 
-const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
+const MyAccountDialog: React.FunctionComponent<Props> = ({ destroy }) => {
   const [user, setUser] = useState(userService.getState().user);
   const [username, setUsername] = useState<string>(user?.username ?? "");
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
@@ -25,7 +25,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    props.destroy();
+    destroy();
   };
 
   const handleUsernameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +114,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-const ChangePasswordDialog: React.FunctionComponent<Props> = (props) => {
+const ChangePasswordDialog: React.FunctionComponent<Props> = ({ destroy }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
@@ -124,7 +124,7 @@ const ChangePasswordDialog: React.FunctionComponent<Props> = (props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    props.destroy();
+    destroy();
   };
 
   const handleOldPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

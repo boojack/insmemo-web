@@ -18,7 +18,7 @@ export const preferences = {
 };
 storage.set({ ...preferences });
 
-const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
+const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
   const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
   const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);
   const [shouldUseMarkdownParser, setShouldUseMarkdownParser] = useState<boolean>(preferences.shouldUseMarkdownParser);
@@ -28,7 +28,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = (props) => {
   }, []);
 
   const handleCloseBtnClick = () => {
-    props.destroy();
+    destroy();
   };
 
   const handleSplitWordsValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

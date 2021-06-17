@@ -17,8 +17,7 @@ const validateConfig: ValidatorConfig = {
   noChinese: true,
 };
 
-const SigninDialog: React.FunctionComponent<Props> = (props) => {
-  const { destroy } = props;
+const SigninDialog: React.FunctionComponent<Props> = ({ destroy }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

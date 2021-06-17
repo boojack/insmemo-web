@@ -3,8 +3,8 @@ import showPreviewImageDialog from "./PreviewImageDialog";
 import "../less/image.less";
 
 interface Props {
-  className?: string;
   imgUrl: string;
+  className?: string;
 }
 
 const Image: React.FunctionComponent<Props> = (props: Props) => {
