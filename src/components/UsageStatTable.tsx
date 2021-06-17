@@ -78,28 +78,19 @@ const UsageStatTable: React.FunctionComponent = () => {
     }
   }, []);
 
-  const handleUsageStatItemClick = useCallback(
-    (item: UsageStatDaily) => {
-      if (currentStat === item) {
-        const query = locationService.getState().query;
-        if (query.from < query.to) {
-          locationService.setFromAndToQuery(0, 0);
-          setCurrentStat(null);
-          return;
-        }
-      }
-
-      if (item.count > 0) {
-        locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
-        setCurrentStat(item);
-      }
-    },
-    [currentStat]
-  );
-
   const handleUsageStatItemMouseLeave = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setTodayStat(null);
   }, []);
+
+  const handleUsageStatItemClick = (item: UsageStatDaily) => {
+    if (currentStat?.timestamp === item.timestamp) {
+      locationService.setFromAndToQuery(0, 0);
+      setCurrentStat(null);
+    } else if (item.count > 0) {
+      locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
+      setCurrentStat(item);
+    }
+  };
 
   return (
     <div className="usage-stat-table-wrapper">
