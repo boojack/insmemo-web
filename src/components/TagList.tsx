@@ -3,34 +3,20 @@ import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
-import { useToggle } from "../hooks/useToggle";
 import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
 
 const TagList: React.FunctionComponent = () => {
-  const [usedTags, setUsedTags] = useState<TagItem[]>([]);
-  const [unusedTags, setUnusedTags] = useState<TagItem[]>([]);
+  const [tags, setTags] = useState<TagItem[]>([]);
   const { query } = locationService.getState();
   const [tagQuery, setTagQuery] = useState(query.tag);
-  const [showUnusedTagsContainer, toggleShowUnusedTagsStatus] = useToggle(false);
 
   useEffect(() => {
     const fetchTags = async () => {
       const { data: tags } = await api.getMyTags();
-      const usedTags = [];
-      const unusedTags = [];
 
-      for (const t of tags) {
-        if (t.amount === 0) {
-          unusedTags.push(t);
-        } else {
-          usedTags.push(t);
-        }
-      }
-
-      setUsedTags([...usedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
-      setUnusedTags([...unusedTags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
+      setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
     };
 
     const unsubscribeMemoService = memoService.subscribe(() => {
@@ -51,7 +37,7 @@ const TagList: React.FunctionComponent = () => {
     };
   }, []);
 
-  const handleUsedTagClick = useCallback(
+  const handleTagClick = useCallback(
     (tag: TagItem) => {
       let tagText = tag.text;
 
@@ -66,51 +52,22 @@ const TagList: React.FunctionComponent = () => {
     [tagQuery]
   );
 
-  const handleUnusedTagClick = useCallback(
-    async (tag: TagItem, index: number) => {
-      unusedTags.splice(index, 1);
-      setUnusedTags([...unusedTags]);
-      await api.deleteTagById(tag.id);
-    },
-    [unusedTags]
-  );
-
   return (
     <div className="tags-container">
       <p className="title-text">常用标签</p>
-      {usedTags.map((t) => (
+      {tags.map((t) => (
         <div
           key={t.id}
           className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
           onClick={() => {
-            handleUsedTagClick(t);
+            handleTagClick(t);
           }}
         >
-          <span># {t.text}</span>
+          <span className="tag-text"># {t.text}</span>
         </div>
       ))}
 
-      <div className={"unused-tag-wrapper " + (unusedTags.length === 0 || !showUnusedTagsContainer ? "hidden" : "")}>
-        {unusedTags.map((t, index) => (
-          <div key={t.id} className={"tag-item-container unused-tag-container"}>
-            <span># {t.text}</span>
-            <span
-              className="action-btn"
-              onClick={() => {
-                handleUnusedTagClick(t, index);
-              }}
-            >
-              删除
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <p className={"action-text " + (unusedTags.length === 0 ? "hidden" : "")} onClick={toggleShowUnusedTagsStatus}>
-        有 {unusedTags.length} 个不常用的标签，点击{showUnusedTagsContainer ? "隐藏" : "显示"}
-      </p>
-
-      {usedTags.length + unusedTags.length <= 3 ? (
+      {tags.length <= 3 ? (
         <p className="tag-tip-container">
           输入<span>#Tag#</span>来创建标签吧~
         </p>

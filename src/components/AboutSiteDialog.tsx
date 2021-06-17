@@ -23,10 +23,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="dialog-content-container">
         <p>
-          <b>
-            <i>insmemo</i>
-          </b>
-          ：
+          <b>insmemo</b>：
           <a target="_blank" href="https://flomoapp.com/">
             flomo
           </a>{" "}
@@ -70,7 +67,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = (props: Props) => {
           </a>{" "}
           👀
         </p>
-        <p className="normal-text">last update at 2021/6/16 16:40:00, v1.2.13</p>
+        <p className="normal-text">Last update at 2021/6/17 09:44:01, v1.2.14</p>
       </div>
     </>
   );
