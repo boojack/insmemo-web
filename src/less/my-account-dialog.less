@@ -231,3 +231,29 @@
     }
   }
 }
+
+body.dark {
+  .my-account-dialog {
+    > .dialog-container {
+      > .dialog-content-container {
+        hr {
+          background-color: gray;
+        }
+
+        > .section-container {
+          > .form-label {
+            &.username-label {
+              > .btns-container {
+                > .text-btn {
+                  &.edit-username-btn {
+                    background-color: gray;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

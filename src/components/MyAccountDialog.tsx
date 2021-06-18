@@ -78,7 +78,7 @@ const MyAccountDialog: React.FunctionComponent<Props> = ({ destroy }) => {
             <input type="text" className={showEditUsernameInputs ? "" : "hidden"} value={username} onChange={handleUsernameChanged} />
             <div className="btns-container">
               <span
-                className={"text-btn " + (showEditUsernameInputs ? "hidden" : "")}
+                className={"text-btn edit-username-btn " + (showEditUsernameInputs ? "hidden" : "")}
                 onClick={() => {
                   setShowEditUsernameInputs(true);
                 }}

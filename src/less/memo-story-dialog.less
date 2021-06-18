@@ -139,6 +139,41 @@
   }
 }
 
+body.dark {
+  .dialog-wrapper.memo-story-dialog {
+    > .dialog-container {
+      > .dialog-content-container {
+        .memo-container {
+          border-top: 1px solid gray;
+
+          > .memo-header-container {
+            > .time-text {
+              color: lightgray;
+            }
+
+            > .action-btn {
+              &:hover {
+                background-color: gray;
+              }
+            }
+          }
+        }
+
+        > .normal-text {
+          color: lightgray;
+        }
+
+        > .down-memos-wrapper {
+          background-color: @dark-bg-light-black;
+          > .memo-container {
+            background-color: @dark-bg-light-black;
+          }
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .dialog-wrapper.memo-story-dialog {
     padding: 24px 16px;

@@ -48,16 +48,9 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     });
   }, [shouldSplitMemoWord]);
 
-  const handleMemoClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (["A", "IMG"].includes((e.target as HTMLElement)?.tagName)) {
-        return;
-      }
-
-      showMemoStoryDialog(memo.id);
-    },
-    [memo]
-  );
+  const handleShowMemoStoryDialog = () => {
+    showMemoStoryDialog(memo.id);
+  };
 
   const markThisMemo = useCallback(() => {
     globalStateService.setMarkMemoId(memo.id);
@@ -65,6 +58,9 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 
   const handleBtnsContainerClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
+    if (showMoreActionBtns) {
+      toggleMoreActionBtns(false);
+    }
   }, []);
 
   const handleDeleteMemoClick = useCallback(async () => {
@@ -77,7 +73,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 
   const handlerShowMoreBtnsClick = useCallback(async () => {
     if (showConfirmDeleteBtn) {
-      toggleConfirmDeleteBtn();
+      toggleConfirmDeleteBtn(false);
     }
     toggleMoreActionBtns();
   }, [showConfirmDeleteBtn]);
@@ -88,10 +84,10 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 
   const handleMouseLeaveMemoWrapper = useCallback(() => {
     if (showConfirmDeleteBtn) {
-      toggleConfirmDeleteBtn();
+      toggleConfirmDeleteBtn(false);
     }
     if (showMoreActionBtns) {
-      toggleMoreActionBtns();
+      toggleMoreActionBtns(false);
     }
   }, [showConfirmDeleteBtn, showMoreActionBtns]);
 
@@ -102,7 +98,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div id={memo.id} className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
-        <span className="time-text" onClick={handleMemoClick}>
+        <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
         </span>
         <div className="btns-container" onClick={handleBtnsContainerClick}>
