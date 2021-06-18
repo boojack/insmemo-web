@@ -21,7 +21,16 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     const fetchMemo = async () => {
-      const memoTemp = memoService.getMemoById(currentMemoId) ?? (await api.getMemoById(currentMemoId)).data;
+      let memoTemp = memoService.getMemoById(currentMemoId);
+
+      if (!memoTemp) {
+        memoTemp = (await api.getMemoById(currentMemoId)).data;
+        setTimeout(async () => {
+          while (!memoService.getMemoById(currentMemoId)) {
+            await memoService.fetchMoreMemos();
+          }
+        });
+      }
 
       if (memoTemp) {
         setMemo({
@@ -77,7 +86,16 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+        let memoTemp = memoService.getMemoById(currentMemoId);
+
+        if (!memoTemp) {
+          memoTemp = (await api.getMemoById(currentMemoId)).data;
+          setTimeout(async () => {
+            while (!memoService.getMemoById(currentMemoId)) {
+              await memoService.fetchMoreMemos();
+            }
+          });
+        }
 
         if (memoTemp) {
           destroy();
@@ -114,7 +132,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         <p className={"normal-text " + (downMemos.length === 0 ? "hidden" : "")}>链接了 {downMemos.length} 个 Memo</p>
         <div className={"down-memos-wrapper " + (downMemos.length !== 0 ? "" : "hidden")}>
           {downMemos.map((m) => (
-            <div id={m.id} className="memo-container" key={m.id}>
+            <div className="memo-container" key={m.id}>
               <div className="memo-header-container">
                 <p className="time-text">{m.createdAtStr}</p>
               </div>

@@ -104,7 +104,16 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+        let memoTemp = memoService.getMemoById(memoId);
+
+        if (!memoTemp) {
+          memoTemp = (await api.getMemoById(memoId)).data;
+          setTimeout(async () => {
+            while (!memoService.getMemoById(memoId)) {
+              await memoService.fetchMoreMemos();
+            }
+          });
+        }
 
         if (memoTemp) {
           showMemoStoryDialog(memoId);
