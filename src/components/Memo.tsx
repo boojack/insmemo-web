@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { api } from "../helpers/api";
 import { storage } from "../helpers/storage";
 import marked from "../helpers/marked";
+import memoService from "../helpers/memoService";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
 import { useToggle } from "../hooks/useToggle";
@@ -95,8 +97,24 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     showGenMemoImageDialog(memo);
   }, [memo]);
 
+  const handleMemoContentClick = async (e: React.MouseEvent) => {
+    const targetEl = e.target as HTMLElement;
+
+    if (targetEl.className === "memo-link-text") {
+      const memoId = targetEl.dataset?.value;
+
+      if (memoId) {
+        const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+
+        if (memoTemp) {
+          showMemoStoryDialog(memoId);
+        }
+      }
+    }
+  };
+
   return (
-    <div id={memo.id} className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
@@ -122,7 +140,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
           </span>
         </div>
       </div>
-      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+      <div className="memo-content-text" onClick={handleMemoContentClick} dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
       {imageUrls.length > 0 ? (
         <div className="images-container">
           {imageUrls.map((imgUrl, idx) => (
@@ -153,7 +171,7 @@ export function formatMemoContent(content: string): string {
         t = t
           .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
           .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
-          .replace(MEMO_LINK_REG, "<a class='memo-link' target='_self' rel='noreferrer' href='/#$2'>$1</a>");
+          .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
         return "<p>" + t + "<p>";
       } else if (idx + 1 !== arr.length) {
         return "<br />";

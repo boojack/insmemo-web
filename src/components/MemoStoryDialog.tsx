@@ -15,20 +15,24 @@ interface Props extends DialogProps {
 }
 
 const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
-  const { memoId: currentMemoId } = props;
+  const { memoId: currentMemoId, destroy } = props;
   const [memo, setMemo] = useState<FormattedMemo>();
   const [downMemos, setDownMemos] = useState<FormattedMemo[]>([]);
 
   useEffect(() => {
-    const memoTemp = memoService.getMemoById(currentMemoId);
+    const fetchMemo = async () => {
+      const memoTemp = memoService.getMemoById(currentMemoId) ?? (await api.getMemoById(currentMemoId)).data;
 
-    if (memoTemp) {
-      setMemo({
-        ...memoTemp,
-        formattedContent: formatMemoContent(memoTemp.content),
-        createdAtStr: utils.getTimeString(memoTemp.createdAt),
-      });
-    }
+      if (memoTemp) {
+        setMemo({
+          ...memoTemp,
+          formattedContent: formatMemoContent(memoTemp.content),
+          createdAtStr: utils.getTimeString(memoTemp.createdAt),
+        });
+      }
+    };
+
+    fetchMemo();
   }, []);
 
   useEffect(() => {
@@ -56,6 +60,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         }
       });
     };
+
     fetchDownMemos();
   }, [memo]);
 
@@ -65,13 +70,30 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
     }
   };
 
+  const handleMemoContentClick = async (e: React.MouseEvent) => {
+    const targetEl = e.target as HTMLElement;
+
+    if (targetEl.className === "memo-link-text") {
+      const memoId = targetEl.dataset?.value;
+
+      if (memoId) {
+        const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+
+        if (memoTemp) {
+          destroy();
+          showMemoStoryDialog(memoId);
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className="dialog-header-container">
         <p className="title-text">
           <span className="icon-text">📕</span>Memo Story
         </p>
-        <button className="text-btn close-btn" onClick={props.destroy}>
+        <button className="text-btn close-btn" onClick={destroy}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
@@ -83,7 +105,11 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
               Share
             </span>
           </div>
-          <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo?.formattedContent ?? "" }}></div>
+          <div
+            className="memo-content-text"
+            onClick={handleMemoContentClick}
+            dangerouslySetInnerHTML={{ __html: memo?.formattedContent ?? "" }}
+          ></div>
         </div>
         <p className={"normal-text " + (downMemos.length === 0 ? "hidden" : "")}>链接了 {downMemos.length} 个 Memo</p>
         <div className={"down-memos-wrapper " + (downMemos.length !== 0 ? "" : "hidden")}>
@@ -92,7 +118,11 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
               <div className="memo-header-container">
                 <p className="time-text">{m.createdAtStr}</p>
               </div>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: m.formattedContent }}></div>
+              <div
+                className="memo-content-text"
+                onClick={handleMemoContentClick}
+                dangerouslySetInnerHTML={{ __html: m.formattedContent }}
+              ></div>
             </div>
           ))}
         </div>
