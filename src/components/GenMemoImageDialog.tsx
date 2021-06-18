@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import userService from "../helpers/userService";
 import { utils } from "../helpers/utils";
+import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import "../less/gen-memo-image-dialog.less";
@@ -26,6 +27,7 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
     if (memoEl) {
       html2canvas(memoEl, {
         scale: 4,
+        backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
       }).then((canvas) => {
         setImgUrl(canvas.toDataURL());
       });

@@ -53,6 +53,23 @@
   }
 }
 
+body.dark {
+  .tools-btn-popup {
+    background-color: @dark-bg-black;
+
+    &::before {
+      border-bottom: 8px solid @dark-bg-black;
+    }
+
+    > .action-btn {
+      &:hover {
+        background-color: unset;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .tools-btn-popup {
     top: 24px;

@@ -80,6 +80,20 @@
   }
 }
 
+body.dark {
+  .tags-container {
+    > .tag-item-container {
+      &:hover {
+        background-color: @dark-bg-black;
+      }
+
+      > .tag-text {
+        color:  @dark-text-white;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .tags-container {
     height: calc(100% - 154px - 158px);

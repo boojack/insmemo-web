@@ -79,6 +79,31 @@
   }
 }
 
+body.dark {
+  .user-banner-container {
+    > .userinfo-header-container {
+      > .username-text {
+        color: @dark-text-white;
+      }
+      > .action-btn {
+        color: @dark-text-white;
+      }
+    }
+
+    > .status-text-container {
+      > .status-text {
+        > .amount-text {
+          color: @dark-text-white;
+        }
+
+        > .type-text {
+          color: lightgray;
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .user-banner-container {
     height: 154px;

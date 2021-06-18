@@ -162,6 +162,37 @@
   }
 }
 
+body.dark {
+  .memo-wrapper {
+    background-color: @dark-bg-black;
+    border-color: @dark-bg-black;
+
+    > .memo-top-wrapper {
+      > .btns-container {
+        > .more-action-btns-container {
+          background-color: @dark-bg-light-black;
+
+          &::before {
+            border-left: 8px solid @dark-bg-light-black;
+          }
+        }
+
+        .text-btn {
+          &:hover {
+            background-color: @dark-bg-light-black;
+          }
+
+          &.more-action-btns {
+            &.active {
+              background-color: @dark-bg-light-black;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .memo-wrapper {
     > .memo-top-wrapper {

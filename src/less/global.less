@@ -11,6 +11,25 @@
     "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
 }
 
+body.dark {
+  * {
+    color: @dark-text-white;
+  }
+
+  blockquote {
+    margin: 8px 0;
+    padding: 4px 10px;
+    padding-right: 6px;
+    width: 100%;
+    background-color: @dark-bg-light-black;
+    border-left: 4px solid rgba(255, 255, 255, 0.6);
+  }
+
+  a {
+    color: @text-blue;
+  }
+}
+
 body,
 html {
   width: 100%;

@@ -41,4 +41,16 @@ export namespace storage {
     iframeEl.contentWindow?.localStorage.setItem("t", Date.now().toString());
     iframeEl.remove();
   }
+
+  export const preferences = (() => {
+    const cachePrefers = storage.get(["shouldSplitMemoWord", "tagTextClickedAction", "shouldUseMarkdownParser", "showDarkMode"]);
+    const temp = {
+      shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? false,
+      shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? false,
+      tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
+      showDarkMode: cachePrefers.showDarkMode ?? false,
+    };
+    storage.set({ ...temp });
+    return temp;
+  })();
 }

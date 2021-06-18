@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { storage } from "../helpers/storage";
 import marked from "../helpers/marked";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
@@ -6,7 +7,6 @@ import { useToggle } from "../hooks/useToggle";
 import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
-import { preferences } from "./PreferencesDialog";
 import "../less/memo.less";
 
 // 标签 正则
@@ -141,12 +141,12 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
 export function formatMemoContent(content: string): string {
   content = content.replace(/&nbsp;/g, " ");
 
-  if (preferences.shouldUseMarkdownParser) {
+  if (storage.preferences.shouldUseMarkdownParser) {
     content = marked(content);
   }
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
-  if (preferences.shouldSplitMemoWord) {
+  if (storage.preferences.shouldSplitMemoWord) {
     content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
   }
 

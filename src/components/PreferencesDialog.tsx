@@ -10,18 +10,12 @@ interface Props extends DialogProps {}
  * 1. 中英文分开；
  * 2. markdown 解析；
  */
-const cachePrefers = storage.get(["shouldSplitMemoWord", "tagTextClickedAction", "shouldUseMarkdownParser"]);
-export const preferences = {
-  shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? false,
-  shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? false,
-  tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
-};
-storage.set({ ...preferences });
-
 const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
+  const preferences = storage.preferences;
   const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
   const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);
   const [shouldUseMarkdownParser, setShouldUseMarkdownParser] = useState<boolean>(preferences.shouldUseMarkdownParser);
+  const [showDarkMode, setShowDarkMode] = useState<boolean>(preferences.showDarkMode);
 
   useEffect(() => {
     // do nth
@@ -36,6 +30,14 @@ const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
     setShouldSplitWord(nextStatus);
     preferences.shouldSplitMemoWord = nextStatus;
     storage.set({ shouldSplitMemoWord: nextStatus });
+    storage.emitStorageChangedEvent();
+  };
+
+  const handleShowDarkModeValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextStatus = e.target.checked;
+    setShowDarkMode(nextStatus);
+    preferences.showDarkMode = nextStatus;
+    storage.set({ showDarkMode: nextStatus });
     storage.emitStorageChangedEvent();
   };
 
@@ -65,6 +67,15 @@ const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
         </button>
       </div>
       <div className="dialog-content-container">
+        <div className="section-container preferences-section-container">
+          <p className="title-text">常规</p>
+          <label className="form-label checkbox-form-label">
+            <span className="normal-text">黑暗模式</span>
+            <img className="icon-img" src={showDarkMode ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <input className="hidden" type="checkbox" checked={showDarkMode} onChange={handleShowDarkModeValueChanged} />
+            <span className="tip-text">😜先用着吧</span>
+          </label>
+        </div>
         <div className="section-container preferences-section-container">
           <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">

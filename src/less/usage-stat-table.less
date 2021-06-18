@@ -65,19 +65,19 @@
       }
 
       &.stat-day-L1-bg {
-        background-color: @stat-day-L1-bg;
+        background-color: @stat-day-L1-bg !important;
       }
 
       &.stat-day-L2-bg {
-        background-color: @stat-day-L2-bg;
+        background-color: @stat-day-L2-bg !important;
       }
 
       &.stat-day-L3-bg {
-        background-color: @stat-day-L3-bg;
+        background-color: @stat-day-L3-bg !important;
       }
 
       &.stat-day-L4-bg {
-        background-color: @stat-day-L4-bg;
+        background-color: @stat-day-L4-bg !important;
       }
     }
   }
@@ -111,6 +111,16 @@
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
       border-top: 4px solid rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+body.dark {
+  .usage-stat-table-wrapper {
+    > .usage-stat-table {
+      > .stat-container {
+        background-color: @dark-bg-black;
+      }
     }
   }
 }

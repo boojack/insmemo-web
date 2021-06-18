@@ -10,6 +10,8 @@ interface StorageData {
   tagTextClickedAction: "copy" | "insert";
   // markdown 解析开关
   shouldUseMarkdownParser: boolean;
+  // 黑暗模式 开关
+  showDarkMode: boolean;
 }
 
 type StorageKey = keyof StorageData;

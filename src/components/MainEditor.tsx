@@ -6,7 +6,6 @@ import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toast from "./Toast";
-import { preferences } from "./PreferencesDialog";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/main-editor.less";
 
@@ -44,7 +43,7 @@ const MainEditor: React.FunctionComponent = () => {
       const tagText = query.tag;
 
       if (tagText) {
-        if (preferences.tagTextClickedAction === "insert") {
+        if (storage.preferences.tagTextClickedAction === "insert") {
           const editorContent = editorRef.current?.getContent() ?? "";
           const text = `#${tagText}#`;
           if (!editorContent.includes(text)) {

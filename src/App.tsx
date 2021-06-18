@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "./helpers/consts";
+import { storage } from "./helpers/storage";
 import userService from "./helpers/userService";
 import memoService from "./helpers/memoService";
 import locationService from "./helpers/locationService";
@@ -34,8 +35,21 @@ function App() {
       }
     });
 
+    const handleStorageDataChanged = () => {
+      const showDarkMode = storage.preferences.showDarkMode ?? false;
+      if (showDarkMode) {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+    };
+
+    handleStorageDataChanged();
+    window.addEventListener("storage", handleStorageDataChanged);
+
     return () => {
       unsubscribeUserService();
+      window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);
 

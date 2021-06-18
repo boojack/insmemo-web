@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { utils } from "../helpers/utils";
+import { storage } from "../helpers/storage";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
-import { preferences } from "./PreferencesDialog";
 import Memo from "./Memo";
 import "../less/memolist.less";
 
@@ -20,7 +20,7 @@ const MemoList: React.FunctionComponent = () => {
   const [duration, setDuration] = useState<Duration>({ from: query.from, to: query.to });
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
-  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(preferences.shouldSplitMemoWord ?? true);
+  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(storage.preferences.shouldSplitMemoWord ?? true);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
   const memosTemp = useMemo(() => {
@@ -59,7 +59,7 @@ const MemoList: React.FunctionComponent = () => {
     });
 
     const handleStorageDataChanged = () => {
-      const shouldSplitMemoWord = preferences.shouldSplitMemoWord ?? false;
+      const shouldSplitMemoWord = storage.preferences.shouldSplitMemoWord ?? false;
       setShouldSplitMemoWord(shouldSplitMemoWord);
     };
 
