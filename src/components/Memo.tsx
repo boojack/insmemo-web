@@ -75,6 +75,13 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     }
   }, [showConfirmDeleteBtn]);
 
+  const handlerShowMoreBtnsClick = useCallback(async () => {
+    if (showConfirmDeleteBtn) {
+      toggleConfirmDeleteBtn();
+    }
+    toggleMoreActionBtns();
+  }, [showConfirmDeleteBtn]);
+
   const handleEditMemoClick = useCallback(() => {
     globalStateService.setEditMemoId(memo.id);
   }, [memo]);
@@ -102,21 +109,19 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
           <span className="text-btn mark-btn" onClick={markThisMemo}>
             Mark
           </span>
-          {showMoreActionBtns ? (
-            <>
-              <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
-                分享
-              </span>
-              <span className="text-btn" onClick={handleEditMemoClick}>
-                编辑
-              </span>
-              {/* Memo 删除相关按钮 */}
-              <span className="text-btn" onClick={handleDeleteMemoClick}>
-                {showConfirmDeleteBtn ? "确定删除" : "删除"}
-              </span>
-            </>
-          ) : null}
-          <span className={"text-btn more-action-btns " + (showMoreActionBtns ? "active" : "")} onClick={toggleMoreActionBtns}>
+          <div className={"more-action-btns-container " + (showMoreActionBtns ? "" : "hidden")}>
+            <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
+              分享
+            </span>
+            <span className="text-btn" onClick={handleEditMemoClick}>
+              编辑
+            </span>
+            {/* Memo 删除相关按钮 */}
+            <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
+              {showConfirmDeleteBtn ? "确定删除" : "删除"}
+            </span>
+          </div>
+          <span className={"text-btn more-action-btns " + (showMoreActionBtns ? "active" : "")} onClick={handlerShowMoreBtnsClick}>
             ···
           </span>
         </div>
@@ -152,7 +157,7 @@ export function formatMemoContent(content: string): string {
         t = t
           .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
           .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
-          .replace(MEMO_LINK_REG, "<a class='memo-link' target='_self' rel='noreferrer' href='/#$2'>$1▸</a>");
+          .replace(MEMO_LINK_REG, "<a class='memo-link' target='_self' rel='noreferrer' href='/#$2'>$1</a>");
         return "<p>" + t + "<p>";
       } else if (idx + 1 !== arr.length) {
         return "<br />";

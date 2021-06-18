@@ -65,7 +65,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = ({ destroy }) => {
           </a>{" "}
           👀
         </p>
-        <p className="normal-text">Last update at 2021/6/17 09:44:01, v1.2.14</p>
+        <p className="normal-text">Last update at 2021/6/18 10:28:11, v2.0.0</p>
       </div>
     </>
   );
