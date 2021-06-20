@@ -79,7 +79,7 @@ const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
         <div className="section-container preferences-section-container">
           <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">
-            <span className="normal-text">中英文之间加空格</span>
+            <span className="normal-text">中英文内容自动间隔</span>
             <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
           </label>
