@@ -177,16 +177,16 @@ const ChangePasswordDialog: React.FunctionComponent<Props> = ({ destroy }) => {
       </div>
       <div className="dialog-content-container">
         <label className="form-label input-form-label">
-          <span className="normal-text">旧密码：</span>
           <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
+          <span className={"normal-text " + (oldPassword === "" ? "" : "not-null")}>旧密码</span>
         </label>
         <label className="form-label input-form-label">
-          <span className="normal-text">新密码：</span>
           <input type="password" value={newPassword} onChange={handleNewPasswordChanged} />
+          <span className={"normal-text " + (newPassword === "" ? "" : "not-null")}>新密码</span>
         </label>
         <label className="form-label input-form-label">
-          <span className="normal-text">再次输入新密码：</span>
           <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
+          <span className={"normal-text " + (newPasswordAgain === "" ? "" : "not-null")}>再次输入新密码</span>
         </label>
         <div className="btns-container">
           <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>
