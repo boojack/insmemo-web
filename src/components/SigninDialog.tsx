@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import userService from "../helpers/userService";
@@ -21,12 +21,23 @@ const SigninDialog: React.FunctionComponent<Props> = ({ destroy }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    // do nth
+  }, []);
+
+  const handleInputClicked = (e: React.MouseEvent<HTMLInputElement>) => {
+    const inputEl = e.target as HTMLInputElement;
+    inputEl.removeAttribute("readonly");
+  };
+
   const handleUsernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.currentTarget.value);
+    const text = e.target.value as string;
+    setUsername(text);
   };
 
   const handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value);
+    const text = e.target.value as string;
+    setPassword(text);
   };
 
   const handleAboutBtnClick = () => {
@@ -82,8 +93,14 @@ const SigninDialog: React.FunctionComponent<Props> = ({ destroy }) => {
         </p>
       </div>
       <div className="dialog-content-container">
-        <input type="text" value={username} minLength={4} maxLength={24} placeholder="用户名" onChange={handleUsernameInputChanged} />
-        <input type="password" value={password} minLength={4} maxLength={24} placeholder="密码" onChange={handlePasswordInputChanged} />
+        <label className="form-label input-form-label">
+          <input type="text" value={username} readOnly onClick={handleInputClicked} onChange={handleUsernameInputChanged} />
+          <span className={"normal-text " + (username === "" ? "" : "not-null")}>用户名</span>
+        </label>
+        <label className="form-label input-form-label">
+          <input type="password" value={password} onChange={handlePasswordInputChanged} />
+          <span className={"normal-text " + (password === "" ? "" : "not-null")}>密码</span>
+        </label>
       </div>
       <div className="dialog-footer-container">
         <span></span>

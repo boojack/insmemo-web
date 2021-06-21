@@ -7,20 +7,60 @@
     padding: 16px 20px;
 
     > .dialog-content-container {
-      > input {
-        width: 100%;
-        padding: 8px 10px;
-        margin-bottom: 16px;
-        border-radius: 4px;
-        border: 1px solid lightgray;
-        outline: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: nowrap;
 
-        &:focus {
-          border-color: gray;
+      > .form-label {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        line-height: 1.6;
+        margin-top: 4px;
+
+        > .normal-text {
+          position: absolute;
+          left: 8px;
+          padding-left: 4px;
+          flex-shrink: 0;
+          font-size: 13px;
+          line-height: 38px;
+          color: gray;
+          transition: all 0.2s ease;
+          cursor: text;
+
+          &.not-null {
+            top: -3px;
+            left: 8px;
+            background-color: white;
+            font-size: 13px;
+            line-height: 18px;
+            padding: 0 4px;
+            border-radius: 12px;
+          }
         }
 
-        &:last-child {
-          margin-bottom: 0;
+        &.input-form-label {
+          padding: 8px 0;
+
+          > input {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 13px;
+            line-height: 24px;
+            outline: none;
+            border-radius: 4px;
+            border: 1px solid lightgray;
+          }
+        }
+
+        &:hover {
+          opacity: 0.9;
         }
       }
     }
@@ -31,7 +71,7 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      margin-top: 12px;
+      margin-top: 8px;
       margin-bottom: 4px;
 
       > .btns-container {
@@ -71,7 +111,7 @@
       padding-top: 6px;
       width: 100%;
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.8;
       word-wrap: break-word;
 
       > .text-btn {
@@ -89,6 +129,32 @@
 
         &:hover {
           opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+body.dark {
+  .signin-dialog {
+    > .dialog-container {
+      > .dialog-content-container {
+        > .form-label {
+          > .normal-text {
+            color: lightgray;
+
+            &.not-null {
+              background-color: @dark-bg-black;
+            }
+          }
+
+          &.input-form-label {
+            padding: 12px 0;
+
+            > input {
+              color: @dark-text-white;
+            }
+          }
         }
       }
     }
