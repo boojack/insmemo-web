@@ -34,7 +34,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = ({ destroy }) => {
           <p>
             <b>降低输入摩擦，提高输入动机。</b>
           </p>
-          <p>尽量多的无压力的记录下来自己的想法。</p>
+          <p>尽量多地无压力地记录下来自己的想法。</p>
           --- flomo
         </blockquote>
         <p>Features:</p>
@@ -65,7 +65,7 @@ const AboutSiteDialog: React.FunctionComponent<Props> = ({ destroy }) => {
           </a>{" "}
           👀
         </p>
-        <p className="normal-text">Last update at 2021/6/20 21:25:11, v2.0.1</p>
+        <p className="normal-text">Last update at 2021/6/21 9:50:11, v2.0.2</p>
       </div>
     </>
   );

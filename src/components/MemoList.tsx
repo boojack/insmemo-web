@@ -59,7 +59,7 @@ const MemoList: React.FunctionComponent = () => {
     });
 
     const handleStorageDataChanged = () => {
-      const shouldSplitMemoWord = storage.preferences.shouldSplitMemoWord ?? false;
+      const shouldSplitMemoWord = storage.preferences.shouldSplitMemoWord ?? true;
       setShouldSplitMemoWord(shouldSplitMemoWord);
     };
 

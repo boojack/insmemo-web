@@ -45,8 +45,8 @@ export namespace storage {
   export const preferences = (() => {
     const cachePrefers = storage.get(["shouldSplitMemoWord", "tagTextClickedAction", "shouldUseMarkdownParser", "showDarkMode"]);
     const temp = {
-      shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? false,
-      shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? false,
+      shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? true,
+      shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? true,
       tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
       showDarkMode: cachePrefers.showDarkMode ?? false,
     };

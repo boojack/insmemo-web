@@ -53,25 +53,27 @@ const TagList: React.FunctionComponent = () => {
   );
 
   return (
-    <div className="tags-container">
+    <div className="tags-wrapper">
       <p className="title-text">常用标签</p>
-      {tags.map((t) => (
-        <div
-          key={t.id}
-          className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
-          onClick={() => {
-            handleTagClick(t);
-          }}
-        >
-          <span className="tag-text"># {t.text}</span>
-        </div>
-      ))}
+      <div className="tags-container">
+        {tags.map((t) => (
+          <div
+            key={t.id}
+            className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
+            onClick={() => {
+              handleTagClick(t);
+            }}
+          >
+            <span className="tag-text"># {t.text}</span>
+          </div>
+        ))}
 
-      {tags.length <= 3 ? (
-        <p className="tag-tip-container">
-          输入<span>#Tag#</span>来创建标签吧~
-        </p>
-      ) : null}
+        {tags.length <= 3 ? (
+          <p className="tag-tip-container">
+            输入<span>#Tag#</span>来创建标签吧~
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 };

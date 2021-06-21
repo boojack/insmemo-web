@@ -1,6 +1,6 @@
 @import "./mixin.less";
 
-.tags-container {
+.tags-wrapper {
   width: 100%;
   height: calc(100% - 128px - 110px);
   display: flex;
@@ -8,74 +8,71 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: nowrap;
-  border: none;
-  padding-top: 8px;
-  padding-bottom: 24px;
-  overflow-y: auto;
-  .pretty-scroll-bar(0px);
+  overflow: hidden;
 
   > .title-text {
     width: 100%;
-    margin: 10px 0;
+    margin-top: 16px;
     padding: 0 16px;
     font-size: 13px;
+    line-height: 20px;
     font-weight: bold;
     color: #ded1b7;
-
-    > .icon-text {
-      padding-right: 4px;
-    }
   }
 
-  > .tag-item-container {
+  > .tags-container {
     width: 100%;
-    padding: 8px 16px;
-    line-height: 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
+    height: calc(100% - 36px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    padding-bottom: 16px;
+    .pretty-scroll-bar(0px);
 
-    &:hover {
-      background-color: #ddd;
-    }
+    > .tag-item-container {
+      width: 100%;
+      padding: 8px 16px;
+      line-height: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
 
-    &.active {
-      background-color: @text-green !important;
+      &:hover {
+        background-color: #ddd;
+      }
+
+      &.active {
+        background-color: @text-green !important;
+
+        > .tag-text {
+          color: white;
+        }
+      }
+
+      &:first-of-type {
+        margin-top: 4px;
+      }
 
       > .tag-text {
-        color: white;
+        color: @text-black;
       }
     }
 
-    > .tag-text {
-      color: rgba(25, 23, 17, 0.7);
-    }
-  }
+    > .tag-tip-container {
+      width: 100%;
+      margin-top: 8px;
+      padding-left: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: gray;
 
-  > .action-text {
-    width: 100%;
-    padding: 8px 16px;
-    font-size: 12px;
-    color: gray;
-    margin-bottom: 16px;
-    cursor: pointer;
-
-    &:hover {
-      color: @text-black;
-    }
-  }
-
-  > .tag-tip-container {
-    width: 100%;
-    margin-top: 8px;
-    padding-left: 16px;
-    font-size: 12px;
-    line-height: 1.6;
-    color: gray;
-
-    > span {
-      color: @text-blue;
-      padding: 0 2px;
+      > span {
+        color: @text-blue;
+        padding: 0 2px;
+      }
     }
   }
 }
@@ -88,7 +85,7 @@ body.dark {
       }
 
       > .tag-text {
-        color:  @dark-text-white;
+        color: @dark-text-white;
       }
     }
   }
