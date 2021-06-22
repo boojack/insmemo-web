@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
+import Toast from "./Toast";
 import memoService from "../helpers/memoService";
 import userService from "../helpers/userService";
 import locationService from "../helpers/locationService";
@@ -44,18 +45,22 @@ const UsageStatTable: React.FunctionComponent = () => {
       const { user } = userService.getState();
 
       if (user) {
-        // 简单实现深拷贝
-        const newStat: UsageStatDaily[] = JSON.parse(JSON.stringify(payloadStat));
-        const { data } = await api.getMemosStat();
+        try {
+          // 简单实现深拷贝
+          const newStat: UsageStatDaily[] = JSON.parse(JSON.stringify(payloadStat));
+          const data = await getMemosStat();
 
-        for (const d of data) {
-          const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
-          if (index >= 0) {
-            newStat[index].count = d.amount;
+          for (const d of data) {
+            const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
+            if (index >= 0) {
+              newStat[index].count = d.amount;
+            }
           }
-        }
 
-        setAllStat([...newStat]);
+          setAllStat([...newStat]);
+        } catch (error) {
+          Toast.error(error);
+        }
       }
     };
 
@@ -140,5 +145,18 @@ const UsageStatTable: React.FunctionComponent = () => {
     </div>
   );
 };
+
+function getMemosStat(): Promise<Api.MemosStat[]> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMemosStat()
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("数据请求失败");
+      });
+  });
+}
 
 export default UsageStatTable;

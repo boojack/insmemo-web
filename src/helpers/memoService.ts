@@ -1,5 +1,6 @@
 import { FETCH_MEMO_AMOUNT } from "./consts";
 import { api } from "./api";
+import Toast from "../components/Toast";
 import memoStore from "../stores/memoStore";
 import userService from "./userService";
 
@@ -11,30 +12,35 @@ const memoService = {
       return false;
     }
 
-    memoService.isFetching = true;
-    const { data } = await api.getMyMemos(memoStore.getState().memos.length, FETCH_MEMO_AMOUNT);
+    let memos: Model.Memo[] = [];
+    try {
+      memoService.isFetching = true;
+      const data = await getMyMemos(memoStore.getState().memos.length, FETCH_MEMO_AMOUNT);
 
-    if (!Array.isArray(data)) {
-      return false;
+      if (!Array.isArray(data)) {
+        return false;
+      }
+
+      memos = data.map((m) => ({
+        id: m.id,
+        content: m.content,
+        tags: m.tags,
+        createdAt: new Date(m.createdAt).getTime(),
+        updatedAt: new Date(m.updatedAt).getTime(),
+      }));
+
+      if (memos.length > 0) {
+        memoStore.dispatch({
+          type: "PUSH_MEMOS",
+          payload: {
+            memos,
+          },
+        });
+      }
+      memoService.isFetching = false;
+    } catch (error) {
+      Toast.error(error);
     }
-
-    const memos: Model.Memo[] = data.map((m) => ({
-      id: m.id,
-      content: m.content,
-      tags: m.tags,
-      createdAt: new Date(m.createdAt).getTime(),
-      updatedAt: new Date(m.updatedAt).getTime(),
-    }));
-
-    if (memos.length > 0) {
-      memoStore.dispatch({
-        type: "PUSH_MEMOS",
-        payload: {
-          memos,
-        },
-      });
-    }
-    memoService.isFetching = false;
 
     return memos;
   },
@@ -63,7 +69,7 @@ const memoService = {
   },
 
   deleteMemoById: async (id: string) => {
-    await api.deleteMemo(id);
+    await deleteMemo(id);
     memoStore.dispatch({
       type: "DELETE_BY_ID",
       payload: {
@@ -81,5 +87,31 @@ const memoService = {
 
   ...memoStore,
 };
+
+function getMyMemos(offset: number, amount: number): Promise<Model.Memo[]> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMyMemos(offset, amount)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
+}
+
+function deleteMemo(memoId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .deleteMemo(memoId)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
 
 export default memoService;

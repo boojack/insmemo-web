@@ -24,7 +24,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
       let memoTemp = memoService.getMemoById(currentMemoId);
 
       if (!memoTemp) {
-        memoTemp = (await api.getMemoById(currentMemoId)).data;
+        memoTemp = await getMemoById(currentMemoId);
         setTimeout(async () => {
           while (!memoService.getMemoById(currentMemoId)) {
             await memoService.fetchMoreMemos();
@@ -56,7 +56,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
 
         if (matchRes?.length === 3) {
           const memoId = matchRes[2];
-          const memoTemp = memoService.getMemoById(memoId) ?? (await api.getMemoById(memoId)).data;
+          const memoTemp = memoService.getMemoById(memoId) ?? (await getMemoById(memoId));
 
           if (memoTemp) {
             downMemoList.push({
@@ -89,7 +89,7 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
         let memoTemp = memoService.getMemoById(currentMemoId);
 
         if (!memoTemp) {
-          memoTemp = (await api.getMemoById(currentMemoId)).data;
+          memoTemp = await getMemoById(currentMemoId);
           setTimeout(async () => {
             while (!memoService.getMemoById(currentMemoId)) {
               await memoService.fetchMoreMemos();
@@ -148,6 +148,19 @@ const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
     </>
   );
 };
+
+function getMemoById(memoId: string): Promise<Model.Memo> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMemoById(memoId)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
 
 export default function showMemoStoryDialog(memoId: string) {
   showDialog(

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import Toast from "./Toast";
+import useToggle from "../hooks/useToggle";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
 import "../less/tag-list.less";
@@ -8,15 +10,21 @@ import "../less/tag-list.less";
 interface TagItem extends Api.Tag {}
 
 const TagList: React.FunctionComponent = () => {
-  const [tags, setTags] = useState<TagItem[]>([]);
   const { query } = locationService.getState();
+  const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
+  const [isLoading, setLoading] = useToggle(true);
 
   useEffect(() => {
     const fetchTags = async () => {
-      const { data: tags } = await api.getMyTags();
+      try {
+        const tags = await getMyTags();
 
-      setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
+        setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
+      } catch (error) {
+        Toast.error(error);
+      }
+      setLoading(false);
     };
 
     const unsubscribeMemoService = memoService.subscribe(() => {
@@ -44,7 +52,7 @@ const TagList: React.FunctionComponent = () => {
       if (tagText === tagQuery) {
         tagText = "";
       } else {
-        api.polishTag(tag.id);
+        polishTag(tag.id);
       }
 
       locationService.setTagQuery(tagText);
@@ -56,26 +64,52 @@ const TagList: React.FunctionComponent = () => {
     <div className="tags-wrapper">
       <p className="title-text">常用标签</p>
       <div className="tags-container">
-        {tags.map((t) => (
-          <div
-            key={t.id}
-            className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
-            onClick={() => {
-              handleTagClick(t);
-            }}
-          >
-            <span className="tag-text"># {t.text}</span>
-          </div>
-        ))}
-
-        {tags.length <= 3 ? (
-          <p className="tag-tip-container">
-            输入<span>#Tag#</span>来创建标签吧~
-          </p>
-        ) : null}
+        {isLoading ? (
+          <></>
+        ) : (
+          <>
+            {" "}
+            {tags.map((t) => (
+              <div
+                key={t.id}
+                className={"tag-item-container used-tag-container " + (tagQuery === t.text ? "active" : "")}
+                onClick={() => {
+                  handleTagClick(t);
+                }}
+              >
+                <span className="tag-text"># {t.text}</span>
+              </div>
+            ))}
+            {tags.length <= 3 ? (
+              <p className="tag-tip-container">
+                输入<span>#Tag#</span>来创建标签吧~
+              </p>
+            ) : null}
+          </>
+        )}
       </div>
     </div>
   );
 };
+
+function getMyTags(): Promise<Api.Tag[]> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMyTags()
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("数据请求失败");
+      });
+  });
+}
+
+function polishTag(tagId: string) {
+  api
+    .polishTag(tagId)
+    .then(() => {})
+    .catch(() => {});
+}
 
 export default TagList;

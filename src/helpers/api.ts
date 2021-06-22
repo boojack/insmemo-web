@@ -55,11 +55,11 @@ export namespace api {
   }
 
   export function checkUsernameUsable(username: string) {
-    return get("/api/user/checkusername?username=" + username);
+    return get<boolean>("/api/user/checkusername?username=" + username);
   }
 
   export function checkPasswordValid(password: string) {
-    return post("/api/user/checkpassword", { password });
+    return post<boolean>("/api/user/checkpassword", { password });
   }
 
   export function updateUserinfo(username: string = "", password: string = "") {

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
+import Toast from "./Toast";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -22,11 +23,15 @@ const UserBanner: React.FunctionComponent = () => {
 
   useEffect(() => {
     const fetchDataAmount = async () => {
-      const { data } = await api.getMyDataAmount();
+      try {
+        const data = await getMyDataAmount();
 
-      setAmountState({
-        ...data,
-      });
+        setAmountState({
+          ...data,
+        });
+      } catch (error) {
+        Toast.error(error);
+      }
     };
 
     const unsubscribeMemoService = memoService.subscribe(() => {
@@ -99,5 +104,18 @@ const UserBanner: React.FunctionComponent = () => {
     </div>
   );
 };
+
+function getMyDataAmount(): Promise<Api.DataAmounts> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMyDataAmount()
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("数据请求失败");
+      });
+  });
+}
 
 export default UserBanner;

@@ -5,7 +5,7 @@ import marked from "../helpers/marked";
 import memoService from "../helpers/memoService";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
-import { useToggle } from "../hooks/useToggle";
+import useToggle from "../hooks/useToggle";
 import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
@@ -107,7 +107,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
         let memoTemp = memoService.getMemoById(memoId);
 
         if (!memoTemp) {
-          memoTemp = (await api.getMemoById(memoId)).data;
+          memoTemp = await getMemoById(memoId);
           setTimeout(async () => {
             while (!memoService.getMemoById(memoId)) {
               await memoService.fetchMoreMemos();
@@ -160,6 +160,19 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
     </div>
   );
 };
+
+function getMemoById(memoId: string): Promise<Model.Memo> {
+  return new Promise((resolve, reject) => {
+    api
+      .getMemoById(memoId)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
 
 export function formatMemoContent(content: string): string {
   content = content.replace(/&nbsp;/g, " ");

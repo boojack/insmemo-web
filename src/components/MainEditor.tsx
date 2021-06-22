@@ -73,7 +73,7 @@ const MainEditor: React.FunctionComponent = () => {
 
       // 保存标签
       for (const t of tagTexts) {
-        const { data: tag } = await api.createTag(t);
+        const tag = await createTag(t);
         tags.push(tag);
       }
 
@@ -93,16 +93,16 @@ const MainEditor: React.FunctionComponent = () => {
 
             if (!tagTexts.includes(tagText)) {
               tags.splice(i, 1);
-              api.removeMemoTag(prevMemo.id, t.id);
+              removeMemoTag(prevMemo.id, t.id);
             } else {
               i++;
               if (!prevTagTexts.includes(tagText)) {
-                api.createMemoTag(prevMemo.id, t.id);
+                createMemoTag(prevMemo.id, t.id);
               }
             }
           }
 
-          const { data: editedMemo } = await api.updateMemo(prevMemo.id, content);
+          const editedMemo = await updateMemo(prevMemo.id, content);
 
           prevMemo.tags = tags;
           prevMemo.content = editedMemo.content ?? "";
@@ -111,13 +111,13 @@ const MainEditor: React.FunctionComponent = () => {
         }
         globalStateService.setEditMemoId("");
       } else {
-        const { data: newMemo } = await api.createMemo(content);
+        const newMemo = await createMemo(content);
 
         newMemo.tags = tags;
 
         // link memo and tag
         for (const t of tags) {
-          await api.createMemoTag(newMemo.id, t.id);
+          await createMemoTag(newMemo.id, t.id);
         }
         const tagQuery = locationService.getState().query.tag;
         if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
@@ -181,6 +181,71 @@ function getEditorContentCache(): string {
 function setEditorContentCache(content: string) {
   storage.set({
     editorContentCache: content,
+  });
+}
+
+function createMemo(text: string): Promise<Model.Memo> {
+  return new Promise((resolve, reject) => {
+    api
+      .createMemo(text)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
+
+function updateMemo(memoId: string, text: string): Promise<Model.Memo> {
+  return new Promise((resolve, reject) => {
+    api
+      .updateMemo(memoId, text)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
+
+function createTag(text: string): Promise<Model.Tag> {
+  return new Promise((resolve, reject) => {
+    api
+      .createTag(text)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
+
+function removeMemoTag(memoId: string, tagId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .removeMemoTag(memoId, tagId)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        // do nth
+      });
+  });
+}
+
+function createMemoTag(memoId: string, tagId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .createMemoTag(memoId, tagId)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        // do nth
+      });
   });
 }
 

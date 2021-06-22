@@ -39,15 +39,20 @@ const MyAccountDialog: React.FunctionComponent<Props> = ({ destroy }) => {
       return;
     }
 
-    const { data } = await api.checkUsernameUsable(username);
+    try {
+      const data = await checkUsernameUsable(username);
 
-    if (data) {
-      await api.updateUserinfo(username);
+      if (!data) {
+        Toast.error("用户名无法使用");
+        return;
+      }
+
+      await updateUsername(username);
       await userService.doSignIn();
       setShowEditUsernameInputs(false);
       Toast.info("修改成功~");
-    } else {
-      Toast.error("用户名无法使用");
+    } catch (error) {
+      Toast.error(error);
     }
   };
 
@@ -154,17 +159,21 @@ const ChangePasswordDialog: React.FunctionComponent<Props> = ({ destroy }) => {
       return;
     }
 
-    const { data } = await api.checkPasswordValid(oldPassword);
+    try {
+      const data = await checkPasswordValid(oldPassword);
 
-    if (!data) {
-      Toast.error("旧密码不匹配");
-      setOldPassword("");
-      return;
+      if (!data) {
+        Toast.error("旧密码不匹配");
+        setOldPassword("");
+        return;
+      }
+
+      await updatePassword(newPassword);
+      Toast.info("密码修改成功！");
+      handleCloseBtnClick();
+    } catch (error) {
+      Toast.error(error);
     }
-
-    await api.updateUserinfo("", newPassword);
-    Toast.info("密码修改成功！");
-    handleCloseBtnClick();
   };
 
   return (
@@ -209,6 +218,58 @@ function showChangePasswordDialog() {
     ChangePasswordDialog,
     {}
   );
+}
+
+function checkUsernameUsable(username: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    api
+      .checkUsernameUsable(username)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
+}
+
+function updateUsername(username: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .updateUserinfo(username)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
+}
+
+function checkPasswordValid(password: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    api
+      .checkPasswordValid(password)
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
+}
+
+function updatePassword(password: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .updateUserinfo("", password)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
 }
 
 export default function showMyAccountDialog() {
