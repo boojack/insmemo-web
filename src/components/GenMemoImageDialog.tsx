@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ANIMATION_DURATION } from "../helpers/consts";
 import userService from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
@@ -25,12 +26,14 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
     const memoEl = memoElRef.current;
 
     if (memoEl) {
-      html2canvas(memoEl, {
-        scale: 4,
-        backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
-      }).then((canvas) => {
-        setImgUrl(canvas.toDataURL());
-      });
+      setTimeout(() => {
+        html2canvas(memoEl, {
+          scale: 4,
+          backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+        }).then((canvas) => {
+          setImgUrl(canvas.toDataURL());
+        });
+      }, ANIMATION_DURATION);
     }
   }, []);
 
