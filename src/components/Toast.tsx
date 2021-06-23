@@ -73,6 +73,7 @@ const toastHelper = (() => {
               ReactDOM.unmountComponentAtNode(d);
               d.remove();
             }
+            shownToastContainers.splice(0, shownToastContainers.length);
           }
         }, TOAST_ANIMATION_DURATION);
       },

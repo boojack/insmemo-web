@@ -23,9 +23,12 @@
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     font-size: 13px;
-    line-height: 24px;
     cursor: pointer;
     transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     &.showup {
       left: 0;
@@ -39,6 +42,7 @@
 
     > .toast-container {
       > .content-text {
+        line-height: 24px;
         max-width: 160px;
         word-wrap: break-word;
       }

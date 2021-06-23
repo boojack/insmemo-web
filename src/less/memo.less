@@ -69,9 +69,10 @@
         z-index: 1;
 
         > .text-btn {
-          padding: 0 6px;
           flex-shrink: 0;
-          z-index: 1;
+          padding: 4px 6px;
+          height: unset;
+          line-height: unset;
 
           &.delete-btn {
             color: #d28653;
@@ -91,6 +92,7 @@
 
       .text-btn {
         display: flex;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
         height: 28px;
