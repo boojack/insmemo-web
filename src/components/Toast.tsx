@@ -60,10 +60,14 @@ const toastHelper = (() => {
 
     const cbs = {
       destory: () => {
-        shownToastAmount--;
         tempDiv.classList.add("destory");
 
         setTimeout(() => {
+          if (!tempDiv.parentElement) {
+            return;
+          }
+
+          shownToastAmount--;
           if (shownToastAmount === 0) {
             for (const d of shownToastContainers) {
               ReactDOM.unmountComponentAtNode(d);
