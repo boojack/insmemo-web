@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import Toast from "./Toast";
+import toast from "./Toast";
 import memoService from "../helpers/memoService";
 import userService from "../helpers/userService";
 import locationService from "../helpers/locationService";
@@ -59,7 +59,7 @@ const UsageStatTable: React.FunctionComponent = () => {
 
           setAllStat([...newStat]);
         } catch (error) {
-          Toast.error(error);
+          toast.error(error);
         }
       }
     };

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
-import Toast from "./Toast";
+import toast from "./Toast";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -30,7 +30,7 @@ const UserBanner: React.FunctionComponent = () => {
           ...data,
         });
       } catch (error) {
-        Toast.error(error);
+        toast.error(error);
       }
     };
 

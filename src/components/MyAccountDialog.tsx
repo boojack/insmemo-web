@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
-import Toast from "./Toast";
+import toast from "./Toast";
 import { showDialog } from "./Dialog";
 import userService from "../helpers/userService";
 import "../less/my-account-dialog.less";
@@ -43,16 +43,16 @@ const MyAccountDialog: React.FunctionComponent<Props> = ({ destroy }) => {
       const data = await checkUsernameUsable(username);
 
       if (!data) {
-        Toast.error("用户名无法使用");
+        toast.error("用户名无法使用");
         return;
       }
 
       await updateUsername(username);
       await userService.doSignIn();
       setShowEditUsernameInputs(false);
-      Toast.info("修改成功~");
+      toast.info("修改成功~");
     } catch (error) {
-      Toast.error(error);
+      toast.error(error);
     }
   };
 
@@ -149,12 +149,12 @@ const ChangePasswordDialog: React.FunctionComponent<Props> = ({ destroy }) => {
 
   const handleSaveBtnClick = async () => {
     if (oldPassword === "" || newPassword === "" || newPasswordAgain === "") {
-      Toast.error("密码不能为空");
+      toast.error("密码不能为空");
       return;
     }
 
     if (newPassword !== newPasswordAgain) {
-      Toast.error("新密码两次输入不一致");
+      toast.error("新密码两次输入不一致");
       setNewPasswordAgain("");
       return;
     }
@@ -163,16 +163,16 @@ const ChangePasswordDialog: React.FunctionComponent<Props> = ({ destroy }) => {
       const data = await checkPasswordValid(oldPassword);
 
       if (!data) {
-        Toast.error("旧密码不匹配");
+        toast.error("旧密码不匹配");
         setOldPassword("");
         return;
       }
 
       await updatePassword(newPassword);
-      Toast.info("密码修改成功！");
+      toast.info("密码修改成功！");
       handleCloseBtnClick();
     } catch (error) {
-      Toast.error(error);
+      toast.error(error);
     }
   };
 

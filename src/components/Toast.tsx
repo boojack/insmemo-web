@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { ANIMATION_DURATION } from "../helpers/consts";
+import { TOAST_ANIMATION_DURATION } from "../helpers/consts";
 import "../less/toast.less";
 
 type ToastType = "normal" | "info" | "error";
@@ -15,72 +15,79 @@ type ToastItemProps = {
   type: ToastType;
   content: string;
   duration: number;
-  containerDiv: HTMLDivElement;
+  destory: FunctionType;
 };
 
 const Toast: React.FunctionComponent<ToastItemProps> = (props) => {
-  const { containerDiv, duration } = props;
+  const { destory, duration } = props;
 
   useEffect(() => {
     if (duration > 0) {
-      setTimeout(destroy, duration);
+      setTimeout(() => {
+        destory();
+      }, duration);
     }
   }, []);
 
-  const destroy = () => {
-    containerDiv.classList.add("destroy");
-
-    setTimeout(() => {
-      ReactDOM.unmountComponentAtNode(containerDiv);
-      containerDiv.remove();
-    }, ANIMATION_DURATION);
-  };
-
   return (
-    <div className="toast-container" onClick={destroy}>
+    <div className="toast-container" onClick={destory}>
       <p className="content-text">{props.content}</p>
     </div>
   );
 };
 
-let toastContainerDiv: Element;
+const toastHelper = (() => {
+  const toastContainerDiv: Element = document.createElement("div");
+  toastContainerDiv.className = "toast-list-container";
+  let shownToastAmount = 0;
+  const shownToastContainers: HTMLDivElement[] = [];
 
-function show(config: ToastConfig) {
-  if (!toastContainerDiv) {
-    toastContainerDiv = document.createElement("div");
-    toastContainerDiv.className = "toast-list-container";
+  // 非主逻辑下次执行
+  setTimeout(() => {
     document.body.appendChild(toastContainerDiv);
-  }
+  }, 0);
 
-  const div = document.createElement("div");
-  div.className = "toast-wrapper " + config.type;
-  toastContainerDiv.appendChild(div);
+  const showToast = (config: ToastConfig) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.className = "toast-wrapper " + config.type;
+    toastContainerDiv.appendChild(tempDiv);
+    shownToastAmount++;
+    shownToastContainers.push(tempDiv);
 
-  const cbs = {
-    destroy: () => {
-      div.classList.add("destroy");
+    setTimeout(() => {
+      tempDiv.classList.add("showup");
+    }, 0);
 
-      setTimeout(() => {
-        ReactDOM.unmountComponentAtNode(div);
-        div.remove();
-      }, ANIMATION_DURATION);
-    },
+    const cbs = {
+      destory: () => {
+        shownToastAmount--;
+        tempDiv.classList.add("destory");
+
+        setTimeout(() => {
+          if (shownToastAmount === 0) {
+            for (const d of shownToastContainers) {
+              ReactDOM.unmountComponentAtNode(d);
+              d.remove();
+            }
+          }
+        }, TOAST_ANIMATION_DURATION);
+      },
+    };
+
+    ReactDOM.render(<Toast {...config} destory={cbs.destory} />, tempDiv);
+
+    return cbs;
   };
 
-  ReactDOM.render(<Toast {...config} containerDiv={div} />, div);
+  const info = (content: string, duration: number = 3000) => {
+    return showToast({ type: "normal", content, duration });
+  };
 
-  return cbs;
-}
+  const error = (content: string, duration: number = 3000) => {
+    return showToast({ type: "error", content, duration });
+  };
 
-function info(content: string, duration: number = 2400) {
-  return show({ type: "normal", content, duration });
-}
+  return { info, error };
+})();
 
-function error(content: string, duration: number = 2400) {
-  return show({ type: "error", content, duration });
-}
-
-export default {
-  info,
-  error,
-};
+export default toastHelper;

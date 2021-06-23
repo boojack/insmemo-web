@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
-import Toast from "./Toast";
+import toast from "./Toast";
 import useToggle from "../hooks/useToggle";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -22,7 +22,7 @@ const TagList: React.FunctionComponent = () => {
 
         setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
       } catch (error) {
-        Toast.error(error);
+        toast.error(error);
       }
       setLoading(false);
     };

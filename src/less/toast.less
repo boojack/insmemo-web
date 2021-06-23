@@ -14,7 +14,8 @@
 
   > .toast-wrapper {
     position: relative;
-    left: 0;
+    left: 100%;
+    visibility: hidden;
     min-width: 6em;
     margin-top: 24px;
     padding: 8px 16px;
@@ -23,12 +24,17 @@
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     font-size: 13px;
     line-height: 24px;
-    transition: all 1.2s ease;
     cursor: pointer;
+    transition: all 0.4s ease;
+
+    &.showup {
+      left: 0;
+      visibility: visible;
+    }
 
     &.destory {
       left: calc(100% + 32px);
-      opacity: 0.2;
+      visibility: hidden;
     }
 
     > .toast-container {

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ANIMATION_DURATION } from "../helpers/consts";
 import "../less/dialog.less";
 
 interface DialogConfig {
@@ -40,7 +41,7 @@ export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComp
     setTimeout(() => {
       ReactDOM.unmountComponentAtNode(tempDiv);
       tempDiv.remove();
-    }, 200);
+    }, ANIMATION_DURATION);
   };
 
   ReactDOM.render(
