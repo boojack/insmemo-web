@@ -19,7 +19,7 @@ const BaseDialog: React.FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <div className={"dialog-wrapper " + className} onClick={handleSpaceClicked}>
+    <div className={`dialog-wrapper ${className}`} onClick={handleSpaceClicked}>
       <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
@@ -30,10 +30,17 @@ const BaseDialog: React.FunctionComponent<Props> = (props) => {
 export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComponent<T>, props: any) {
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
+  setTimeout(() => {
+    tempDiv.firstElementChild?.classList.add("showup");
+  }, 0);
 
   const destroy = () => {
-    ReactDOM.unmountComponentAtNode(tempDiv);
-    tempDiv.remove();
+    tempDiv.firstElementChild?.classList.add("showoff");
+
+    setTimeout(() => {
+      ReactDOM.unmountComponentAtNode(tempDiv);
+      tempDiv.remove();
+    }, 200);
   };
 
   ReactDOM.render(
