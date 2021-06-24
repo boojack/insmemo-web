@@ -60,17 +60,16 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        {imgUrl ? (
+        {false ? (
+          <></>
+        ) : (
           <>
             <p className="tip-text">右键或长按即可保存图片 👇</p>
             <img className="memo-img" src={imgUrl} />
-          </>
-        ) : (
-          <>
-            <div className="cover-container">
+            {/* <div className="cover-container">
               <p className="loading-text">图片生成中...</p>
-            </div>
-            <div className="memo-container" ref={memoElRef}>
+            </div> */}
+            <div className={`memo-container ${imgUrl ? "hidden" : ""}`} ref={memoElRef}>
               <span className="time-text">{memo.createdAtStr}</span>
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
               {imageUrls.length > 0 ? (
