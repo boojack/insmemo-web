@@ -17,7 +17,6 @@ interface Props extends DialogProps {
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const memoElRef = useRef<HTMLDivElement>(null);
   const { user: userinfo } = userService.getState();
   const memo: FormattedMemo = {
@@ -25,27 +24,33 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
     formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   };
+  const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+  const [imageAmount, setImageAmount] = useState(imageUrls.length);
 
   useEffect(() => {
     const memoEl = memoElRef.current;
-    const imageUrlsTemp = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-    setImageUrls(imageUrlsTemp);
 
     if (memoEl) {
       setTimeout(() => {
-        html2canvas(memoEl, {
-          scale: 4,
-          backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
-          useCORS: true,
-        }).then((canvas) => {
-          setImgUrl(canvas.toDataURL());
-        });
+        if (imageAmount === 0) {
+          html2canvas(memoEl, {
+            scale: 4,
+            backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+            useCORS: true,
+          }).then((canvas) => {
+            setImgUrl(canvas.toDataURL());
+          });
+        }
       }, ANIMATION_DURATION);
     }
-  }, []);
+  }, [imageAmount]);
 
   const handleCloseBtnClick = () => {
     destroy();
+  };
+
+  const handleImageOnLoad = () => {
+    setImageAmount(imageAmount - 1);
   };
 
   return (
@@ -75,7 +80,14 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
               {imageUrls.length > 0 ? (
                 <div className="images-container">
                   {imageUrls.map((imgUrl, idx) => (
-                    <img key={idx} crossOrigin="anonymous" src={imgUrl} decoding="async" />
+                    <img
+                      key={idx}
+                      crossOrigin="anonymous"
+                      src={imgUrl}
+                      onLoad={handleImageOnLoad}
+                      onError={handleImageOnLoad}
+                      decoding="async"
+                    />
                   ))}
                 </div>
               ) : null}
