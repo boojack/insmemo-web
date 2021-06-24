@@ -38,6 +38,9 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
           backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
           useCORS: true,
           allowTaint: true,
+          y: 0,
+          scrollY: 0,
+          logging: true,
         }).then((canvas) => {
           setImgUrl(canvas.toDataURL());
         });
@@ -60,16 +63,17 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        {false ? (
-          <></>
-        ) : (
+        {imgUrl ? (
           <>
             <p className="tip-text">右键或长按即可保存图片 👇</p>
             <img className="memo-img" src={imgUrl} />
-            {/* <div className="cover-container">
+          </>
+        ) : (
+          <>
+            <div className="cover-container">
               <p className="loading-text">图片生成中...</p>
-            </div> */}
-            <div className={`memo-container ${imgUrl ? "hidden" : ""}`} ref={memoElRef}>
+            </div>
+            <div className="memo-container" ref={memoElRef}>
               <span className="time-text">{memo.createdAtStr}</span>
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
               {imageUrls.length > 0 ? (
