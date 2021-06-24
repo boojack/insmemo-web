@@ -38,7 +38,6 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
           backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
           useCORS: true,
           allowTaint: true,
-          async: true,
         }).then((canvas) => {
           setImgUrl(canvas.toDataURL());
         });
