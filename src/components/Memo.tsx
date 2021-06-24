@@ -151,7 +151,7 @@ const Memo: React.FunctionComponent<Props> = (props: Props) => {
       </div>
       <div className="memo-content-text" onClick={handleMemoContentClick} dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
       {imageUrls.length > 0 ? (
-        <div className="images-container">
+        <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (
             <Image className="memo-img" key={idx} imgUrl={imgUrl} />
           ))}

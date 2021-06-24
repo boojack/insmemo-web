@@ -16,7 +16,7 @@ const Image: React.FunctionComponent<Props> = (props: Props) => {
 
   return (
     <div className={"image-container " + className} onClick={handleImageClick}>
-      <img src={imgUrl} decoding="async" referrerPolicy="no-referrer" loading="lazy" />
+      <img src={imgUrl} decoding="async" loading="lazy" />
     </div>
   );
 };

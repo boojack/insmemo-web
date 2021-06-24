@@ -7,6 +7,9 @@ import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import "../less/gen-memo-image-dialog.less";
 
+// 图片路由正则
+const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
+
 interface Props extends DialogProps {
   memo: Model.Memo;
 }
@@ -14,8 +17,9 @@ interface Props extends DialogProps {
 const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
-  const { user: userinfo } = userService.getState();
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const memoElRef = useRef<HTMLDivElement>(null);
+  const { user: userinfo } = userService.getState();
   const memo: FormattedMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
@@ -24,16 +28,21 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     const memoEl = memoElRef.current;
+    const imageUrlsTemp = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+    setImageUrls(imageUrlsTemp);
 
     if (memoEl) {
       setTimeout(() => {
         html2canvas(memoEl, {
           scale: 4,
           backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+          useCORS: true,
+          allowTaint: true,
+          async: true,
         }).then((canvas) => {
           setImgUrl(canvas.toDataURL());
         });
-      }, ANIMATION_DURATION);
+      }, ANIMATION_DURATION + 100);
     }
   }, []);
 
@@ -65,6 +74,13 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
             <div className="memo-container" ref={memoElRef}>
               <span className="time-text">{memo.createdAtStr}</span>
               <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+              {imageUrls.length > 0 ? (
+                <div className="images-container">
+                  {imageUrls.map((imgUrl, idx) => (
+                    <img key={idx} crossOrigin="anonymous" src={imgUrl} decoding="async" />
+                  ))}
+                </div>
+              ) : null}
               <div className="watermark-container">
                 <span className="normal-text">
                   via <span className="name-text">{userinfo?.username}</span>
