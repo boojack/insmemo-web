@@ -7,7 +7,7 @@ interface Props extends DialogProps {
   imgUrl: string;
 }
 
-const PreviewImageDialog: React.FunctionComponent<Props> = ({ destroy, imgUrl }) => {
+const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgWidth, setImgWidth] = useState<number>(-1);
 

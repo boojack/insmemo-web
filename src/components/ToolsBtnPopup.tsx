@@ -9,7 +9,7 @@ interface Props {
   visibility: boolean;
 }
 
-export const ToolsBtnPopup: React.FunctionComponent<Props> = ({ visibility }) => {
+export const ToolsBtnPopup: React.FC<Props> = ({ visibility }) => {
   const handlePreferencesBtnClick = () => {
     showPreferencesDialog();
   };

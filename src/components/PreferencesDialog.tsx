@@ -10,7 +10,7 @@ interface Props extends DialogProps {}
  * 1. 中英文分开；
  * 2. markdown 解析；
  */
-const PreferencesDialog: React.FunctionComponent<Props> = ({ destroy }) => {
+const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   const preferences = storage.preferences;
   const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
   const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);

@@ -9,7 +9,7 @@ import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
 
-const TagList: React.FunctionComponent = () => {
+const TagList: React.FC = () => {
   const { query } = locationService.getState();
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);

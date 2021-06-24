@@ -12,7 +12,7 @@ import "../less/main-editor.less";
 // 标签 正则
 const TAG_REG = /#(.+?)#/g;
 
-const MainEditor: React.FunctionComponent = () => {
+const MainEditor: React.FC = () => {
   const [content, setContent] = useState(getEditorContentCache());
   const [editMemoId, setEditMemoId] = useState("");
   const editorRef = React.useRef<EditorRefActions>(null);

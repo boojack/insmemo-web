@@ -14,7 +14,7 @@ interface Props extends DialogProps {
   memoId: string;
 }
 
-const MemoStoryDialog: React.FunctionComponent<Props> = (props) => {
+const MemoStoryDialog: React.FC<Props> = (props) => {
   const { memoId: currentMemoId, destroy } = props;
   const [memo, setMemo] = useState<FormattedMemo>();
   const [downMemos, setDownMemos] = useState<FormattedMemo[]>([]);

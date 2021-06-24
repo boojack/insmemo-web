@@ -12,7 +12,7 @@ interface AmountState {
   tagsAmount: number;
 }
 
-const UserBanner: React.FunctionComponent = () => {
+const UserBanner: React.FC = () => {
   const [username, setUsername] = useState<string>("insmemo");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({

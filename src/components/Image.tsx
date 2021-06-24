@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-const Image: React.FunctionComponent<Props> = (props: Props) => {
+const Image: React.FC<Props> = (props: Props) => {
   const { className, imgUrl } = props;
 
   const handleImageClick = () => {

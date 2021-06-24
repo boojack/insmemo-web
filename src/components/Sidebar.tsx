@@ -5,7 +5,7 @@ import TagList from "./TagList";
 import UsageStatTable from "./UsageStatTable";
 import "../less/siderbar.less";
 
-const Sidebar: React.FunctionComponent = () => {
+const Sidebar: React.FC = () => {
   useEffect(() => {
     // do nth
   }, []);

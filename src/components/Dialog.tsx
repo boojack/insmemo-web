@@ -11,7 +11,7 @@ interface DialogConfig {
 
 interface Props extends DialogConfig, DialogProps {}
 
-const BaseDialog: React.FunctionComponent<Props> = (props) => {
+const BaseDialog: React.FC<Props> = (props) => {
   const { children, className, clickSpaceDestroy, destroy } = props;
 
   const handleSpaceClicked = () => {
@@ -29,7 +29,7 @@ const BaseDialog: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComponent<T>, props: any) {
+export function showDialog<T = any>(config: DialogConfig, DialogComponent: React.FC<T>, props: any) {
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
 
@@ -54,7 +54,7 @@ export function showDialog<T = any>(config: DialogConfig, Fc: React.FunctionComp
 
   ReactDOM.render(
     <BaseDialog destroy={destroy} clickSpaceDestroy={true} {...config}>
-      <Fc destroy={destroy} {...props}></Fc>
+      <DialogComponent destroy={destroy} {...props}></DialogComponent>
     </BaseDialog>,
     tempDiv
   );

@@ -14,7 +14,7 @@ interface Props extends DialogProps {
   memo: Model.Memo;
 }
 
-const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
+const GenMemoImageDialog: React.FC<Props> = (props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
   const memoElRef = useRef<HTMLDivElement>(null);
@@ -37,6 +37,8 @@ const GenMemoImageDialog: React.FunctionComponent<Props> = (props) => {
             scale: 4,
             backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
             useCORS: true,
+            scrollX: -window.scrollX,
+            scrollY: -window.scrollY,
           }).then((canvas) => {
             setImgUrl(canvas.toDataURL());
           });

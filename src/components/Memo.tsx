@@ -28,7 +28,7 @@ interface Props {
   delete: (idx: number) => Promise<void>;
 }
 
-const Memo: React.FunctionComponent<Props> = (props: Props) => {
+const Memo: React.FC<Props> = (props: Props) => {
   const { className, memo: propsMemo, shouldSplitMemoWord } = props;
   const [memo, setMemo] = useState<FormattedMemo>({
     ...propsMemo,

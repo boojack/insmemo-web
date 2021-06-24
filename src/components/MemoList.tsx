@@ -13,7 +13,7 @@ interface Duration {
   to: number;
 }
 
-const MemoList: React.FunctionComponent = () => {
+const MemoList: React.FC = () => {
   const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
   const { query } = locationService.getState();
   const [tagQuery, setTagQuery] = useState(query.tag);
