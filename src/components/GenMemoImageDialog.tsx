@@ -69,41 +69,34 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        {imgUrl ? (
-          <>
-            <p className="tip-text">右键或长按即可保存图片 👇</p>
-            <img className="memo-img" src={imgUrl} />
-          </>
-        ) : (
-          <>
-            <div className="cover-container">
-              <p className="loading-text">图片生成中...</p>
+        <p className="tip-text">右键或长按即可保存图片 👇</p>
+        <img className="memo-img" src={imgUrl} />
+        <div className={`cover-container ${imgUrl ? "hidden" : ""}`}>
+          <p className="loading-text">图片生成中...</p>
+        </div>
+        <div className="memo-container" ref={memoElRef}>
+          <span className="time-text">{memo.createdAtStr}</span>
+          <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+          {imageUrls.length > 0 ? (
+            <div className="images-container">
+              {imageUrls.map((imgUrl, idx) => (
+                <img
+                  key={idx}
+                  crossOrigin="anonymous"
+                  src={imgUrl}
+                  onLoad={handleImageOnLoad}
+                  onError={handleImageOnLoad}
+                  decoding="async"
+                />
+              ))}
             </div>
-            <div className="memo-container" ref={memoElRef}>
-              <span className="time-text">{memo.createdAtStr}</span>
-              <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
-              {imageUrls.length > 0 ? (
-                <div className="images-container">
-                  {imageUrls.map((imgUrl, idx) => (
-                    <img
-                      key={idx}
-                      crossOrigin="anonymous"
-                      src={imgUrl}
-                      onLoad={handleImageOnLoad}
-                      onError={handleImageOnLoad}
-                      decoding="async"
-                    />
-                  ))}
-                </div>
-              ) : null}
-              <div className="watermark-container">
-                <span className="normal-text">
-                  via <span className="name-text">{userinfo?.username}</span>
-                </span>
-              </div>
-            </div>
-          </>
-        )}
+          ) : null}
+          <div className="watermark-container">
+            <span className="normal-text">
+              via <span className="name-text">{userinfo?.username}</span>
+            </span>
+          </div>
+        </div>
       </div>
     </>
   );
@@ -113,7 +106,6 @@ export default function showGenMemoImageDialog(memo: Model.Memo) {
   showDialog(
     {
       className: "gen-memo-image-dialog",
-      disableAnimation: true,
     },
     GenMemoImageDialog,
     { memo }
