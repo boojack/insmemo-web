@@ -13,7 +13,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">😀</span>关于 insmemo
+          <span className="icon-text">😀</span>关于本站
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
@@ -21,23 +21,28 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
       </div>
       <div className="dialog-content-container">
         <p>
-          <b>insmemo</b>：
+          取名：<b>insmemo</b>，有感于{" "}
+          <b>
+            <a target="_blank" href="https://www.zsxq.com/">
+              知识星球
+            </a>
+          </b>{" "}
+          和{" "}
           <a target="_blank" href="https://flomoapp.com/">
             flomo
           </a>{" "}
-          +{" "}
-          <a target="_blank" href="https://www.zsxq.com/">
-            知识星球
-          </a>
         </p>
-        <blockquote>
-          <p>
-            <b>降低输入摩擦，提高输入动机。</b>
-          </p>
-          <p>尽量多地无压力地记录下来自己的想法。</p>
-          --- flomo
-        </blockquote>
-        <p>Features:</p>
+        <br />
+
+        <i>为何做这个？</i>
+        <ul>
+          <li>我用于记录：📅 每日/周计划、💡 突发奇想、📕 读后感...</li>
+          <li>代替了我在微信上的“文件传输助手”，更易全端使用；</li>
+          <li>尽量多地无压力地记录下来自己的想法 --- flomo</li>
+        </ul>
+        <br />
+
+        <i>有何特点呢？</i>
         <ul>
           <li>
             ✨{" "}
@@ -48,16 +53,10 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
           </li>
           <li>😋 更可观的视觉样式；</li>
           <li>📑 更好的交互逻辑；</li>
-          <li>
-            🐛{" "}
-            <a target="_blank" href="https://github.com/boojack/insmemo-web/issues/new">
-              问题反馈
-            </a>
-            ；
-          </li>
         </ul>
+        <br />
+        <p>Enjoy it and have fun~ </p>
         <hr />
-        <p>Enjoy it and have fun~</p>
         <p className="normal-text">
           BTW, my personal site:{" "}
           <a target="_blank" href="https://justsven.top">
@@ -65,7 +64,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
           </a>{" "}
           👀
         </p>
-        <p className="normal-text">Last update at 2021/6/23 11:25:11, v2.0.4</p>
+        <p className="normal-text">Last update at 2021/6/25 12:02:11, v2.0.6</p>
       </div>
     </>
   );
