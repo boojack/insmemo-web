@@ -51,7 +51,10 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
     destroy();
   };
 
-  const handleImageOnLoad = () => {
+  const handleImageOnLoad = (ev: React.SyntheticEvent<HTMLImageElement>) => {
+    if (ev.type === "error") {
+      (ev.target as HTMLImageElement).remove();
+    }
     setImageAmount(imageAmount - 1);
   };
 
@@ -110,6 +113,7 @@ export default function showGenMemoImageDialog(memo: Model.Memo) {
   showDialog(
     {
       className: "gen-memo-image-dialog",
+      disableAnimation: true,
     },
     GenMemoImageDialog,
     { memo }

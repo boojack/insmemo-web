@@ -5,6 +5,7 @@ import "../less/dialog.less";
 
 interface DialogConfig {
   className: string;
+  disableAnimation?: boolean;
   clickSpaceDestroy?: boolean;
 }
 
@@ -32,16 +33,23 @@ export function showDialog<T = any>(config: DialogConfig, DialogComponent: React
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
 
-  setTimeout(() => {
-    tempDiv.firstElementChild?.classList.add("showup");
-  }, 0);
+  if (!config.disableAnimation) {
+    setTimeout(() => {
+      tempDiv.firstElementChild?.classList.add("showup");
+    }, 0);
+  }
 
   const destroy = () => {
-    tempDiv.firstElementChild?.classList.add("showoff");
-    setTimeout(() => {
+    if (!config.disableAnimation) {
+      tempDiv.firstElementChild?.classList.add("showoff");
+      setTimeout(() => {
+        ReactDOM.unmountComponentAtNode(tempDiv);
+        tempDiv.remove();
+      }, ANIMATION_DURATION);
+    } else {
       ReactDOM.unmountComponentAtNode(tempDiv);
       tempDiv.remove();
-    }, ANIMATION_DURATION);
+    }
   };
 
   ReactDOM.render(
