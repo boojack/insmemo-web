@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ANIMATION_DURATION } from "../helpers/consts";
 import userService from "../helpers/userService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
@@ -43,7 +42,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
             setImgUrl(canvas.toDataURL());
           });
         }
-      }, ANIMATION_DURATION);
+      }, 0);
     }
   }, [imageAmount]);
 
@@ -69,11 +68,10 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <p className="tip-text">右键或长按即可保存图片 👇</p>
-        <img className="memo-img" src={imgUrl} />
-        <div className={`cover-container ${imgUrl ? "hidden" : ""}`}>
-          <p className="loading-text">图片生成中...</p>
+        <div className={`tip-words-container ${imgUrl ? "finished" : "genarating"}`}>
+          <p className="tip-text">{imgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
         </div>
+        <img className="memo-img" src={imgUrl} />
         <div className="memo-container" ref={memoElRef}>
           <span className="time-text">{memo.createdAtStr}</span>
           <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>

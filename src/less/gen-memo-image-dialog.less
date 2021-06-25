@@ -23,6 +23,7 @@
     > .dialog-content-container {
       position: relative;
       width: 100%;
+      min-height: 128px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -34,33 +35,35 @@
         border-radius: 8px;
       }
 
-      > .tip-text {
+      > .tip-words-container {
         width: 100%;
-        padding: 0 16px;
-        padding-bottom: 8px;
-        color: gray;
-        font-size: 12px;
-        line-height: 1.6;
-        border-bottom: 1px solid lightgray;
-      }
-
-      > .cover-container {
-        margin: 32px 0;
-        width: 100%;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.8);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        z-index: 1;
 
-        > .loading-text {
-          text-align: center;
-          padding: 8px 16px;
-          background-color: #eee;
-          border-radius: 8px;
+        &.genarating {
+          margin: auto;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          z-index: 1;
+
+          > .tip-text {
+            text-align: center;
+            padding: 0 16px;
+            border-radius: 8px;
+          }
+        }
+
+        &.finished {
+          align-items: flex-start;
+          border-bottom: 1px solid lightgray;
+
+          > .tip-text {
+            padding: 0 16px;
+            padding-bottom: 8px;
+            font-size: 13px;
+          }
         }
       }
 
