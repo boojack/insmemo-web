@@ -110,7 +110,6 @@ export default function showGenMemoImageDialog(memo: Model.Memo) {
   showDialog(
     {
       className: "gen-memo-image-dialog",
-      disableAnimation: true,
     },
     GenMemoImageDialog,
     { memo }
