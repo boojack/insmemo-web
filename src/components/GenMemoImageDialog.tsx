@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import userService from "../helpers/userService";
+import { ANIMATION_DURATION } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
@@ -42,7 +43,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
             setImgUrl(canvas.toDataURL());
           });
         }
-      }, 0);
+      }, ANIMATION_DURATION);
     }
   }, [imageAmount]);
 
