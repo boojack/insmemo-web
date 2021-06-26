@@ -24,12 +24,11 @@ interface Props {
   className: string;
   memo: Model.Memo;
   index: number;
-  shouldSplitMemoWord: boolean;
   delete: (idx: number) => Promise<void>;
 }
 
 const Memo: React.FC<Props> = (props: Props) => {
-  const { className, memo: propsMemo, shouldSplitMemoWord } = props;
+  const { className, memo: propsMemo } = props;
   const [memo, setMemo] = useState<FormattedMemo>({
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
@@ -48,7 +47,7 @@ const Memo: React.FC<Props> = (props: Props) => {
       ...memo,
       formattedContent: formatMemoContent(memo.content),
     });
-  }, [shouldSplitMemoWord]);
+  }, []);
 
   const handleShowMemoStoryDialog = () => {
     showMemoStoryDialog(memo.id);
@@ -176,14 +175,19 @@ function getMemoById(memoId: string): Promise<Model.Memo> {
 
 export function formatMemoContent(content: string): string {
   content = content.replace(/&nbsp;/g, " ");
+  const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = storage.preferences;
 
-  if (storage.preferences.shouldUseMarkdownParser) {
+  if (shouldUseMarkdownParser) {
     content = marked(content);
   }
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
-  if (storage.preferences.shouldSplitMemoWord) {
+  if (shouldSplitMemoWord) {
     content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+  }
+
+  if (shouldHideImageUrl) {
+    content = content.replace(IMAGE_URL_REG, "");
   }
 
   content = content

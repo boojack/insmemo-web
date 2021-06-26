@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
 import { utils } from "../helpers/utils";
-import { storage } from "../helpers/storage";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -20,7 +19,6 @@ const MemoList: React.FC = () => {
   const [duration, setDuration] = useState<Duration>({ from: query.from, to: query.to });
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
-  const [shouldSplitMemoWord, setShouldSplitMemoWord] = useState(storage.preferences.shouldSplitMemoWord ?? true);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
   const memosTemp = useMemo(() => {
@@ -58,17 +56,9 @@ const MemoList: React.FC = () => {
       wrapperElement.current?.scrollTo({ top: 0 });
     });
 
-    const handleStorageDataChanged = () => {
-      const shouldSplitMemoWord = storage.preferences.shouldSplitMemoWord ?? true;
-      setShouldSplitMemoWord(shouldSplitMemoWord);
-    };
-
-    window.addEventListener("storage", handleStorageDataChanged);
-
     return () => {
       unsubscribeMemoService();
       unsubscribeLocationService();
-      window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);
 
@@ -141,16 +131,7 @@ const MemoList: React.FC = () => {
         const key = memo.id + " " + memo.updatedAt;
         const className = memo.shouldShow ? "" : "hidden";
 
-        return (
-          <Memo
-            key={key}
-            className={className}
-            shouldSplitMemoWord={shouldSplitMemoWord}
-            index={idx}
-            memo={memo}
-            delete={handleDeleteMemoItem}
-          />
-        );
+        return <Memo key={key} className={className} index={idx} memo={memo} delete={handleDeleteMemoItem} />;
       })}
 
       <div

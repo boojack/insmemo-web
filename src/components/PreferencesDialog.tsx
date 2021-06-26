@@ -13,6 +13,7 @@ interface Props extends DialogProps {}
 const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   const preferences = storage.preferences;
   const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
+  const [shouldHideImageUrl, setHideImageUrl] = useState<boolean>(preferences.shouldHideImageUrl);
   const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);
   const [shouldUseMarkdownParser, setShouldUseMarkdownParser] = useState<boolean>(preferences.shouldUseMarkdownParser);
   const [showDarkMode, setShowDarkMode] = useState<boolean>(preferences.showDarkMode);
@@ -30,6 +31,14 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     setShouldSplitWord(nextStatus);
     preferences.shouldSplitMemoWord = nextStatus;
     storage.set({ shouldSplitMemoWord: nextStatus });
+    storage.emitStorageChangedEvent();
+  };
+
+  const handleHideImageUrlValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextStatus = e.target.checked;
+    setHideImageUrl(nextStatus);
+    preferences.shouldHideImageUrl = nextStatus;
+    storage.set({ shouldHideImageUrl: nextStatus });
     storage.emitStorageChangedEvent();
   };
 
@@ -77,17 +86,24 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           </label>
         </div>
         <div className="section-container preferences-section-container">
-          <p className="title-text">Memo 显示相关</p>
+          <p className="title-text">
+            Memo 显示相关 <span className="tip-text">需要主动刷新网页</span>
+          </p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">中英文内容自动间隔</span>
             <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
           </label>
           <label className="form-label checkbox-form-label">
+            <span className="normal-text">隐藏图片链接地址</span>
+            <img className="icon-img" src={shouldHideImageUrl ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <input className="hidden" type="checkbox" checked={shouldHideImageUrl} onChange={handleHideImageUrlValueChanged} />
+          </label>
+          <label className="form-label checkbox-form-label">
             <span className="normal-text">使用 markdown 解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
-            <span className="tip-text">目前仅支持加粗 / 列表，需要主动刷新网页</span>
+            <span className="tip-text">目前仅支持加粗 / 列表</span>
           </label>
         </div>
         <div className="section-container">
@@ -117,7 +133,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
               <span>加入编辑器</span>
             </label>
           </label>
-          <p className="tip-text">...to be continue</p>
         </div>
       </div>
     </>
