@@ -4,7 +4,7 @@ import toast from "./Toast";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
-import { ToolsBtnPopup } from "./ToolsBtnPopup";
+import { MenuBtnsPopup } from "./MenuBtnsPopup";
 import "../less/user-banner.less";
 
 interface AmountState {
@@ -19,7 +19,7 @@ const UserBanner: React.FC = () => {
     memosAmount: 0,
     tagsAmount: 0,
   });
-  const [showToolsBtnDialog, setDialogStatus] = useState<boolean>(false);
+  const [showMenuBtnsPopup, setPopupStatus] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchDataAmount = async () => {
@@ -56,20 +56,20 @@ const UserBanner: React.FC = () => {
   const toggleBtnsDialog = useCallback(
     (ev: React.MouseEvent) => {
       ev.stopPropagation();
-      const nextState = !showToolsBtnDialog;
+      const nextState = !showMenuBtnsPopup;
 
       if (nextState) {
         const bodyClickHandler = () => {
-          setDialogStatus(false);
+          setPopupStatus(false);
           document.body.removeEventListener("click", bodyClickHandler);
         };
 
         document.body.addEventListener("click", bodyClickHandler);
       }
 
-      setDialogStatus(nextState);
+      setPopupStatus(nextState);
     },
-    [showToolsBtnDialog]
+    [showMenuBtnsPopup]
   );
 
   const handleUsernameClick = useCallback(() => {
@@ -82,10 +82,10 @@ const UserBanner: React.FC = () => {
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <button className="action-btn tools-dialog-btn" onClick={toggleBtnsDialog}>
+        <button className="action-btn menu-popup-btn" onClick={toggleBtnsDialog}>
           ···
         </button>
-        <ToolsBtnPopup visibility={showToolsBtnDialog} />
+        <MenuBtnsPopup visibility={showMenuBtnsPopup} />
       </div>
       <div className="status-text-container">
         <div className="status-text memos-text">

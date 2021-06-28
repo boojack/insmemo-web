@@ -3,13 +3,13 @@ import userService from "../helpers/userService";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
-import "../less/tools-btn-popup.less";
+import "../less/menu-btns-popup.less";
 
 interface Props {
   visibility: boolean;
 }
 
-export const ToolsBtnPopup: React.FC<Props> = ({ visibility }) => {
+export const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
   const handlePreferencesBtnClick = () => {
     showPreferencesDialog();
   };
@@ -24,7 +24,7 @@ export const ToolsBtnPopup: React.FC<Props> = ({ visibility }) => {
   };
 
   return (
-    <div className={"tools-btn-popup " + (visibility ? "" : "hidden")}>
+    <div className={"menu-btns-popup " + (visibility ? "" : "hidden")}>
       <button className="text-btn action-btn" onClick={showMyAccountDialog}>
         <span className="icon">🤠</span> 我的账号
       </button>
