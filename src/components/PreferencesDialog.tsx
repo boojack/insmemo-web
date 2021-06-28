@@ -79,7 +79,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
         <div className="section-container preferences-section-container">
           <p className="title-text">常规</p>
           <label className="form-label checkbox-form-label">
-            <span className="normal-text">黑暗模式</span>
+            <span className="normal-text">深色模式</span>
             <img className="icon-img" src={showDarkMode ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={showDarkMode} onChange={handleShowDarkModeValueChanged} />
             <span className="tip-text">😜先用着吧</span>

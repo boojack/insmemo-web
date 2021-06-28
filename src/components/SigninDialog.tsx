@@ -115,7 +115,10 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
         </div>
       </div>
       <p className="tip-text">
-        仅用于作品展示，注册暂时关闭；可输入 <code>guest, 123456</code> 进行体验。
+        仅用于作品展示，注册暂时关闭；
+        <br />
+        可输入 <code>guest, 123456</code> 进行体验。
+        <br />
         <span className="text-btn" onClick={handleAboutBtnClick}>
           <span className="icon-text">😀</span>
           关于本站

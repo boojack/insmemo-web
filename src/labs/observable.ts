@@ -1,3 +1,4 @@
+// Just for test
 export function observable<T extends object>(obj: T) {
   return new Proxy(obj, {
     set: (target: T, key: string | Symbol, value: any) => {
