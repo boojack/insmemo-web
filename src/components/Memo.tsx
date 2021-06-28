@@ -36,7 +36,6 @@ const Memo: React.FC<Props> = (props: Props) => {
   });
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
-  const [showMoreActionBtns, toggleMoreActionBtns] = useToggle(false);
 
   useEffect(() => {
     setImageUrls(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
@@ -57,26 +56,12 @@ const Memo: React.FC<Props> = (props: Props) => {
     globalStateService.setMarkMemoId(memo.id);
   }, [memo]);
 
-  const handleBtnsContainerClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (showMoreActionBtns) {
-      toggleMoreActionBtns(false);
-    }
-  }, []);
-
   const handleDeleteMemoClick = useCallback(async () => {
     if (showConfirmDeleteBtn) {
       await props.delete(props.index);
     } else {
       toggleConfirmDeleteBtn();
     }
-  }, [showConfirmDeleteBtn]);
-
-  const handlerShowMoreBtnsClick = useCallback(async () => {
-    if (showConfirmDeleteBtn) {
-      toggleConfirmDeleteBtn(false);
-    }
-    toggleMoreActionBtns();
   }, [showConfirmDeleteBtn]);
 
   const handleEditMemoClick = useCallback(() => {
@@ -87,10 +72,7 @@ const Memo: React.FC<Props> = (props: Props) => {
     if (showConfirmDeleteBtn) {
       toggleConfirmDeleteBtn(false);
     }
-    if (showMoreActionBtns) {
-      toggleMoreActionBtns(false);
-    }
-  }, [showConfirmDeleteBtn, showMoreActionBtns]);
+  }, [showConfirmDeleteBtn]);
 
   const handleGenMemoImageBtnClick = useCallback(() => {
     showGenMemoImageDialog(memo);
@@ -127,25 +109,25 @@ const Memo: React.FC<Props> = (props: Props) => {
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
         </span>
-        <div className="btns-container" onClick={handleBtnsContainerClick}>
+        <div className="btns-container">
           <span className="text-btn mark-btn" onClick={markThisMemo}>
             Mark
           </span>
-          <div className={"more-action-btns-container " + (showMoreActionBtns ? "" : "hidden")}>
-            <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
-              分享
-            </span>
-            <span className="text-btn" onClick={handleEditMemoClick}>
-              编辑
-            </span>
-            {/* Memo 删除相关按钮 */}
-            <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
-              {showConfirmDeleteBtn ? "确定删除" : "删除"}
-            </span>
+          <span className="text-btn more-action-btn">···</span>
+          <div className="more-action-btns-wrapper">
+            <div className="more-action-btns-container">
+              <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
+                分享
+              </span>
+              <span className="text-btn" onClick={handleEditMemoClick}>
+                编辑
+              </span>
+              {/* Memo 删除相关按钮 */}
+              <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
+                {showConfirmDeleteBtn ? "确定删除" : "删除"}
+              </span>
+            </div>
           </div>
-          <span className={"text-btn more-action-btns " + (showMoreActionBtns ? "active" : "")} onClick={handlerShowMoreBtnsClick}>
-            ···
-          </span>
         </div>
       </div>
       <div className="memo-content-text" onClick={handleMemoContentClick} dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
