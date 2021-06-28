@@ -54,14 +54,15 @@
       > .more-action-btns-container {
         position: absolute;
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: flex-start;
         align-items: center;
         flex-wrap: nowrap;
-        right: 34px;
-        width: auto;
-        height: 32px;
-        padding: 0 6px;
+        top: calc(100% + 4px);
+        right: -2px;
+        width: 96px;
+        height: auto;
+        padding: 4px 0;
         white-space: nowrap;
         border-radius: 6px;
         background-color: #fafafa;
@@ -69,24 +70,15 @@
         z-index: 1;
 
         > .text-btn {
-          flex-shrink: 0;
-          padding: 4px 6px;
+          width: 100%;
+          padding: 8px 0;
+          border-radius: 0;
           height: unset;
           line-height: unset;
 
           &.delete-btn {
             color: #d28653;
           }
-        }
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 8px;
-          right: -6px;
-          border-left: 8px solid #fafafa;
-          border-bottom: 8px solid transparent;
-          border-top: 8px solid transparent;
         }
       }
 
@@ -203,10 +195,6 @@ body.dark {
   .memo-wrapper {
     > .memo-top-wrapper {
       > .btns-container {
-        > .more-action-btns-container {
-          right: 32px;
-        }
-
         > .text-btn {
           &.more-action-btns {
             font-size: 13px;
