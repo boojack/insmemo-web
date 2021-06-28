@@ -21,14 +21,13 @@ const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 
 interface Props {
-  className: string;
   memo: Model.Memo;
   index: number;
-  delete: (idx: number) => Promise<void>;
+  additionClassName: string;
 }
 
 const Memo: React.FC<Props> = (props: Props) => {
-  const { className, memo: propsMemo } = props;
+  const { memo: propsMemo } = props;
   const [memo, setMemo] = useState<FormattedMemo>({
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
@@ -58,7 +57,15 @@ const Memo: React.FC<Props> = (props: Props) => {
 
   const handleDeleteMemoClick = useCallback(async () => {
     if (showConfirmDeleteBtn) {
-      await props.delete(props.index);
+      await memoService.deleteMemoById(memo.id);
+
+      if (props.index + 5 > memoService.getState().memos.length) {
+        await memoService.fetchMoreMemos();
+      }
+
+      if (globalStateService.getState().editMemoId === memo.id) {
+        globalStateService.setEditMemoId("");
+      }
     } else {
       toggleConfirmDeleteBtn();
     }
@@ -104,18 +111,18 @@ const Memo: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={"memo-wrapper " + className} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={"memo-wrapper " + props.additionClassName} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
         </span>
         <div className="btns-container">
-          <span className="text-btn mark-btn" onClick={markThisMemo}>
-            Mark
-          </span>
           <span className="text-btn more-action-btn">···</span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
+              <span className="text-btn" onClick={markThisMemo}>
+                Mark
+              </span>
               <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
                 分享
               </span>
@@ -124,7 +131,7 @@ const Memo: React.FC<Props> = (props: Props) => {
               </span>
               {/* Memo 删除相关按钮 */}
               <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
-                {showConfirmDeleteBtn ? "确定删除" : "删除"}
+                {showConfirmDeleteBtn ? "确定删除！" : "删除"}
               </span>
             </div>
           </div>

@@ -68,11 +68,6 @@ const MemoList: React.FC = () => {
     }
   }, [tagQuery, duration, isFetching, isComplete]);
 
-  const handleDeleteMemoItem = async (idx: number) => {
-    await memoService.deleteMemoById(memos[idx].id);
-    await fetchMoreMemos();
-  };
-
   const fetchMoreMemos = useCallback(async () => {
     if (isFetching || isComplete) {
       return;
@@ -129,9 +124,9 @@ const MemoList: React.FC = () => {
 
       {memosTemp.map((memo, idx) => {
         const key = memo.id + " " + memo.updatedAt;
-        const className = memo.shouldShow ? "" : "hidden";
+        const additionClassName = memo.shouldShow ? "" : "hidden";
 
-        return <Memo key={key} className={className} index={idx} memo={memo} delete={handleDeleteMemoItem} />;
+        return <Memo key={key} index={idx} additionClassName={additionClassName} memo={memo} />;
       })}
 
       <div
