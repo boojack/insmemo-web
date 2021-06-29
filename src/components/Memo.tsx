@@ -33,12 +33,8 @@ const Memo: React.FC<Props> = (props: Props) => {
     formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
   });
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
-
-  useEffect(() => {
-    setImageUrls(Array.from(memo.content.match(IMAGE_URL_REG) ?? []));
-  }, [memo]);
+  const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   useEffect(() => {
     setMemo({

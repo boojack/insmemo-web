@@ -142,6 +142,7 @@ const MainEditor: React.FC = () => {
   const handleContentChange = useCallback(
     (content: string) => {
       setContent(content);
+
       if (editMemoId === "") {
         setEditorContentCache(content);
       }
