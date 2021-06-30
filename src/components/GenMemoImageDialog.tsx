@@ -43,7 +43,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
             setImgUrl(canvas.toDataURL());
           });
         }
-      }, ANIMATION_DURATION);
+      }, ANIMATION_DURATION + 100);
     }
   }, [imageAmount]);
 

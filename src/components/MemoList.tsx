@@ -130,11 +130,9 @@ const MemoList: React.FC = () => {
       })}
 
       <div
-        className={
-          "status-text-container " +
-          (isFetching || isComplete ? "" : "invisible") +
-          (tagQuery || duration.from < duration.to ? " invisible" : "")
-        }
+        className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"} ${
+          tagQuery || duration.from < duration.to ? "invisible" : ""
+        }`}
       >
         <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
       </div>

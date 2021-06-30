@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import userService from "../helpers/userService";
@@ -20,9 +20,19 @@ const validateConfig: ValidatorConfig = {
 const SigninDialog: React.FC<Props> = ({ destroy }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const signinBtn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    // do nth
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        signinBtn.current?.click();
+      }
+    };
+    document.body.addEventListener("keypress", handleKeyPress);
+
+    return () => {
+      document.body.removeEventListener("keypress", handleKeyPress);
+    };
   }, []);
 
   const handleInputClicked = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -109,7 +119,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
             注册
           </button>
           <span className="split-text">/</span>
-          <button className="text-btn signin-btn" onClick={() => handleActionBtnClick("signin")}>
+          <button className="text-btn signin-btn" ref={signinBtn} onClick={() => handleActionBtnClick("signin")}>
             登录
           </button>
         </div>

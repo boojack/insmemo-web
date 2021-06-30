@@ -51,6 +51,18 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     if (content && editorRef.current) {
       editorRef.current.innerHTML = content;
     }
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        document.execCommand("insertText", false, "  ");
+      }
+    };
+    editorRef.current?.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      editorRef.current?.removeEventListener("keydown", handleKeyPress);
+    };
   }, []);
 
   useImperativeHandle(props.editorRef, () => ({

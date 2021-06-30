@@ -53,6 +53,20 @@
       padding-left: 2px;
     }
   }
+
+  pre {
+    width: 100%;
+    margin: 4px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f7f6f3;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+    * {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+  }
 }
 
 body.dark {
@@ -61,6 +75,15 @@ body.dark {
 
     span.tag-span {
       background-color: @dark-bg-light-black;
+    }
+
+    pre {
+      color: lightgray;
+
+      background-color: @dark-bg-light-black;
+      * {
+        color: lightgray;
+      }
     }
   }
 }
