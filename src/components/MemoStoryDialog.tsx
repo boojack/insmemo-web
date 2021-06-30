@@ -5,10 +5,13 @@ import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";
+import Image from "./Image";
 import "../less/memo-story-dialog.less";
 
 // memo 关联正则
 const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/;
+// 图片路由正则
+const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 interface Props extends DialogProps {
   memoId: string;
@@ -18,6 +21,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
   const { memoId: currentMemoId, destroy } = props;
   const [memo, setMemo] = useState<FormattedMemo>();
   const [downMemos, setDownMemos] = useState<FormattedMemo[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchMemo = async () => {
@@ -33,6 +37,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
       }
 
       if (memoTemp) {
+        setImageUrls(Array.from(memoTemp.content.match(IMAGE_URL_REG) ?? []));
         setMemo({
           ...memoTemp,
           formattedContent: formatMemoContent(memoTemp.content),
@@ -86,12 +91,12 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        let memoTemp = memoService.getMemoById(currentMemoId);
+        let memoTemp = memoService.getMemoById(memoId);
 
         if (!memoTemp) {
-          memoTemp = await getMemoById(currentMemoId);
+          memoTemp = await getMemoById(memoId);
           setTimeout(async () => {
-            while (!memoService.getMemoById(currentMemoId)) {
+            while (!memoService.getMemoById(memoId)) {
               await memoService.fetchMoreMemos();
             }
           });
@@ -128,6 +133,13 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
             onClick={handleMemoContentClick}
             dangerouslySetInnerHTML={{ __html: memo?.formattedContent ?? "" }}
           ></div>
+          {imageUrls.length > 0 ? (
+            <div className="images-wrapper">
+              {imageUrls.map((imgUrl, idx) => (
+                <Image className="memo-img" key={idx} imgUrl={imgUrl} />
+              ))}
+            </div>
+          ) : null}
         </div>
         <p className={"normal-text " + (downMemos.length === 0 ? "hidden" : "")}>链接了 {downMemos.length} 个 Memo</p>
         <div className={"down-memos-wrapper " + (downMemos.length !== 0 ? "" : "hidden")}>
