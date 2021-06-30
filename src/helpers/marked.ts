@@ -5,7 +5,7 @@
  */
 const DOT_LI_REG = /^[\*\-] (.+)$/;
 const NUM_LI_REG = /^(\d+)\. (.+)$/;
-const CODE_BLOCK_REG = /''' (.*?)\s([\s\S]*?)\s'''[\s]*/g;
+const CODE_BLOCK_REG = /''' (.*?)\s([\s\S]*?)\s'''/g;
 
 const marked = (markdownText: string): string => {
   const htmlText = markdownText
