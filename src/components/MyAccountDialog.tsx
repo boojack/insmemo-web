@@ -34,6 +34,11 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   };
 
   const handleConfirmEditUsernameBtnClick = async () => {
+    if (user?.username === "guest") {
+      toast.info("🈲 不要修改我的用户名");
+      return;
+    }
+
     if (username === user?.username) {
       setShowEditUsernameInputs(false);
       return;
@@ -54,6 +59,15 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
     } catch (error) {
       toast.error(error);
     }
+  };
+
+  const handleChangePasswordBtnClick = () => {
+    if (user?.username === "guest") {
+      toast.info("🈲 不要修改我的密码");
+      return;
+    }
+
+    showChangePasswordDialog();
   };
 
   return (
@@ -109,7 +123,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           </label>
           <label className="form-label password-label">
             <span className="normal-text">密码：</span>
-            <span className="text-btn" onClick={showChangePasswordDialog}>
+            <span className="text-btn" onClick={handleChangePasswordBtnClick}>
               修改密码
             </span>
           </label>

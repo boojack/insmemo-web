@@ -5,14 +5,13 @@
  */
 const DOT_LI_REG = /^[\*\-] (.+)$/;
 const NUM_LI_REG = /^(\d+)\. (.+)$/;
-const BOLD_TEXT_REG = /\*\*(.+?)\*\*/;
 
 const marked = (markdownText: string): string => {
   const htmlText = markdownText
     .split("\n")
     .map((t) =>
       t
-        .replace(BOLD_TEXT_REG, "<b>$1</b>")
+        .replaceAll(/\*\*(.+?)\*\*/g, "<b>$1</b>")
         .replace(DOT_LI_REG, "<div class='dot-li'><span class='counter-text'>•</span><p>$1</p></div>")
         .replace(NUM_LI_REG, "<div class='num-li'><span class='counter-text'>$1.</span><p>$2</p></div>")
     )
