@@ -177,18 +177,20 @@ export function formatMemoContent(content: string): string {
 
   content = content
     .split("\n")
-    .map((t) => {
+    .map((t, idx, arr) => {
       if (t !== "") {
         t = t
           .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
           .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
           .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
-        return "" + t + "";
+        return "<p>" + t + "<p>";
+      } else if (idx + 1 !== arr.length) {
+        return "<br />";
       } else {
         return "";
       }
     })
-    .join("<br>");
+    .join("");
 
   return content;
 }
