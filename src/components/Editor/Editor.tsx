@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { parseHtmlToRaw } from "../../helpers/marked";
 import "../../less/editor.less";
 
 export interface EditorRefActions {
@@ -56,6 +57,10 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       if (e.key === "Tab") {
         e.preventDefault();
         document.execCommand("insertText", false, "  ");
+      } else if (e.key === "Backspace") {
+        if (editorRef.current?.innerHTML === "<br>") {
+          setContent("");
+        }
       }
     };
     editorRef.current?.addEventListener("keydown", handleKeyPress);
@@ -72,7 +77,8 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       }
     },
     insertText: (text: string) => {
-      setContent(content + text);
+      text = parseHtmlToRaw(content + text);
+      setContent(text);
       if (editorRef.current) {
         editorRef.current.innerHTML = content + text;
       }
@@ -81,6 +87,7 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       }
     },
     setContent: (text: string) => {
+      text = parseHtmlToRaw(text);
       setContent(text);
       if (editorRef.current) {
         editorRef.current.innerHTML = text;

@@ -35,11 +35,6 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
     };
   }, []);
 
-  const handleInputClicked = (e: React.MouseEvent<HTMLInputElement>) => {
-    const inputEl = e.target as HTMLInputElement;
-    inputEl.removeAttribute("readonly");
-  };
-
   const handleUsernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
     setUsername(text);
@@ -104,7 +99,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       </div>
       <div className="dialog-content-container">
         <label className="form-label input-form-label">
-          <input type="text" value={username} readOnly onClick={handleInputClicked} onChange={handleUsernameInputChanged} />
+          <input type="text" value={username} onChange={handleUsernameInputChanged} />
           <span className={"normal-text " + (username === "" ? "" : "not-null")}>用户名</span>
         </label>
         <label className="form-label input-form-label">

@@ -5,9 +5,9 @@
  */
 const DOT_LI_REG = /^[\*\-] (.+)$/;
 const NUM_LI_REG = /^(\d+)\. (.+)$/;
-const CODE_BLOCK_REG = /''' (.*?)\s([\s\S]*?)\s'''/g;
+const CODE_BLOCK_REG = /''' (.*?)\s([\s\S]*?)\s'''.*?\s?/g;
 
-const marked = (markdownText: string): string => {
+const parseMarkedToHtml = (markdownText: string): string => {
   const htmlText = markdownText
     .replaceAll(CODE_BLOCK_REG, "<pre lang='$1'>$2</pre>")
     .split("\n")
@@ -22,4 +22,10 @@ const marked = (markdownText: string): string => {
   return htmlText;
 };
 
-export default marked;
+const parseHtmlToRaw = (htmlText: string): string => {
+  const rawText = htmlText.replaceAll(/\<p\>(.+?)\s*?\<\/p\>/g, "$1\n");
+
+  return rawText;
+};
+
+export { parseMarkedToHtml, parseHtmlToRaw };

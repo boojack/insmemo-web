@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { storage } from "../helpers/storage";
-import marked from "../helpers/marked";
+import { parseMarkedToHtml } from "../helpers/marked";
 import memoService from "../helpers/memoService";
 import globalStateService from "../helpers/globalStateService";
 import { utils } from "../helpers/utils";
@@ -163,7 +163,7 @@ export function formatMemoContent(content: string): string {
   const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = storage.preferences;
 
   if (shouldUseMarkdownParser) {
-    content = marked(content);
+    content = parseMarkedToHtml(content);
   }
 
   // 中英文之间加空格，这里只是简单的用正则分开了，可优化
@@ -177,20 +177,18 @@ export function formatMemoContent(content: string): string {
 
   content = content
     .split("\n")
-    .map((t, idx, arr) => {
+    .map((t) => {
       if (t !== "") {
         t = t
           .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
           .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
           .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
-        return "<p>" + t + "<p>";
-      } else if (idx + 1 !== arr.length) {
-        return "<br />";
+        return "" + t + "";
       } else {
         return "";
       }
     })
-    .join("");
+    .join("<br>");
 
   return content;
 }
