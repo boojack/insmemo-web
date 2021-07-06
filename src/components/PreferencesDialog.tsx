@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
+import memoService from "../helpers/memoService";
 import "../less/preferences-dialog.less";
 
 interface Props extends DialogProps {}
@@ -63,6 +64,31 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     setTagTextClickedAction(nextStatus);
     preferences.tagTextClickedAction = nextStatus;
     storage.set({ tagTextClickedAction: nextStatus });
+  };
+
+  const handleExportBtnClick = async () => {
+    while (true) {
+      const memos = await memoService.fetchMoreMemos();
+      if (!memos || memos.length === 0) {
+        break;
+      }
+    }
+
+    const formatedMemos = memoService.getState().memos.map((m) => {
+      return {
+        ...m,
+        tags: m.tags.map((t) => t.text),
+      };
+    });
+
+    const jsonStr = JSON.stringify(formatedMemos);
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(jsonStr));
+    element.setAttribute("download", "data.json");
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
   return (
@@ -133,6 +159,12 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
               <span>加入编辑器</span>
             </label>
           </label>
+        </div>
+
+        <div className="section-container">
+          <button className="btn export-btn" onClick={handleExportBtnClick}>
+            导出数据
+          </button>
         </div>
       </div>
     </>
