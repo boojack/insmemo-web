@@ -20,7 +20,7 @@ const MainEditor: React.FC = () => {
   useEffect(() => {
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
       if (nextState.markMemoId !== "" && memoService.getMemoById(nextState.markMemoId)) {
-        const memoLinkText = `[@MEMO](${nextState.markMemoId})`;
+        const memoLinkText = `Mark: [@MEMO](${nextState.markMemoId})`;
         editorRef.current?.insertText(`${memoLinkText}\n`);
       }
 

@@ -3,14 +3,25 @@ export namespace utils {
     return Date.now();
   }
 
+  export function getOSVersion(): "Windows" | "MacOS" | "Linux" | "Unknown" {
+    const appVersion = navigator.appVersion;
+    let detectOS: "Windows" | "MacOS" | "Linux" | "Unknown" = "Unknown";
+
+    if (appVersion.indexOf("Win") != -1) {
+      detectOS = "Windows";
+    } else if (appVersion.indexOf("Mac") != -1) {
+      detectOS = "MacOS";
+    } else if (appVersion.indexOf("Linux") != -1) {
+      detectOS = "Linux";
+    }
+
+    return detectOS;
+  }
+
   export function getTimeStampByDate(t: Date | number | string): number {
     const d = new Date(t);
 
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
-    const date = d.getDate();
-
-    return new Date(`${year}-${month}-${date}`).getTime();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
   }
 
   export function getDateString(t: Date | number | string): string {
