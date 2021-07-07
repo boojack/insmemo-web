@@ -93,8 +93,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           <hr />
           <label className="form-label input-form-label username-label">
             <span className="normal-text">账号：</span>
-            <span className={"normal-text username-text " + (showEditUsernameInputs ? "hidden" : "")}>{username}</span>
-            <input type="text" className={showEditUsernameInputs ? "" : "hidden"} value={username} onChange={handleUsernameChanged} />
+            <input type="text" disabled={!showEditUsernameInputs} value={username} onChange={handleUsernameChanged} />
             <div className="btns-container">
               <span
                 className={"text-btn edit-username-btn " + (showEditUsernameInputs ? "hidden" : "")}
@@ -102,7 +101,13 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
                   setShowEditUsernameInputs(true);
                 }}
               >
-                修改一下
+                修改
+              </span>
+              <span
+                className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
+                onClick={handleConfirmEditUsernameBtnClick}
+              >
+                保存
               </span>
               <span
                 className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
@@ -112,12 +117,6 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
                 }}
               >
                 撤销
-              </span>
-              <span
-                className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
-                onClick={handleConfirmEditUsernameBtnClick}
-              >
-                保存
               </span>
             </div>
           </label>

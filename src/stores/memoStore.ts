@@ -55,13 +55,22 @@ function memoReducer(state: State, action: Actions): State {
       };
     }
     case "EDIT_MEMO": {
-      for (let i = 0; i < state.memos.length; i++) {
-        if (state.memos[i].id === action.payload.id) {
-          state.memos[i] = Object.assign({}, action.payload);
-          break;
+      const memos = state.memos.map((m) => {
+        if (m.id === action.payload.id) {
+          return {
+            ...m,
+            ...action.payload,
+          };
+        } else {
+          return {
+            ...m,
+          };
         }
-      }
-      return state;
+      });
+
+      return {
+        memos,
+      };
     }
     default: {
       return state;

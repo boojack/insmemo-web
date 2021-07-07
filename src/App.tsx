@@ -24,7 +24,7 @@ function App() {
         locationService.initLocation();
         memoService.fetchMoreMemos();
       } else {
-        setUsername("insmemo");
+        setUsername("Memos");
         showSigninDialog();
       }
     });

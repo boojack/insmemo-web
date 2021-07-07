@@ -162,9 +162,12 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
         </div>
 
         <div className="section-container">
-          <button className="btn export-btn" onClick={handleExportBtnClick}>
-            导出数据
-          </button>
+          <p className="title-text">其他</p>
+          <div className="btn-container">
+            <button className="btn export-btn" onClick={handleExportBtnClick}>
+              导出数据
+            </button>
+          </div>
         </div>
       </div>
     </>

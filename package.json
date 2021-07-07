@@ -1,5 +1,5 @@
 {
-  "name": "insmemo",
+  "name": "memos",
   "version": "2.0.6",
   "scripts": {
     "dev": "vite",

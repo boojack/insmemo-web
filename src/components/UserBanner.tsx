@@ -13,7 +13,7 @@ interface AmountState {
 }
 
 const UserBanner: React.FC = () => {
-  const [username, setUsername] = useState<string>("insmemo");
+  const [username, setUsername] = useState<string>("Memos");
   const [createdDays, setCreatedDays] = useState<number>(0);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
@@ -43,7 +43,7 @@ const UserBanner: React.FC = () => {
         setUsername(user.username);
         setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
       } else {
-        setUsername("insmemo");
+        setUsername("Memos");
       }
     });
 
