@@ -37,6 +37,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
           let scaleRate = 4;
           if (osVersion === "MacOS" || osVersion === "Unknown") {
             scaleRate = 2;
+            window.scrollTo(0, 0);
           }
 
           html2canvas(memoEl, {
