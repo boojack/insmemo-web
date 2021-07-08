@@ -70,6 +70,10 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
     showChangePasswordDialog();
   };
 
+  const handlePreventDefault = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <div className="dialog-header-container">
@@ -93,16 +97,16 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           <hr />
           <label className="form-label input-form-label username-label">
             <span className="normal-text">账号：</span>
-            <input type="text" disabled={!showEditUsernameInputs} value={username} onChange={handleUsernameChanged} />
-            <div className="btns-container">
-              <span
-                className={"text-btn edit-username-btn " + (showEditUsernameInputs ? "hidden" : "")}
-                onClick={() => {
-                  setShowEditUsernameInputs(true);
-                }}
-              >
-                修改
-              </span>
+            <input
+              type="text"
+              readOnly={!showEditUsernameInputs}
+              value={username}
+              onClick={() => {
+                setShowEditUsernameInputs(true);
+              }}
+              onChange={handleUsernameChanged}
+            />
+            <div className="btns-container" onClick={handlePreventDefault}>
               <span
                 className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
                 onClick={handleConfirmEditUsernameBtnClick}
