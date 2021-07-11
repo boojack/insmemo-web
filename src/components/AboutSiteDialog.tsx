@@ -22,11 +22,9 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
       <div className="dialog-content-container">
         <p>
           <b>Memos</b>，有感于{" "}
-          <b>
-            <a target="_blank" href="https://www.zsxq.com/">
-              知识星球
-            </a>
-          </b>{" "}
+          <a target="_blank" href="https://www.zsxq.com/">
+            知识星球
+          </a>{" "}
           和{" "}
           <a target="_blank" href="https://flomoapp.com/">
             flomo
@@ -64,7 +62,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
           </a>{" "}
           👀
         </p>
-        <p className="normal-text">Last update at 2021/7/6 18:58:11, v2.0.12</p>
+        <p className="normal-text">Last update at 2021/7/11 17:27:23, v2.0.13</p>
       </div>
     </>
   );

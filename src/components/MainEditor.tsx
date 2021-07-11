@@ -35,6 +35,7 @@ const MainEditor: React.FC = () => {
         if (editMemo) {
           setEditMemoId(nextState.editMemoId);
           editorRef.current?.setContent(editMemo.content ?? "");
+          editorRef.current?.focus();
         }
       }
     });

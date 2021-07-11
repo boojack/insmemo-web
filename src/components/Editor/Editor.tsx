@@ -71,9 +71,7 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
 
   useImperativeHandle(props.editorRef, () => ({
     focus: () => {
-      if (editorRef.current) {
-        editorRef.current.focus();
-      }
+      editorRef.current?.focus();
     },
     insertText: (rawText: string) => {
       const text = content + rawText;
@@ -104,10 +102,6 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     divTemp.innerHTML = content;
     document.execCommand("insertText", false, divTemp.innerText);
     divTemp.remove();
-
-    if (handleContentChange) {
-      handleContentChange(content);
-    }
   }, []);
 
   const handleInputerChanged = useCallback((e: React.FormEvent<HTMLDivElement>) => {
