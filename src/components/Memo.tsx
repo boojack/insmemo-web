@@ -159,7 +159,6 @@ function getMemoById(memoId: string): Promise<Model.Memo> {
 }
 
 export function formatMemoContent(content: string): string {
-  content = content.replace(/&nbsp;/g, " ");
   const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = storage.preferences;
 
   if (shouldUseMarkdownParser) {
@@ -175,22 +174,20 @@ export function formatMemoContent(content: string): string {
     content = content.replace(IMAGE_URL_REG, "");
   }
 
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = content;
+  if (tempDiv.firstChild && tempDiv.firstChild.nodeName === "#text") {
+    const p = document.createElement("p");
+    p.innerText = tempDiv.firstChild.nodeValue ?? "";
+    tempDiv.removeChild(tempDiv.firstChild);
+    tempDiv.prepend(p);
+    content = tempDiv.innerHTML;
+  }
+
   content = content
-    .split("\n")
-    .map((t, idx, arr) => {
-      if (t !== "") {
-        t = t
-          .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
-          .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
-          .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
-        return "<p>" + t + "<p>";
-      } else if (idx + 1 !== arr.length) {
-        return "<br />";
-      } else {
-        return "";
-      }
-    })
-    .join("");
+    .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
+    .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
+    .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
 
   return content;
 }

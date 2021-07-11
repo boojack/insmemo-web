@@ -47,6 +47,15 @@ function App() {
     handleStorageDataChanged();
     window.addEventListener("storage", handleStorageDataChanged);
 
+    document.body.addEventListener("copy", (e: ClipboardEvent) => {
+      const selection = document.getSelection();
+
+      if (selection) {
+        e.clipboardData?.setData("text/plain", selection.toString().replace(/\n\n/g, "\n"));
+      }
+      e.preventDefault();
+    });
+
     return () => {
       unsubscribeUserService();
       window.removeEventListener("storage", handleStorageDataChanged);

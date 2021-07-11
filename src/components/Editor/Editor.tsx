@@ -1,5 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { parseHtmlToRaw } from "../../helpers/marked";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import "../../less/editor.less";
 
 export interface EditorRefActions {
@@ -76,18 +75,18 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
         editorRef.current.focus();
       }
     },
-    insertText: (text: string) => {
-      text = parseHtmlToRaw(content + text);
+    insertText: (rawText: string) => {
+      const text = content + rawText;
       setContent(text);
       if (editorRef.current) {
-        editorRef.current.innerHTML = content + text;
+        editorRef.current.innerHTML = text;
       }
       if (handleContentChange) {
-        handleContentChange(content + text);
+        handleContentChange(text);
       }
     },
-    setContent: (text: string) => {
-      text = parseHtmlToRaw(text);
+    setContent: (rawText: string) => {
+      const text = rawText;
       setContent(text);
       if (editorRef.current) {
         editorRef.current.innerHTML = text;
@@ -98,7 +97,7 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     },
   }));
 
-  const handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
+  const handleInputerPasted = useCallback((e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     const content = e.clipboardData.getData("text/plain");
     const divTemp = document.createElement("div");
@@ -109,16 +108,16 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     if (handleContentChange) {
       handleContentChange(content);
     }
-  };
+  }, []);
 
-  const handleInputerChanged = (e: React.FormEvent<HTMLDivElement>) => {
+  const handleInputerChanged = useCallback((e: React.FormEvent<HTMLDivElement>) => {
     const content = e.currentTarget.innerHTML;
     setContent(content);
 
     if (handleContentChange) {
       handleContentChange(content);
     }
-  };
+  }, []);
 
   const handleCommonConfirmBtnClick = () => {
     if (handleConfirmBtnClick) {
