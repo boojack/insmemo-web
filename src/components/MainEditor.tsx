@@ -21,7 +21,7 @@ const MainEditor: React.FC = () => {
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
       if (nextState.markMemoId !== "" && memoService.getMemoById(nextState.markMemoId)) {
         const memoLinkText = `Mark: [@MEMO](${nextState.markMemoId})`;
-        editorRef.current?.insertText(`${memoLinkText}\n`);
+        editorRef.current?.insertText(`<p>${memoLinkText}</p>`);
       }
 
       if (nextState.editMemoId !== prevState.editMemoId) {
