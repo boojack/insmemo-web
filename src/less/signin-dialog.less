@@ -75,6 +75,12 @@
       margin-bottom: 4px;
 
       > .btns-container {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
         > .text-btn {
           padding: 6px 12px;
           font-size: 14px;
@@ -115,6 +121,8 @@
       word-wrap: break-word;
 
       > .text-btn {
+        display: inline-block;
+        margin-top: 8px;
         cursor: pointer;
         text-align: center;
         color: @text-green;

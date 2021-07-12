@@ -108,7 +108,9 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
         </label>
       </div>
       <div className="dialog-footer-container">
-        <span></span>
+        <div className="btns-container">
+          <a href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">Login with Github</a>
+        </div>
         <div className="btns-container">
           <button className="text-btn signup-btn disabled" onClick={() => handleActionBtnClick("signup")}>
             注册
