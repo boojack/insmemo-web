@@ -92,11 +92,13 @@ const Memo: React.FC<Props> = (props: Props) => {
 
         if (!memoTemp) {
           memoTemp = await getMemoById(memoId);
-          setTimeout(async () => {
-            while (!memoService.getMemoById(memoId)) {
+          const t = setInterval(async () => {
+            if (!memoService.getMemoById(memoId)) {
               await memoService.fetchMoreMemos();
+            } else {
+              clearInterval(t);
             }
-          });
+          }, 0);
         }
 
         if (memoTemp) {

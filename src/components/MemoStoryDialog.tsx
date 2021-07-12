@@ -29,11 +29,6 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
 
       if (!memoTemp) {
         memoTemp = await getMemoById(currentMemoId);
-        setTimeout(async () => {
-          while (!memoService.getMemoById(currentMemoId)) {
-            await memoService.fetchMoreMemos();
-          }
-        });
       }
 
       if (memoTemp) {
@@ -95,11 +90,13 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
 
         if (!memoTemp) {
           memoTemp = await getMemoById(memoId);
-          setTimeout(async () => {
-            while (!memoService.getMemoById(memoId)) {
+          const t = setInterval(async () => {
+            if (!memoService.getMemoById(memoId)) {
               await memoService.fetchMoreMemos();
+            } else {
+              clearInterval(t);
             }
-          });
+          }, 0);
         }
 
         if (memoTemp) {
