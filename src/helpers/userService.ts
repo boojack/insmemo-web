@@ -27,6 +27,27 @@ const userService = {
     });
   },
 
+  update: async () => {
+    try {
+      const user = await getUserInfo();
+
+      if (user) {
+        userStore.dispatch({
+          type: "SIGN_IN",
+          payload: { user },
+        });
+      } else {
+        await signout();
+        userStore.dispatch({
+          type: "SIGN_OUT",
+          payload: { user: null },
+        });
+      }
+    } catch (error) {
+      Toast.error(error);
+    }
+  },
+
   ...userStore,
 };
 

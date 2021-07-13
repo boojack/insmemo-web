@@ -33,8 +33,13 @@
         }
 
         > .title-text {
+          display: block;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
           font-weight: bold;
-          margin-bottom: 8px;
+          margin-top: 8px;
+          margin-bottom: 4px;
         }
 
         > .tip-text {
@@ -50,29 +55,30 @@
           justify-content: flex-start;
           align-items: center;
           font-size: 14px;
-          line-height: 1.8;
+          line-height: 1.6;
+          margin: 4px 0;
 
           > .normal-text {
-            padding: 4px 0;
             flex-shrink: 0;
           }
 
-          &.input-form-label {
-            > input {
-              padding: 4px 6px;
-              margin-right: 4px;
-              border: none;
-              border-bottom: 1px solid gray;
-              font-size: 14px;
-              outline: none;
+          > .value-text {
+            margin-right: 8px;
+          }
 
-              &:disabled {
-                flex-grow: 1;
-                font-weight: normal;
-                background-color: transparent;
-                border-color: transparent;
-              }
-            }
+          > .btn-text {
+            text-decoration: none;
+            padding: 4px 8px;
+            margin-left: 8px;
+            color: white;
+            background-color: gray;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+          }
+
+          > .link-text {
+            margin-left: 8px;
           }
 
           &.username-label {
@@ -81,11 +87,16 @@
             }
 
             > input {
-              width: 128px;
               flex-grow: 0 !important;
-              border-bottom: 1px solid lightgray;
-              padding: 6px 8px;
+              width: 128px;
+              padding: 4px 8px;
+              margin-right: 4px;
+              font-size: 14px;
+              outline: none;
+              border: 1px solid lightgray;
               border-radius: 0;
+              border-radius: 4px;
+              background-color: transparent;
 
               &:focus {
                 border-color: black;
@@ -164,8 +175,10 @@
       justify-content: flex-start;
       align-items: flex-start;
 
-      &:last-child {
-        margin-bottom: 0;
+      > .tip-text {
+        font-size: 12px;
+        margin-bottom: 8px;
+        color: gray;
       }
 
       > .form-label {
@@ -201,6 +214,7 @@
 
         &.input-form-label {
           padding: 12px 0;
+          padding-bottom: 8px;
 
           > input {
             width: 100%;
@@ -210,6 +224,7 @@
             outline: none;
             border-radius: 4px;
             border: 1px solid lightgray;
+            background-color: transparent;
           }
         }
 
@@ -285,6 +300,10 @@ body.dark {
   .change-password-dialog {
     > .dialog-container {
       > .dialog-content-container {
+        > .tip-text {
+          color: lightgray;
+        }
+
         > .form-label {
           > .normal-text {
             color: lightgray;

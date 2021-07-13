@@ -12,6 +12,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   const [user, setUser] = useState(userService.getState().user);
   const [username, setUsername] = useState<string>(user?.username ?? "");
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
+  const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
 
   useEffect(() => {
     const unsubscribeUserServie = userService.subscribe(({ user }) => {
@@ -70,6 +71,22 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
     showChangePasswordDialog();
   };
 
+  const handleUnbindGithubBtnClick = async () => {
+    if (showConfirmUnbindBtn) {
+      await removeGithubName();
+      await userService.update();
+      const user = userService.getState().user;
+
+      if (user) {
+        user.githubName = "";
+        setUser(user);
+      }
+      setShowConfirmUnbindBtn(false);
+    } else {
+      setShowConfirmUnbindBtn(true);
+    }
+  };
+
   const handlePreventDefault = (e: React.MouseEvent) => {
     e.preventDefault();
   };
@@ -86,6 +103,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
       </div>
       <div className="dialog-content-container">
         <div className="section-container account-section-container">
+          <p className="title-text">基本信息</p>
           <label className="form-label input-form-label">
             <span className="normal-text">ID：</span>
             <span className="normal-text">{user?.id}</span>
@@ -94,7 +112,6 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
             <span className="normal-text">创建时间：</span>
             <span className="normal-text">{utils.getDateString(user?.createdAt!)}</span>
           </label>
-          <hr />
           <label className="form-label input-form-label username-label">
             <span className="normal-text">账号：</span>
             <input
@@ -129,6 +146,32 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
             <span className="text-btn" onClick={handleChangePasswordBtnClick}>
               修改密码
             </span>
+          </label>
+        </div>
+        <div className="section-container account-section-container">
+          <p className="title-text">关联账号</p>
+          <label className="form-label input-form-label">
+            <span className="normal-text">GitHub：</span>
+            {user?.githubName ? (
+              <>
+                <a className="value-text" href={"https://github.com/" + user?.githubName}>
+                  {user?.githubName}
+                </a>
+                <span className="btn-text" onClick={handleUnbindGithubBtnClick}>
+                  {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="value-text">无</span>
+                <a
+                  className="link-text"
+                  href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+                >
+                  前往绑定
+                </a>
+              </>
+            )}
           </label>
         </div>
       </div>
@@ -202,6 +245,7 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
         </button>
       </div>
       <div className="dialog-content-container">
+        <p className="tip-text">如果是 GitHub 登录，则初始密码为用户名</p>
         <label className="form-label input-form-label">
           <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
           <span className={"normal-text " + (oldPassword === "" ? "" : "not-null")}>旧密码</span>
@@ -254,6 +298,19 @@ function updateUsername(username: string): Promise<void> {
   return new Promise((resolve, reject) => {
     api
       .updateUserinfo(username)
+      .then(() => {
+        resolve();
+      })
+      .catch(() => {
+        reject("请求失败");
+      });
+  });
+}
+
+function removeGithubName(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    api
+      .removeGithubName()
       .then(() => {
         resolve();
       })

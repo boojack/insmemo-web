@@ -142,4 +142,8 @@ export namespace api {
   export function getMemosStat() {
     return get<Api.MemosStat[]>("/api/memo/stat");
   }
+
+  export function removeGithubName() {
+    return post("/api/user/updategh", { githubName: "" });
+  }
 }
