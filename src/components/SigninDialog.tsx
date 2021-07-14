@@ -100,7 +100,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       <div className="dialog-content-container">
         <label className="form-label input-form-label">
           <input type="text" value={username} onChange={handleUsernameInputChanged} />
-          <span className={"normal-text " + (username === "" ? "" : "not-null")}>用户名</span>
+          <span className={"normal-text " + (username === "" ? "" : "not-null")}>账号</span>
         </label>
         <label className="form-label input-form-label">
           <input type="password" value={password} onChange={handlePasswordInputChanged} />
@@ -109,7 +109,9 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       </div>
       <div className="dialog-footer-container">
         <div className="btns-container">
-          <a href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">Login with Github</a>
+          <a className="btn-text" href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">
+            Login with GitHub
+          </a>
         </div>
         <div className="btns-container">
           <button className="text-btn signup-btn disabled" onClick={() => handleActionBtnClick("signup")}>

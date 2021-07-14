@@ -74,9 +74,9 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   const handleUnbindGithubBtnClick = async () => {
     if (showConfirmUnbindBtn) {
       await removeGithubName();
-      await userService.update();
-      const user = userService.getState().user;
+      await userService.doSignIn();
 
+      const user = userService.getState().user;
       if (user) {
         user.githubName = "";
         setUser(user);
@@ -157,7 +157,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
                 <a className="value-text" href={"https://github.com/" + user?.githubName}>
                   {user?.githubName}
                 </a>
-                <span className="btn-text" onClick={handleUnbindGithubBtnClick}>
+                <span className="btn-text" onMouseLeave={() => setShowConfirmUnbindBtn(false)} onClick={handleUnbindGithubBtnClick}>
                   {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
                 </span>
               </>
