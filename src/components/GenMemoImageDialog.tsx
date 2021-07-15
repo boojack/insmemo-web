@@ -99,7 +99,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
           ) : null}
           <div className="watermark-container">
             <span className="normal-text">
-              via <span className="name-text">{userinfo?.username}</span>
+              By <span className="name-text">{userinfo?.username}</span>
             </span>
           </div>
         </div>
