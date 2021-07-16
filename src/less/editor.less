@@ -24,8 +24,13 @@
     background-color: rgba(0, 0, 0, 0);
     z-index: 1;
     padding-bottom: 8px;
-
     .pretty-scroll-bar();
+
+    &:focus {
+      + .common-editor-placeholder {
+        color: lightgray;
+      }
+    }
   }
 
   > .common-editor-placeholder {

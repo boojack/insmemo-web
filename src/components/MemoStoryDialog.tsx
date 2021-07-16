@@ -9,7 +9,7 @@ import Image from "./Image";
 import "../less/memo-story-dialog.less";
 
 // memo 关联正则
-const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/;
+const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 // 图片路由正则
 const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
@@ -51,10 +51,9 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
       }
 
       const downMemoList: FormattedMemo[] = [];
-      memo.content.split("\n").map(async (t) => {
-        const matchRes = t.match(MEMO_LINK_REG);
-
-        if (matchRes?.length === 3) {
+      const matchedArr = [...memo.content.matchAll(MEMO_LINK_REG)];
+      for (const matchRes of matchedArr) {
+        if (matchRes && matchRes.length === 3) {
           const memoId = matchRes[2];
           const memoTemp = memoService.getMemoById(memoId) ?? (await getMemoById(memoId));
 
@@ -67,7 +66,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
             setDownMemos([...downMemoList]);
           }
         }
-      });
+      }
     };
 
     fetchDownMemos();
