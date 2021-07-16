@@ -86,23 +86,32 @@
 
         > .time-text {
           width: 100%;
-          padding: 12px 20px;
-          padding-bottom: 0;
-          font-size: 13px;
+          padding: 0 20px;
+          padding-top: 20px;
+          font-size: 12px;
           color: gray;
         }
 
         > .memo-content-text {
           padding: 16px 20px;
-          padding-top: 12px;
+          padding-top: 8px;
           width: 100%;
           font-size: 16px;
+
+          span.tag-span {
+            font-size: 16px;
+            background-color: unset;
+            display: unset;
+            padding: unset;
+            line-height: unset;
+            margin: unset;
+          }
         }
 
         > .images-container {
           width: 100%;
           height: auto;
-          padding: 0 16px;
+          padding: 0 20px;
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
@@ -112,13 +121,13 @@
           > img {
             width: 100%;
             height: auto;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
           }
         }
 
         > .watermark-container {
           width: 100%;
-          padding: 12px 20px;
+          padding: 16px 20px;
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
@@ -126,11 +135,11 @@
           background-color: @bg-whitegray;
 
           > .normal-text {
-            font-size: 12px;
+            font-size: 11px;
             color: gray;
 
             > .name-text {
-              font-size: 14px;
+              font-size: 13px;
               color: @text-black;
               margin-left: 4px;
             }

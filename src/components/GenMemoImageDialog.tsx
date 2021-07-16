@@ -5,6 +5,7 @@ import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
+import toastHelper from "./Toast";
 import "../less/gen-memo-image-dialog.less";
 
 // 图片路由正则
@@ -42,8 +43,9 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
 
           html2canvas(memoEl, {
             scale: scaleRate,
-            backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+            allowTaint: true,
             useCORS: true,
+            backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
             scrollX: -window.scrollX,
             scrollY: -window.scrollY,
           }).then((canvas) => {
@@ -60,6 +62,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
 
   const handleImageOnLoad = (ev: React.SyntheticEvent<HTMLImageElement>) => {
     if (ev.type === "error") {
+      toastHelper.error("有个图片加载失败了😟");
       (ev.target as HTMLImageElement).remove();
     }
     setImageAmount(imageAmount - 1);
@@ -99,7 +102,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
           ) : null}
           <div className="watermark-container">
             <span className="normal-text">
-              By <span className="name-text">{userinfo?.username}</span>
+              by <span className="name-text">{userinfo?.username}</span>
             </span>
           </div>
         </div>
