@@ -1,6 +1,6 @@
-# insmemo
+# Memos
 
-取名：insmemo，有感于 知识星球 和 flomo
+有感于 知识星球 和 flomo
 
 为何做这个？
 
