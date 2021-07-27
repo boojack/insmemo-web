@@ -9,6 +9,7 @@ import useToggle from "../hooks/useToggle";
 import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
+import MoreIcon from "../assets/icons/more.svg";
 import "../less/memo.less";
 
 // 标签 正则
@@ -115,7 +116,9 @@ const Memo: React.FC<Props> = (props: Props) => {
           {memo.createdAtStr}
         </span>
         <div className="btns-container">
-          <span className="text-btn more-action-btn">···</span>
+          <span className="text-btn more-action-btn">
+            <img className="img-icon" src={MoreIcon} />
+          </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
               <span className="text-btn" onClick={markThisMemo}>
@@ -178,11 +181,20 @@ export function formatMemoContent(content: string): string {
 
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = content;
-  if (tempDiv.firstChild && tempDiv.firstChild.nodeName === "#text") {
-    const p = document.createElement("p");
-    p.innerText = tempDiv.firstChild.nodeValue ?? "";
-    tempDiv.removeChild(tempDiv.firstChild);
-    tempDiv.prepend(p);
+  const tempP = document.createElement("p");
+
+  while (tempDiv.firstChild && (tempDiv.firstChild.nodeName === "#text" || tempDiv.firstChild.nodeName === "BR")) {
+    const node = tempDiv.firstChild;
+    if (node.nodeName === "#text") {
+      tempP.innerHTML += node.nodeValue;
+    } else {
+      tempP.innerHTML += "<br>";
+    }
+    node.remove();
+  }
+
+  if (tempP.innerHTML !== "") {
+    tempDiv.prepend(tempP);
     content = tempDiv.innerHTML;
   }
 

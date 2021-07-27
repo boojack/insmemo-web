@@ -5,6 +5,7 @@ import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
 import { MenuBtnsPopup } from "./MenuBtnsPopup";
+import MoreIcon from "../assets/icons/more.svg";
 import "../less/user-banner.less";
 
 interface AmountState {
@@ -83,7 +84,7 @@ const UserBanner: React.FC = () => {
           {username}
         </p>
         <button className="action-btn menu-popup-btn" onClick={toggleBtnsDialog}>
-          ···
+          <img className="img-icon" src={MoreIcon} />
         </button>
         <MenuBtnsPopup visibility={showMenuBtnsPopup} />
       </div>

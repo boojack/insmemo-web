@@ -43,9 +43,20 @@
       background-color: unset;
 
       &.menu-popup-btn {
+        width: 40px;
+        height: 36px;
         margin-right: -8px;
         padding: 0 8px;
-        line-height: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        > .img-icon {
+          margin-top: 2px;
+          width: 24px;
+          height: auto;
+        }
       }
     }
   }
