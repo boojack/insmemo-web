@@ -9,31 +9,24 @@ import toast from "./Toast";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/main-editor.less";
 
-// 标签 正则
-const TAG_REG = /#(.+?)#/g;
-
 const MainEditor: React.FC = () => {
-  const [content, setContent] = useState(getEditorContentCache());
-  const [editMemoId, setEditMemoId] = useState("");
   const editorRef = React.useRef<EditorRefActions>(null);
+  const [editMemoId, setEditMemoId] = useState("");
 
   useEffect(() => {
     const unsubscribeGlobalState = globalStateService.subscribe((nextState, prevState) => {
+      // Mark memo
       if (nextState.markMemoId !== "" && memoService.getMemoById(nextState.markMemoId)) {
         const memoLinkText = `Mark: [@MEMO](${nextState.markMemoId})`;
         editorRef.current?.insertText(`<p>${memoLinkText}</p>`);
       }
 
+      // Edit memo
       if (nextState.editMemoId !== prevState.editMemoId) {
-        if (nextState.editMemoId === "") {
-          setEditMemoId("");
-          return;
-        }
+        setEditMemoId(nextState.editMemoId);
 
         const editMemo = memoService.getMemoById(nextState.editMemoId);
-
         if (editMemo) {
-          setEditMemoId(nextState.editMemoId);
           editorRef.current?.setContent(editMemo.content ?? "");
           editorRef.current?.focus();
         }
@@ -69,6 +62,8 @@ const MainEditor: React.FC = () => {
         return;
       }
 
+      // 标签 正则
+      const TAG_REG = /#(.+?)#/g;
       const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
       const tags: Model.Tag[] = [];
 
@@ -127,7 +122,6 @@ const MainEditor: React.FC = () => {
         memoService.pushMemo(newMemo);
       }
 
-      setContent("");
       setEditorContentCache("");
     },
     [editMemoId]
@@ -136,17 +130,17 @@ const MainEditor: React.FC = () => {
   const handleCancelBtnClick = useCallback(() => {
     globalStateService.setEditMemoId("");
     editorRef.current?.setContent("");
-    setContent("");
     setEditorContentCache("");
   }, []);
 
   const handleContentChange = useCallback(
-    (content: string) => {
-      setContent(content);
-
-      if (editMemoId === "") {
-        setEditorContentCache(content);
+    async (content: string) => {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = content;
+      if (tempDiv.innerText.trim() === "") {
+        content = "";
       }
+      setEditorContentCache(content);
     },
     [editMemoId]
   );
@@ -155,7 +149,7 @@ const MainEditor: React.FC = () => {
   const editorConfig = useMemo(
     () => ({
       className: "main-editor",
-      content: content,
+      content: getEditorContentCache(),
       placeholder: "现在的想法是...",
       showConfirmBtn: true,
       handleConfirmBtnClick: handleSaveBtnClick,
@@ -165,7 +159,7 @@ const MainEditor: React.FC = () => {
       handleContentChange: handleContentChange,
       editorRef,
     }),
-    [content, editMemoId]
+    [editMemoId]
   );
 
   return (

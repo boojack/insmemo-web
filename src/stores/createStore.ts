@@ -10,7 +10,6 @@ interface Store<S, A extends Action> {
   dispatch: (a: A) => void;
   getState: () => S;
   subscribe: (listener: Listener<S>) => Unsubscribe;
-  __emit__: () => void;
 }
 
 /**
@@ -52,21 +51,10 @@ function createStore<S, A extends Action>(preloadedState: S, reducer: Reducer<S,
     return currentState;
   };
 
-  /**
-   * DO NOT USE
-   * 慎用
-   */
-  const __emit__ = () => {
-    for (const cb of listeners) {
-      cb(currentState, currentState);
-    }
-  };
-
   return {
     dispatch,
     getState,
     subscribe,
-    __emit__,
   };
 }
 

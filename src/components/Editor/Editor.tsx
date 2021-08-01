@@ -104,14 +104,17 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     divTemp.remove();
   }, []);
 
-  const handleInputerChanged = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    const content = e.currentTarget.innerHTML;
-    setContent(content);
+  const handleInputerChanged = useCallback(
+    (e: React.FormEvent<HTMLDivElement>) => {
+      const content = e.currentTarget.innerHTML;
+      setContent(content);
 
-    if (handleContentChange) {
-      handleContentChange(content);
-    }
-  }, []);
+      if (handleContentChange) {
+        handleContentChange(content);
+      }
+    },
+    [handleContentChange]
+  );
 
   const handleCommonConfirmBtnClick = () => {
     if (handleConfirmBtnClick) {
