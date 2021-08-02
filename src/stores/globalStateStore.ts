@@ -1,18 +1,18 @@
-import createStore, { Action } from "./createStore";
+import createStore from "./createStore";
 
 interface State {
   markMemoId: string;
   editMemoId: string;
 }
 
-interface SetMarkMemoIdAction extends Action {
+interface SetMarkMemoIdAction {
   type: "SET_MARK_MEMO_ID";
   payload: {
     markMemoId: string;
   };
 }
 
-interface SetEditMemoIdAction extends Action {
+interface SetEditMemoIdAction {
   type: "SET_EDIT_MEMO_ID";
   payload: {
     editMemoId: string;

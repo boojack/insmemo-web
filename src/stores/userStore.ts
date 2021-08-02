@@ -1,15 +1,15 @@
-import createStore, { Action } from "./createStore";
+import createStore from "./createStore";
 
 interface State {
   user: Model.User | null;
 }
 
-interface SignInAction extends Action {
+interface SignInAction {
   type: "SIGN_IN";
   payload: State;
 }
 
-interface SignOutAction extends Action {
+interface SignOutAction {
   type: "SIGN_OUT";
   payload: State;
 }

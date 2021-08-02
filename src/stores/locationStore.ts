@@ -1,4 +1,4 @@
-import createStore, { Action } from "./createStore";
+import createStore from "./createStore";
 
 interface Query {
   tag: string;
@@ -11,14 +11,14 @@ interface State {
   query: Query;
 }
 
-interface SetTagQueryAction extends Action {
+interface SetTagQueryAction {
   type: "SET_TAG_QUERY";
   payload: {
     tag: string;
   };
 }
 
-interface SetFromAndToQueryAction extends Action {
+interface SetFromAndToQueryAction {
   type: "SET_FROM_TO_QUERY";
   payload: {
     from: number;
@@ -26,7 +26,7 @@ interface SetFromAndToQueryAction extends Action {
   };
 }
 
-interface SetHashAction extends Action {
+interface SetHashAction {
   type: "SET_HASH";
   payload: {
     hash: string;

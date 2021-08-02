@@ -164,6 +164,25 @@ function getMemoById(memoId: string): Promise<Model.Memo> {
 }
 
 export function formatMemoContent(content: string): string {
+  const tempDivContainer = document.createElement("div");
+  tempDivContainer.innerHTML = content;
+  const tempFirstPElement = document.createElement("p");
+
+  while (tempDivContainer.firstChild && tempDivContainer.firstChild.nodeName !== "P") {
+    const node = tempDivContainer.firstChild;
+    if (node.nodeName === "#text") {
+      tempFirstPElement.innerHTML += node.nodeValue;
+    } else {
+      tempFirstPElement.innerHTML += (node as Element).outerHTML;
+    }
+    node.remove();
+  }
+
+  if (tempFirstPElement.innerHTML !== "") {
+    tempDivContainer.prepend(tempFirstPElement);
+    content = tempDivContainer.innerHTML;
+  }
+
   const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = storage.preferences;
 
   if (shouldUseMarkdownParser) {
@@ -177,25 +196,6 @@ export function formatMemoContent(content: string): string {
 
   if (shouldHideImageUrl) {
     content = content.replace(IMAGE_URL_REG, "");
-  }
-
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = content;
-  const tempP = document.createElement("p");
-
-  while (tempDiv.firstChild && (tempDiv.firstChild.nodeName === "#text" || tempDiv.firstChild.nodeName === "BR")) {
-    const node = tempDiv.firstChild;
-    if (node.nodeName === "#text") {
-      tempP.innerHTML += node.nodeValue;
-    } else {
-      tempP.innerHTML += "<br>";
-    }
-    node.remove();
-  }
-
-  if (tempP.innerHTML !== "") {
-    tempDiv.prepend(tempP);
-    content = tempDiv.innerHTML;
   }
 
   content = content
