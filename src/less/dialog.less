@@ -6,13 +6,18 @@
   left: 0;
   width: 100%;
   height: 100%;
+  min-height: 100%;
   background-color: rgba(15, 15, 15, 0.2);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   z-index: 100;
   transition: all 0.2s linear;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 64px 0;
+  .pretty-scroll-bar(0px, 0px);
 
   &.showup {
     background-color: rgba(15, 15, 15, 0.7);
