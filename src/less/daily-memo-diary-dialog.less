@@ -4,7 +4,7 @@
   background-color: white !important;
 
   > .dialog-container {
-    width: 580px;
+    width: 480px;
     max-width: 100%;
     margin-bottom: 50px;
     border-radius: 10px;
@@ -15,51 +15,65 @@
       position: relative;
       width: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
 
-      > .year-text {
-        font-weight: bold;
-        color: gray;
-        text-align: center;
-        margin-bottom: 12px;
+      > .btn-text {
+        display: block;
+        flex-grow: 1;
+        height: 100%;
       }
 
-      > .daily-date-container {
-        width: 96px;
-        height: 96px;
-        border-radius: 32px;
-        background-color: white;
-        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+      > .date-wrapper {
+        flex-shrink: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        text-align: center;
-        z-index: 1;
 
-        > .month-text,
-        > .day-text {
-          width: 100%;
-          height: 24px;
-          line-height: 24px;
-          font-size: 14px;
-        }
-
-        > .month-text {
-          background-color: @bg-blue;
-          color: white;
-          border-top-left-radius: 32px;
-          border-top-right-radius: 32px;
-        }
-
-        > .date-text {
-          width: 100%;
-          height: 48px;
-          font-size: 42px;
-          line-height: 48px;
+        > .year-text {
           font-weight: bold;
+          color: gray;
+          text-align: center;
+          margin-bottom: 12px;
+        }
+
+        > .daily-date-container {
+          width: 96px;
+          height: 96px;
+          border-radius: 32px;
+          background-color: white;
+          box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          z-index: 1;
+
+          > .month-text,
+          > .day-text {
+            width: 100%;
+            height: 24px;
+            line-height: 24px;
+            font-size: 14px;
+          }
+
+          > .month-text {
+            background-color: @bg-blue;
+            color: white;
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+          }
+
+          > .date-text {
+            width: 100%;
+            height: 48px;
+            font-size: 42px;
+            line-height: 48px;
+            font-weight: bold;
+          }
         }
       }
     }
@@ -71,6 +85,19 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+
+      > .null-container {
+        width: 100%;
+        padding: 24px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        > .tip-text {
+          font-style: italic;
+        }
+      }
     }
   }
 }

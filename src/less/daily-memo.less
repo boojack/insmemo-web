@@ -3,12 +3,12 @@
 
 .daily-memo-wrapper {
   position: relative;
-  width: calc(100% - 28px);
+  width: calc(100% - 24px);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-left: 28px;
+  margin-left: 24px;
   padding: 0;
   padding-bottom: 24px;
   border: none;
@@ -20,23 +20,29 @@
 
   > .time-text {
     position: relative;
-    border: 2px solid white;
     left: -24px;
     font-size: 13px;
     background-color: @bg-whitegray;
     color: @text-gray;
     width: 48px;
-    height: 28px;
+    height: 24px;
     text-align: center;
-    line-height: 24px;
     border-radius: 8px;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   > .memo-content-text {
     width: 100%;
     margin-left: -12px;
     font-size: 16px;
+
+    > :first-child {
+      margin-top: 0;
+    }
   }
 
   > .btns-container {

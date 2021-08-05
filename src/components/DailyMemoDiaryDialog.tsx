@@ -14,10 +14,10 @@ const monthChineseStrArray = ["一月", "二月", "三月", "四月", "五月", 
 const weekdayChineseStrArray = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
-  const dailyTimeStamp = useMemo(() => utils.getTimeStampByDate(utils.getDateString(props.dailyTimeStamp)), []);
-  const dailyDate = new Date(dailyTimeStamp);
-
+  const [isLoading, setLoadingStatus] = useState<boolean>(true);
   const [memos, setMemos] = useState<Model.Memo[]>([]);
+  const [dailyTimeStamp, setDailyTimeStamp] = useState(utils.getTimeStampByDate(utils.getDateString(props.dailyTimeStamp)));
+  const dailyDate = new Date(dailyTimeStamp);
 
   useEffect(() => {
     const getDailyMemos = () => {
@@ -30,6 +30,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
           .filter((a) => a.createdAt >= dailyTimeStamp && a.createdAt < dailyTimeStamp + DAILY_TIMESTAMP)
           .sort((a, b) => a.createdAt - b.createdAt);
         setMemos(dailyMemos);
+        setLoadingStatus(false);
       }
     };
 
@@ -42,25 +43,35 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
     return () => {
       unsubscribeMemoService();
     };
-  }, []);
+  }, [dailyTimeStamp]);
 
   return (
     <>
       <div className="dialog-header-container">
-        <div className="year-text">{dailyDate.getFullYear()}</div>
-        <div className="daily-date-container">
-          <div className="month-text">{monthChineseStrArray[dailyDate.getMonth()]}</div>
-          <div className="date-text">{dailyDate.getDate()}</div>
-          <div className="day-text">{weekdayChineseStrArray[dailyDate.getDay()]}</div>
+        <div className="btn-text" onClick={() => setDailyTimeStamp(dailyTimeStamp - DAILY_TIMESTAMP)}></div>
+        <div className="date-wrapper">
+          <div className="year-text">{dailyDate.getFullYear()}</div>
+          <div className="daily-date-container">
+            <div className="month-text">{monthChineseStrArray[dailyDate.getMonth()]}</div>
+            <div className="date-text">{dailyDate.getDate()}</div>
+            <div className="day-text">{weekdayChineseStrArray[dailyDate.getDay()]}</div>
+          </div>
         </div>
+        <div className="btn-text" onClick={() => setDailyTimeStamp(dailyTimeStamp + DAILY_TIMESTAMP)}></div>
       </div>
       <div className="dialog-content-container">
-        <div className="memolist-wrapper">
-          {memos.map((memo, idx) => {
-            const key = memo.id + " " + memo.updatedAt;
-            return <DailyMemo key={key} index={idx} memo={memo} />;
-          })}
-        </div>
+        {isLoading ? null : memos.length === 0 ? (
+          <div className="null-container">
+            <p className="tip-text">空空如也</p>
+          </div>
+        ) : (
+          <div className="memolist-wrapper">
+            {memos.map((memo, idx) => {
+              const key = memo.id + " " + memo.updatedAt;
+              return <DailyMemo key={key} index={idx} memo={memo} />;
+            })}
+          </div>
+        )}
       </div>
     </>
   );
