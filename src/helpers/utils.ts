@@ -54,6 +54,18 @@ export namespace utils {
     return `${year}-${monthStr}-${dateStr} ${hoursStr}:${minsStr}:${secsStr}`;
   }
 
+  export function getTimeStampString(t: Date | number | string): string {
+    const d = new Date(t);
+
+    const hours = d.getHours();
+    const mins = d.getMinutes();
+
+    const hoursStr = hours < 10 ? "0" + hours : hours;
+    const minsStr = mins < 10 ? "0" + mins : mins;
+
+    return `${hoursStr}:${minsStr}`;
+  }
+
   export function dedupe<T>(data: T[]): T[] {
     return Array.from(new Set(data));
   }

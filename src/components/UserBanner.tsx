@@ -4,7 +4,8 @@ import toast from "./Toast";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
-import { MenuBtnsPopup } from "./MenuBtnsPopup";
+import MenuBtnsPopup from "./MenuBtnsPopup";
+import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import MoreIcon from "../assets/icons/more.svg";
 import "../less/user-banner.less";
 
@@ -97,7 +98,7 @@ const UserBanner: React.FC = () => {
           <span className="amount-text">{amountState.tagsAmount}</span>
           <span className="type-text">TAG</span>
         </div>
-        <div className="status-text duration-text">
+        <div className="status-text duration-text" onClick={() => showDailyMemoDiaryDialog()}>
           <span className="amount-text">{createdDays}</span>
           <span className="type-text">DAY</span>
         </div>

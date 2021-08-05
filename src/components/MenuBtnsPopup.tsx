@@ -9,7 +9,7 @@ interface Props {
   visibility: boolean;
 }
 
-export const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
+const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
   const handlePreferencesBtnClick = () => {
     showPreferencesDialog();
   };
@@ -40,3 +40,5 @@ export const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
     </div>
   );
 };
+
+export default MenuBtnsPopup;
