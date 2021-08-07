@@ -16,147 +16,49 @@
 
   &:last-child {
     border-left: none;
+    padding-bottom: 0;
   }
 
-  > .time-text {
+  > .time-wrapper {
     position: relative;
     left: -24px;
-    font-size: 13px;
     background-color: @bg-whitegray;
     color: @text-gray;
     width: 48px;
-    height: 24px;
-    text-align: center;
-    border-radius: 8px;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
+    padding: 4px 2px;
+    border-radius: 8px;
+    border: 1px solid white;
+
+    > .normal-text {
+      font-size: 12px;
+      text-align: center;
+    }
   }
 
   > .memo-content-text {
     width: 100%;
     margin-left: -12px;
     font-size: 16px;
-
-    > :first-child {
-      margin-top: 0;
-    }
-  }
-
-  > .btns-container {
-    position: relative;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-
-    > .more-action-btns-wrapper {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      flex-wrap: nowrap;
-      top: calc(100% - 12px);
-      right: -16px;
-      width: auto;
-      height: auto;
-      padding: 12px;
-      z-index: 1;
-      display: none;
-
-      &:hover {
-        display: flex;
-      }
-
-      > .more-action-btns-container {
-        width: 112px;
-        height: auto;
-        padding: 4px;
-        white-space: nowrap;
-        border-radius: 6px;
-        background-color: white;
-        box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-
-        > .text-btn {
-          width: 100%;
-          padding: 8px 0;
-          padding-left: 24px;
-          border-radius: 4px;
-          height: unset;
-          line-height: unset;
-          justify-content: flex-start;
-
-          &.delete-btn {
-            color: #d28653;
-          }
-        }
-      }
-    }
-
-    .text-btn {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      height: 28px;
-      padding: 0 6px;
-      font-size: 13px;
-      cursor: pointer;
-      border-radius: 4px;
-      user-select: none;
-
-      &:hover {
-        background-color: #efefee;
-      }
-
-      &.more-action-btn {
-        letter-spacing: 2px;
-        padding-right: 4px;
-        margin-left: 2px;
-        margin-right: -2px;
-        font-size: 10px;
-        font-weight: bold;
-        padding: 0 8px;
-        cursor: unset;
-
-        > .img-icon {
-          width: 16px;
-          height: auto;
-        }
-
-        &:hover {
-          background-color: transparent;
-
-          & + .more-action-btns-wrapper {
-            display: flex;
-          }
-        }
-      }
-    }
+    margin-top: -2px;
   }
 }
 
 body.dark {
-  .memo-wrapper {
-    background-color: @dark-bg-black;
-    border-color: @dark-bg-black;
+  .daily-memo-wrapper {
+    > .time-wrapper {
+      background-color: @dark-bg-black;
+      color: @text-gray;
+      border: 1px solid @dark-bg-light-black;
+    }
 
-    > .memo-top-wrapper {
-      > .btns-container {
-        .more-action-btns-container {
-          background-color: @dark-bg-light-black;
-        }
-
-        .text-btn {
-          &:hover {
-            background-color: @dark-bg-black;
-          }
-        }
+    > .memo-content-text {
+      span.tag-span {
+        background-color: @dark-bg-black;
       }
     }
   }

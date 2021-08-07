@@ -1,36 +1,64 @@
 @import "./mixin.less";
 
 .daily-memo-diary-dialog {
-  background-color: white !important;
+  background-color: white;
+  min-height: 100%;
 
   > .dialog-container {
-    width: 480px;
+    width: 460px;
     max-width: 100%;
-    margin-bottom: 50px;
     border-radius: 10px;
     padding: 0;
 
     > .dialog-header-container {
-      padding-top: 16px;
       position: relative;
       width: 100%;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 24px 24px;
+      margin-bottom: 0;
+      padding-bottom: 0;
 
-      > .btn-text {
-        display: block;
-        flex-grow: 1;
-        height: 100%;
+      > .btns-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+
+        > .btn-text {
+          margin-left: 8px;
+          padding: 4px 8px;
+          background-color: lightgray;
+          border-radius: 4px;
+          font-size: 13px;
+          cursor: pointer;
+          user-select: none;
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
       }
+    }
 
-      > .date-wrapper {
-        flex-shrink: 0;
+    > .dialog-content-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 24px 24px;
+
+      > .date-card-container {
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-bottom: 32px;
 
         > .year-text {
           font-weight: bold;
@@ -39,12 +67,13 @@
           margin-bottom: 12px;
         }
 
-        > .daily-date-container {
+        > .date-container {
           width: 96px;
           height: 96px;
           border-radius: 32px;
           background-color: white;
           box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+          border: 1px solid rgb(0 0 0 / 10%);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -56,8 +85,11 @@
           > .day-text {
             width: 100%;
             height: 24px;
-            line-height: 24px;
             font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           }
 
           > .month-text {
@@ -69,22 +101,21 @@
 
           > .date-text {
             width: 100%;
+            padding-top: 4px;
             height: 48px;
-            font-size: 42px;
-            line-height: 48px;
+            font-size: 44px;
             font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+
+          > .day-text {
+            font-size: 12px;
           }
         }
       }
-    }
-
-    > .dialog-content-container {
-      padding-top: 16px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
 
       > .null-container {
         width: 100%;
@@ -98,38 +129,36 @@
           font-style: italic;
         }
       }
+
+      > .dailymemos-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
     }
   }
 }
 
 body.dark {
-  .dialog-wrapper.memo-story-dialog {
+  .dialog-wrapper.daily-memo-diary-dialog {
     > .dialog-container {
+      background-color: @dark-bg-black;
+
       > .dialog-content-container {
-        .memo-container {
-          border-top: 1px solid gray;
-
-          > .memo-header-container {
-            > .time-text {
-              color: lightgray;
-            }
-
-            > .action-btn {
-              &:hover {
-                background-color: gray;
-              }
-            }
+        > .date-wrapper {
+          > .year-text {
+            color: gray;
           }
-        }
 
-        > .normal-text {
-          color: lightgray;
-        }
+          > .daily-date-container {
+            background-color: @dark-bg-black;
 
-        > .down-memos-wrapper {
-          background-color: @dark-bg-light-black;
-          > .memo-container {
-            background-color: @dark-bg-light-black;
+            > .month-text {
+              background-color: @bg-blue;
+              color: white;
+            }
           }
         }
       }
@@ -139,8 +168,15 @@ body.dark {
 
 @media only screen and (max-width: 650px) {
   .dialog-wrapper.daily-memo-diary-dialog {
+    padding: 0;
+
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    > .dialog-container {
+      border-radius: 0;
+      height: 100%;
     }
   }
 }

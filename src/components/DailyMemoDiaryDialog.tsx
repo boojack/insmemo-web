@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import memoService from "../helpers/memoService";
-import DailyMemo from "./DailyMemo";
-import { showDialog } from "./Dialog";
+import React, { useEffect, useRef, useState } from "react";
+import { storage } from "../helpers/storage";
 import { utils } from "../helpers/utils";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
+import memoService from "../helpers/memoService";
+import { showDialog } from "./Dialog";
+import showPreviewImageDialog from "./PreviewImageDialog";
+import DailyMemo from "./DailyMemo";
 import "../less/daily-memo-diary-dialog.less";
 
 interface Props extends DialogProps {
-  dailyTimeStamp: TimeStamp;
+  currentTimeStamp: TimeStamp;
 }
 
 const monthChineseStrArray = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -16,56 +18,88 @@ const weekdayChineseStrArray = ["周日", "周一", "周二", "周三", "周四"
 const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   const [isLoading, setLoadingStatus] = useState<boolean>(true);
   const [memos, setMemos] = useState<Model.Memo[]>([]);
-  const [dailyTimeStamp, setDailyTimeStamp] = useState(utils.getTimeStampByDate(utils.getDateString(props.dailyTimeStamp)));
-  const dailyDate = new Date(dailyTimeStamp);
+  const [currentDateTimeStamp, setCurrentDateTimeStamp] = useState(utils.getTimeStampByDate(utils.getDateString(props.currentTimeStamp)));
+  const memosElRef = useRef(null);
+  const currentDate = new Date(currentDateTimeStamp);
 
   useEffect(() => {
     const getDailyMemos = () => {
+      setLoadingStatus(true);
       const memos = memoService.getState().memos;
       const lastMemo = memos.slice(-1).pop();
-      if (lastMemo && lastMemo.createdAt >= dailyTimeStamp) {
+      if (lastMemo && lastMemo.createdAt >= currentDateTimeStamp) {
         memoService.fetchMoreMemos();
       } else {
         const dailyMemos = memos
-          .filter((a) => a.createdAt >= dailyTimeStamp && a.createdAt < dailyTimeStamp + DAILY_TIMESTAMP)
+          .filter((a) => a.createdAt >= currentDateTimeStamp && a.createdAt < currentDateTimeStamp + DAILY_TIMESTAMP)
           .sort((a, b) => a.createdAt - b.createdAt);
         setMemos(dailyMemos);
         setLoadingStatus(false);
       }
     };
 
+    getDailyMemos();
+
     const unsubscribeMemoService = memoService.subscribe(() => {
       getDailyMemos();
     });
 
-    getDailyMemos();
-
     return () => {
       unsubscribeMemoService();
     };
-  }, [dailyTimeStamp]);
+  }, [currentDateTimeStamp]);
+
+  const handleShareBtnClick = () => {
+    const osVersion = utils.getOSVersion();
+    if (osVersion === "MacOS" || osVersion === "Unknown") {
+      window.scrollTo(0, 0);
+    }
+
+    html2canvas(memosElRef.current!, {
+      scale: window.devicePixelRatio * 4,
+      allowTaint: true,
+      useCORS: true,
+      backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+    }).then((canvas) => {
+      showPreviewImageDialog(canvas.toDataURL());
+    });
+  };
 
   return (
     <>
       <div className="dialog-header-container">
-        <div className="btn-text" onClick={() => setDailyTimeStamp(dailyTimeStamp - DAILY_TIMESTAMP)}></div>
-        <div className="date-wrapper">
-          <div className="year-text">{dailyDate.getFullYear()}</div>
-          <div className="daily-date-container">
-            <div className="month-text">{monthChineseStrArray[dailyDate.getMonth()]}</div>
-            <div className="date-text">{dailyDate.getDate()}</div>
-            <div className="day-text">{weekdayChineseStrArray[dailyDate.getDay()]}</div>
+        <div className="btns-container">
+          <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp - DAILY_TIMESTAMP)}>
+            👈
+          </span>
+          <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp + DAILY_TIMESTAMP)}>
+            👉
+          </span>
+          <span className="btn-text" onClick={handleShareBtnClick}>
+            📷
+          </span>
+          <span className="btn-text" onClick={() => props.destroy()}>
+            ❌
+          </span>
+        </div>
+      </div>
+      <div className="dialog-content-container" ref={memosElRef}>
+        <div className="date-card-container">
+          <div className="year-text">{currentDate.getFullYear()}</div>
+          <div className="date-container">
+            <div className="month-text">{monthChineseStrArray[currentDate.getMonth()]}</div>
+            <div className="date-text">{currentDate.getDate()}</div>
+            <div className="day-text">{weekdayChineseStrArray[currentDate.getDay()]}</div>
           </div>
         </div>
-        <div className="btn-text" onClick={() => setDailyTimeStamp(dailyTimeStamp + DAILY_TIMESTAMP)}></div>
-      </div>
-      <div className="dialog-content-container">
         {isLoading ? null : memos.length === 0 ? (
           <div className="null-container">
             <p className="tip-text">空空如也</p>
           </div>
         ) : (
-          <div className="memolist-wrapper">
+          <div className="dailymemos-wrapper">
             {memos.map((memo, idx) => {
               const key = memo.id + " " + memo.updatedAt;
               return <DailyMemo key={key} index={idx} memo={memo} />;
@@ -83,6 +117,6 @@ export default function showDailyMemoDiaryDialog(timestamp: TimeStamp = Date.now
       className: "daily-memo-diary-dialog",
     },
     DailyMemoDiaryDialog,
-    { dailyTimeStamp: timestamp }
+    { currentTimeStamp: timestamp }
   );
 }

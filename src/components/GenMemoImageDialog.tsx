@@ -31,27 +31,25 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
   useEffect(() => {
     const memoEl = memoElRef.current;
 
-    if (memoEl) {
-      setTimeout(() => {
-        if (imageAmount === 0) {
-          const osVersion = utils.getOSVersion();
-          if (osVersion === "MacOS" || osVersion === "Unknown") {
-            window.scrollTo(0, 0);
-          }
-
-          html2canvas(memoEl, {
-            scale: 4,
-            allowTaint: true,
-            useCORS: true,
-            backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
-            scrollX: -window.scrollX,
-            scrollY: -window.scrollY,
-          }).then((canvas) => {
-            setImgUrl(canvas.toDataURL());
-          });
+    setTimeout(() => {
+      if (imageAmount === 0) {
+        const osVersion = utils.getOSVersion();
+        if (osVersion === "MacOS" || osVersion === "Unknown") {
+          window.scrollTo(0, 0);
         }
-      }, ANIMATION_DURATION + 100);
-    }
+
+        html2canvas(memoEl!, {
+          scale: window.devicePixelRatio * 4,
+          allowTaint: true,
+          useCORS: true,
+          backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+          scrollX: -window.scrollX,
+          scrollY: -window.scrollY,
+        }).then((canvas) => {
+          setImgUrl(canvas.toDataURL());
+        });
+      }
+    }, ANIMATION_DURATION + 100);
   }, [imageAmount]);
 
   const handleCloseBtnClick = () => {
