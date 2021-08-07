@@ -9,7 +9,6 @@ import useToggle from "../hooks/useToggle";
 import Image from "./Image";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
-import MoreIcon from "../assets/icons/more.svg";
 import "../less/memo.less";
 
 // 标签 正则
@@ -116,9 +115,7 @@ const Memo: React.FC<Props> = (props: Props) => {
           {memo.createdAtStr}
         </span>
         <div className="btns-container">
-          <span className="text-btn more-action-btn">
-            <img className="img-icon" src={MoreIcon} />
-          </span>
+          <span className="text-btn more-action-btn"></span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
               <span className="text-btn" onClick={markThisMemo}>

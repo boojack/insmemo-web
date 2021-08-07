@@ -24,6 +24,7 @@
 
     > .time-text {
       font-size: 12px;
+      line-height: 16px;
       color: gray;
       flex-shrink: 0;
       cursor: pointer;
@@ -99,23 +100,16 @@
         }
 
         &.more-action-btn {
-          letter-spacing: 2px;
-          padding-right: 4px;
-          margin-left: 2px;
-          margin-right: -2px;
-          font-size: 10px;
-          font-weight: bold;
-          padding: 0 8px;
+          width: 16px;
+          height: 16px;
+          padding: 0;
+          background-image: url(/icons/more.svg);
+          background-size: 16px auto;
+          background-repeat: no-repeat;
+          background-position: center;
           cursor: unset;
 
-          > .img-icon {
-            width: 16px;
-            height: auto;
-          }
-
           &:hover {
-            background-color: transparent;
-
             & + .more-action-btns-wrapper {
               display: flex;
             }

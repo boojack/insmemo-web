@@ -70,19 +70,23 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="dialog-header-container">
-        <div className="btns-container">
-          <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp - DAILY_TIMESTAMP)}>
-            👈
-          </span>
-          <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp + DAILY_TIMESTAMP)}>
-            👉
-          </span>
-          <span className="btn-text" onClick={handleShareBtnClick}>
-            📷
-          </span>
-          <span className="btn-text" onClick={() => props.destroy()}>
-            ❌
-          </span>
+        <div className="btns-wrapper">
+          <div className="btns-container">
+            <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp - DAILY_TIMESTAMP)}>
+              <img className="icon-img" src="/icons/arrow-left.svg" />
+            </span>
+            <span className="btn-text" onClick={() => setCurrentDateTimeStamp(currentDateTimeStamp + DAILY_TIMESTAMP)}>
+              <img className="icon-img" src="/icons/arrow-right.svg" />
+            </span>
+          </div>
+          <div className="btns-container">
+            <span className="btn-text" onClick={handleShareBtnClick}>
+              <img className="icon-img" src="/icons/share.svg" />
+            </span>
+            <span className="btn-text" onClick={() => props.destroy()}>
+              <img className="icon-img" src="/icons/close.svg" />
+            </span>
+          </div>
         </div>
       </div>
       <div className="dialog-content-container" ref={memosElRef}>

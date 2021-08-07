@@ -44,19 +44,17 @@
 
       &.menu-popup-btn {
         width: 40px;
-        height: 36px;
+        height: 40px;
         margin-right: -8px;
-        padding: 0 8px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
-        > .img-icon {
-          margin-top: 2px;
-          width: 20px;
-          height: auto;
-        }
+        background-image: url(/icons/more.svg);
+        background-size: 20px 20px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: transparent;
       }
     }
   }
@@ -99,7 +97,9 @@ body.dark {
         color: @dark-text-white;
       }
       > .action-btn {
-        color: @dark-text-white;
+        &.menu-popup-btn {
+          background-image: url(/icons/more-dark.svg);
+        }
       }
     }
 
