@@ -5,7 +5,7 @@
   min-height: 100%;
 
   > .dialog-container {
-    width: 460px;
+    width: 440px;
     max-width: 100%;
     border-radius: 10px;
     padding: 0;
@@ -29,8 +29,13 @@
         align-items: center;
 
         > .btn-text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 32px;
+          height: 32px;
           margin-left: 8px;
-          padding: 4px 8px;
           background-color: lightgray;
           border-radius: 4px;
           font-size: 13px;
@@ -176,7 +181,6 @@ body.dark {
 
     > .dialog-container {
       border-radius: 0;
-      height: 100%;
     }
   }
 }

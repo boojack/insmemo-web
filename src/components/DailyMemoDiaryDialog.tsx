@@ -56,7 +56,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
     }
 
     html2canvas(memosElRef.current!, {
-      scale: window.devicePixelRatio * 4,
+      scale: window.devicePixelRatio * 2,
       allowTaint: true,
       useCORS: true,
       backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
