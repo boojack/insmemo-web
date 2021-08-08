@@ -18,10 +18,10 @@ interface UsageStatDaily {
   count: number;
 }
 
-const todayTimestamp = utils.getTimeStampByDate(Date.now());
-const todayDay = new Date(todayTimestamp).getDay() || 7;
+const todayTimeStamp = utils.getTimeStampByDate(Date.now());
+const todayDay = new Date(todayTimeStamp).getDay() || 7;
 const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
-const beginDayTimestemp = todayTimestamp - usedDaysAmount * DAILY_TIMESTAMP;
+const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
 
 const UsageStatTable: React.FC = () => {
   const nullCell = new Array(7 - todayDay).fill(0);

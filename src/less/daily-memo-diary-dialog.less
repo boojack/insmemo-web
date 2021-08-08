@@ -69,12 +69,13 @@
       margin-top: -46px;
 
       > .date-card-container {
-        width: 100%;
+        margin: auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-bottom: 32px;
+        margin-bottom: 24px;
+        z-index: 1;
 
         > .year-text {
           font-weight: bold;
@@ -133,6 +134,18 @@
         }
       }
 
+      > .date-picker {
+        margin: 0 auto;
+        border: 1px solid lightgray;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        transition: all 0.2s ease;
+
+        &.hide {
+          display: none;
+        }
+      }
+
       > .null-container {
         width: 100%;
         padding: 24px 0;
@@ -147,6 +160,7 @@
       }
 
       > .dailymemos-wrapper {
+        margin-top: 8px;
         width: 100%;
         display: flex;
         flex-direction: column;
