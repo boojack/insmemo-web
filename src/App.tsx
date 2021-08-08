@@ -17,8 +17,9 @@ function App() {
   const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
-    userService.doSignIn().then(() => {
-      const { user } = userService.getState();
+    userService.doSignIn();
+
+    const unsubscribeUserService = userService.subscribe(({ user }) => {
       if (user) {
         setUsername(user.username);
         locationService.initLocation();
@@ -26,12 +27,6 @@ function App() {
       } else {
         setUsername("Memos");
         showSigninDialog();
-      }
-    });
-
-    const unsubscribeUserService = userService.subscribe(({ user }) => {
-      if (user) {
-        setUsername(user.username);
       }
     });
 

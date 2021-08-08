@@ -21,9 +21,9 @@ const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 
 interface Props {
-  memo: Model.Memo;
+  className: string;
   index: number;
-  additionClassName: string;
+  memo: Model.Memo;
 }
 
 const Memo: React.FC<Props> = (props: Props) => {
@@ -109,7 +109,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={"memo-wrapper " + props.additionClassName} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={`memo-wrapper ${props.className}`} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
@@ -19,7 +19,6 @@ const TagList: React.FC = () => {
     const fetchTags = async () => {
       try {
         const tags = await getMyTags();
-
         setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
       } catch (error) {
         toast.error(error);
@@ -34,7 +33,7 @@ const TagList: React.FC = () => {
     const unsubscribeLocationService = locationService.subscribe(({ query }) => {
       setTagQuery(query.tag);
 
-      // 删除移动端样式
+      // Hide user banner in mobile web
       const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
       pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
     });
@@ -45,20 +44,13 @@ const TagList: React.FC = () => {
     };
   }, []);
 
-  const handleTagClick = useCallback(
-    (tag: TagItem) => {
-      let tagText = tag.text;
-
-      if (tagText === tagQuery) {
-        tagText = "";
-      } else {
-        polishTag(tag.id);
-      }
-
-      locationService.setTagQuery(tagText);
-    },
-    [tagQuery]
-  );
+  const handleTagClick = (tag: TagItem) => {
+    const tagText = tag.text === tagQuery ? "" : tag.text;
+    if (tagText) {
+      polishTag(tag.id);
+    }
+    locationService.setTagQuery(tagText);
+  };
 
   return (
     <div className="tags-wrapper">

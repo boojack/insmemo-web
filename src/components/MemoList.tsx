@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
+import useRefrash from "../hooks/useRefrash";
 import { utils } from "../helpers/utils";
-import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
 import Memo from "./Memo";
@@ -13,47 +13,22 @@ interface Duration {
 }
 
 const MemoList: React.FC = () => {
-  const [memos, setMemos] = useState<Model.Memo[]>(memoService.getState().memos ?? []);
-  const { query } = locationService.getState();
-  const [tagQuery, setTagQuery] = useState(query.tag);
-  const [duration, setDuration] = useState<Duration>({ from: query.from, to: query.to });
+  const refrash = useRefrash();
+  const [memos, setMemos] = useState<Model.Memo[]>([]);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
-
-  const memosTemp = useMemo(() => {
-    return memos.map((m) => {
-      let shouldShow = true;
-
-      if (tagQuery !== "" && !m.tags?.map((t) => t.text).includes(tagQuery)) {
-        shouldShow = false;
-      }
-
-      if (duration.from !== 0 && duration.from < duration.to && (m.createdAt < duration.from || m.createdAt > duration.to)) {
-        shouldShow = false;
-      }
-
-      return {
-        ...m,
-        shouldShow,
-      };
-    });
-  }, [memos, tagQuery, duration]);
+  const { query } = locationService.getState();
+  const tagQuery = query.tag;
+  const duration: Duration = { from: query.from, to: query.to };
 
   useEffect(() => {
     const unsubscribeMemoService = memoService.subscribe(({ memos }) => {
       setMemos([...memos]);
     });
 
-    const unsubscribeLocationService = locationService.subscribe(({ query }) => {
-      const { tag, from, to } = query;
-      setTagQuery(tag);
-      if (from < to) {
-        setDuration({ from, to });
-      } else {
-        setDuration({ from: 0, to: 0 });
-      }
-      wrapperElement.current?.scrollTo({ top: 0 });
+    const unsubscribeLocationService = locationService.subscribe(() => {
+      refrash();
     });
 
     return () => {
@@ -63,23 +38,26 @@ const MemoList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if ((tagQuery !== "" || duration.from < duration.to) && !isFetching && !isComplete) {
-      fetchMoreMemos();
-    }
-  }, [tagQuery, duration, isFetching, isComplete]);
+    wrapperElement.current?.scrollTo({ top: 0 });
+    fetchMoreMemos();
+  }, [location.search]);
 
-  const fetchMoreMemos = useCallback(async () => {
-    if (isFetching || isComplete) {
+  const fetchMoreMemos = async () => {
+    if (isComplete) {
       return;
     }
 
     setFetchStatus(true);
-    const newMemos = await memoService.fetchMoreMemos();
-    if (newMemos && newMemos.length < FETCH_MEMO_AMOUNT) {
-      setCompleteStatus(true);
+    if (tagQuery !== "" || duration.from < duration.to) {
+      const fetchedMemos = await memoService.fetchMoreMemos();
+      if (fetchedMemos && fetchedMemos.length > 0) {
+        await fetchMoreMemos();
+      } else {
+        setCompleteStatus(true);
+      }
     }
     setFetchStatus(false);
-  }, [isFetching, isComplete]);
+  };
 
   const handleFetchScroll = useDebounce(
     () => {
@@ -87,13 +65,9 @@ const MemoList: React.FC = () => {
         return;
       }
 
-      const el = wrapperElement.current;
-      if (el) {
-        const { offsetHeight, scrollTop, scrollHeight } = el;
-
-        if (offsetHeight + scrollTop + 1 > scrollHeight) {
-          fetchMoreMemos();
-        }
+      const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current!;
+      if (offsetHeight + scrollTop + 1 > scrollHeight) {
+        fetchMoreMemos();
       }
     },
     200,
@@ -122,11 +96,18 @@ const MemoList: React.FC = () => {
         </div>
       </div>
 
-      {memosTemp.map((memo, idx) => {
+      {memos.map((memo, idx) => {
         const key = memo.id + " " + memo.updatedAt;
-        const additionClassName = memo.shouldShow ? "" : "hidden";
+        let shouldShow = true;
+        if (tagQuery !== "" && !memo.tags?.map((t) => t.text).includes(tagQuery)) {
+          shouldShow = false;
+        }
+        if (duration.from !== 0 && duration.from < duration.to && (memo.createdAt < duration.from || memo.createdAt > duration.to)) {
+          shouldShow = false;
+        }
+        const additionClassName = shouldShow ? "" : "hidden";
 
-        return <Memo key={key} index={idx} additionClassName={additionClassName} memo={memo} />;
+        return <Memo key={key} index={idx} className={additionClassName} memo={memo} />;
       })}
 
       <div
