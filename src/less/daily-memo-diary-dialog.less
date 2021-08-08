@@ -1,6 +1,9 @@
 @import "./mixin.less";
 
 .daily-memo-diary-dialog {
+  background-color: white;
+  min-height: 100%;
+
   > .dialog-container {
     width: 440px;
     max-width: 100%;
@@ -136,23 +139,14 @@
         margin: 0 auto;
         border: 1px solid lightgray;
         border-radius: 16px;
-        transition: all 0.3s ease;
-        margin-top: 0;
         margin-bottom: 8px;
-        transform: scale(1);
-        opacity: 1;
 
         &.hide {
-          visibility: hidden;
-          margin-top: calc(-100% + 40px);
-          margin-bottom: 24px;
-          transform: scale(0);
-          opacity: 0;
-          z-index: 0;
+          display: none;
         }
       }
 
-      > .null-container {
+      > .tip-container {
         width: 100%;
         padding: 16px 0;
         display: flex;
@@ -166,7 +160,7 @@
       }
 
       > .dailymemos-wrapper {
-        margin-top: 8px;
+        margin-top: 12px;
         width: 100%;
         display: flex;
         flex-direction: column;

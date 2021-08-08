@@ -10,45 +10,45 @@ interface DatePickerProps {
 
 const DatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
   const { className, datestamp, handleDateStampChange } = props;
-  const [shownDateStamp, setShownDateStamp] = useState<DateStamp>(getMonthFirstDayDateStamp(datestamp));
+  const [currentDateStamp, setCurrentDateStamp] = useState<DateStamp>(getMonthFirstDayDateStamp(datestamp));
 
   useEffect(() => {
-    setShownDateStamp(getMonthFirstDayDateStamp(datestamp));
+    setCurrentDateStamp(getMonthFirstDayDateStamp(datestamp));
   }, [datestamp]);
 
-  const firstDayDate = new Date(shownDateStamp);
-  const dayAmount = getMonthDayAmount(shownDateStamp);
-  const firstDayDateDay = firstDayDate.getDay() === 0 ? 7 : firstDayDate.getDay();
+  const firstDate = new Date(currentDateStamp);
+  const firstDateDay = firstDate.getDay() === 0 ? 7 : firstDate.getDay();
   const dayList = [];
-  for (let i = 1; i < firstDayDateDay; i++) {
+  for (let i = 1; i < firstDateDay; i++) {
     dayList.push({
       date: 0,
-      datestamp: firstDayDate.getTime() - DAILY_TIMESTAMP * (7 - i),
+      datestamp: firstDate.getTime() - DAILY_TIMESTAMP * (7 - i),
     });
   }
-
+  const dayAmount = getMonthDayAmount(currentDateStamp);
   for (let i = 1; i <= dayAmount; i++) {
     dayList.push({
       date: i,
-      datestamp: firstDayDate.getTime() + DAILY_TIMESTAMP * (i - 1),
+      datestamp: firstDate.getTime() + DAILY_TIMESTAMP * (i - 1),
     });
   }
 
-  const setCurrentDateStamp = (datestamp: DateStamp) => {
+  const handleDateItemClick = (datestamp: DateStamp) => {
     handleDateStampChange(datestamp);
   };
 
   const handleChangeMonthBtnClick = (i: -1 | 1) => {
-    const year = firstDayDate.getFullYear();
-    const month = firstDayDate.getMonth() + 1;
-
+    const year = firstDate.getFullYear();
+    const month = firstDate.getMonth() + 1;
+    let nextDateStamp = 0;
     if (month === 1 && i === -1) {
-      setShownDateStamp(getMonthFirstDayDateStamp(new Date(`${year - 1}/12`).getTime()));
+      nextDateStamp = new Date(`${year - 1}/12/1`).getTime();
     } else if (month === 12 && i === 1) {
-      setShownDateStamp(getMonthFirstDayDateStamp(new Date(`${year + 1}/1`).getTime()));
+      nextDateStamp = new Date(`${year + 1}/1/1`).getTime();
     } else {
-      setShownDateStamp(getMonthFirstDayDateStamp(new Date(`${year}/${month + i}`).getTime()));
+      nextDateStamp = new Date(`${year}/${month + i}/1`).getTime();
     }
+    setCurrentDateStamp(getMonthFirstDayDateStamp(nextDateStamp));
   };
 
   return (
@@ -58,7 +58,7 @@ const DatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
           <img className="icon-img" src="/icons/arrow-left.svg" />
         </span>
         <span className="normal-text">
-          {firstDayDate.getFullYear()} 年 {firstDayDate.getMonth() + 1} 月
+          {firstDate.getFullYear()} 年 {firstDate.getMonth() + 1} 月
         </span>
         <span className="btn-text" onClick={() => handleChangeMonthBtnClick(1)}>
           <img className="icon-img" src="/icons/arrow-right.svg" />
@@ -87,7 +87,7 @@ const DatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
               <span
                 key={d.datestamp}
                 className={`day-item ${d.datestamp === datestamp ? "current" : ""}`}
-                onClick={() => setCurrentDateStamp(d.datestamp)}
+                onClick={() => handleDateItemClick(d.datestamp)}
               >
                 {d.date}
               </span>
@@ -101,18 +101,18 @@ const DatePicker: React.FC<DatePickerProps> = (props: DatePickerProps) => {
 
 function getMonthDayAmount(datestamp: DateStamp): number {
   const dateTemp = new Date(datestamp);
-  const currentDate = new Date(`${dateTemp.getFullYear()}/${dateTemp.getMonth() + 1}`);
+  const currentDate = new Date(`${dateTemp.getFullYear()}/${dateTemp.getMonth() + 1}/1`);
   const nextMonthDate =
     currentDate.getMonth() === 11
       ? new Date(`${currentDate.getFullYear() + 1}/1`)
-      : new Date(`${currentDate.getFullYear()}/${currentDate.getMonth() + 2}`);
+      : new Date(`${currentDate.getFullYear()}/${currentDate.getMonth() + 2}/1`);
 
   return (nextMonthDate.getTime() - currentDate.getTime()) / DAILY_TIMESTAMP;
 }
 
 function getMonthFirstDayDateStamp(timestamp: TimeStamp): DateStamp {
   const dateTemp = new Date(timestamp);
-  const currentDate = new Date(`${dateTemp.getFullYear()}/${dateTemp.getMonth() + 1}`);
+  const currentDate = new Date(`${dateTemp.getFullYear()}/${dateTemp.getMonth() + 1}/1`);
   return currentDate.getTime();
 }
 

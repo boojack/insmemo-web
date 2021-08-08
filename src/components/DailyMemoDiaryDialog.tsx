@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import useToggle from "../hooks/useToggle";
+import { DAILY_TIMESTAMP } from "../helpers/consts";
 import { storage } from "../helpers/storage";
 import { utils } from "../helpers/utils";
-import { DAILY_TIMESTAMP } from "../helpers/consts";
 import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
@@ -116,8 +116,12 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
           datestamp={currentDateStamp}
           handleDateStampChange={handleDataPickerChange}
         />
-        {isLoading ? null : memos.length === 0 ? (
-          <div className="null-container">
+        {isLoading ? (
+          <div className="tip-container">
+            <p className="tip-text">努力加载中...</p>
+          </div>
+        ) : memos.length === 0 ? (
+          <div className="tip-container">
             <p className="tip-text">空空如也</p>
           </div>
         ) : (
