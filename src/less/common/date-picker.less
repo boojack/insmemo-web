@@ -1,8 +1,6 @@
 @import "../mixin.less";
 
 .date-picker-wrapper {
-  width: 312px;
-  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -29,7 +27,7 @@
       }
 
       &:hover {
-        background-color: lightgray;
+        background-color: @bg-whitegray;
       }
     }
 
@@ -50,8 +48,8 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: flex-start;
-      align-items: flex-start;
+      justify-content: space-around;
+      align-items: center;
 
       > .day-item {
         width: 36px;
@@ -62,8 +60,8 @@
         align-items: center;
         user-select: none;
         color: gray;
-        font-size: 12px;
-        margin: 2px;
+        font-size: 13px;
+        margin: 2px 0;
       }
     }
 
@@ -75,7 +73,7 @@
       justify-content: center;
       align-items: center;
       border-radius: 50%;
-      font-size: 13px;
+      font-size: 14px;
       user-select: none;
       cursor: pointer;
       margin: 2px;
@@ -86,7 +84,7 @@
 
       &.current {
         background-color: @bg-light-blue;
-        font-size: 15px;
+        font-size: 16px;
         color: @text-blue;
         font-weight: bold;
       }
@@ -99,10 +97,4 @@
       }
     }
   }
-}
-
-body.dark {
-}
-
-@media only screen and (max-width: 650px) {
 }
