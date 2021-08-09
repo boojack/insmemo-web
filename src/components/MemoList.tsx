@@ -39,34 +39,30 @@ const MemoList: React.FC = () => {
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
-    fetchMoreMemos();
-  }, [location.search]);
+    if (!isComplete && (tagQuery !== "" || duration.from < duration.to)) {
+      memoService.fetchAllMemos();
+      setCompleteStatus(true);
+    }
+  }, [location.search, isComplete]);
 
   const fetchMoreMemos = async () => {
-    if (isComplete) {
+    if (isFetching || isComplete) {
       return;
     }
 
     setFetchStatus(true);
-    if (tagQuery !== "" || duration.from < duration.to) {
-      const fetchedMemos = await memoService.fetchMoreMemos();
-      if (fetchedMemos && fetchedMemos.length > 0) {
-        await fetchMoreMemos();
-      } else {
-        setCompleteStatus(true);
-      }
+    const fetchedMemos = await memoService.fetchMoreMemos();
+    if (fetchedMemos && fetchedMemos.length > 0) {
+    } else {
+      setCompleteStatus(true);
     }
     setFetchStatus(false);
   };
 
   const handleFetchScroll = useDebounce(
     () => {
-      if (isFetching || isComplete) {
-        return;
-      }
-
       const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current!;
-      if (offsetHeight + scrollTop + 1 > scrollHeight) {
+      if (offsetHeight + scrollTop + 10 > scrollHeight) {
         fetchMoreMemos();
       }
     },

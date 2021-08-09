@@ -11,6 +11,8 @@ const userService = {
           type: "SIGN_IN",
           payload: { user },
         });
+      } else {
+        userService.doSignOut();
       }
 
       return user;

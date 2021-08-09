@@ -45,6 +45,33 @@ const memoService = {
     return memos;
   },
 
+  fetchAllMemos: async () => {
+    if (!userService.getState() || memoService.isFetching) {
+      return false;
+    }
+
+    memoService.isFetching = true;
+    const memosAmount = await getMyMemosAmount();
+    const data = await getMyMemos(memoStore.getState().memos.length, memosAmount);
+    const memos = data.map((m) => ({
+      id: m.id,
+      content: m.content,
+      tags: m.tags,
+      createdAt: new Date(m.createdAt).getTime(),
+      updatedAt: new Date(m.updatedAt).getTime(),
+    }));
+
+    if (memos.length > 0) {
+      memoStore.dispatch({
+        type: "PUSH_MEMOS",
+        payload: {
+          memos,
+        },
+      });
+    }
+    memoService.isFetching = false;
+  },
+
   pushMemo: (memo: Model.Memo) => {
     memoStore.dispatch({
       type: "PUSH",
@@ -113,5 +140,18 @@ function deleteMemo(memoId: string): Promise<void> {
       });
   });
 }
+
+const getMyMemosAmount = (): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    api
+      .getMyDataAmount()
+      .then(({ data }) => {
+        resolve(data.memosAmount);
+      })
+      .catch(() => {
+        reject("数据请求失败");
+      });
+  });
+};
 
 export default memoService;
