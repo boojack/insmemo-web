@@ -12,7 +12,9 @@ interface Duration {
   to: number;
 }
 
-const MemoList: React.FC = () => {
+interface Props {}
+
+const MemoList: React.FC<Props> = () => {
   const refrash = useRefrash();
   const [memos, setMemos] = useState<Model.Memo[]>([]);
   const [isFetching, setFetchStatus] = useState(false);
