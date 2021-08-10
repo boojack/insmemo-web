@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
+import useSelector from "../hooks/useSelector";
 import useToggle from "../hooks/useToggle";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -10,7 +11,8 @@ import "../less/tag-list.less";
 interface TagItem extends Api.Tag {}
 
 const TagList: React.FC = () => {
-  const { query } = locationService.getState();
+  const { memos } = useSelector(memoService);
+  const { query } = useSelector(locationService);
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
   const [isLoading, setLoading] = useToggle(true);
@@ -26,23 +28,16 @@ const TagList: React.FC = () => {
       setLoading(false);
     };
 
-    const unsubscribeMemoService = memoService.subscribe(() => {
-      fetchTags();
-    });
+    fetchTags();
+  }, [memos]);
 
-    const unsubscribeLocationService = locationService.subscribe(({ query }) => {
-      setTagQuery(query.tag);
+  useEffect(() => {
+    setTagQuery(query.tag);
 
-      // Hide user banner in mobile web
-      const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-      pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
-    });
-
-    return () => {
-      unsubscribeMemoService();
-      unsubscribeLocationService();
-    };
-  }, []);
+    // Hide user banner in mobile web
+    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
+    pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
+  }, [query]);
 
   const handleTagClick = (tag: TagItem) => {
     const tagText = tag.text === tagQuery ? "" : tag.text;

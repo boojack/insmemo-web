@@ -1,4 +1,4 @@
-interface Action {
+export interface Action {
   type: string;
 }
 
@@ -6,7 +6,7 @@ type Reducer<S, A extends Action> = (s: S, a: A) => S;
 type Listener<S> = (ns: S, ps: S) => void;
 type Unsubscribe = () => void;
 
-interface Store<S, A extends Action> {
+export interface Store<S, A extends Action> {
   dispatch: (a: A) => void;
   getState: () => S;
   subscribe: (listener: Listener<S>) => Unsubscribe;

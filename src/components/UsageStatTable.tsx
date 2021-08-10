@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
+import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
 import memoService from "../helpers/memoService";
 import userService from "../helpers/userService";
@@ -24,6 +25,7 @@ const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
 const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
 
 const UsageStatTable: React.FC = () => {
+  const { memos } = useSelector(memoService);
   const nullCell = new Array(7 - todayDay).fill(0);
   const [allStat, setAllStat] = useState<UsageStatDaily[]>(new Array(usedDaysAmount));
   const [todayStat, setTodayStat] = useState<UsageStatDaily | null>(null);
@@ -64,14 +66,8 @@ const UsageStatTable: React.FC = () => {
       }
     };
 
-    const unsubscribeMemoService = memoService.subscribe(() => {
-      fetchData();
-    });
-
-    return () => {
-      unsubscribeMemoService();
-    };
-  }, []);
+    fetchData();
+  }, [memos]);
 
   const handleUsageStatItemMouseEnter = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setTodayStat(item);

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { api } from "../helpers/api";
+import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
 import userService from "../helpers/userService";
 import memoService from "../helpers/memoService";
@@ -14,13 +15,15 @@ interface AmountState {
 }
 
 const UserBanner: React.FC = () => {
-  const [username, setUsername] = useState<string>("Memos");
-  const [createdDays, setCreatedDays] = useState<number>(0);
+  const { user } = useSelector(userService);
+  const { memos } = useSelector(memoService);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
     tagsAmount: 0,
   });
   const [showMenuBtnsPopup, setPopupStatus] = useState<boolean>(false);
+  const username = user ? user.username : "Memos";
+  const createdDays = user ? Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24) : 0;
 
   useEffect(() => {
     const fetchDataAmount = async () => {
@@ -35,24 +38,8 @@ const UserBanner: React.FC = () => {
       }
     };
 
-    const unsubscribeMemoService = memoService.subscribe(() => {
-      fetchDataAmount();
-    });
-
-    const unsubscribeUserService = userService.subscribe(({ user }) => {
-      if (user) {
-        setUsername(user.username);
-        setCreatedDays(Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24));
-      } else {
-        setUsername("Memos");
-      }
-    });
-
-    return () => {
-      unsubscribeMemoService();
-      unsubscribeUserService();
-    };
-  }, []);
+    fetchDataAmount();
+  }, [memos]);
 
   const toggleBtnsDialog = useCallback(
     (ev: React.MouseEvent) => {
@@ -83,8 +70,7 @@ const UserBanner: React.FC = () => {
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <button className="action-btn menu-popup-btn" onClick={toggleBtnsDialog}>
-        </button>
+        <button className="action-btn menu-popup-btn" onClick={toggleBtnsDialog}></button>
         <MenuBtnsPopup visibility={showMenuBtnsPopup} />
       </div>
       <div className="status-text-container">

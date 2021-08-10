@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import useSelector from "./hooks/useSelector";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "./helpers/consts";
 import { storage } from "./helpers/storage";
 import userService from "./helpers/userService";
@@ -15,21 +16,9 @@ import "./less/index.less";
 
 function App() {
   const [username, setUsername] = useState<string>("");
+  const { user } = useSelector(userService);
 
   useEffect(() => {
-    userService.doSignIn();
-
-    const unsubscribeUserService = userService.subscribe(({ user }) => {
-      if (user) {
-        setUsername(user.username);
-        locationService.initLocation();
-        memoService.fetchMoreMemos();
-      } else {
-        setUsername("Memos");
-        showSigninDialog();
-      }
-    });
-
     const handleStorageDataChanged = () => {
       const showDarkMode = storage.preferences.showDarkMode ?? false;
       if (showDarkMode) {
@@ -52,10 +41,24 @@ function App() {
     });
 
     return () => {
-      unsubscribeUserService();
       window.removeEventListener("storage", handleStorageDataChanged);
     };
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      userService.doSignIn().then((user) => {
+        if (user) {
+          setUsername(user.username);
+          locationService.initLocation();
+          memoService.fetchMoreMemos();
+        } else {
+          setUsername("Memos");
+          showSigninDialog();
+        }
+      });
+    }
+  }, [user]);
 
   const handleUsernameClick = useCallback(() => {
     locationService.clearQuery();
@@ -88,9 +91,4 @@ function App() {
   );
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));

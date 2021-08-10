@@ -1,4 +1,4 @@
-import createStore from "./createStore";
+import createStore from "../labs/createStore";
 
 interface Query {
   tag: string;

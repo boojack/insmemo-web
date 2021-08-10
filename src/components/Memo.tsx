@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { api } from "../helpers/api";
 import { storage } from "../helpers/storage";
 import { parseMarkedToHtml } from "../helpers/marked";
@@ -28,30 +28,23 @@ interface Props {
 
 const Memo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo } = props;
-  const [memo, setMemo] = useState<FormattedMemo>({
+  const memo: FormattedMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
-  });
+  };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-
-  useEffect(() => {
-    setMemo({
-      ...memo,
-      formattedContent: formatMemoContent(memo.content),
-    });
-  }, []);
 
   const handleShowMemoStoryDialog = () => {
     showMemoStoryDialog(memo.id);
   };
 
-  const markThisMemo = useCallback(() => {
+  const markThisMemo = () => {
     globalStateService.setMarkMemoId(memo.id);
-  }, [memo]);
+  };
 
-  const handleDeleteMemoClick = useCallback(async () => {
+  const handleDeleteMemoClick = async () => {
     if (showConfirmDeleteBtn) {
       await memoService.deleteMemoById(memo.id);
 
@@ -65,21 +58,21 @@ const Memo: React.FC<Props> = (props: Props) => {
     } else {
       toggleConfirmDeleteBtn();
     }
-  }, [showConfirmDeleteBtn]);
+  };
 
-  const handleEditMemoClick = useCallback(() => {
+  const handleEditMemoClick = () => {
     globalStateService.setEditMemoId(memo.id);
-  }, [memo]);
+  };
 
-  const handleMouseLeaveMemoWrapper = useCallback(() => {
+  const handleMouseLeaveMemoWrapper = () => {
     if (showConfirmDeleteBtn) {
       toggleConfirmDeleteBtn(false);
     }
-  }, [showConfirmDeleteBtn]);
+  };
 
-  const handleGenMemoImageBtnClick = useCallback(() => {
+  const handleGenMemoImageBtnClick = () => {
     showGenMemoImageDialog(memo);
-  }, [memo]);
+  };
 
   const handleMemoContentClick = async (e: React.MouseEvent) => {
     const targetEl = e.target as HTMLElement;

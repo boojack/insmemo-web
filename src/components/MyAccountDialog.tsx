@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
+import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
 import { showDialog } from "./Dialog";
 import userService from "../helpers/userService";
@@ -9,21 +10,10 @@ import "../less/my-account-dialog.less";
 interface Props extends DialogProps {}
 
 const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
-  const [user, setUser] = useState(userService.getState().user);
+  const { user } = useSelector(userService);
   const [username, setUsername] = useState<string>(user?.username ?? "");
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
   const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
-
-  useEffect(() => {
-    const unsubscribeUserServie = userService.subscribe(({ user }) => {
-      setUser(user);
-      setUsername(user?.username ?? "");
-    });
-
-    return () => {
-      unsubscribeUserServie();
-    };
-  }, []);
 
   const handleCloseBtnClick = () => {
     destroy();
@@ -75,12 +65,6 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
     if (showConfirmUnbindBtn) {
       await removeGithubName();
       await userService.doSignIn();
-
-      const user = userService.getState().user;
-      if (user) {
-        user.githubName = "";
-        setUser(user);
-      }
       setShowConfirmUnbindBtn(false);
     } else {
       setShowConfirmUnbindBtn(true);

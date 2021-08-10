@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
-import useRefrash from "../hooks/useRefrash";
+import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
 import memoService from "../helpers/memoService";
 import locationService from "../helpers/locationService";
@@ -15,8 +15,7 @@ interface Duration {
 interface Props {}
 
 const MemoList: React.FC<Props> = () => {
-  const refrash = useRefrash();
-  const [memos, setMemos] = useState<Model.Memo[]>([]);
+  const { memos } = useSelector(memoService);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
@@ -24,20 +23,7 @@ const MemoList: React.FC<Props> = () => {
   const tagQuery = query.tag;
   const duration: Duration = { from: query.from, to: query.to };
 
-  useEffect(() => {
-    const unsubscribeMemoService = memoService.subscribe(({ memos }) => {
-      setMemos([...memos]);
-    });
-
-    const unsubscribeLocationService = locationService.subscribe(() => {
-      refrash();
-    });
-
-    return () => {
-      unsubscribeMemoService();
-      unsubscribeLocationService();
-    };
-  }, []);
+  useSelector(locationService);
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
