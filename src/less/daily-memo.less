@@ -22,18 +22,18 @@
   > .time-wrapper {
     position: relative;
     left: -24px;
-    background-color: @bg-whitegray;
-    color: @text-gray;
-    width: 48px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    padding: 2px 2px;
-    border-radius: 8px;
+    width: 48px;
+    height: 28px;
+    line-height: 26px;
     border: 1px solid white;
-    height: 26px;
+    border-radius: 8px;
+    background-color: @bg-whitegray;
+    color: @text-gray;
 
     > .normal-text {
       font-size: 12px;
@@ -44,8 +44,14 @@
   > .memo-content-text {
     width: 100%;
     margin-left: -12px;
+    padding: 1px 0;
     font-size: 16px;
-    margin-top: -2px;
+
+    p {
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
   }
 }
 
