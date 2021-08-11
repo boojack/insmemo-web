@@ -1,5 +1,5 @@
 import locationStore from "../stores/locationStore";
-import { utils } from "./utils";
+import { utils } from "../helpers/utils";
 
 const updateLocationUrl = () => {
   const prevQueryString = utils.iterObjectToParamsString(locationStore.getState().query);

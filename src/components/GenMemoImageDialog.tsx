@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import userService from "../helpers/userService";
+import { userService } from "../services";
 import { ANIMATION_DURATION } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";

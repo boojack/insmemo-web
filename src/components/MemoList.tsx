@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { locationStore, memoStore } from "../stores";
+import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
-import memoService from "../helpers/memoService";
-import locationService from "../helpers/locationService";
 import Memo from "./Memo";
 import "../less/memolist.less";
 
@@ -15,7 +15,7 @@ interface Duration {
 interface Props {}
 
 const MemoList: React.FC<Props> = () => {
-  const { memos } = useSelector(memoService);
+  const { memos } = useSelector(memoStore);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
@@ -23,7 +23,7 @@ const MemoList: React.FC<Props> = () => {
   const tagQuery = query.tag;
   const duration: Duration = { from: query.from, to: query.to };
 
-  useSelector(locationService);
+  useSelector(locationStore);
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });

@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import useSelector from "./hooks/useSelector";
+import { userStore } from "./stores";
+import { locationService, memoService, userService } from "./services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "./helpers/consts";
 import { storage } from "./helpers/storage";
-import userService from "./helpers/userService";
-import memoService from "./helpers/memoService";
-import locationService from "./helpers/locationService";
 import MainEditor from "./components/MainEditor";
 import MemoList from "./components/MemoList";
 import Sidebar from "./components/Sidebar";
@@ -16,7 +15,7 @@ import "./less/index.less";
 
 function App() {
   const [username, setUsername] = useState<string>("");
-  const { user } = useSelector(userService);
+  const { user } = useSelector(userStore);
 
   useEffect(() => {
     const handleStorageDataChanged = () => {

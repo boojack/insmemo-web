@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import { storage } from "../helpers/storage";
 import { utils } from "../helpers/utils";
-import memoService from "../helpers/memoService";
 import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import DailyMemo from "./DailyMemo";

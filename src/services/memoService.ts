@@ -1,5 +1,5 @@
-import { FETCH_MEMO_AMOUNT } from "./consts";
-import { api } from "./api";
+import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
+import { api } from "../helpers/api";
 import Toast from "../components/Toast";
 import memoStore from "../stores/memoStore";
 import userService from "./userService";

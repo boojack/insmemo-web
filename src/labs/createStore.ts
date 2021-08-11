@@ -3,7 +3,7 @@ export interface Action {
 }
 
 type Reducer<S, A extends Action> = (s: S, a: A) => S;
-type Listener<S> = (ns: S, ps: S) => void;
+type Listener<S> = (ns: S, ps?: S) => void;
 type Unsubscribe = () => void;
 
 export interface Store<S, A extends Action> {

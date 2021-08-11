@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../helpers/api";
+import { globalStateStore, locationStore } from "../stores";
+import { globalStateService, locationService, memoService } from "../services";
 import useSelector from "../hooks/useSelector";
-import memoService from "../helpers/memoService";
-import globalStateService from "../helpers/globalStateService";
-import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toast from "./Toast";
@@ -11,8 +10,8 @@ import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/main-editor.less";
 
 const MainEditor: React.FC = () => {
-  const globalState = useSelector(globalStateService);
-  const { query } = useSelector(locationService);
+  const globalState = useSelector(globalStateStore);
+  const { query } = useSelector(locationStore);
   const editorRef = React.useRef<EditorRefActions>(null);
   const [editMemoId, setEditMemoId] = useState(globalState.editMemoId);
 

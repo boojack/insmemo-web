@@ -1,5 +1,5 @@
 import React from "react";
-import userService from "../helpers/userService";
+import { userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";

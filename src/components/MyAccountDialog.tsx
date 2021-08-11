@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { userStore } from "../stores";
+import { userService } from "../services";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
 import { showDialog } from "./Dialog";
-import userService from "../helpers/userService";
 import "../less/my-account-dialog.less";
 
 interface Props extends DialogProps {}
 
 const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
-  const { user } = useSelector(userService);
+  const { user } = useSelector(userStore);
   const [username, setUsername] = useState<string>(user?.username ?? "");
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
   const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);

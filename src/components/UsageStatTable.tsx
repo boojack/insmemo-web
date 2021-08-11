@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { memoStore } from "../stores";
+import { locationService, userService } from "../services";
 import { api } from "../helpers/api";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
-import toast from "./Toast";
-import memoService from "../helpers/memoService";
-import userService from "../helpers/userService";
-import locationService from "../helpers/locationService";
 import { utils } from "../helpers/utils";
+import toast from "./Toast";
 import "../less/usage-stat-table.less";
 
 const tableConfig = {
@@ -19,37 +18,39 @@ interface UsageStatDaily {
   count: number;
 }
 
-const todayTimeStamp = utils.getTimeStampByDate(Date.now());
-const todayDay = new Date(todayTimeStamp).getDay() || 7;
-const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
-const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
+interface Props {}
 
-const UsageStatTable: React.FC = () => {
-  const { memos } = useSelector(memoService);
+const UsageStatTable: React.FC<Props> = () => {
+  const todayTimeStamp = utils.getTimeStampByDate(Date.now());
+  const todayDay = new Date(todayTimeStamp).getDay() || 7;
+  const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
+  const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
   const nullCell = new Array(7 - todayDay).fill(0);
-  const [allStat, setAllStat] = useState<UsageStatDaily[]>(new Array(usedDaysAmount));
-  const [todayStat, setTodayStat] = useState<UsageStatDaily | null>(null);
-  const [currentStat, setCurrentStat] = useState<UsageStatDaily | null>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const payloadStat: UsageStatDaily[] = [];
-
+  const getInitialUsageStat = (): UsageStatDaily[] => {
+    const initialUsageStat: UsageStatDaily[] = [];
     for (let i = 1; i <= usedDaysAmount; i++) {
-      payloadStat.push({
+      initialUsageStat.push({
         timestamp: beginDayTimestemp + DAILY_TIMESTAMP * i,
         count: 0,
       });
     }
-    setAllStat([...payloadStat]);
+    return initialUsageStat;
+  };
 
+  const { memos } = useSelector(memoStore);
+  const [allStat, setAllStat] = useState<UsageStatDaily[]>(getInitialUsageStat());
+  const [popupStat, setPopupStat] = useState<UsageStatDaily | null>(null);
+  const [currentStat, setCurrentStat] = useState<UsageStatDaily | null>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
     const fetchData = async () => {
       const { user } = userService.getState();
 
       if (user) {
         try {
-          // 简单实现深拷贝
-          const newStat: UsageStatDaily[] = JSON.parse(JSON.stringify(payloadStat));
+          const newStat: UsageStatDaily[] = getInitialUsageStat();
           const data = await getMemosStat();
 
           for (const d of data) {
@@ -70,7 +71,7 @@ const UsageStatTable: React.FC = () => {
   }, [memos]);
 
   const handleUsageStatItemMouseEnter = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
-    setTodayStat(item);
+    setPopupStat(item);
 
     if (popupRef.current) {
       const targetEl = ev.target as HTMLElement;
@@ -80,7 +81,7 @@ const UsageStatTable: React.FC = () => {
   }, []);
 
   const handleUsageStatItemMouseLeave = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
-    setTodayStat(null);
+    setPopupStat(null);
   }, []);
 
   const handleUsageStatItemClick = (item: UsageStatDaily) => {
@@ -106,8 +107,8 @@ const UsageStatTable: React.FC = () => {
       </div>
 
       {/* popup */}
-      <div ref={popupRef} className={"usage-detail-container pop-up " + (todayStat ? "" : "hidden")}>
-        {todayStat?.count} memos on <span className="date-text">{new Date(todayStat?.timestamp!).toDateString()}</span>
+      <div ref={popupRef} className={"usage-detail-container pop-up " + (popupStat ? "" : "hidden")}>
+        {popupStat?.count} memos on <span className="date-text">{new Date(popupStat?.timestamp!).toDateString()}</span>
       </div>
 
       <div className="usage-stat-table">

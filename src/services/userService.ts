@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api } from "../helpers/api";
 import Toast from "../components/Toast";
 import userStore from "../stores/userStore";
 

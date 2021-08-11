@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
-import memoService from "../helpers/memoService";
+import { memoService } from "../services";
 import "../less/preferences-dialog.less";
 
 interface Props extends DialogProps {}

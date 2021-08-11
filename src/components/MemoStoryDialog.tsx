@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
-import memoService from "../helpers/memoService";
+import { memoService } from "../services";
 import { showDialog } from "./Dialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";

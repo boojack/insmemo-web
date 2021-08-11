@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
-import userService from "../helpers/userService";
-import memoService from "../helpers/memoService";
+import { memoService, userService } from "../services";
 import { showDialog } from "./Dialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import toast from "./Toast";

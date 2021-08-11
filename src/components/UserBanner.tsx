@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { memoStore, userStore } from "../stores";
+import { locationService } from "../services";
 import { api } from "../helpers/api";
 import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
-import userService from "../helpers/userService";
-import memoService from "../helpers/memoService";
-import locationService from "../helpers/locationService";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import "../less/user-banner.less";
@@ -15,8 +14,8 @@ interface AmountState {
 }
 
 const UserBanner: React.FC = () => {
-  const { user } = useSelector(userService);
-  const { memos } = useSelector(memoService);
+  const { user } = useSelector(userStore);
+  const { memos } = useSelector(memoStore);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
     tagsAmount: 0,

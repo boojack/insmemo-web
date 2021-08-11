@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { locationStore, memoStore } from "../stores";
+import { locationService } from "../services";
 import { api } from "../helpers/api";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
 import useSelector from "../hooks/useSelector";
 import useToggle from "../hooks/useToggle";
-import memoService from "../helpers/memoService";
-import locationService from "../helpers/locationService";
 import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
 
 const TagList: React.FC = () => {
-  const { memos } = useSelector(memoService);
-  const { query } = useSelector(locationService);
+  const { query } = useSelector(locationStore);
+  const { memos } = useSelector(memoStore);
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
   const [isLoading, setLoading] = useToggle(true);
