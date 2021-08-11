@@ -7,18 +7,27 @@ const updateLocationUrl = () => {
   history.replaceState(null, "", "/" + queryString);
 };
 
-const locationService = {
-  initLocation: () => {
+class LocationService {
+  constructor() {
+    this.initLocation();
+  }
+
+  public getState = () => {
+    return locationStore.getState();
+  };
+
+  public initLocation = () => {
     // 先不处理 hash
     // const hash = window.location.hash;
     // if (hash) {
     //   locationService.setHash(hash);
     // }
     const urlParams = new URLSearchParams(window.location.search);
-    locationService.setTagQuery(urlParams.get("tag") ?? "");
-    locationService.setFromAndToQuery(parseInt(urlParams.get("from") ?? "") ?? 0, parseInt(urlParams.get("to") ?? "") ?? 0);
-  },
-  clearQuery: () => {
+    this.setTagQuery(urlParams.get("tag") ?? "");
+    this.setFromAndToQuery(parseInt(urlParams.get("from") ?? "") ?? 0, parseInt(urlParams.get("to") ?? "") ?? 0);
+  };
+
+  public clearQuery = () => {
     locationStore.dispatch({
       type: "SET_TAG_QUERY",
       payload: {
@@ -35,8 +44,9 @@ const locationService = {
     });
 
     updateLocationUrl();
-  },
-  setHash: (hash: string) => {
+  };
+
+  public setHash = (hash: string) => {
     locationStore.dispatch({
       type: "SET_HASH",
       payload: {
@@ -45,8 +55,9 @@ const locationService = {
     });
 
     updateLocationUrl();
-  },
-  setTagQuery: (tag: string) => {
+  };
+
+  public setTagQuery = (tag: string) => {
     locationStore.dispatch({
       type: "SET_TAG_QUERY",
       payload: {
@@ -55,8 +66,9 @@ const locationService = {
     });
 
     updateLocationUrl();
-  },
-  setFromAndToQuery: (from: number, to: number) => {
+  };
+
+  public setFromAndToQuery = (from: number, to: number) => {
     locationStore.dispatch({
       type: "SET_FROM_TO_QUERY",
       payload: {
@@ -66,8 +78,9 @@ const locationService = {
     });
 
     updateLocationUrl();
-  },
-  ...locationStore,
-};
+  };
+}
+
+const locationService = new LocationService();
 
 export default locationService;

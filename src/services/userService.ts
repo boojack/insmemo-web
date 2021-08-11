@@ -1,36 +1,5 @@
 import { api } from "../helpers/api";
-import Toast from "../components/Toast";
 import userStore from "../stores/userStore";
-
-const userService = {
-  doSignIn: async () => {
-    try {
-      const user = await getUserInfo();
-      if (user) {
-        userStore.dispatch({
-          type: "SIGN_IN",
-          payload: { user },
-        });
-      } else {
-        userService.doSignOut();
-      }
-
-      return user;
-    } catch (error) {
-      Toast.error(error);
-    }
-  },
-
-  doSignOut: async () => {
-    await signout();
-    userStore.dispatch({
-      type: "SIGN_OUT",
-      payload: { user: null },
-    });
-  },
-
-  ...userStore,
-};
 
 function getUserInfo(): Promise<Model.User> {
   return new Promise((resolve, reject) => {
@@ -57,5 +26,39 @@ function signout(): Promise<void> {
       });
   });
 }
+
+class UserService {
+  public getState = () => {
+    return userStore.getState();
+  };
+
+  public doSignIn = async () => {
+    try {
+      const user = await getUserInfo();
+      if (user) {
+        userStore.dispatch({
+          type: "SIGN_IN",
+          payload: { user },
+        });
+      } else {
+        userService.doSignOut();
+      }
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  public doSignOut = async () => {
+    await signout();
+    userStore.dispatch({
+      type: "SIGN_OUT",
+      payload: { user: null },
+    });
+  };
+}
+
+const userService = new UserService();
 
 export default userService;

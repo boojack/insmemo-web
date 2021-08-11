@@ -49,7 +49,6 @@ function App() {
       userService.doSignIn().then((user) => {
         if (user) {
           setUsername(user.username);
-          locationService.initLocation();
           memoService.fetchMoreMemos();
         } else {
           setUsername("Memos");
