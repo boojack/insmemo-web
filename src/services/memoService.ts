@@ -1,100 +1,59 @@
-import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import { api } from "../helpers/api";
 import memoStore from "../stores/memoStore";
 import userService from "./userService";
-
-function getMyMemos(offset: number, amount: number): Promise<Model.Memo[]> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMyMemos(offset, amount)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function deleteMemo(memoId: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .deleteMemo(memoId)
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
-const getMyMemosAmount = (): Promise<number> => {
-  return new Promise((resolve, reject) => {
-    api
-      .getMyDataAmount()
-      .then(({ data }) => {
-        resolve(data.memosAmount);
-      })
-      .catch(() => {
-        reject("数据请求失败");
-      });
-  });
-};
+import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 
 class MemoService {
   public isFetching: boolean = false;
 
-  public getState = () => {
+  public getState() {
     return memoStore.getState();
-  };
+  }
 
-  public fetchMoreMemos = async () => {
+  public async fetchMoreMemos() {
     if (!userService.getState() || this.isFetching) {
       return false;
     }
 
     let memos: Model.Memo[] = [];
-    try {
-      this.isFetching = true;
-      const data = await getMyMemos(this.getState().memos.length, FETCH_MEMO_AMOUNT);
+    this.isFetching = true;
+    const { data } = await api.getMyMemos(this.getState().memos.length, FETCH_MEMO_AMOUNT);
 
-      if (!Array.isArray(data)) {
-        return false;
-      }
-
-      memos = data.map((m) => ({
-        id: m.id,
-        content: m.content,
-        tags: m.tags,
-        createdAt: new Date(m.createdAt).getTime(),
-        updatedAt: new Date(m.updatedAt).getTime(),
-      }));
-
-      if (memos.length > 0) {
-        memoStore.dispatch({
-          type: "PUSH_MEMOS",
-          payload: {
-            memos,
-          },
-        });
-      }
-      this.isFetching = false;
-    } catch (error) {
-      throw error;
+    if (!Array.isArray(data)) {
+      return false;
     }
 
-    return memos;
-  };
+    memos = data.map((m) => ({
+      id: m.id,
+      content: m.content,
+      tags: m.tags,
+      createdAt: new Date(m.createdAt).getTime(),
+      updatedAt: new Date(m.updatedAt).getTime(),
+    }));
 
-  public fetchAllMemos = async () => {
+    if (memos.length > 0) {
+      memoStore.dispatch({
+        type: "PUSH_MEMOS",
+        payload: {
+          memos,
+        },
+      });
+    }
+    this.isFetching = false;
+
+    return memos;
+  }
+
+  public async fetchAllMemos() {
     if (!userService.getState() || this.isFetching) {
       return false;
     }
 
     this.isFetching = true;
-    const memosAmount = await getMyMemosAmount();
-    const data = await getMyMemos(this.getState().memos.length, memosAmount);
+    const {
+      data: { memosAmount },
+    } = await api.getMyDataAmount();
+    const { data } = await api.getMyMemos(this.getState().memos.length, memosAmount);
     const memos = data.map((m) => ({
       id: m.id,
       content: m.content,
@@ -112,9 +71,9 @@ class MemoService {
       });
     }
     this.isFetching = false;
-  };
+  }
 
-  public pushMemo = (memo: Model.Memo) => {
+  public pushMemo(memo: Model.Memo) {
     memoStore.dispatch({
       type: "PUSH",
       payload: {
@@ -127,32 +86,77 @@ class MemoService {
         },
       },
     });
-  };
+  }
 
-  public getMemoById = (id: string) => {
+  public async getMemoById(id: string) {
     for (const m of this.getState().memos) {
       if (m.id === id) {
         return m;
       }
     }
-  };
 
-  public deleteMemoById = async (id: string) => {
-    await deleteMemo(id);
+    const { data } = await api.getMemoById(id);
+    return data;
+  }
+
+  public async deleteMemoById(id: string) {
+    await api.deleteMemo(id);
     memoStore.dispatch({
       type: "DELETE_BY_ID",
       payload: {
         id: id,
       },
     });
-  };
+  }
 
-  public editMemo = (memo: Model.Memo) => {
+  public editMemo(memo: Model.Memo) {
     memoStore.dispatch({
       type: "EDIT_MEMO",
       payload: memo,
     });
-  };
+  }
+
+  public async createMemo(text: string): Promise<Model.Memo> {
+    const { data: memo } = await api.createMemo(text);
+    return memo;
+  }
+
+  public async updateMemo(memoId: string, text: string): Promise<Model.Memo> {
+    const { data: memo } = await api.updateMemo(memoId, text);
+    return memo;
+  }
+
+  public async createTag(text: string): Promise<Model.Tag> {
+    const { data: tag } = await api.createTag(text);
+    return tag;
+  }
+
+  public async removeMemoTag(memoId: string, tagId: string): Promise<void> {
+    await api.removeMemoTag(memoId, tagId);
+  }
+
+  public async createMemoTag(memoId: string, tagId: string): Promise<void> {
+    await api.createMemoTag(memoId, tagId);
+  }
+
+  public async getMyDataAmount(): Promise<Api.DataAmounts> {
+    const { data } = await api.getMyDataAmount();
+    return data;
+  }
+
+  public async getMemosStat(): Promise<Api.MemosStat[]> {
+    const { data } = await api.getMemosStat();
+    return data;
+  }
+
+  public async getMyTags(): Promise<Api.Tag[]> {
+    const { data: tags } = await api.getMyTags();
+    return tags;
+  }
+
+  public async polishTag(tagId: string) {
+    await api.polishTag(tagId);
+  }
 }
 
 const memoService = new MemoService();

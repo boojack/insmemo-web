@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { memoStore } from "../stores";
-import { locationService, userService } from "../services";
-import { api } from "../helpers/api";
+import { locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
@@ -51,7 +50,7 @@ const UsageStatTable: React.FC<Props> = () => {
       if (user) {
         try {
           const newStat: UsageStatDaily[] = getInitialUsageStat();
-          const data = await getMemosStat();
+          const data = await memoService.getMemosStat();
 
           for (const d of data) {
             const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
@@ -142,18 +141,5 @@ const UsageStatTable: React.FC<Props> = () => {
     </div>
   );
 };
-
-function getMemosStat(): Promise<Api.MemosStat[]> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMemosStat()
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("数据请求失败");
-      });
-  });
-}
 
 export default UsageStatTable;

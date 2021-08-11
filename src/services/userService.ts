@@ -1,62 +1,53 @@
 import { api } from "../helpers/api";
 import userStore from "../stores/userStore";
 
-function getUserInfo(): Promise<Model.User> {
-  return new Promise((resolve, reject) => {
-    api
-      .getUserInfo()
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function signout(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .signout()
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
 class UserService {
-  public getState = () => {
+  public getState() {
     return userStore.getState();
-  };
+  }
 
-  public doSignIn = async () => {
-    try {
-      const user = await getUserInfo();
-      if (user) {
-        userStore.dispatch({
-          type: "SIGN_IN",
-          payload: { user },
-        });
-      } else {
-        userService.doSignOut();
-      }
-
-      return user;
-    } catch (error) {
-      throw error;
+  public async doSignIn() {
+    const { data: user } = await api.getUserInfo();
+    if (user) {
+      userStore.dispatch({
+        type: "SIGN_IN",
+        payload: { user },
+      });
+    } else {
+      userService.doSignOut();
     }
-  };
+    return user;
+  }
 
-  public doSignOut = async () => {
-    await signout();
+  public async doSignOut() {
+    await api.signout();
     userStore.dispatch({
       type: "SIGN_OUT",
       payload: { user: null },
     });
-  };
+  }
+
+  public async checkUsernameUsable(username: string): Promise<boolean> {
+    const { data: isUsable } = await api.checkUsernameUsable(username);
+    return isUsable;
+  }
+
+  public async updateUsername(username: string): Promise<void> {
+    await api.updateUserinfo(username);
+  }
+
+  public async removeGithubName(): Promise<void> {
+    await api.removeGithubName();
+  }
+
+  public async checkPasswordValid(password: string): Promise<boolean> {
+    const { data: isValid } = await api.checkPasswordValid(password);
+    return isValid;
+  }
+
+  public async updatePassword(password: string): Promise<void> {
+    await api.updateUserinfo("", password);
+  }
 }
 
 const userService = new UserService();

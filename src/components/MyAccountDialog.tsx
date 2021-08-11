@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../stores";
 import { userService } from "../services";
-import { api } from "../helpers/api";
 import { utils } from "../helpers/utils";
 import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
@@ -37,14 +36,14 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
     }
 
     try {
-      const data = await checkUsernameUsable(username);
+      const isUsable = await userService.checkUsernameUsable(username);
 
-      if (!data) {
+      if (!isUsable) {
         toast.error("用户名无法使用");
         return;
       }
 
-      await updateUsername(username);
+      await userService.updateUsername(username);
       await userService.doSignIn();
       setShowEditUsernameInputs(false);
       toast.info("修改成功~");
@@ -64,7 +63,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
 
   const handleUnbindGithubBtnClick = async () => {
     if (showConfirmUnbindBtn) {
-      await removeGithubName();
+      await userService.removeGithubName();
       await userService.doSignIn();
       setShowConfirmUnbindBtn(false);
     } else {
@@ -205,15 +204,15 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
     }
 
     try {
-      const data = await checkPasswordValid(oldPassword);
+      const isValid = await userService.checkPasswordValid(oldPassword);
 
-      if (!data) {
+      if (!isValid) {
         toast.error("旧密码不匹配");
         setOldPassword("");
         return;
       }
 
-      await updatePassword(newPassword);
+      await userService.updatePassword(newPassword);
       toast.info("密码修改成功！");
       handleCloseBtnClick();
     } catch (error) {
@@ -264,71 +263,6 @@ function showChangePasswordDialog() {
     ChangePasswordDialog,
     {}
   );
-}
-
-function checkUsernameUsable(username: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    api
-      .checkUsernameUsable(username)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function updateUsername(username: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .updateUserinfo(username)
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function removeGithubName(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .removeGithubName()
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function checkPasswordValid(password: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    api
-      .checkPasswordValid(password)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
-}
-
-function updatePassword(password: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .updateUserinfo("", password)
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        reject("请求失败");
-      });
-  });
 }
 
 export default function showMyAccountDialog() {

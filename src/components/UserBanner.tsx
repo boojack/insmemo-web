@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { memoStore, userStore } from "../stores";
-import { locationService } from "../services";
-import { api } from "../helpers/api";
+import { locationService, memoService } from "../services";
 import useSelector from "../hooks/useSelector";
 import toast from "./Toast";
 import MenuBtnsPopup from "./MenuBtnsPopup";
@@ -27,11 +26,9 @@ const UserBanner: React.FC = () => {
   useEffect(() => {
     const fetchDataAmount = async () => {
       try {
-        const data = await getMyDataAmount();
+        const amounts = await memoService.getMyDataAmount();
 
-        setAmountState({
-          ...data,
-        });
+        setAmountState(amounts);
       } catch (error) {
         toast.error(error);
       }
@@ -89,18 +86,5 @@ const UserBanner: React.FC = () => {
     </div>
   );
 };
-
-function getMyDataAmount(): Promise<Api.DataAmounts> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMyDataAmount()
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("数据请求失败");
-      });
-  });
-}
 
 export default UserBanner;

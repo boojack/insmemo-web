@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { api } from "../helpers/api";
 import { globalStateStore, locationStore } from "../stores";
 import { globalStateService, locationService, memoService } from "../services";
 import useSelector from "../hooks/useSelector";
@@ -17,7 +16,7 @@ const MainEditor: React.FC = () => {
 
   useEffect(() => {
     // Mark memo
-    if (globalState.markMemoId !== "" && memoService.getMemoById(globalState.markMemoId)) {
+    if (globalState.markMemoId) {
       const memoLinkText = `Mark: [@MEMO](${globalState.markMemoId})`;
       editorRef.current?.insertText(`<p>${memoLinkText}</p>`);
     }
@@ -25,11 +24,13 @@ const MainEditor: React.FC = () => {
     // Edit memo
     if (globalState.editMemoId !== editMemoId) {
       setEditMemoId(globalState.editMemoId);
-
-      const editMemo = memoService.getMemoById(globalState.editMemoId);
-      if (editMemo) {
-        editorRef.current?.setContent(editMemo.content ?? "");
-        editorRef.current?.focus();
+      if (globalState.editMemoId) {
+        memoService.getMemoById(globalState.editMemoId).then((editMemo) => {
+          if (editMemo) {
+            editorRef.current?.setContent(editMemo.content ?? "");
+            editorRef.current?.focus();
+          }
+        });
       }
     }
   }, [globalState]);
@@ -63,12 +64,12 @@ const MainEditor: React.FC = () => {
 
     // 保存标签
     for (const t of tagTexts) {
-      const tag = await createTag(t);
+      const tag = await memoService.createTag(t);
       tags.push(tag);
     }
 
     if (editMemoId) {
-      const prevMemo = memoService.getMemoById(editMemoId);
+      const prevMemo = await memoService.getMemoById(editMemoId);
 
       if (!prevMemo || prevMemo.content === content) {
         // do nth
@@ -83,16 +84,16 @@ const MainEditor: React.FC = () => {
 
           if (!tagTexts.includes(tagText)) {
             tags.splice(i, 1);
-            removeMemoTag(prevMemo.id, t.id);
+            memoService.removeMemoTag(prevMemo.id, t.id);
           } else {
             i++;
             if (!prevTagTexts.includes(tagText)) {
-              createMemoTag(prevMemo.id, t.id);
+              memoService.createMemoTag(prevMemo.id, t.id);
             }
           }
         }
 
-        const editedMemo = await updateMemo(prevMemo.id, content);
+        const editedMemo = await memoService.updateMemo(prevMemo.id, content);
 
         prevMemo.tags = tags;
         prevMemo.content = editedMemo.content ?? "";
@@ -101,13 +102,13 @@ const MainEditor: React.FC = () => {
       }
       globalStateService.setEditMemoId("");
     } else {
-      const newMemo = await createMemo(content);
+      const newMemo = await memoService.createMemo(content);
 
       newMemo.tags = tags;
 
       // link memo and tag
       for (const t of tags) {
-        await createMemoTag(newMemo.id, t.id);
+        await memoService.createMemoTag(newMemo.id, t.id);
       }
       const tagQuery = query.tag;
       if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
@@ -169,71 +170,6 @@ function getEditorContentCache(): string {
 function setEditorContentCache(content: string) {
   storage.set({
     editorContentCache: content,
-  });
-}
-
-function createMemo(text: string): Promise<Model.Memo> {
-  return new Promise((resolve, reject) => {
-    api
-      .createMemo(text)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
-function updateMemo(memoId: string, text: string): Promise<Model.Memo> {
-  return new Promise((resolve, reject) => {
-    api
-      .updateMemo(memoId, text)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
-function createTag(text: string): Promise<Model.Tag> {
-  return new Promise((resolve, reject) => {
-    api
-      .createTag(text)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
-function removeMemoTag(memoId: string, tagId: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .removeMemoTag(memoId, tagId)
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
-
-function createMemoTag(memoId: string, tagId: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    api
-      .createMemoTag(memoId, tagId)
-      .then(() => {
-        resolve();
-      })
-      .catch(() => {
-        // do nth
-      });
   });
 }
 

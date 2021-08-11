@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { locationStore, memoStore } from "../stores";
-import { locationService } from "../services";
-import { api } from "../helpers/api";
+import { locationService, memoService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
 import useSelector from "../hooks/useSelector";
@@ -20,7 +19,7 @@ const TagList: React.FC = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const tags = await getMyTags();
+        const tags = await memoService.getMyTags();
         setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
       } catch (error) {
         toast.error(error);
@@ -42,7 +41,7 @@ const TagList: React.FC = () => {
   const handleTagClick = (tag: TagItem) => {
     const tagText = tag.text === tagQuery ? "" : tag.text;
     if (tagText) {
-      polishTag(tag.id);
+      memoService.polishTag(tag.id);
     }
     locationService.setTagQuery(tagText);
   };
@@ -78,25 +77,5 @@ const TagList: React.FC = () => {
     </div>
   );
 };
-
-function getMyTags(): Promise<Api.Tag[]> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMyTags()
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        reject("数据请求失败");
-      });
-  });
-}
-
-function polishTag(tagId: string) {
-  api
-    .polishTag(tagId)
-    .then(() => {})
-    .catch(() => {});
-}
 
 export default TagList;

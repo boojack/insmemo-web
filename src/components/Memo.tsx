@@ -1,5 +1,4 @@
 import React from "react";
-import { api } from "../helpers/api";
 import { storage } from "../helpers/storage";
 import { parseMarkedToHtml } from "../helpers/marked";
 import { globalStateService, memoService } from "../services";
@@ -80,18 +79,7 @@ const Memo: React.FC<Props> = (props: Props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        let memoTemp = memoService.getMemoById(memoId);
-
-        if (!memoTemp) {
-          memoTemp = await getMemoById(memoId);
-          const t = setInterval(async () => {
-            if (!memoService.getMemoById(memoId)) {
-              await memoService.fetchMoreMemos();
-            } else {
-              clearInterval(t);
-            }
-          }, 0);
-        }
+        const memoTemp = await memoService.getMemoById(memoId);
 
         if (memoTemp) {
           showMemoStoryDialog(memoId);
@@ -138,19 +126,6 @@ const Memo: React.FC<Props> = (props: Props) => {
     </div>
   );
 };
-
-function getMemoById(memoId: string): Promise<Model.Memo> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMemoById(memoId)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
 
 export function formatMemoContent(content: string): string {
   const tempDivContainer = document.createElement("div");

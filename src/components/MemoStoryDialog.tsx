@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { api } from "../helpers/api";
-import { utils } from "../helpers/utils";
 import { memoService } from "../services";
+import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";
@@ -25,11 +24,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const fetchMemo = async () => {
-      let memoTemp = memoService.getMemoById(currentMemoId);
-
-      if (!memoTemp) {
-        memoTemp = await getMemoById(currentMemoId);
-      }
+      const memoTemp = await memoService.getMemoById(currentMemoId);
 
       if (memoTemp) {
         setImageUrls(Array.from(memoTemp.content.match(IMAGE_URL_REG) ?? []));
@@ -55,7 +50,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
       for (const matchRes of matchedArr) {
         if (matchRes && matchRes.length === 3) {
           const memoId = matchRes[2];
-          const memoTemp = memoService.getMemoById(memoId) ?? (await getMemoById(memoId));
+          const memoTemp = await memoService.getMemoById(memoId);
 
           if (memoTemp) {
             downMemoList.push({
@@ -85,18 +80,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        let memoTemp = memoService.getMemoById(memoId);
-
-        if (!memoTemp) {
-          memoTemp = await getMemoById(memoId);
-          const t = setInterval(async () => {
-            if (!memoService.getMemoById(memoId)) {
-              await memoService.fetchMoreMemos();
-            } else {
-              clearInterval(t);
-            }
-          }, 0);
-        }
+        const memoTemp = await memoService.getMemoById(memoId);
 
         if (memoTemp) {
           destroy();
@@ -156,19 +140,6 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
     </>
   );
 };
-
-function getMemoById(memoId: string): Promise<Model.Memo> {
-  return new Promise((resolve, reject) => {
-    api
-      .getMemoById(memoId)
-      .then(({ data }) => {
-        resolve(data);
-      })
-      .catch(() => {
-        // do nth
-      });
-  });
-}
 
 export default function showMemoStoryDialog(memoId: string) {
   showDialog(
