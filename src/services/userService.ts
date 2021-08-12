@@ -7,16 +7,20 @@ class UserService {
   }
 
   public async doSignIn() {
-    const { data: user } = await api.getUserInfo();
-    if (user) {
-      userStore.dispatch({
-        type: "SIGN_IN",
-        payload: { user },
-      });
-    } else {
-      userService.doSignOut();
+    try {
+      const { data: user } = await api.getUserInfo();
+      if (user) {
+        userStore.dispatch({
+          type: "SIGN_IN",
+          payload: { user },
+        });
+      } else {
+        userService.doSignOut();
+      }
+      return user;
+    } catch (error) {
+      // do nth
     }
-    return user;
   }
 
   public async doSignOut() {

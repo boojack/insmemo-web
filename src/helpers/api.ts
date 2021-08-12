@@ -24,6 +24,10 @@ export namespace api {
       console.error(res);
     }
 
+    if (!res.data.succeed) {
+      throw res.data.message;
+    }
+
     return res.data;
   }
 
@@ -33,6 +37,10 @@ export namespace api {
     if (res.status !== 200) {
       // handler error
       console.error(res);
+    }
+
+    if (!res.data.succeed) {
+      throw res.data.message;
     }
 
     return res.data;

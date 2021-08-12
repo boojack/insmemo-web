@@ -44,29 +44,25 @@ const UsageStatTable: React.FC<Props> = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { user } = userService.getState();
-
-      if (user) {
-        try {
-          const newStat: UsageStatDaily[] = getInitialUsageStat();
-          const data = await memoService.getMemosStat();
-
-          for (const d of data) {
-            const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
-            if (index >= 0) {
-              newStat[index].count = d.amount;
-            }
+    if (!userService.getState().user) {
+      return;
+    }
+    const newStat: UsageStatDaily[] = getInitialUsageStat();
+    memoService
+      .getMemosStat()
+      .then((stats) => {
+        for (const d of stats) {
+          const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
+          if (index >= 0) {
+            newStat[index].count = d.amount;
           }
-
-          setAllStat([...newStat]);
-        } catch (error) {
-          toast.error(error);
         }
-      }
-    };
 
-    fetchData();
+        setAllStat([...newStat]);
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
   }, [memos]);
 
   const handleUsageStatItemMouseEnter = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {

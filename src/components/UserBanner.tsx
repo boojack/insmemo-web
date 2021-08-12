@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { memoStore, userStore } from "../stores";
-import { locationService, memoService } from "../services";
+import { locationService, memoService, userService } from "../services";
 import useSelector from "../hooks/useSelector";
-import toast from "./Toast";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import "../less/user-banner.less";
@@ -24,17 +23,12 @@ const UserBanner: React.FC = () => {
   const createdDays = user ? Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24) : 0;
 
   useEffect(() => {
-    const fetchDataAmount = async () => {
-      try {
-        const amounts = await memoService.getMyDataAmount();
-
-        setAmountState(amounts);
-      } catch (error) {
-        toast.error(error);
-      }
-    };
-
-    fetchDataAmount();
+    if (!userService.getState().user) {
+      return;
+    }
+    memoService.getMyDataAmount().then((amounts) => {
+      setAmountState(amounts);
+    });
   }, [memos]);
 
   const toggleBtnsDialog = useCallback(

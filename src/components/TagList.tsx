@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { locationStore, memoStore } from "../stores";
-import { locationService, memoService } from "../services";
+import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
 import useSelector from "../hooks/useSelector";
@@ -17,11 +17,17 @@ const TagList: React.FC = () => {
   const loadingState = useLoading();
 
   useEffect(() => {
+    if (!userService.getState().user) {
+      return;
+    }
+
     memoService
       .getMyTags()
       .then((tags) => {
-        setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
-        loadingState.setFinish();
+        if (tags) {
+          setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
+          loadingState.setFinish();
+        }
       })
       .catch((error) => {
         loadingState.setError();

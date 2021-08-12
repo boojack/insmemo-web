@@ -21,13 +21,6 @@ const DailyMemo: React.FC<Props> = (props: Props) => {
     timeStr: utils.getTimeStampString(propsMemo.createdAt),
   });
 
-  useEffect(() => {
-    setMemo({
-      ...memo,
-      formattedContent: formatMemoContent(memo.content),
-    });
-  }, []);
-
   return (
     <div className="daily-memo-wrapper">
       <div className="time-wrapper">
