@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
+import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import { storage } from "../helpers/storage";
 import { utils } from "../helpers/utils";
@@ -18,7 +19,7 @@ const monthChineseStrArray = ["一月", "二月", "三月", "四月", "五月", 
 const weekdayChineseStrArray = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
-  const [isLoading, setLoadingStatus] = useState<boolean>(true);
+  const loadingState = useLoading();
   const [memos, setMemos] = useState<Model.Memo[]>([]);
   const [currentDateStamp, setCurrentDateStamp] = useState(utils.getTimeStampByDate(utils.getDateString(props.currentDateStamp)));
   const [showDatePicker, toggleShowDatePicker] = useToggle(false);
@@ -26,31 +27,24 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   const currentDate = new Date(currentDateStamp);
 
   useEffect(() => {
-    const getDailyMemos = async () => {
-      setLoadingStatus(true);
-
-      while (true) {
-        const memos = memoService.getState().memos;
-        const lastMemo = memos.slice(-1).pop();
-        if (lastMemo && lastMemo.createdAt >= currentDateStamp) {
-          const fetchedMemos = await memoService.fetchMoreMemos();
-          if (!fetchedMemos || fetchedMemos.length === 0) {
-            break;
-          }
-        } else {
-          break;
-        }
-      }
-
+    const setDailyMemos = () => {
       const dailyMemos = memoService
         .getState()
         .memos.filter((a) => a.createdAt >= currentDateStamp && a.createdAt < currentDateStamp + DAILY_TIMESTAMP)
         .sort((a, b) => a.createdAt - b.createdAt);
       setMemos(dailyMemos);
-      setLoadingStatus(false);
+      loadingState.setFinish();
     };
-
-    getDailyMemos();
+    const { memos } = memoService.getState();
+    const lastMemo = memos.slice(-1).pop();
+    if (lastMemo && lastMemo.createdAt >= currentDateStamp) {
+      loadingState.setLoading();
+      memoService.fetchAllMemos().then(() => {
+        setDailyMemos();
+      });
+    } else {
+      setDailyMemos();
+    }
   }, [currentDateStamp]);
 
   const handleShareBtnClick = () => {
@@ -116,7 +110,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
           datestamp={currentDateStamp}
           handleDateStampChange={handleDataPickerChange}
         />
-        {isLoading ? (
+        {loadingState.isLoading ? (
           <div className="tip-container">
             <p className="tip-text">努力加载中...</p>
           </div>

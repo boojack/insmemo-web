@@ -4,7 +4,7 @@ import { locationService, memoService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import toast from "./Toast";
 import useSelector from "../hooks/useSelector";
-import useToggle from "../hooks/useToggle";
+import useLoading from "../hooks/useLoading";
 import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
@@ -14,20 +14,19 @@ const TagList: React.FC = () => {
   const { memos } = useSelector(memoStore);
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
-  const [isLoading, setLoading] = useToggle(true);
+  const loadingState = useLoading();
 
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const tags = await memoService.getMyTags();
+    memoService
+      .getMyTags()
+      .then((tags) => {
         setTags([...tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level)]);
-      } catch (error) {
+        loadingState.setFinish();
+      })
+      .catch((error) => {
+        loadingState.setError();
         toast.error(error);
-      }
-      setLoading(false);
-    };
-
-    fetchTags();
+      });
   }, [memos]);
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const TagList: React.FC = () => {
     <div className="tags-wrapper">
       <p className="title-text">常用标签</p>
       <div className="tags-container">
-        {isLoading ? (
+        {loadingState.isLoading ? (
           <></>
         ) : (
           <>

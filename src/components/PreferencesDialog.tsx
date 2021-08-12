@@ -67,13 +67,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   };
 
   const handleExportBtnClick = async () => {
-    while (true) {
-      const memos = await memoService.fetchMoreMemos();
-      if (!memos || memos.length === 0) {
-        break;
-      }
-    }
-
+    await memoService.fetchAllMemos();
     const formatedMemos = memoService.getState().memos.map((m) => {
       return {
         ...m,

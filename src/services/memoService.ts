@@ -53,7 +53,7 @@ class MemoService {
     const {
       data: { memosAmount },
     } = await api.getMyDataAmount();
-    const { data } = await api.getMyMemos(this.getState().memos.length, memosAmount);
+    const { data } = await api.getMyMemos(0, memosAmount);
     const memos = data.map((m) => ({
       id: m.id,
       content: m.content,
