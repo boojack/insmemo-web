@@ -1,12 +1,13 @@
-export interface Action {
+type State = Readonly<Object>;
+type Action = {
   type: string;
-}
+};
 
-type Reducer<S, A extends Action> = (s: S, a: A) => S;
-type Listener<S> = (ns: S, ps?: S) => void;
+type Reducer<S extends State, A extends Action> = (s: S, a: A) => S;
+type Listener<S extends State> = (ns: S, ps?: S) => void;
 type Unsubscribe = () => void;
 
-export interface Store<S, A extends Action> {
+interface Store<S extends State, A extends Action> {
   dispatch: (a: A) => void;
   getState: () => S;
   subscribe: (listener: Listener<S>) => Unsubscribe;
@@ -18,7 +19,7 @@ export interface Store<S, A extends Action> {
  * @param reducer reducer pure function
  * @returns store
  */
-function createStore<S, A extends Action>(preloadedState: S, reducer: Reducer<S, A>): Store<S, A> {
+function createStore<S extends State, A extends Action>(preloadedState: S, reducer: Reducer<S, A>): Store<Readonly<S>, A> {
   const listeners: Listener<S>[] = [];
   let currentState = preloadedState;
 

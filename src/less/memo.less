@@ -2,16 +2,16 @@
 @import "./memo-content.less";
 
 .memo-wrapper {
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
   padding: 16px;
-  background-color: white;
   margin-bottom: 8px;
-  border: 1px solid white;
   border-radius: 8px;
+  background-color: white;
+  border: 1px solid white;
 
   > .memo-top-wrapper {
     width: 100%;
@@ -23,8 +23,8 @@
     margin-bottom: 8px;
 
     > .time-text {
-      font-size: 12px;
-      line-height: 16px;
+      font-size: 13px;
+      line-height: 20px;
       color: gray;
       flex-shrink: 0;
       cursor: pointer;
@@ -123,13 +123,6 @@
 
   > .memo-content-text {
     width: 100%;
-
-    &.memo-editor {
-      padding-bottom: 4px;
-      border-bottom: 1px solid black;
-      resize: none;
-      outline: none;
-    }
   }
 
   > .images-wrapper {

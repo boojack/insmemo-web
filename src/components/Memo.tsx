@@ -5,6 +5,7 @@ import { globalStateService, memoService } from "../services";
 import { utils } from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import Image from "./Image";
+import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import "../less/memo.less";
@@ -35,7 +36,9 @@ const Memo: React.FC<Props> = (props: Props) => {
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   const handleShowMemoStoryDialog = () => {
-    showMemoStoryDialog(memo.id);
+    showDailyMemoDiaryDialog(memo.createdAt);
+    // NOTE: Memo Story 待升级
+    // showMemoStoryDialog(memo.id);
   };
 
   const markThisMemo = () => {
