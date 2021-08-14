@@ -1,7 +1,7 @@
 import { api } from "../helpers/api";
+import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 import memoStore from "../stores/memoStore";
 import userService from "./userService";
-import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
 
 class MemoService {
   public isFetching: boolean = false;

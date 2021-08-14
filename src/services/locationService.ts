@@ -1,5 +1,5 @@
-import locationStore from "../stores/locationStore";
 import { utils } from "../helpers/utils";
+import locationStore from "../stores/locationStore";
 
 const updateLocationUrl = () => {
   const prevQueryString = utils.iterObjectToParamsString(locationStore.getState().query);
@@ -12,19 +12,14 @@ class LocationService {
     this.initLocation();
   }
 
-  public getState = () => {
-    return locationStore.getState();
-  };
-
   public initLocation = () => {
-    // 先不处理 hash
-    // const hash = window.location.hash;
-    // if (hash) {
-    //   locationService.setHash(hash);
-    // }
     const urlParams = new URLSearchParams(window.location.search);
     this.setTagQuery(urlParams.get("tag") ?? "");
     this.setFromAndToQuery(parseInt(urlParams.get("from") ?? "") ?? 0, parseInt(urlParams.get("to") ?? "") ?? 0);
+  };
+
+  public getState = () => {
+    return locationStore.getState();
   };
 
   public clearQuery = () => {

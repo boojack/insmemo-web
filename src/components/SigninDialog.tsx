@@ -48,12 +48,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
     showAboutSiteDialog();
   };
 
-  const handleActionBtnClick = async (action: "signin" | "signup") => {
-    if (action === "signup") {
-      toast.info("注册已关闭");
-      return;
-    }
-
+  const handleSignInBtnClick = async () => {
     const usernameValidResult = validate(username, validateConfig);
     if (!usernameValidResult.result) {
       toast.error("用户名 " + usernameValidResult.reason);
@@ -67,7 +62,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
     }
 
     try {
-      const actionFunc = action === "signin" ? api.signin : api.signup;
+      const actionFunc = api.signin;
       const { succeed, message } = await actionFunc(username, password);
 
       if (!succeed && message) {
@@ -113,11 +108,11 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
           </a>
         </div>
         <div className="btns-container">
-          <button className="text-btn signup-btn disabled" onClick={() => handleActionBtnClick("signup")}>
+          <button className="text-btn signup-btn disabled" onClick={() => toast.info("注册已关闭")}>
             注册
           </button>
           <span className="split-text">/</span>
-          <button className="text-btn signin-btn" ref={signinBtn} onClick={() => handleActionBtnClick("signin")}>
+          <button className="text-btn signin-btn" ref={signinBtn} onClick={handleSignInBtnClick}>
             登录
           </button>
         </div>

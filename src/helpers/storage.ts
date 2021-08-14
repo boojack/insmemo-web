@@ -3,7 +3,7 @@
  */
 export namespace storage {
   export function get(keys: StorageKey[]): Partial<StorageData> {
-    const data = {} as Partial<StorageData>;
+    const data: Partial<StorageData> = {};
 
     for (const key of keys) {
       try {
@@ -21,11 +21,9 @@ export namespace storage {
   }
 
   export function set(data: Partial<StorageData>) {
-    let key: StorageKey;
-
-    for (key in data) {
+    for (const key in data) {
       try {
-        const stringifyValue = JSON.stringify(data[key]);
+        const stringifyValue = JSON.stringify(data[key as StorageKey]);
         localStorage.setItem(key, stringifyValue);
       } catch (error) {
         console.error("Save storage failed in ", key);
