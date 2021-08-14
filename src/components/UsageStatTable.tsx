@@ -4,7 +4,7 @@ import { locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
-import toast from "./Toast";
+import toastHelper from "./Toast";
 import "../less/usage-stat-table.less";
 
 const tableConfig = {
@@ -61,7 +61,7 @@ const UsageStatTable: React.FC<Props> = () => {
         setAllStat([...newStat]);
       })
       .catch((error) => {
-        toast.error(error);
+        toastHelper.error(error.message);
       });
   }, [memos]);
 

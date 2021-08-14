@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { locationStore, memoStore } from "../stores";
 import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
-import toast from "./Toast";
+import toastHelper from "./Toast";
 import useSelector from "../hooks/useSelector";
 import useLoading from "../hooks/useLoading";
 import "../less/tag-list.less";
@@ -31,7 +31,7 @@ const TagList: React.FC = () => {
       })
       .catch((error) => {
         loadingState.setError();
-        toast.error(error);
+        toastHelper.error(error);
       });
   }, [memos]);
 
@@ -46,7 +46,9 @@ const TagList: React.FC = () => {
   const handleTagClick = (tag: TagItem) => {
     const tagText = tag.text === tagQuery ? "" : tag.text;
     if (tagText) {
-      memoService.polishTag(tag.id);
+      memoService.polishTag(tag.id).catch(() => {
+        // do nth
+      });
     }
     locationService.setTagQuery(tagText);
   };

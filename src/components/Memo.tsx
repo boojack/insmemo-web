@@ -8,6 +8,7 @@ import Image from "./Image";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
+import toastHelper from "./Toast";
 import "../less/memo.less";
 
 // 标签 正则
@@ -47,10 +48,14 @@ const Memo: React.FC<Props> = (props: Props) => {
 
   const handleDeleteMemoClick = async () => {
     if (showConfirmDeleteBtn) {
-      await memoService.deleteMemoById(memo.id);
+      try {
+        await memoService.deleteMemoById(memo.id);
 
-      if (props.index + 5 > memoService.getState().memos.length) {
-        await memoService.fetchMoreMemos();
+        if (props.index + 5 > memoService.getState().memos.length) {
+          await memoService.fetchMoreMemos();
+        }
+      } catch (error) {
+        toastHelper.error(error.message);
       }
 
       if (globalStateService.getState().editMemoId === memo.id) {

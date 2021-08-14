@@ -4,7 +4,7 @@ import { globalStateService, locationService, memoService } from "../services";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
-import toast from "./Toast";
+import toastHelper from "./Toast";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/main-editor.less";
 
@@ -53,7 +53,7 @@ const MainEditor: React.FC = () => {
 
   const handleSaveBtnClick = async (content: string) => {
     if (content === "") {
-      toast.error("内容不能为空呀");
+      toastHelper.error("内容不能为空呀");
       return;
     }
 
@@ -62,59 +62,58 @@ const MainEditor: React.FC = () => {
     const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
     const tags: Model.Tag[] = [];
 
-    // 保存标签
-    for (const t of tagTexts) {
-      const tag = await memoService.createTag(t);
-      tags.push(tag);
-    }
+    try {
+      // 保存标签
+      for (const t of tagTexts) {
+        const tag = await memoService.createTag(t);
+        tags.push(tag);
+      }
 
-    if (editMemoId) {
-      const prevMemo = await memoService.getMemoById(editMemoId);
+      if (editMemoId) {
+        const prevMemo = await memoService.getMemoById(editMemoId);
 
-      if (!prevMemo || prevMemo.content === content) {
-        // do nth
-      } else {
-        const prevTags = prevMemo.tags ?? [];
-        const prevTagTexts = prevTags.map((t) => t.text);
-        tags.push(...prevTags);
+        if (prevMemo && prevMemo.content !== content) {
+          const prevTags = prevMemo.tags ?? [];
+          const prevTagTexts = prevTags.map((t) => t.text);
+          tags.push(...prevTags);
 
-        for (let i = 0; i < tags.length; ) {
-          const t = tags[i];
-          const tagText = t.text;
+          for (let i = 0; i < tags.length; ) {
+            const t = tags[i];
+            const tagText = t.text;
 
-          if (!tagTexts.includes(tagText)) {
-            tags.splice(i, 1);
-            memoService.removeMemoTag(prevMemo.id, t.id);
-          } else {
-            i++;
-            if (!prevTagTexts.includes(tagText)) {
-              memoService.createMemoTag(prevMemo.id, t.id);
+            if (!tagTexts.includes(tagText)) {
+              tags.splice(i, 1);
+              await memoService.removeMemoTag(prevMemo.id, t.id);
+            } else {
+              i++;
+              if (!prevTagTexts.includes(tagText)) {
+                await memoService.createMemoTag(prevMemo.id, t.id);
+              }
             }
           }
+
+          const editedMemo = await memoService.updateMemo(prevMemo.id, content);
+          prevMemo.content = editedMemo.content;
+          prevMemo.tags = tags;
+          prevMemo.updatedAt = Date.now();
+          memoService.editMemo(prevMemo);
         }
-
-        const editedMemo = await memoService.updateMemo(prevMemo.id, content);
-
-        prevMemo.tags = tags;
-        prevMemo.content = editedMemo.content ?? "";
-        prevMemo.updatedAt = Date.now();
-        memoService.editMemo(prevMemo);
+        globalStateService.setEditMemoId("");
+      } else {
+        const newMemo = await memoService.createMemo(content);
+        newMemo.tags = tags;
+        // link memo and tag
+        for (const t of tags) {
+          await memoService.createMemoTag(newMemo.id, t.id);
+        }
+        const tagQuery = query.tag;
+        if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
+          locationService.setTagQuery("");
+        }
+        memoService.pushMemo(newMemo);
       }
-      globalStateService.setEditMemoId("");
-    } else {
-      const newMemo = await memoService.createMemo(content);
-
-      newMemo.tags = tags;
-
-      // link memo and tag
-      for (const t of tags) {
-        await memoService.createMemoTag(newMemo.id, t.id);
-      }
-      const tagQuery = query.tag;
-      if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
-        locationService.setTagQuery("");
-      }
-      memoService.pushMemo(newMemo);
+    } catch (error) {
+      toastHelper.error(error.message);
     }
 
     setEditorContentCache("");

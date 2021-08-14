@@ -4,7 +4,7 @@ import { validate, ValidatorConfig } from "../helpers/validator";
 import { memoService, userService } from "../services";
 import { showDialog } from "./Dialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
-import toast from "./Toast";
+import toastHelper from "./Toast";
 import "../less/signin-dialog.less";
 
 interface Props extends DialogProps {}
@@ -51,13 +51,13 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
   const handleSignInBtnClick = async () => {
     const usernameValidResult = validate(username, validateConfig);
     if (!usernameValidResult.result) {
-      toast.error("用户名 " + usernameValidResult.reason);
+      toastHelper.error("用户名 " + usernameValidResult.reason);
       return;
     }
 
     const passwordValidResult = validate(password, validateConfig);
     if (!passwordValidResult.result) {
-      toast.error("密码 " + passwordValidResult.reason);
+      toastHelper.error("密码 " + passwordValidResult.reason);
       return;
     }
 
@@ -66,21 +66,22 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       const { succeed, message } = await actionFunc(username, password);
 
       if (!succeed && message) {
-        toast.error("😟 " + message);
+        toastHelper.error("😟 " + message);
         return;
       }
 
       const user = await userService.doSignIn();
-
       if (user) {
-        memoService.fetchMoreMemos();
+        memoService.fetchMoreMemos().catch(() => {
+          // do nth
+        });
         destroy();
       } else {
-        toast.error("😟 不知道发生了什么错误");
+        toastHelper.error("😟 不知道发生了什么错误");
       }
     } catch (error) {
       console.log(error);
-      toast.error("😟 " + error.message);
+      toastHelper.error("😟 " + error.message);
     }
   };
 
@@ -108,7 +109,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
           </a>
         </div>
         <div className="btns-container">
-          <button className="text-btn signup-btn disabled" onClick={() => toast.info("注册已关闭")}>
+          <button className="text-btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
             注册
           </button>
           <span className="split-text">/</span>

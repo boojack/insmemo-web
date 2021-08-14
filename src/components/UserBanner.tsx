@@ -4,6 +4,7 @@ import { locationService, memoService, userService } from "../services";
 import useSelector from "../hooks/useSelector";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
+import toastHelper from "./Toast";
 import "../less/user-banner.less";
 
 interface AmountState {
@@ -26,9 +27,14 @@ const UserBanner: React.FC = () => {
     if (!userService.getState().user) {
       return;
     }
-    memoService.getMyDataAmount().then((amounts) => {
-      setAmountState(amounts);
-    });
+    memoService
+      .getMyDataAmount()
+      .then((amounts) => {
+        setAmountState(amounts);
+      })
+      .catch((error) => {
+        toastHelper.error(error.message);
+      });
   }, [memos]);
 
   const toggleBtnsDialog = useCallback(

@@ -9,6 +9,7 @@ import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import DailyMemo from "./DailyMemo";
 import DatePicker from "./common/DatePicker";
+import toastHelper from "./Toast";
 import "../less/daily-memo-diary-dialog.less";
 
 interface Props extends DialogProps {
@@ -35,13 +36,19 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
       setMemos(dailyMemos);
       loadingState.setFinish();
     };
+
     const { memos } = memoService.getState();
     const lastMemo = memos.slice(-1).pop();
     if (lastMemo && lastMemo.createdAt >= currentDateStamp) {
       loadingState.setLoading();
-      memoService.fetchAllMemos().then(() => {
-        setDailyMemos();
-      });
+      memoService
+        .fetchAllMemos()
+        .then(() => {
+          setDailyMemos();
+        })
+        .catch((error) => {
+          toastHelper.error(error.message);
+        });
     } else {
       setDailyMemos();
     }

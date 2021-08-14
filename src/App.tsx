@@ -13,13 +13,18 @@ import "./less/index.less";
 
 function App() {
   useEffect(() => {
-    userService.doSignIn().then((user) => {
-      if (user) {
-        memoService.fetchMoreMemos();
-      } else {
-        showSigninDialog();
-      }
-    });
+    userService
+      .doSignIn()
+      .catch(() => {
+        // do nth
+      })
+      .finally(() => {
+        if (userService.getState().user) {
+          memoService.fetchMoreMemos();
+        } else {
+          showSigninDialog();
+        }
+      });
 
     const handleStorageDataChanged = () => {
       const showDarkMode = storage.preferences.showDarkMode ?? false;

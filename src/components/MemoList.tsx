@@ -5,6 +5,7 @@ import useDebounce from "../hooks/useDebounce";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
 import Memo from "./Memo";
+import toastHelper from "./Toast";
 import "../less/memolist.less";
 
 interface Duration {
@@ -39,10 +40,13 @@ const MemoList: React.FC<Props> = () => {
     }
 
     setFetchStatus(true);
-    const fetchedMemos = await memoService.fetchMoreMemos();
-    if (fetchedMemos && fetchedMemos.length > 0) {
-    } else {
-      setCompleteStatus(true);
+    try {
+      const fetchedMemos = await memoService.fetchMoreMemos();
+      if (fetchedMemos && fetchedMemos.length === 0) {
+        setCompleteStatus(true);
+      }
+    } catch (error) {
+      toastHelper.error(error.message);
     }
     setFetchStatus(false);
   };

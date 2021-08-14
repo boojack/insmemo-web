@@ -7,24 +7,22 @@ class UserService {
   }
 
   public async doSignIn() {
-    try {
-      const { data: user } = await api.getUserInfo();
-      if (user) {
-        userStore.dispatch({
-          type: "SIGN_IN",
-          payload: { user },
-        });
-      } else {
-        userService.doSignOut();
-      }
-      return user;
-    } catch (error) {
-      // do nth
+    const { data: user } = await api.getUserInfo();
+    if (user) {
+      userStore.dispatch({
+        type: "SIGN_IN",
+        payload: { user },
+      });
+    } else {
+      userService.doSignOut();
     }
+    return user;
   }
 
   public async doSignOut() {
-    await api.signout();
+    api.signout().catch(() => {
+      // do nth
+    });
     userStore.dispatch({
       type: "SIGN_OUT",
       payload: { user: null },

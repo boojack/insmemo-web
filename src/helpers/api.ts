@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const REQ_CONFIG = {};
+import axios, { AxiosRequestConfig } from "axios";
 
 type ResponseType<T = any> = {
   succeed: boolean;
@@ -8,6 +6,10 @@ type ResponseType<T = any> = {
   message: string;
   data: T;
 };
+
+const REQ_CONFIG: AxiosRequestConfig = {};
+
+const axiosInstance = axios.create(REQ_CONFIG);
 
 /**
  * api
@@ -17,30 +19,20 @@ type ResponseType<T = any> = {
  */
 export namespace api {
   export async function get<T>(url: string): Promise<ResponseType<T>> {
-    const res = await axios.get<ResponseType<T>>(url, REQ_CONFIG);
-
-    if (res.status !== 200) {
-      // handler error
-      console.error(res);
-    }
+    const res = await axiosInstance.get<ResponseType<T>>(url, REQ_CONFIG);
 
     if (!res.data.succeed) {
-      throw res.data.message;
+      throw res.data;
     }
 
     return res.data;
   }
 
   export async function post<T>(url: string, data?: BasicType): Promise<ResponseType<T>> {
-    const res = await axios.post<ResponseType<T>>(url, data, REQ_CONFIG);
-
-    if (res.status !== 200) {
-      // handler error
-      console.error(res);
-    }
+    const res = await axiosInstance.post<ResponseType<T>>(url, data, REQ_CONFIG);
 
     if (!res.data.succeed) {
-      throw res.data.message;
+      throw res.data;
     }
 
     return res.data;

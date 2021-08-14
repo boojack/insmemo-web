@@ -15,15 +15,9 @@ class MemoService {
       return false;
     }
 
-    let memos: Model.Memo[] = [];
     this.isFetching = true;
     const { data } = await api.getMyMemos(this.getState().memos.length, FETCH_MEMO_AMOUNT);
-
-    if (!Array.isArray(data)) {
-      return false;
-    }
-
-    memos = data.map((m) => ({
+    const memos: Model.Memo[] = data.map((m) => ({
       id: m.id,
       content: m.content,
       tags: m.tags,

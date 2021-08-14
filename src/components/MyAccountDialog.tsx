@@ -3,7 +3,7 @@ import { userStore } from "../stores";
 import { userService } from "../services";
 import { utils } from "../helpers/utils";
 import useSelector from "../hooks/useSelector";
-import toast from "./Toast";
+import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
 import "../less/my-account-dialog.less";
 
@@ -26,7 +26,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
 
   const handleConfirmEditUsernameBtnClick = async () => {
     if (user?.username === "guest") {
-      toast.info("🈲 不要修改我的用户名");
+      toastHelper.info("🈲 不要修改我的用户名");
       return;
     }
 
@@ -39,22 +39,22 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
       const isUsable = await userService.checkUsernameUsable(username);
 
       if (!isUsable) {
-        toast.error("用户名无法使用");
+        toastHelper.error("用户名无法使用");
         return;
       }
 
       await userService.updateUsername(username);
       await userService.doSignIn();
       setShowEditUsernameInputs(false);
-      toast.info("修改成功~");
+      toastHelper.info("修改成功~");
     } catch (error) {
-      toast.error(error);
+      toastHelper.error(error.message);
     }
   };
 
   const handleChangePasswordBtnClick = () => {
     if (user?.username === "guest") {
-      toast.info("🈲 不要修改我的密码");
+      toastHelper.info("🈲 不要修改我的密码");
       return;
     }
 
@@ -63,8 +63,12 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
 
   const handleUnbindGithubBtnClick = async () => {
     if (showConfirmUnbindBtn) {
-      await userService.removeGithubName();
-      await userService.doSignIn();
+      try {
+        await userService.removeGithubName();
+        await userService.doSignIn();
+      } catch (error) {
+        toastHelper.error(error.message);
+      }
       setShowConfirmUnbindBtn(false);
     } else {
       setShowConfirmUnbindBtn(true);
@@ -193,12 +197,12 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
 
   const handleSaveBtnClick = async () => {
     if (oldPassword === "" || newPassword === "" || newPasswordAgain === "") {
-      toast.error("密码不能为空");
+      toastHelper.error("密码不能为空");
       return;
     }
 
     if (newPassword !== newPasswordAgain) {
-      toast.error("新密码两次输入不一致");
+      toastHelper.error("新密码两次输入不一致");
       setNewPasswordAgain("");
       return;
     }
@@ -207,16 +211,16 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
       const isValid = await userService.checkPasswordValid(oldPassword);
 
       if (!isValid) {
-        toast.error("旧密码不匹配");
+        toastHelper.error("旧密码不匹配");
         setOldPassword("");
         return;
       }
 
       await userService.updatePassword(newPassword);
-      toast.info("密码修改成功！");
+      toastHelper.info("密码修改成功！");
       handleCloseBtnClick();
     } catch (error) {
-      toast.error(error);
+      toastHelper.error(error);
     }
   };
 
