@@ -12,7 +12,7 @@ const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }) => {
   const [imgWidth, setImgWidth] = useState<number>(-1);
 
   useEffect(() => {
-    utils.getImageSize(imgUrl).then(([width, height]) => {
+    utils.getImageSize(imgUrl).then(({ width, height }) => {
       if (width !== 0) {
         setImgWidth(80);
       } else {

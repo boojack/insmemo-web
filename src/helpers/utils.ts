@@ -165,7 +165,7 @@ export namespace utils {
     return rawText;
   }
 
-  export function getImageSize(src: string): Promise<[number, number]> {
+  export function getImageSize(src: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
       const imgEl = new Image();
 
@@ -173,14 +173,14 @@ export namespace utils {
         const { width, height } = imgEl;
 
         if (width > 0 && height > 0) {
-          resolve([width, height]);
+          resolve({ width, height });
         } else {
-          resolve([0, 0]);
+          resolve({ width: 0, height: 0 });
         }
       };
 
       imgEl.onerror = () => {
-        resolve([0, 0]);
+        resolve({ width: 0, height: 0 });
       };
 
       imgEl.className = "hidden";

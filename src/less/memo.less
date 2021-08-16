@@ -139,8 +139,8 @@
 
     > .memo-img {
       margin-right: 8px;
-      width: 128px;
-      max-height: 128px;
+      width: auto;
+      height: 128px;
       flex-shrink: 0;
       flex-grow: 0;
       .pretty-scroll-bar(0px, 0px);
@@ -151,6 +151,12 @@
 
       &:last-child {
         margin-right: 0;
+      }
+
+      > img {
+        width: auto;
+        max-height: 128px;
+        border-radius: 8px;
       }
     }
   }
