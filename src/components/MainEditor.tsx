@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { globalStateStore, locationStore } from "../stores";
 import { globalStateService, locationService, memoService } from "../services";
+import { TAG_REG } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
@@ -59,8 +60,6 @@ const MainEditor: React.FC<Props> = () => {
       return;
     }
 
-    // 标签 正则
-    const TAG_REG = /#(.+?)#/g;
     const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
     const tags: Model.Tag[] = [];
 

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { memoService } from "../services";
+import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
+import { memoService } from "../services";
 import { showDialog } from "./Dialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import { formatMemoContent } from "./Memo";
 import Image from "./Image";
 import "../less/memo-story-dialog.less";
-
-// memo 关联正则
-const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
-// 图片路由正则
-const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 interface Props extends DialogProps {
   memoId: string;

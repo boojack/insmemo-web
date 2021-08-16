@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { userService } from "../services";
-import { ANIMATION_DURATION } from "../helpers/consts";
+import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import toastHelper from "./Toast";
 import "../less/gen-memo-image-dialog.less";
-
-// 图片路由正则
-const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 interface Props extends DialogProps {
   memo: Model.Memo;

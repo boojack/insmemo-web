@@ -1,4 +1,5 @@
 import React from "react";
+import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import { storage } from "../helpers/storage";
 import { parseMarkedToHtml } from "../helpers/marked";
 import { utils } from "../helpers/utils";
@@ -11,15 +12,6 @@ import showMemoStoryDialog from "./MemoStoryDialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
 import toastHelper from "./Toast";
 import "../less/memo.less";
-
-// 标签 正则
-const TAG_REG = /#([^\n]+?)#/g;
-// URL 正则
-const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
-// 图片路由正则
-const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
-// memo 关联正则
-const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 
 interface Props {
   className: string;
