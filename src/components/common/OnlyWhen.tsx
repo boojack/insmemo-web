@@ -10,4 +10,6 @@ const OnlyWhen: React.FC<OnlyWhenProps> = (props: OnlyWhenProps) => {
   return when ? <>{children}</> : null;
 };
 
-export default OnlyWhen;
+const Only = OnlyWhen;
+
+export default Only;

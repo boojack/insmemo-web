@@ -1,9 +1,9 @@
 import React from "react";
 import { storage } from "../helpers/storage";
 import { parseMarkedToHtml } from "../helpers/marked";
-import { globalStateService, memoService } from "../services";
 import { utils } from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
+import { globalStateService, memoService } from "../services";
 import Only from "./common/OnlyWhen";
 import Image from "./Image";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
@@ -43,8 +43,12 @@ const Memo: React.FC<Props> = (props: Props) => {
     showDailyMemoDiaryDialog(memo.createdAt);
   };
 
-  const markThisMemo = () => {
+  const handleMarkMemoClick = () => {
     globalStateService.setMarkMemoId(memo.id);
+  };
+
+  const handleEditMemoClick = () => {
+    globalStateService.setEditMemoId(memo.id);
   };
 
   const handleDeleteMemoClick = async () => {
@@ -65,10 +69,6 @@ const Memo: React.FC<Props> = (props: Props) => {
     } else {
       toggleConfirmDeleteBtn();
     }
-  };
-
-  const handleEditMemoClick = () => {
-    globalStateService.setEditMemoId(memo.id);
   };
 
   const handleMouseLeaveMemoWrapper = () => {
@@ -107,7 +107,7 @@ const Memo: React.FC<Props> = (props: Props) => {
           <span className="text-btn more-action-btn"></span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
-              <span className="text-btn" onClick={markThisMemo}>
+              <span className="text-btn" onClick={handleMarkMemoClick}>
                 Mark
               </span>
               <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
@@ -116,7 +116,6 @@ const Memo: React.FC<Props> = (props: Props) => {
               <span className="text-btn" onClick={handleEditMemoClick}>
                 编辑
               </span>
-              {/* Memo 删除相关按钮 */}
               <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
                 {showConfirmDeleteBtn ? "确定删除！" : "删除"}
               </span>

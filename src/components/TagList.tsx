@@ -9,7 +9,9 @@ import "../less/tag-list.less";
 
 interface TagItem extends Api.Tag {}
 
-const TagList: React.FC = () => {
+interface Props {}
+
+const TagList: React.FC<Props> = () => {
   const { query } = useSelector(locationStore);
   const { memos } = useSelector(memoStore);
   const [tags, setTags] = useState<TagItem[]>([]);

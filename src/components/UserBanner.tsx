@@ -12,7 +12,9 @@ interface AmountState {
   tagsAmount: number;
 }
 
-const UserBanner: React.FC = () => {
+interface Props {}
+
+const UserBanner: React.FC<Props> = () => {
   const { user } = useSelector(userStore);
   const { memos } = useSelector(memoStore);
   const [amountState, setAmountState] = useState<AmountState>({

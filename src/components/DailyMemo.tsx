@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { formatMemoContent } from "./Memo";
 import { utils } from "../helpers/utils";
 import "../less/daily-memo.less";
@@ -14,12 +14,12 @@ interface Props {
 
 const DailyMemo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo } = props;
-  const [memo, setMemo] = useState<DailyMemo>({
+  const memo: DailyMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getTimeString(propsMemo.createdAt),
     timeStr: utils.getTimeStampString(propsMemo.createdAt),
-  });
+  };
 
   return (
     <div className="daily-memo-wrapper">

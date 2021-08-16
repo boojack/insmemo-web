@@ -8,7 +8,9 @@ import toastHelper from "./Toast";
 import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/main-editor.less";
 
-const MainEditor: React.FC = () => {
+interface Props {}
+
+const MainEditor: React.FC<Props> = () => {
   const globalState = useSelector(globalStateStore);
   const { query } = useSelector(locationStore);
   const editorRef = React.useRef<EditorRefActions>(null);

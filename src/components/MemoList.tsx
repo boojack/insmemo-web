@@ -20,11 +20,9 @@ const MemoList: React.FC<Props> = () => {
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
-  const { query } = locationService.getState();
+  const { query } = useSelector(locationStore);
   const tagQuery = query.tag;
   const duration: Duration = { from: query.from, to: query.to };
-
-  useSelector(locationStore);
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
