@@ -161,7 +161,7 @@ export function formatMemoContent(content: string): string {
     content = parseMarkedToHtml(content);
   }
 
-  // 中英文之间加空格，这里只是简单的用正则分开了，可优化
+  // 中英文之间加空格（这里只是简单的用正则分开了）
   if (shouldSplitMemoWord) {
     content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
   }
@@ -169,6 +169,15 @@ export function formatMemoContent(content: string): string {
   if (shouldHideImageUrl) {
     content = content.replace(IMAGE_URL_REG, "");
   }
+
+  // 清楚空行
+  tempDivContainer.innerHTML = content;
+  for (const p of tempDivContainer.querySelectorAll("p")) {
+    if (p.textContent === "" && p.firstElementChild?.tagName !== "BR") {
+      p.remove();
+    }
+  }
+  content = tempDivContainer.innerHTML;
 
   content = content
     .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")

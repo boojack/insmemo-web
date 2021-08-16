@@ -32,9 +32,7 @@ const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }) => {
   };
 
   const handleIncreaseImageSize = () => {
-    if (imgWidth < 100) {
-      setImgWidth(imgWidth + 10);
-    }
+    setImgWidth(imgWidth + 10);
   };
 
   return (
