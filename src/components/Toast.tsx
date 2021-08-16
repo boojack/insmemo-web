@@ -37,19 +37,16 @@ const Toast: React.FC<ToastItemProps> = (props) => {
 };
 
 const toastHelper = (() => {
-  const toastContainerDiv: Element = document.createElement("div");
+  const toastContainerDiv = document.createElement("div");
   toastContainerDiv.className = "toast-list-container";
+  document.body.appendChild(toastContainerDiv);
+
   let shownToastAmount = 0;
   const shownToastContainers: HTMLDivElement[] = [];
 
-  // 非主逻辑下次执行
-  setTimeout(() => {
-    document.body.appendChild(toastContainerDiv);
-  }, 0);
-
   const showToast = (config: ToastConfig) => {
     const tempDiv = document.createElement("div");
-    tempDiv.className = "toast-wrapper " + config.type;
+    tempDiv.className = `toast-wrapper ${config.type}`;
     toastContainerDiv.appendChild(tempDiv);
     shownToastAmount++;
     shownToastContainers.push(tempDiv);

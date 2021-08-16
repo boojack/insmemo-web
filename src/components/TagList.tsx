@@ -61,7 +61,6 @@ const TagList: React.FC = () => {
           <></>
         ) : (
           <>
-            {" "}
             {tags.map((t) => (
               <div
                 key={t.id}

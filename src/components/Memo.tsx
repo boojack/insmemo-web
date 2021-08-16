@@ -4,6 +4,7 @@ import { parseMarkedToHtml } from "../helpers/marked";
 import { globalStateService, memoService } from "../services";
 import { utils } from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
+import Only from "./common/OnlyWhen";
 import Image from "./Image";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import showMemoStoryDialog from "./MemoStoryDialog";
@@ -37,9 +38,9 @@ const Memo: React.FC<Props> = (props: Props) => {
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   const handleShowMemoStoryDialog = () => {
-    showDailyMemoDiaryDialog(memo.createdAt);
     // NOTE: Memo Story 待升级
     // showMemoStoryDialog(memo.id);
+    showDailyMemoDiaryDialog(memo.createdAt);
   };
 
   const markThisMemo = () => {
@@ -124,13 +125,13 @@ const Memo: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className="memo-content-text" onClick={handleMemoContentClick} dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
-      {imageUrls.length > 0 ? (
+      <Only when={imageUrls.length > 0}>
         <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (
             <Image className="memo-img" key={idx} imgUrl={imgUrl} />
           ))}
         </div>
-      ) : null}
+      </Only>
     </div>
   );
 };
