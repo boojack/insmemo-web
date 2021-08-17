@@ -50,7 +50,7 @@ export namespace storage {
     ]);
     const temp = {
       shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? true,
-      shouldHideImageUrl: cachePrefers.shouldHideImageUrl ?? false,
+      shouldHideImageUrl: cachePrefers.shouldHideImageUrl ?? true,
       shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? true,
       tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
       showDarkMode: cachePrefers.showDarkMode ?? false,
