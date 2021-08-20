@@ -4,6 +4,7 @@ import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
+import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
 import toastHelper from "./Toast";
 import "../less/gen-memo-image-dialog.less";
@@ -79,7 +80,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
         <div className="memo-container" ref={memoElRef}>
           <span className="time-text">{memo.createdAtStr}</span>
           <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
-          {imageUrls.length > 0 ? (
+          <Only when={imageUrls.length > 0}>
             <div className="images-container">
               {imageUrls.map((imgUrl, idx) => (
                 <img
@@ -92,7 +93,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
                 />
               ))}
             </div>
-          ) : null}
+          </Only>
           <div className="watermark-container">
             <span className="normal-text">
               by <span className="name-text">{userinfo?.username}</span>

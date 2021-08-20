@@ -4,6 +4,7 @@ import { utils } from "../helpers/utils";
 import { memoService } from "../services";
 import { showDialog } from "./Dialog";
 import showGenMemoImageDialog from "./GenMemoImageDialog";
+import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
 import Image from "./Image";
 import "../less/memo-story-dialog.less";
@@ -109,13 +110,13 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
             onClick={handleMemoContentClick}
             dangerouslySetInnerHTML={{ __html: memo?.formattedContent ?? "" }}
           ></div>
-          {imageUrls.length > 0 ? (
+          <Only when={imageUrls.length > 0}>
             <div className="images-wrapper">
               {imageUrls.map((imgUrl, idx) => (
                 <Image className="memo-img" key={idx} imgUrl={imgUrl} />
               ))}
             </div>
-          ) : null}
+          </Only>
         </div>
         <p className={"normal-text " + (downMemos.length === 0 ? "hidden" : "")}>链接了 {downMemos.length} 个 Memo</p>
         <div className={"down-memos-wrapper " + (downMemos.length !== 0 ? "" : "hidden")}>

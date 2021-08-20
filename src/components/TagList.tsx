@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { locationStore, memoStore } from "../stores";
 import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import Only from "./common/OnlyWhen";
 import toastHelper from "./Toast";
 import useSelector from "../hooks/useSelector";
 import useLoading from "../hooks/useLoading";
@@ -74,11 +75,11 @@ const TagList: React.FC<Props> = () => {
                 <span className="tag-text"># {t.text}</span>
               </div>
             ))}
-            {tags.length <= 3 ? (
+            <Only when={tags.length <= 3}>
               <p className="tag-tip-container">
                 输入<span>#Tag#</span>来创建标签吧~
               </p>
-            ) : null}
+            </Only>
           </>
         )}
       </div>
