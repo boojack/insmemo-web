@@ -3,7 +3,7 @@
  * - 列表解析；
  * - ...
  */
-const CODE_BLOCK_REG = /'''([\s\S]*?)'''/g;
+const CODE_BLOCK_REG = /```([\s\S]*?)```/g;
 const DOT_LI_REG = /[\*] /g;
 const NUM_LI_REG = /(\d+)\. /g;
 
