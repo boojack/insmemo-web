@@ -113,7 +113,7 @@ const MainEditor: React.FC<Props> = () => {
         }
         memoService.pushMemo(newMemo);
       }
-    } catch (error) {
+    } catch (error: any) {
       toastHelper.error(error.message);
     }
 

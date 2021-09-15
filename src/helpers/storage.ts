@@ -12,8 +12,8 @@ export namespace storage {
           const val = JSON.parse(stringifyValue);
           data[key] = val;
         }
-      } catch (error) {
-        console.error("Get storage failed in ", key);
+      } catch (error: any) {
+        console.error("Get storage failed in ", key, error);
       }
     }
 
@@ -25,8 +25,8 @@ export namespace storage {
       try {
         const stringifyValue = JSON.stringify(data[key as StorageKey]);
         localStorage.setItem(key, stringifyValue);
-      } catch (error) {
-        console.error("Save storage failed in ", key);
+      } catch (error: any) {
+        console.error("Save storage failed in ", key, error);
       }
     }
   }

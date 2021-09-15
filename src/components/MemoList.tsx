@@ -43,7 +43,7 @@ const MemoList: React.FC<Props> = () => {
       if (fetchedMemos && fetchedMemos.length === 0) {
         setCompleteStatus(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       toastHelper.error(error.message);
     }
     setFetchStatus(false);

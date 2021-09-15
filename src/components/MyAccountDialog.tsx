@@ -47,7 +47,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
       await userService.doSignIn();
       setShowEditUsernameInputs(false);
       toastHelper.info("修改成功~");
-    } catch (error) {
+    } catch (error: any) {
       toastHelper.error(error.message);
     }
   };
@@ -66,7 +66,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
       try {
         await userService.removeGithubName();
         await userService.doSignIn();
-      } catch (error) {
+      } catch (error: any) {
         toastHelper.error(error.message);
       }
       setShowConfirmUnbindBtn(false);
@@ -219,7 +219,7 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
       await userService.updatePassword(newPassword);
       toastHelper.info("密码修改成功！");
       handleCloseBtnClick();
-    } catch (error) {
+    } catch (error: any) {
       toastHelper.error(error);
     }
   };

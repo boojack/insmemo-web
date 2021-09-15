@@ -133,7 +133,7 @@ export namespace utils {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       try {
         await navigator.clipboard.writeText(text);
-      } catch (error) {
+      } catch (error: any) {
         console.warn("Copy to clipboard failed.", error);
       }
     } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
@@ -146,7 +146,7 @@ export namespace utils {
 
       try {
         return document.execCommand("copy"); // Security exception may be thrown by some browsers.
-      } catch (error) {
+      } catch (error: any) {
         console.warn("Copy to clipboard failed.", error);
         return false;
       } finally {

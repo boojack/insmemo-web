@@ -79,8 +79,8 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       } else {
         toastHelper.error("😟 不知道发生了什么错误");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.error(error);
       toastHelper.error("😟 " + error.message);
     }
   };

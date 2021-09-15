@@ -51,7 +51,7 @@ const Memo: React.FC<Props> = (props: Props) => {
         if (props.index + 5 > memoService.getState().memos.length) {
           await memoService.fetchMoreMemos();
         }
-      } catch (error) {
+      } catch (error: any) {
         toastHelper.error(error.message);
       }
 
