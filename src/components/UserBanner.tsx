@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { memoStore, userStore } from "../stores";
+import appStore from "../stores";
 import { locationService, memoService, userService } from "../services";
 import useSelector from "../hooks/useSelector";
 import MenuBtnsPopup from "./MenuBtnsPopup";
@@ -15,8 +15,10 @@ interface AmountState {
 interface Props {}
 
 const UserBanner: React.FC<Props> = () => {
-  const { user } = useSelector(userStore);
-  const { memos } = useSelector(memoStore);
+  const {
+    userState: { user },
+    memoState: { memos },
+  } = useSelector(appStore);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
     tagsAmount: 0,

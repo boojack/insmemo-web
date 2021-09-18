@@ -1,12 +1,12 @@
-import globalStateStore from "../stores/globalStateStore";
+import appStore from "../stores";
 
 class GlobalStateService {
   public getState = () => {
-    return globalStateStore.getState();
+    return appStore.getState().globalState;
   };
 
   public setEditMemoId = (editMemoId: string) => {
-    globalStateStore.dispatch({
+    appStore.dispatch({
       type: "SET_EDIT_MEMO_ID",
       payload: {
         editMemoId,
@@ -15,7 +15,7 @@ class GlobalStateService {
   };
 
   public setMarkMemoId = (markMemoId: string) => {
-    globalStateStore.dispatch({
+    appStore.dispatch({
       type: "SET_MARK_MEMO_ID",
       payload: {
         markMemoId,

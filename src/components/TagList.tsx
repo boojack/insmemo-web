@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { locationStore, memoStore } from "../stores";
+import appStore from "../stores";
 import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import Only from "./common/OnlyWhen";
@@ -13,8 +13,10 @@ interface TagItem extends Api.Tag {}
 interface Props {}
 
 const TagList: React.FC<Props> = () => {
-  const { query } = useSelector(locationStore);
-  const { memos } = useSelector(memoStore);
+  const {
+    locationState: { query },
+    memoState: { memos },
+  } = useSelector(appStore);
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
   const loadingState = useLoading();

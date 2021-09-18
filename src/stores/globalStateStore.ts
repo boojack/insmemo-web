@@ -1,6 +1,4 @@
-import createStore from "../labs/createStore";
-
-interface State {
+export interface State {
   markMemoId: string;
   editMemoId: string;
 }
@@ -19,9 +17,9 @@ interface SetEditMemoIdAction {
   };
 }
 
-type Actions = SetEditMemoIdAction | SetMarkMemoIdAction;
+export type Actions = SetEditMemoIdAction | SetMarkMemoIdAction;
 
-function globalStateReducer(state: State, action: Actions) {
+export function reducer(state: State, action: Actions) {
   switch (action.type) {
     case "SET_MARK_MEMO_ID": {
       return {
@@ -41,12 +39,7 @@ function globalStateReducer(state: State, action: Actions) {
   }
 }
 
-const globalStateStore = createStore<State, Actions>(
-  {
-    markMemoId: "",
-    editMemoId: "",
-  },
-  globalStateReducer
-);
-
-export default globalStateStore;
+export const defaultState: State = {
+  markMemoId: "",
+  editMemoId: "",
+};

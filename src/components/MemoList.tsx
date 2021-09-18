@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { locationStore, memoStore } from "../stores";
+import appStore from "../stores";
 import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
 import useSelector from "../hooks/useSelector";
@@ -16,11 +16,13 @@ interface Duration {
 interface Props {}
 
 const MemoList: React.FC<Props> = () => {
-  const { memos } = useSelector(memoStore);
+  const {
+    locationState: { query },
+    memoState: { memos },
+  } = useSelector(appStore);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
-  const { query } = useSelector(locationStore);
   const tagQuery = query.tag;
   const duration: Duration = { from: query.from, to: query.to };
 

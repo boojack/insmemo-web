@@ -1,12 +1,10 @@
-import createStore from "../labs/createStore";
-
 interface Query {
   tag: string;
   from: number;
   to: number;
 }
 
-interface State {
+export interface State {
   hash: string;
   query: Query;
 }
@@ -33,9 +31,9 @@ interface SetHashAction {
   };
 }
 
-type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetHashAction;
+export type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetHashAction;
 
-function locationReducer(state: State, action: Actions) {
+export function reducer(state: State, action: Actions) {
   switch (action.type) {
     case "SET_TAG_QUERY": {
       return {
@@ -68,16 +66,11 @@ function locationReducer(state: State, action: Actions) {
   }
 }
 
-const locationStore = createStore<State, Actions>(
-  {
-    hash: "",
-    query: {
-      tag: "",
-      from: 0,
-      to: 0,
-    },
+export const defaultState: State = {
+  hash: "",
+  query: {
+    tag: "",
+    from: 0,
+    to: 0,
   },
-  locationReducer
-);
-
-export default locationStore;
+};

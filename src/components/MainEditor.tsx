@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { globalStateStore, locationStore } from "../stores";
+import appStore from "../stores";
 import { globalStateService, locationService, memoService } from "../services";
 import { TAG_REG } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
@@ -12,8 +12,10 @@ import "../less/main-editor.less";
 interface Props {}
 
 const MainEditor: React.FC<Props> = () => {
-  const globalState = useSelector(globalStateStore);
-  const { query } = useSelector(locationStore);
+  const {
+    globalState,
+    locationState: { query },
+  } = useSelector(appStore);
   const editorRef = React.useRef<EditorRefActions>(null);
   const [editMemoId, setEditMemoId] = useState(globalState.editMemoId);
 

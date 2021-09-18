@@ -1,13 +1,13 @@
 import { api } from "../helpers/api";
 import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
-import memoStore from "../stores/memoStore";
+import appStore from "../stores";
 import userService from "./userService";
 
 class MemoService {
   public isFetching: boolean = false;
 
   public getState() {
-    return memoStore.getState();
+    return appStore.getState().memoState;
   }
 
   public async fetchMoreMemos() {
@@ -26,7 +26,7 @@ class MemoService {
     }));
 
     if (memos.length > 0) {
-      memoStore.dispatch({
+      appStore.dispatch({
         type: "PUSH_MEMOS",
         payload: {
           memos,
@@ -57,7 +57,7 @@ class MemoService {
     }));
 
     if (memos.length > 0) {
-      memoStore.dispatch({
+      appStore.dispatch({
         type: "PUSH_MEMOS",
         payload: {
           memos,
@@ -68,7 +68,7 @@ class MemoService {
   }
 
   public pushMemo(memo: Model.Memo) {
-    memoStore.dispatch({
+    appStore.dispatch({
       type: "PUSH",
       payload: {
         memo: {
@@ -95,7 +95,7 @@ class MemoService {
 
   public async deleteMemoById(id: string) {
     await api.deleteMemo(id);
-    memoStore.dispatch({
+    appStore.dispatch({
       type: "DELETE_BY_ID",
       payload: {
         id: id,
@@ -104,7 +104,7 @@ class MemoService {
   }
 
   public editMemo(memo: Model.Memo) {
-    memoStore.dispatch({
+    appStore.dispatch({
       type: "EDIT_MEMO",
       payload: memo,
     });

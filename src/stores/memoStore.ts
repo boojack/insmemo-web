@@ -1,6 +1,4 @@
-import createStore from "../labs/createStore";
-
-interface State {
+export interface State {
   memos: Model.Memo[];
 }
 
@@ -30,9 +28,9 @@ interface EditMemoByIdAction {
   payload: Model.Memo;
 }
 
-type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
+export type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
 
-function memoReducer(state: State, action: Actions): State {
+export function reducer(state: State, action: Actions): State {
   switch (action.type) {
     case "PUSH": {
       const memo = action.payload.memo;
@@ -78,6 +76,6 @@ function memoReducer(state: State, action: Actions): State {
   }
 }
 
-const memoStore = createStore<State, Actions>({ memos: [] }, memoReducer);
-
-export default memoStore;
+export const defaultState: State = {
+  memos: [],
+};

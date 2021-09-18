@@ -1,6 +1,4 @@
-import createStore from "../labs/createStore";
-
-interface State {
+export interface State {
   user: Model.User | null;
 }
 
@@ -14,9 +12,9 @@ interface SignOutAction {
   payload: State;
 }
 
-type Actions = SignInAction | SignOutAction;
+export type Actions = SignInAction | SignOutAction;
 
-function userReducer(state: State, action: Actions): State {
+export function reducer(state: State, action: Actions): State {
   switch (action.type) {
     case "SIGN_IN": {
       return {
@@ -34,6 +32,4 @@ function userReducer(state: State, action: Actions): State {
   }
 }
 
-const userStore = createStore<State, Actions>({ user: null }, userReducer);
-
-export default userStore;
+export const defaultState: State = { user: null };

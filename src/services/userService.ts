@@ -1,15 +1,15 @@
 import { api } from "../helpers/api";
-import userStore from "../stores/userStore";
+import appStore from "../stores";
 
 class UserService {
   public getState() {
-    return userStore.getState();
+    return appStore.getState().userState;
   }
 
   public async doSignIn() {
     const { data: user } = await api.getUserInfo();
     if (user) {
-      userStore.dispatch({
+      appStore.dispatch({
         type: "SIGN_IN",
         payload: { user },
       });
@@ -23,7 +23,7 @@ class UserService {
     api.signout().catch(() => {
       // do nth
     });
-    userStore.dispatch({
+    appStore.dispatch({
       type: "SIGN_OUT",
       payload: { user: null },
     });

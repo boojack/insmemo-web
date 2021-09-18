@@ -1,8 +1,8 @@
 import { utils } from "../helpers/utils";
-import locationStore from "../stores/locationStore";
+import appStore from "../stores";
 
 const updateLocationUrl = () => {
-  const prevQueryString = utils.iterObjectToParamsString(locationStore.getState().query);
+  const prevQueryString = utils.iterObjectToParamsString(appStore.getState().locationState.query);
   const queryString = prevQueryString ? "?" + prevQueryString : "";
   history.replaceState(null, "", "/" + queryString);
 };
@@ -19,18 +19,18 @@ class LocationService {
   };
 
   public getState = () => {
-    return locationStore.getState();
+    return appStore.getState().locationState;
   };
 
   public clearQuery = () => {
-    locationStore.dispatch({
+    appStore.dispatch({
       type: "SET_TAG_QUERY",
       payload: {
         tag: "",
       },
     });
 
-    locationStore.dispatch({
+    appStore.dispatch({
       type: "SET_FROM_TO_QUERY",
       payload: {
         from: 0,
@@ -42,7 +42,7 @@ class LocationService {
   };
 
   public setHash = (hash: string) => {
-    locationStore.dispatch({
+    appStore.dispatch({
       type: "SET_HASH",
       payload: {
         hash,
@@ -53,7 +53,7 @@ class LocationService {
   };
 
   public setTagQuery = (tag: string) => {
-    locationStore.dispatch({
+    appStore.dispatch({
       type: "SET_TAG_QUERY",
       payload: {
         tag,
@@ -64,7 +64,7 @@ class LocationService {
   };
 
   public setFromAndToQuery = (from: number, to: number) => {
-    locationStore.dispatch({
+    appStore.dispatch({
       type: "SET_FROM_TO_QUERY",
       payload: {
         from,

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import Provider from "./labs/Provider";
+import appStore from "./stores";
 import { storage } from "./helpers/storage";
 import { memoService, userService } from "./services";
 import Sidebar from "./components/Sidebar";
@@ -55,4 +57,9 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={appStore}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);

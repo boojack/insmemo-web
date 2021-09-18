@@ -1,13 +1,14 @@
-type State = Readonly<Object>;
-type Action = {
+export type State = Readonly<Object>;
+export type Action = {
   type: string;
+  payload: any;
 };
 
-type Reducer<S extends State, A extends Action> = (s: S, a: A) => S;
+export type Reducer<S extends State, A extends Action> = (s: S, a: A) => S;
 type Listener<S extends State> = (ns: S, ps?: S) => void;
 type Unsubscribe = () => void;
 
-interface Store<S extends State, A extends Action> {
+export interface Store<S extends State, A extends Action> {
   dispatch: (a: A) => void;
   getState: () => S;
   subscribe: (listener: Listener<S>) => Unsubscribe;

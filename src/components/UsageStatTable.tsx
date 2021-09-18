@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { memoStore } from "../stores";
+import appStore from "../stores";
 import { locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import useSelector from "../hooks/useSelector";
@@ -37,7 +37,9 @@ const UsageStatTable: React.FC<Props> = () => {
     return initialUsageStat;
   };
 
-  const { memos } = useSelector(memoStore);
+  const {
+    memoState: { memos },
+  } = useSelector(appStore);
   const [allStat, setAllStat] = useState<UsageStatDaily[]>(getInitialUsageStat());
   const [popupStat, setPopupStat] = useState<UsageStatDaily | null>(null);
   const [currentStat, setCurrentStat] = useState<UsageStatDaily | null>(null);
