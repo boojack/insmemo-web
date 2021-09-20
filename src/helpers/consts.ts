@@ -8,7 +8,7 @@ export const MOBILE_ADDITION_CLASSNAME = "show-user-banner-dialog";
 export const FETCH_MEMO_AMOUNT = 20;
 
 // 默认动画持续时长
-export const ANIMATION_DURATION = 250;
+export const ANIMATION_DURATION = 300;
 
 // toast 动画持续时长
 export const TOAST_ANIMATION_DURATION = 400;
