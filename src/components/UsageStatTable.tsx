@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import appStore from "../stores";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import useSelector from "../hooks/useSelector";
+import AppContext from "../labs/AppContext";
 import { utils } from "../helpers/utils";
 import toastHelper from "./Toast";
 import "../less/usage-stat-table.less";
@@ -39,7 +38,7 @@ const UsageStatTable: React.FC<Props> = () => {
 
   const {
     memoState: { memos },
-  } = useSelector(appStore);
+  } = useContext(AppContext);
   const [allStat, setAllStat] = useState<UsageStatDaily[]>(getInitialUsageStat());
   const [popupStat, setPopupStat] = useState<UsageStatDaily | null>(null);
   const [currentStat, setCurrentStat] = useState<UsageStatDaily | null>(null);

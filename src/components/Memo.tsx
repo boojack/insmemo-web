@@ -14,9 +14,9 @@ import toastHelper from "./Toast";
 import "../less/memo.less";
 
 interface Props {
-  className: string;
   index: number;
   memo: Model.Memo;
+  className?: string;
 }
 
 const Memo: React.FC<Props> = (props: Props) => {
@@ -90,7 +90,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={`memo-wrapper ${props.className}`} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={`memo-wrapper ${props.className ?? ""}`} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}

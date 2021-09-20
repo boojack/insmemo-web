@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Store } from "./createStore";
+import AppContext from "./AppContext";
 
 interface Props {
   children: React.ReactElement;
@@ -12,11 +13,11 @@ interface Props {
  */
 const Provider: React.FC<Props> = (props: Props) => {
   const { children, store } = props;
-  const [_, setState] = useState(false);
+  const [state, setState] = useState(store.getState());
 
   useEffect(() => {
-    const unsubscribe = store.subscribe((state) => {
-      setState((s) => !s);
+    const unsubscribe = store.subscribe((ns) => {
+      setState(ns);
     });
 
     return () => {
@@ -24,7 +25,7 @@ const Provider: React.FC<Props> = (props: Props) => {
     };
   }, []);
 
-  return <>{children}</>;
+  return <AppContext.Provider value={state}>{children}</AppContext.Provider>;
 };
 
 export default Provider;

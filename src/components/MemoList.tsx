@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import appStore from "../stores";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
-import useSelector from "../hooks/useSelector";
+import AppContext from "../labs/AppContext";
 import { utils } from "../helpers/utils";
 import Memo from "./Memo";
 import toastHelper from "./Toast";
@@ -19,7 +18,7 @@ const MemoList: React.FC<Props> = () => {
   const {
     locationState: { query },
     memoState: { memos },
-  } = useSelector(appStore);
+  } = useContext(AppContext);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
@@ -85,7 +84,7 @@ const MemoList: React.FC<Props> = () => {
       </div>
 
       {memos.map((memo, idx) => {
-        const key = memo.id + " " + memo.updatedAt;
+        const key = `${memo.id} ${memo.updatedAt}`;
         let shouldShow = true;
         if (tagQuery !== "" && !memo.tags?.map((t) => t.text).includes(tagQuery)) {
           shouldShow = false;
@@ -93,9 +92,8 @@ const MemoList: React.FC<Props> = () => {
         if (duration.from !== 0 && duration.from < duration.to && (memo.createdAt < duration.from || memo.createdAt > duration.to)) {
           shouldShow = false;
         }
-        const additionClassName = shouldShow ? "" : "hidden";
 
-        return <Memo key={key} index={idx} className={additionClassName} memo={memo} />;
+        return shouldShow ? <Memo key={key} index={idx} memo={memo} /> : null;
       })}
 
       <div
