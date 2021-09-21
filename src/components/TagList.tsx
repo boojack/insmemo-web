@@ -3,7 +3,7 @@ import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import Only from "./common/OnlyWhen";
 import toastHelper from "./Toast";
-import AppContext from "../labs/AppContext";
+import appContext from "../labs/appContext";
 import useLoading from "../hooks/useLoading";
 import "../less/tag-list.less";
 
@@ -15,7 +15,7 @@ const TagList: React.FC<Props> = () => {
   const {
     locationState: { query },
     memoState: { memos },
-  } = useContext(AppContext);
+  } = useContext(appContext);
   const [tags, setTags] = useState<TagItem[]>([]);
   const [tagQuery, setTagQuery] = useState(query.tag);
   const loadingState = useLoading();

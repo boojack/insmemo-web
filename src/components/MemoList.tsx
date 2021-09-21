@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
-import AppContext from "../labs/AppContext";
+import appContext from "../labs/appContext";
 import { utils } from "../helpers/utils";
 import Memo from "./Memo";
 import toastHelper from "./Toast";
@@ -18,7 +18,7 @@ const MemoList: React.FC<Props> = () => {
   const {
     locationState: { query },
     memoState: { memos },
-  } = useContext(AppContext);
+  } = useContext(appContext);
   const [isFetching, setFetchStatus] = useState(false);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);

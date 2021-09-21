@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
-import AppContext from "../labs/AppContext";
+import appContext from "../labs/appContext";
 import { locationService } from "../services";
 
 interface Props {}
@@ -8,7 +8,7 @@ interface Props {}
 const MobileHeader: React.FC<Props> = () => {
   const {
     userState: { user },
-  } = useContext(AppContext);
+  } = useContext(appContext);
   const username = user ? user.username : "Memos";
 
   const handleUsernameClick = useCallback(() => {

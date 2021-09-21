@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { globalStateService, locationService, memoService } from "../services";
 import { TAG_REG } from "../helpers/consts";
-import AppContext from "../labs/AppContext";
+import appContext from "../labs/appContext";
 import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toastHelper from "./Toast";
@@ -14,7 +14,7 @@ const MainEditor: React.FC<Props> = () => {
   const {
     globalState,
     locationState: { query },
-  } = useContext(AppContext);
+  } = useContext(appContext);
   const editorRef = React.useRef<EditorRefActions>(null);
   const [editMemoId, setEditMemoId] = useState(globalState.editMemoId);
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { locationService, memoService, userService } from "../services";
-import AppContext from "../labs/AppContext";
+import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import toastHelper from "./Toast";
@@ -17,7 +17,7 @@ const UserBanner: React.FC<Props> = () => {
   const {
     userState: { user },
     memoState: { memos },
-  } = useContext(AppContext);
+  } = useContext(appContext);
   const [amountState, setAmountState] = useState<AmountState>({
     memosAmount: 0,
     tagsAmount: 0,

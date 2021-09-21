@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import Provider from "./labs/Provider";
+import appContext from "./labs/appContext";
 import appStore from "./stores";
 import { storage } from "./helpers/storage";
 import { memoService, userService } from "./services";
@@ -58,7 +59,7 @@ function App() {
 }
 
 ReactDOM.render(
-  <Provider store={appStore}>
+  <Provider store={appStore} context={appContext}>
     <App />
   </Provider>,
   document.getElementById("root")
