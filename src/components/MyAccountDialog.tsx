@@ -274,6 +274,7 @@ export default function showMyAccountDialog() {
   showDialog(
     {
       className: "my-account-dialog",
+      useAppContext: true,
     },
     MyAccountDialog,
     {}
