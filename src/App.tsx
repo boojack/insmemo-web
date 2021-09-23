@@ -7,7 +7,7 @@ import { storage } from "./helpers/storage";
 import { memoService, userService } from "./services";
 import Sidebar from "./components/Sidebar";
 import MobileHeader from "./components/MobileHeader";
-import MainEditor from "./components/MainEditor";
+import MemoEditor from "./components/MemoEditor";
 import MemoList from "./components/MemoList";
 import showSigninDialog from "./components/SigninDialog";
 import "./helpers/polyfill";
@@ -51,7 +51,7 @@ function App() {
       <Sidebar />
       <div className="content-wrapper">
         <MobileHeader />
-        <MainEditor />
+        <MemoEditor />
         <MemoList />
       </div>
     </div>

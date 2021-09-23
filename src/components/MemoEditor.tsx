@@ -10,7 +10,7 @@ import "../less/main-editor.less";
 
 interface Props {}
 
-const MainEditor: React.FC<Props> = () => {
+const MemoEditor: React.FC<Props> = () => {
   const {
     globalState,
     locationState: { query },
@@ -174,4 +174,4 @@ function setEditorContentCache(content: string) {
   });
 }
 
-export default MainEditor;
+export default MemoEditor;
