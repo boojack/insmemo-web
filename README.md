@@ -1,5 +1,9 @@
 # Memos
 
+仅用了屈指可数的 libs: React + Less + TS + Vite 🙌
+
+---
+
 有感于 知识星球 和 flomo
 
 为何做这个？
