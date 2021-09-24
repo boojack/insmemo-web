@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { memoService } from "../services";
+import { globalStateService, memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import { storage } from "../helpers/storage";
 import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
@@ -67,7 +66,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         scale: window.devicePixelRatio * 2,
         allowTaint: true,
         useCORS: true,
-        backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+        backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
         scrollX: -window.scrollX,
         scrollY: -window.scrollY,
       }).then((canvas) => {

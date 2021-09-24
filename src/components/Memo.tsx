@@ -1,6 +1,5 @@
 import React from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
-import { storage } from "../helpers/storage";
 import { parseMarkedToHtml } from "../helpers/marked";
 import { utils } from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
@@ -147,7 +146,7 @@ export function formatMemoContent(content: string): string {
     content = tempDivContainer.innerHTML;
   }
 
-  const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = storage.preferences;
+  const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = globalStateService.getState();
 
   if (shouldUseMarkdownParser) {
     content = parseMarkedToHtml(content);

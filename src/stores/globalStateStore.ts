@@ -1,4 +1,12 @@
-export interface State {
+export interface AppSetting {
+  shouldSplitMemoWord: boolean;
+  shouldHideImageUrl: boolean;
+  shouldUseMarkdownParser: boolean;
+  tagTextClickedAction: "copy" | "insert";
+  showDarkMode: boolean;
+}
+
+export interface State extends AppSetting {
   markMemoId: string;
   editMemoId: string;
 }
@@ -17,7 +25,12 @@ interface SetEditMemoIdAction {
   };
 }
 
-export type Actions = SetEditMemoIdAction | SetMarkMemoIdAction;
+interface SetAppSettingAction {
+  type: "SET_APP_SETTING";
+  payload: Partial<AppSetting>;
+}
+
+export type Actions = SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingAction;
 
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
@@ -33,6 +46,12 @@ export function reducer(state: State, action: Actions) {
         editMemoId: action.payload.editMemoId,
       };
     }
+    case "SET_APP_SETTING": {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
     default: {
       return state;
     }
@@ -42,4 +61,9 @@ export function reducer(state: State, action: Actions) {
 export const defaultState: State = {
   markMemoId: "",
   editMemoId: "",
+  shouldSplitMemoWord: true,
+  shouldHideImageUrl: true,
+  shouldUseMarkdownParser: true,
+  tagTextClickedAction: "copy",
+  showDarkMode: false,
 };

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { userService } from "../services";
+import { globalStateService, userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
-import { storage } from "../helpers/storage";
 import { showDialog } from "./Dialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
@@ -40,7 +39,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
           scale: window.devicePixelRatio * 2,
           allowTaint: true,
           useCORS: true,
-          backgroundColor: storage.preferences.showDarkMode ? "#2f3437" : "white",
+          backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
           scrollX: -window.scrollX,
           scrollY: -window.scrollY,
         }).then((canvas) => {

@@ -39,38 +39,4 @@ export namespace storage {
     iframeEl.contentWindow?.localStorage.setItem("t", Date.now().toString());
     iframeEl.remove();
   }
-
-  export const preferences = (() => {
-    const cachePrefers = storage.get([
-      "shouldSplitMemoWord",
-      "shouldHideImageUrl",
-      "tagTextClickedAction",
-      "shouldUseMarkdownParser",
-      "showDarkMode",
-    ]);
-    const temp = {
-      shouldSplitMemoWord: cachePrefers.shouldSplitMemoWord ?? true,
-      shouldHideImageUrl: cachePrefers.shouldHideImageUrl ?? true,
-      shouldUseMarkdownParser: cachePrefers.shouldUseMarkdownParser ?? true,
-      tagTextClickedAction: cachePrefers.tagTextClickedAction ?? "copy",
-      showDarkMode: cachePrefers.showDarkMode ?? false,
-    };
-    storage.set({ ...temp });
-
-    const handleStorageDataChanged = () => {
-      const showDarkMode = storage.preferences.showDarkMode ?? false;
-      if (showDarkMode) {
-        document.body.classList.add("dark");
-      } else {
-        document.body.classList.remove("dark");
-      }
-    };
-
-    setTimeout(() => {
-      handleStorageDataChanged();
-    });
-    window.addEventListener("storage", handleStorageDataChanged);
-
-    return temp;
-  })();
 }

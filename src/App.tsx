@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Provider from "./labs/Provider";
 import appContext from "./labs/appContext";
@@ -15,6 +15,10 @@ import "./less/global.less";
 import "./less/index.less";
 
 function App() {
+  const {
+    globalState: { showDarkMode },
+  } = useContext(appContext);
+
   useEffect(() => {
     userService
       .doSignIn()
@@ -29,6 +33,14 @@ function App() {
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (showDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [showDarkMode]);
 
   return (
     <>

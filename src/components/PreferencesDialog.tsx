@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { storage } from "../helpers/storage";
+import React, { useContext, useEffect } from "react";
+import appContext from "../labs/appContext";
 import { showDialog } from "./Dialog";
-import { memoService } from "../services";
+import { globalStateService, memoService } from "../services";
 import "../less/preferences-dialog.less";
 
 interface Props extends DialogProps {}
@@ -12,12 +12,9 @@ interface Props extends DialogProps {}
  * 2. markdown 解析；
  */
 const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
-  const preferences = storage.preferences;
-  const [shouldSplitMemoWord, setShouldSplitWord] = useState<boolean>(preferences.shouldSplitMemoWord);
-  const [shouldHideImageUrl, setHideImageUrl] = useState<boolean>(preferences.shouldHideImageUrl);
-  const [tagTextClickedAction, setTagTextClickedAction] = useState<"copy" | "insert">(preferences.tagTextClickedAction);
-  const [shouldUseMarkdownParser, setShouldUseMarkdownParser] = useState<boolean>(preferences.shouldUseMarkdownParser);
-  const [showDarkMode, setShowDarkMode] = useState<boolean>(preferences.showDarkMode);
+  const {
+    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser, showDarkMode, tagTextClickedAction },
+  } = useContext(appContext);
 
   useEffect(() => {
     // do nth
@@ -29,41 +26,37 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
 
   const handleSplitWordsValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
-    setShouldSplitWord(nextStatus);
-    preferences.shouldSplitMemoWord = nextStatus;
-    storage.set({ shouldSplitMemoWord: nextStatus });
-    storage.emitStorageChangedEvent();
+    globalStateService.setAppSetting({
+      shouldSplitMemoWord: nextStatus,
+    });
   };
 
   const handleHideImageUrlValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
-    setHideImageUrl(nextStatus);
-    preferences.shouldHideImageUrl = nextStatus;
-    storage.set({ shouldHideImageUrl: nextStatus });
-    storage.emitStorageChangedEvent();
+    globalStateService.setAppSetting({
+      shouldHideImageUrl: nextStatus,
+    });
   };
 
   const handleShowDarkModeValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
-    setShowDarkMode(nextStatus);
-    preferences.showDarkMode = nextStatus;
-    storage.set({ showDarkMode: nextStatus });
-    storage.emitStorageChangedEvent();
+    globalStateService.setAppSetting({
+      showDarkMode: nextStatus,
+    });
   };
 
   const handleUseMarkdownParserChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.checked;
-    setShouldUseMarkdownParser(nextStatus);
-    preferences.shouldUseMarkdownParser = nextStatus;
-    storage.set({ shouldUseMarkdownParser: nextStatus });
-    storage.emitStorageChangedEvent();
+    globalStateService.setAppSetting({
+      shouldUseMarkdownParser: nextStatus,
+    });
   };
 
   const handleTagTextClickValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextStatus = e.target.value as "copy" | "insert";
-    setTagTextClickedAction(nextStatus);
-    preferences.tagTextClickedAction = nextStatus;
-    storage.set({ tagTextClickedAction: nextStatus });
+    globalStateService.setAppSetting({
+      tagTextClickedAction: nextStatus,
+    });
   };
 
   const handleExportBtnClick = async () => {
@@ -102,13 +95,10 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <span className="normal-text">深色模式</span>
             <img className="icon-img" src={showDarkMode ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={showDarkMode} onChange={handleShowDarkModeValueChanged} />
-            <span className="tip-text">😜先用着吧</span>
           </label>
         </div>
         <div className="section-container preferences-section-container">
-          <p className="title-text">
-            Memo 显示相关 <span className="tip-text">需要主动刷新网页</span>
-          </p>
+          <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">中英文内容自动间隔</span>
             <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
@@ -172,6 +162,7 @@ export default function showPreferencesDialog() {
   showDialog(
     {
       className: "preferences-dialog",
+      useAppContext: true,
     },
     PreferencesDialog,
     {}

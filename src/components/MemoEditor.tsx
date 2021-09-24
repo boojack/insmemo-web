@@ -43,7 +43,7 @@ const MemoEditor: React.FC<Props> = () => {
     const tagText = query.tag;
 
     if (tagText) {
-      if (storage.preferences.tagTextClickedAction === "insert") {
+      if (globalState.tagTextClickedAction === "insert") {
         const editorContent = editorRef.current?.getContent() ?? "";
         const text = `#${tagText}#`;
         if (!editorContent.includes(text)) {

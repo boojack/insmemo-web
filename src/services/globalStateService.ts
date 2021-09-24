@@ -1,6 +1,27 @@
+import { storage } from "../helpers/storage";
 import appStore from "../stores";
+import { AppSetting } from "../stores/globalStateStore";
 
 class GlobalStateService {
+  constructor() {
+    const cachedSetting = storage.get([
+      "shouldSplitMemoWord",
+      "shouldHideImageUrl",
+      "tagTextClickedAction",
+      "shouldUseMarkdownParser",
+      "showDarkMode",
+    ]);
+    const defaultAppSetting = {
+      shouldSplitMemoWord: cachedSetting.shouldSplitMemoWord ?? true,
+      shouldHideImageUrl: cachedSetting.shouldHideImageUrl ?? true,
+      shouldUseMarkdownParser: cachedSetting.shouldUseMarkdownParser ?? true,
+      tagTextClickedAction: cachedSetting.tagTextClickedAction ?? "copy",
+      showDarkMode: cachedSetting.showDarkMode ?? false,
+    };
+
+    this.setAppSetting(defaultAppSetting);
+  }
+
   public getState = () => {
     return appStore.getState().globalState;
   };
@@ -21,6 +42,14 @@ class GlobalStateService {
         markMemoId,
       },
     });
+  };
+
+  public setAppSetting = (appSetting: Partial<AppSetting>) => {
+    appStore.dispatch({
+      type: "SET_APP_SETTING",
+      payload: appSetting,
+    });
+    storage.set(appSetting);
   };
 }
 
