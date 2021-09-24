@@ -33,8 +33,7 @@ export type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction | 
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
     case "PUSH": {
-      const memo = action.payload.memo;
-      const memos = [memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
+      const memos = [action.payload.memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
 
       return {
         memos,
@@ -60,9 +59,7 @@ export function reducer(state: State, action: Actions): State {
             ...action.payload,
           };
         } else {
-          return {
-            ...m,
-          };
+          return m;
         }
       });
 

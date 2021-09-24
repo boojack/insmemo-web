@@ -64,7 +64,7 @@ const UsageStatTable: React.FC<Props> = () => {
       .catch((error) => {
         toastHelper.error(error.message);
       });
-  }, [memos]);
+  }, [memos.length]);
 
   const handleUsageStatItemMouseEnter = useCallback((ev: React.MouseEvent, item: UsageStatDaily) => {
     setPopupStat(item);

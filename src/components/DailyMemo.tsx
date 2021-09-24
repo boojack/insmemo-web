@@ -11,7 +11,6 @@ interface DailyMemo extends FormattedMemo {
 
 interface Props {
   memo: Model.Memo;
-  index: number;
 }
 
 const DailyMemo: React.FC<Props> = (props: Props) => {

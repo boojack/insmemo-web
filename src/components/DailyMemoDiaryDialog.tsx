@@ -126,10 +126,9 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
           </div>
         ) : (
           <div className="dailymemos-wrapper">
-            {memos.map((memo, idx) => {
-              const key = memo.id + " " + memo.updatedAt;
-              return <DailyMemo key={key} index={idx} memo={memo} />;
-            })}
+            {memos.map((memo) => (
+              <DailyMemo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+            ))}
           </div>
         )}
       </div>

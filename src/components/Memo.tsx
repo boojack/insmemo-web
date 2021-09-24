@@ -13,9 +13,7 @@ import toastHelper from "./Toast";
 import "../less/memo.less";
 
 interface Props {
-  index: number;
   memo: Model.Memo;
-  className?: string;
 }
 
 const Memo: React.FC<Props> = (props: Props) => {
@@ -46,10 +44,7 @@ const Memo: React.FC<Props> = (props: Props) => {
     if (showConfirmDeleteBtn) {
       try {
         await memoService.deleteMemoById(memo.id);
-
-        if (props.index + 5 > memoService.getState().memos.length) {
-          await memoService.fetchMoreMemos();
-        }
+        await memoService.fetchMoreMemos();
       } catch (error: any) {
         toastHelper.error(error.message);
       }
@@ -89,7 +84,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={`memo-wrapper ${props.className ?? ""}`} onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className="memo-wrapper" onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
@@ -178,4 +173,6 @@ export function formatMemoContent(content: string): string {
   return content;
 }
 
-export default Memo;
+export default React.memo(({ memo }: Props) => {
+  return <Memo memo={memo} />;
+});

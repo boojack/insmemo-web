@@ -113,9 +113,9 @@ const MemoList: React.FC<Props> = () => {
     <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleContainerScroll}>
       <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
 
-      {shownMemos.map((memo, index) => {
-        return <Memo key={`${memo.id} ${memo.updatedAt}`} index={index} memo={memo} />;
-      })}
+      {shownMemos.map((memo) => (
+        <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+      ))}
 
       {showFilter ? (
         <div className={`status-text-container`}>
