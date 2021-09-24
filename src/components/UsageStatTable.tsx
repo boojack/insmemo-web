@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { locationService, memoService, userService } from "../services";
+import { globalStateService, locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import appContext from "../labs/appContext";
 import { utils } from "../helpers/utils";
@@ -80,15 +80,15 @@ const UsageStatTable: React.FC<Props> = () => {
     setPopupStat(null);
   }, []);
 
-  const handleUsageStatItemClick = (item: UsageStatDaily) => {
-    if (currentStat?.timestamp === item.timestamp) {
+  const handleUsageStatItemClick = useCallback((item: UsageStatDaily) => {
+    if (locationService.getState().query.from === item.timestamp) {
       locationService.setFromAndToQuery(0, 0);
       setCurrentStat(null);
     } else if (item.count > 0) {
       locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
       setCurrentStat(item);
     }
-  };
+  }, []);
 
   return (
     <div className="usage-stat-table-wrapper">
