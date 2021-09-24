@@ -2,6 +2,8 @@ interface Query {
   tag: string;
   from: number;
   to: number;
+  type: MemoType | "";
+  text: string;
 }
 
 export interface State {
@@ -24,6 +26,20 @@ interface SetFromAndToQueryAction {
   };
 }
 
+interface SetTypeAction {
+  type: "SET_TYPE";
+  payload: {
+    type: MemoType | "";
+  };
+}
+
+interface SetTextAction {
+  type: "SET_TEXT";
+  payload: {
+    text: string;
+  };
+}
+
 interface SetHashAction {
   type: "SET_HASH";
   payload: {
@@ -31,7 +47,7 @@ interface SetHashAction {
   };
 }
 
-export type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetHashAction;
+export type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetTypeAction | SetTextAction | SetHashAction;
 
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
@@ -54,6 +70,24 @@ export function reducer(state: State, action: Actions) {
         },
       };
     }
+    case "SET_TYPE": {
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          type: action.payload.type,
+        },
+      };
+    }
+    case "SET_TEXT": {
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          text: action.payload.text,
+        },
+      };
+    }
     case "SET_HASH": {
       return {
         ...state,
@@ -72,5 +106,7 @@ export const defaultState: State = {
     tag: "",
     from: 0,
     to: 0,
+    type: "",
+    text: "",
   },
 };

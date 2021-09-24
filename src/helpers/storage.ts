@@ -56,6 +56,21 @@ export namespace storage {
       showDarkMode: cachePrefers.showDarkMode ?? false,
     };
     storage.set({ ...temp });
+
+    const handleStorageDataChanged = () => {
+      const showDarkMode = storage.preferences.showDarkMode ?? false;
+      if (showDarkMode) {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+    };
+
+    setTimeout(() => {
+      handleStorageDataChanged();
+    });
+    window.addEventListener("storage", handleStorageDataChanged);
+
     return temp;
   })();
 }

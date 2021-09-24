@@ -99,6 +99,8 @@ const Editor = forwardRef((props: EditorProps = DEFAULT_EDITOR_PROPS) => {
   };
 
   const handleInputerKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+
     if (e.key === "Tab") {
       e.preventDefault();
       document.execCommand("insertText", false, "  ");

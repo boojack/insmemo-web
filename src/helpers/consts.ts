@@ -27,3 +27,19 @@ export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
 
 // memo 关联正则
 export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
+
+// memo filter special type
+export const MEMO_TYPES = [
+  {
+    type: "NO_TAG",
+    text: "无标签",
+  },
+  {
+    type: "LINKED",
+    text: "有链接",
+  },
+  {
+    type: "IMAGED",
+    text: "有图",
+  },
+];
