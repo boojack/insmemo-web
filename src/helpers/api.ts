@@ -1,15 +1,9 @@
-import axios, { AxiosRequestConfig } from "axios";
-
 type ResponseType<T = any> = {
   succeed: boolean;
   status: number;
   message: string;
   data: T;
 };
-
-const REQ_CONFIG: AxiosRequestConfig = {};
-
-const axiosInstance = axios.create(REQ_CONFIG);
 
 /**
  * api
@@ -19,23 +13,34 @@ const axiosInstance = axios.create(REQ_CONFIG);
  */
 export namespace api {
   export async function get<T>(url: string): Promise<ResponseType<T>> {
-    const res = await axiosInstance.get<ResponseType<T>>(url, REQ_CONFIG);
+    const response = await fetch(url, {
+      method: "GET",
+    });
+    const resData = (await response.json()) as ResponseType<T>;
 
-    if (!res.data.succeed) {
-      throw res.data;
+    if (!resData.succeed) {
+      throw resData;
     }
 
-    return res.data;
+    return resData;
   }
 
   export async function post<T>(url: string, data?: BasicType): Promise<ResponseType<T>> {
-    const res = await axiosInstance.post<ResponseType<T>>(url, data, REQ_CONFIG);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    if (!res.data.succeed) {
-      throw res.data;
+    const resData = (await response.json()) as ResponseType<T>;
+
+    if (!resData.succeed) {
+      throw resData;
     }
 
-    return res.data;
+    return resData;
   }
 
   export function getUserInfo() {
