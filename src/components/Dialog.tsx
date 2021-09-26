@@ -32,7 +32,11 @@ const BaseDialog: React.FC<Props> = (props) => {
   );
 };
 
-export function showDialog<T extends DialogProps>(config: DialogConfig, DialogComponent: React.FC<T>, props: Omit<T, "destroy">) {
+export function showDialog<T extends DialogProps>(
+  config: DialogConfig,
+  DialogComponent: React.FC<T>,
+  props: Omit<T, "destroy">
+): DialogCallback {
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
 
@@ -68,4 +72,6 @@ export function showDialog<T extends DialogProps>(config: DialogConfig, DialogCo
   }
 
   ReactDOM.render(Fragment, tempDiv);
+
+  return { destroy };
 }

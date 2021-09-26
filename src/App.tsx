@@ -7,8 +7,8 @@ import { memoService, userService } from "./services";
 import MobileHeader from "./components/MobileHeader";
 import MemoEditor from "./components/MemoEditor";
 import MemoList from "./components/MemoList";
-import SearchBar from "./components/SearchBar";
 import Sidebar from "./components/Sidebar";
+import toggleSearchBarDialog from "./components/SearchBar";
 import showSigninDialog from "./components/SigninDialog";
 import "./helpers/polyfill";
 import "./less/global.less";
@@ -32,6 +32,24 @@ function App() {
           showSigninDialog();
         }
       });
+
+    const handleSearchKeyDown = (event: KeyboardEvent) => {
+      if (!userService.getState().user) {
+        return;
+      }
+
+      const { ctrlKey, metaKey, code } = event;
+      if ((ctrlKey || metaKey) && code === "KeyP") {
+        event.preventDefault();
+        toggleSearchBarDialog();
+      }
+    };
+
+    window.addEventListener("keydown", handleSearchKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleSearchKeyDown);
+    };
   }, []);
 
   useEffect(() => {
@@ -52,7 +70,6 @@ function App() {
           <MemoList />
         </div>
       </div>
-      <SearchBar />
     </>
   );
 }

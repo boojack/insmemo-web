@@ -28,9 +28,11 @@ const MobileHeader: React.FC<Props> = () => {
       <p className="username-text" onClick={handleUsernameClick}>
         {username}
       </p>
-      <button className="action-btn show-sidebar" onClick={handleMoreActionBtnClick}>
-        <img className="icon-img" src="/icons/fold.svg" alt="fold" />
-      </button>
+      <div className="btns-container">
+        <button className="action-btn show-sidebar" onClick={handleMoreActionBtnClick}>
+          <img className="icon-img" src="/icons/fold.svg" alt="fold" />
+        </button>
+      </div>
     </div>
   );
 };
