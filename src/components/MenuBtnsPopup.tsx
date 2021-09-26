@@ -34,7 +34,7 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
         <span className="icon">🤠</span> 我的账号
       </button>
       <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
-        <span className="icon">🤟</span> 偏好设置
+        <span className="icon">⚙️</span> 偏好设置
       </button>
       <button className="text-btn action-btn" onClick={handleSearchBtnClick}>
         <span className="icon">🔍</span> 搜索

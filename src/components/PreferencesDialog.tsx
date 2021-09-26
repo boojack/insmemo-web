@@ -89,7 +89,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">🤟</span>偏好设置
+          <span className="icon-text">⚙️</span>偏好设置
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
@@ -117,7 +117,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <input className="hidden" type="checkbox" checked={shouldHideImageUrl} onChange={handleHideImageUrlValueChanged} />
           </label>
           <label className="form-label checkbox-form-label">
-            <span className="normal-text">使用 markdown 解析</span>
+            <span className="normal-text">markdown 格式解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
             <span className="tip-text">目前支持列表、代码块</span>

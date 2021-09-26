@@ -40,6 +40,6 @@ export const MEMO_TYPES = [
   },
   {
     type: "IMAGED",
-    text: "有图",
+    text: "有图片",
   },
 ];

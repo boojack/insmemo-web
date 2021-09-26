@@ -54,9 +54,9 @@ const SearchBarDialog: React.FC<Props> = ({ destroy }) => {
         />
       </div>
       <div className="special-type-selector">
-        <p className="title-text">QUICK ACTIONS</p>
+        <p className="title-text">QUICKLY FILTER</p>
         <div className="section-container types-container">
-          <span className="section-text">Special Types:</span>
+          <span className="section-text">Type:</span>
           {MEMO_TYPES.map((t, idx) => {
             return (
               <>
