@@ -19,7 +19,7 @@
     font-size: 13px;
     line-height: 20px;
     font-weight: bold;
-    color: #ded1b7;
+    color: @text-lightgray;
   }
 
   > .tags-container {
@@ -37,10 +37,16 @@
     > .tag-item-container {
       width: 100%;
       padding: 8px 16px;
+      padding-right: 8px;
+      margin-bottom: 4px;
       line-height: 24px;
       border-radius: 8px;
       font-size: 14px;
       cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
 
       &:hover {
         background-color: #efefef;
@@ -59,7 +65,31 @@
       }
 
       > .tag-text {
+        max-width: calc(100% - 24px);
         color: @text-gray;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-shrink: 0;
+      }
+
+      > .toggle-btn {
+        width: 20px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.1s linear;
+        transform: rotate(0);
+
+        > .icon-img {
+          width: 20px;
+          height: 20px;
+        }
+
+        &.shown {
+          transform: rotate(90deg);
+        }
       }
     }
 

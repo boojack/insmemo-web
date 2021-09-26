@@ -41,8 +41,20 @@ const MemoList: React.FC<Props> = () => {
 
   const shownMemos = memos.filter((memo) => {
     let shouldShow = true;
-
-    if (tagQuery !== "" && !memo.tags?.map((t) => t.text).includes(tagQuery)) {
+    const memoTags = [];
+    for (const t of memo.tags) {
+      const subTags = t.text.split("/");
+      let tempTag = "";
+      for (let i = 0; i < subTags.length; i++) {
+        if (i === 0) {
+          tempTag += subTags[i];
+        } else {
+          tempTag += "/" + subTags[i];
+        }
+        memoTags.push(tempTag);
+      }
+    }
+    if (tagQuery !== "" && !memoTags.includes(tagQuery)) {
       shouldShow = false;
     }
     if (duration.from !== 0 && duration.from < duration.to && (memo.createdAt < duration.from || memo.createdAt > duration.to)) {
