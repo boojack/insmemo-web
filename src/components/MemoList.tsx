@@ -49,7 +49,7 @@ const MemoList: React.FC<Props> = () => {
       shouldShow = false;
     }
     if (memoType !== "") {
-      if (memoType === "NO_TAG") {
+      if (memoType === "NOT_TAGGED") {
         if (memo.content.match(TAG_REG) !== null) {
           shouldShow = false;
         }

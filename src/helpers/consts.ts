@@ -31,7 +31,7 @@ export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 // memo filter special type
 export const MEMO_TYPES = [
   {
-    type: "NO_TAG",
+    type: "NOT_TAGGED",
     text: "无标签",
   },
   {

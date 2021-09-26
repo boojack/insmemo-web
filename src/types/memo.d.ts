@@ -1,1 +1,1 @@
-type MemoType = "NO_TAG" | "LINKED" | "IMAGED";
+type MemoType = "NOT_TAGGED" | "LINKED" | "IMAGED";
