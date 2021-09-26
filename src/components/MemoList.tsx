@@ -105,8 +105,8 @@ const MemoList: React.FC<Props> = () => {
         fetchMoreMemos();
       }
     },
-    200,
-    [isFetching, isComplete]
+    100,
+    []
   );
 
   return (

@@ -265,8 +265,7 @@ function showChangePasswordDialog() {
     {
       className: "change-password-dialog",
     },
-    ChangePasswordDialog,
-    {}
+    ChangePasswordDialog
   );
 }
 
@@ -276,7 +275,6 @@ export default function showMyAccountDialog() {
       className: "my-account-dialog",
       useAppContext: true,
     },
-    MyAccountDialog,
-    {}
+    MyAccountDialog
   );
 }

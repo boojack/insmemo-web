@@ -35,7 +35,7 @@ const BaseDialog: React.FC<Props> = (props) => {
 export function showDialog<T extends DialogProps>(
   config: DialogConfig,
   DialogComponent: React.FC<T>,
-  props: Omit<T, "destroy">
+  props?: Omit<T, "destroy">
 ): DialogCallback {
   const tempDiv = document.createElement("div");
   document.body.append(tempDiv);
@@ -44,21 +44,24 @@ export function showDialog<T extends DialogProps>(
     tempDiv.firstElementChild?.classList.add("showup");
   }, 0);
 
-  const destroy = () => {
-    tempDiv.firstElementChild?.classList.add("showoff");
-    setTimeout(() => {
-      ReactDOM.unmountComponentAtNode(tempDiv);
-      tempDiv.remove();
-    }, ANIMATION_DURATION);
+  const cbs: DialogCallback = {
+    destroy: () => {
+      tempDiv.firstElementChild?.classList.remove("showup");
+      tempDiv.firstElementChild?.classList.add("showoff");
+      setTimeout(() => {
+        tempDiv.remove();
+        ReactDOM.unmountComponentAtNode(tempDiv);
+      }, ANIMATION_DURATION);
+    },
   };
 
   const dialogProps = {
     ...props,
-    destroy,
+    destroy: cbs.destroy,
   } as T;
 
   let Fragment = (
-    <BaseDialog destroy={destroy} clickSpaceDestroy={true} {...config}>
+    <BaseDialog destroy={cbs.destroy} clickSpaceDestroy={true} {...config}>
       <DialogComponent {...dialogProps} />
     </BaseDialog>
   );
@@ -73,5 +76,5 @@ export function showDialog<T extends DialogProps>(
 
   ReactDOM.render(Fragment, tempDiv);
 
-  return { destroy };
+  return cbs;
 }

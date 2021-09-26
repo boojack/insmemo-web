@@ -164,7 +164,6 @@ export default function showPreferencesDialog() {
       className: "preferences-dialog",
       useAppContext: true,
     },
-    PreferencesDialog,
-    {}
+    PreferencesDialog
   );
 }

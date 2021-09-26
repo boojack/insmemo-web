@@ -138,7 +138,6 @@ export default function showSigninDialog() {
       className: "signin-dialog",
       clickSpaceDestroy: false,
     },
-    SigninDialog,
-    {}
+    SigninDialog
   );
 }

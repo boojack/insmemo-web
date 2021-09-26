@@ -1,15 +1,10 @@
 @import "./mixin.less";
 
 .search-bar-wrapper {
-  background-color: rgba(15, 15, 15, 0.4);
-  padding: 64px 0;
-
   > .dialog-container {
     width: 384px;
-    background-color: white;
     padding: 0;
     border-radius: 8px;
-    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 
     > .search-bar-inputer {
       display: flex;
@@ -17,11 +12,11 @@
       justify-content: flex-start;
       align-items: center;
       width: 100%;
-      padding: 16px;
+      padding: 24px;
       border-bottom: 1px solid lightgray;
 
       > .icon-img {
-        margin-right: 8px;
+        margin-right: 12px;
         width: 16px;
         height: auto;
       }
@@ -42,7 +37,7 @@
 
     > .special-type-selector {
       width: 100%;
-      padding: 16px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -60,25 +55,25 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+        font-size: 13px;
 
-        > .memo-type-item {
-          margin-right: 8px;
-          font-size: 13px;
+        > .section-text {
+          color: gray;
+          margin-right: 4px;
+        }
+
+        > .type-item {
           cursor: pointer;
           padding: 4px 8px;
           border-radius: 6px;
 
           &:hover {
-            font-weight: bold;
+            color: black;
           }
 
           &.selected {
             background-color: @text-green;
             color: white;
-
-            &:hover {
-              font-weight: unset;
-            }
           }
         }
       }
@@ -101,11 +96,6 @@ body.dark {
 @media only screen and (max-width: 875px) {
   .search-bar-wrapper {
     width: 100%;
-    padding: 0 16px;
-
-    > .dialog-container {
-      max-width: 100%;
-      margin-top: 24px !important;
-    }
+    padding: 24px 16px;
   }
 }

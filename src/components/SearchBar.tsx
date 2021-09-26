@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { MEMO_TYPES } from "../helpers/consts";
+import ReactDOM from "react-dom";
+import { ANIMATION_DURATION, MEMO_TYPES } from "../helpers/consts";
 import { locationService } from "../services";
 import appContext from "../labs/appContext";
 import { showDialog } from "./Dialog";
@@ -45,7 +46,7 @@ const SearchBar: React.FC<Props> = ({ destroy }) => {
         <input
           className="text-input"
           type="text"
-          placeholder="Enter the keyword"
+          placeholder="Search for memos"
           ref={inputRef}
           value={textQuery}
           onChange={handleTextQueryInput}
@@ -53,13 +54,14 @@ const SearchBar: React.FC<Props> = ({ destroy }) => {
         />
       </div>
       <div className="special-type-selector">
-        <p className="title-text">Quick Actions</p>
+        <p className="title-text">QUICK ACTIONS</p>
         <div className="types-container">
+          <span className="section-text">Special Types:</span>
           {MEMO_TYPES.map((t) => {
             return (
               <span
                 key={t.type}
-                className={`memo-type-item ${memoType === t.type ? "selected" : ""}`}
+                className={`type-item ${memoType === t.type ? "selected" : ""}`}
                 onClick={() => {
                   handleMemoTypeItemClick(t.type as MemoType);
                 }}
@@ -74,25 +76,28 @@ const SearchBar: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-const toggleSearchBarDialog = (() => {
+const toggleSearchBarDialog = () => {
   const className = "search-bar-wrapper";
-  let searchBarInstance: DialogCallback | null = null;
+  let container = document.querySelector(`.${className}`);
 
-  return () => {
-    if (document.querySelector(`.${className}`) && searchBarInstance) {
-      searchBarInstance.destroy();
-      searchBarInstance = null;
-    } else {
-      searchBarInstance = showDialog(
-        {
-          className,
-          useAppContext: true,
-        },
-        SearchBar,
-        {}
-      );
-    }
-  };
-})();
+  if (container && container.parentElement) {
+    container.classList.remove("showup");
+    container.classList.add("showoff");
+    setTimeout(() => {
+      if (container && container.parentElement) {
+        container.parentElement.remove();
+        ReactDOM.unmountComponentAtNode(container.parentElement);
+      }
+    }, ANIMATION_DURATION);
+  } else {
+    showDialog(
+      {
+        className,
+        useAppContext: true,
+      },
+      SearchBar
+    );
+  }
+};
 
 export default toggleSearchBarDialog;

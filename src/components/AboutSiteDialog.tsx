@@ -73,7 +73,6 @@ export default function showAboutSiteDialog() {
     {
       className: "about-site-dialog",
     },
-    AboutSiteDialog,
-    {}
+    AboutSiteDialog
   );
 }
