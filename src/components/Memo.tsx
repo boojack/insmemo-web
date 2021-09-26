@@ -166,7 +166,7 @@ export function formatMemoContent(content: string): string {
   content = tempDivContainer.innerHTML;
 
   content = content
-    .replace(TAG_REG, "<span class='tag-span'>#$1#</span>")
+    .replace(TAG_REG, "<span class='tag-span'>#$1</span>")
     .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
     .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
 

@@ -76,9 +76,9 @@ const TagList: React.FC<Props> = () => {
                 <span className="tag-text"># {t.text}</span>
               </div>
             ))}
-            <Only when={tags.length <= 3}>
+            <Only when={tags.length < 5}>
               <p className="tag-tip-container">
-                输入<span>#Tag#</span>来创建标签吧~
+                输入<span className="code-text"># Tag </span>来创建标签吧~
               </p>
             </Only>
           </>

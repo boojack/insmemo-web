@@ -100,17 +100,21 @@ const MemoList: React.FC<Props> = () => {
 
   const handleContainerScroll = useDebounce(
     () => {
+      if (isFetching || isComplete) {
+        return;
+      }
+
       const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current!;
       if (offsetHeight + scrollTop + 10 > scrollHeight) {
         fetchMoreMemos();
       }
     },
     100,
-    []
+    [isFetching, isComplete]
   );
 
   return (
-    <div className="memolist-wrapper" ref={wrapperElement} onScroll={handleContainerScroll}>
+    <div className={`memolist-wrapper ${isComplete ? "completed" : ""}`} ref={wrapperElement} onScroll={handleContainerScroll}>
       <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
 
       {shownMemos.map((memo) => (

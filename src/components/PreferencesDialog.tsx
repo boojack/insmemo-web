@@ -59,6 +59,13 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     });
   };
 
+  const handleMemoCleanBtnClick = async () => {
+    await memoService.fetchAllMemos();
+    for (const m of memoService.getState().memos) {
+      await memoService.updateMemo(m.id, m.content.replace("&nbsp;", " ").replace(/#(.+?)#/g, "# $1 "));
+    }
+  };
+
   const handleExportBtnClick = async () => {
     await memoService.fetchAllMemos();
     const formatedMemos = memoService.getState().memos.map((m) => {
@@ -150,6 +157,9 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           <div className="btn-container">
             <button className="btn export-btn" onClick={handleExportBtnClick}>
               导出数据(JSON)
+            </button>
+            <button className="btn clean-btn" onClick={handleMemoCleanBtnClick}>
+              Memo Clean
             </button>
           </div>
         </div>

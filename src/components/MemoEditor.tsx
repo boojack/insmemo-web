@@ -61,6 +61,8 @@ const MemoEditor: React.FC<Props> = () => {
       return;
     }
 
+    content = content.replaceAll("&nbsp;", " ");
+
     const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
     const tags: Model.Tag[] = [];
 

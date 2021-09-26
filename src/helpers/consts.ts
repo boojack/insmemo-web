@@ -20,7 +20,7 @@ export const DAILY_TIMESTAMP = 3600 * 24 * 1000;
 export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 // 标签 正则
-export const TAG_REG = /#([^\n</p>]+?)#/g;
+export const TAG_REG = /# (.+?) /g;
 
 // URL 正则
 export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
