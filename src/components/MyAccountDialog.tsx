@@ -9,10 +9,9 @@ import "../less/my-account-dialog.less";
 interface Props extends DialogProps {}
 
 const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
-  const {
-    userState: { user },
-  } = useContext(appContext);
-  const [username, setUsername] = useState<string>(user?.username ?? "");
+  const { userState } = useContext(appContext);
+  const user = userState.user!;
+  const [username, setUsername] = useState<string>(user.username);
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
   const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
 
@@ -26,12 +25,12 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   };
 
   const handleConfirmEditUsernameBtnClick = async () => {
-    if (user?.username === "guest") {
+    if (user.username === "guest") {
       toastHelper.info("🈲 不要修改我的用户名");
       return;
     }
 
-    if (username === user?.username) {
+    if (username === user.username) {
       setShowEditUsernameInputs(false);
       return;
     }
@@ -54,7 +53,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   };
 
   const handleChangePasswordBtnClick = () => {
-    if (user?.username === "guest") {
+    if (user.username === "guest") {
       toastHelper.info("🈲 不要修改我的密码");
       return;
     }
@@ -95,11 +94,11 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           <p className="title-text">基本信息</p>
           <label className="form-label input-form-label">
             <span className="normal-text">ID：</span>
-            <span className="normal-text">{user?.id}</span>
+            <span className="normal-text">{user.id}</span>
           </label>
           <label className="form-label input-form-label">
             <span className="normal-text">创建时间：</span>
-            <span className="normal-text">{utils.getDateString(user?.createdAt!)}</span>
+            <span className="normal-text">{utils.getDateString(user.createdAt!)}</span>
           </label>
           <label className="form-label input-form-label username-label">
             <span className="normal-text">账号：</span>
@@ -122,7 +121,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
               <span
                 className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
                 onClick={() => {
-                  setUsername(user?.username ?? "");
+                  setUsername(user.username);
                   setShowEditUsernameInputs(false);
                 }}
               >
@@ -141,10 +140,10 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           <p className="title-text">关联账号</p>
           <label className="form-label input-form-label">
             <span className="normal-text">GitHub：</span>
-            {user?.githubName ? (
+            {user.githubName ? (
               <>
-                <a className="value-text" href={"https://github.com/" + user?.githubName}>
-                  {user?.githubName}
+                <a className="value-text" href={"https://github.com/" + user.githubName}>
+                  {user.githubName}
                 </a>
                 <span className="btn-text" onMouseLeave={() => setShowConfirmUnbindBtn(false)} onClick={handleUnbindGithubBtnClick}>
                   {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}

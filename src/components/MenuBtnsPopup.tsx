@@ -3,7 +3,7 @@ import { userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
-import toggleSearchBarDialog from "./SearchBar";
+import toggleSearchBarDialog from "./SearchBarDialog";
 import "../less/menu-btns-popup.less";
 
 interface Props {

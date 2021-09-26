@@ -1,8 +1,8 @@
 @import "./mixin.less";
 
-.search-bar-wrapper {
+.search-bar-dialog-wrapper {
   > .dialog-container {
-    width: 384px;
+    width: 512px;
     padding: 0;
     border-radius: 8px;
 
@@ -12,7 +12,7 @@
       justify-content: flex-start;
       align-items: center;
       width: 100%;
-      padding: 24px;
+      padding: 20px;
       border-bottom: 1px solid lightgray;
 
       > .icon-img {
@@ -37,7 +37,7 @@
 
     > .special-type-selector {
       width: 100%;
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -68,7 +68,7 @@
           border-radius: 6px;
 
           &:hover {
-            color: black;
+            background-color: @bg-whitegray;
           }
 
           &.selected {
@@ -76,13 +76,18 @@
             color: white;
           }
         }
+
+        > .split-text {
+          color: lightgray;
+          margin: 0 4px;
+        }
       }
     }
   }
 }
 
 body.dark {
-  .search-bar-wrapper {
+  .search-bar-dialog-wrapper {
     > .dialog-container {
       background-color: @dark-bg-black;
 
@@ -94,7 +99,7 @@ body.dark {
 }
 
 @media only screen and (max-width: 875px) {
-  .search-bar-wrapper {
+  .search-bar-dialog-wrapper {
     width: 100%;
     padding: 24px 16px;
   }

@@ -8,7 +8,7 @@ import MobileHeader from "./components/MobileHeader";
 import MemoEditor from "./components/MemoEditor";
 import MemoList from "./components/MemoList";
 import Sidebar from "./components/Sidebar";
-import toggleSearchBarDialog from "./components/SearchBar";
+import toggleSearchBarDialog from "./components/SearchBarDialog";
 import showSigninDialog from "./components/SigninDialog";
 import "./helpers/polyfill";
 import "./less/global.less";

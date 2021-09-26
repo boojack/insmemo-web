@@ -149,7 +149,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           <p className="title-text">其他</p>
           <div className="btn-container">
             <button className="btn export-btn" onClick={handleExportBtnClick}>
-              导出数据
+              导出数据(JSON)
             </button>
           </div>
         </div>
