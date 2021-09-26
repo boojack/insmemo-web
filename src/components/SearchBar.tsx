@@ -75,16 +75,17 @@ const SearchBar: React.FC<Props> = ({ destroy }) => {
 };
 
 const toggleSearchBarDialog = (() => {
+  const className = "search-bar-wrapper";
   let searchBarInstance: DialogCallback | null = null;
 
   return () => {
-    if (document.querySelector("search-bar-wrapper") && searchBarInstance) {
+    if (document.querySelector(`.${className}`) && searchBarInstance) {
       searchBarInstance.destroy();
       searchBarInstance = null;
     } else {
       searchBarInstance = showDialog(
         {
-          className: "search-bar-wrapper",
+          className,
           useAppContext: true,
         },
         SearchBar,
