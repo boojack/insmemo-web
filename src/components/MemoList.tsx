@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
 import appContext from "../labs/appContext";
@@ -98,6 +98,19 @@ const MemoList: React.FC<Props> = () => {
     setFetchStatus(false);
   };
 
+  const handleMemoListClick = useCallback((event: React.MouseEvent) => {
+    const targetEl = event.target as HTMLElement;
+    if (targetEl.tagName === "SPAN" && targetEl.className === "tag-span") {
+      const tagName = targetEl.innerText.slice(1);
+      const currTagQuery = locationService.getState().query.tag;
+      if (currTagQuery === tagName) {
+        locationService.setTagQuery("");
+      } else {
+        locationService.setTagQuery(tagName);
+      }
+    }
+  }, []);
+
   const handleContainerScroll = useDebounce(
     () => {
       if (isFetching || isComplete) {
@@ -114,7 +127,12 @@ const MemoList: React.FC<Props> = () => {
   );
 
   return (
-    <div className={`memolist-wrapper ${isComplete ? "completed" : ""}`} ref={wrapperElement} onScroll={handleContainerScroll}>
+    <div
+      className={`memolist-wrapper ${isComplete ? "completed" : ""}`}
+      onClick={handleMemoListClick}
+      onScroll={handleContainerScroll}
+      ref={wrapperElement}
+    >
       <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
 
       {shownMemos.map((memo) => (
