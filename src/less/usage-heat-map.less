@@ -5,7 +5,7 @@
 @stat-day-L3-bg: #30a14e;
 @stat-day-L4-bg: #216e39;
 
-.usage-stat-table-wrapper {
+.usage-heat-map-wrapper {
   width: 100%;
   height: 110px;
   display: flex;
@@ -42,7 +42,7 @@
     }
   }
 
-  > .usage-stat-table {
+  > .usage-heat-map {
     width: 192px;
     height: 100%;
     display: flex;
@@ -115,8 +115,8 @@
 }
 
 body.dark {
-  .usage-stat-table-wrapper {
-    > .usage-stat-table {
+  .usage-heat-map-wrapper {
+    > .usage-heat-map {
       > .stat-container {
         background-color: @dark-bg-black;
       }
@@ -125,7 +125,7 @@ body.dark {
 }
 
 @media only screen and (max-width: 875px) {
-  .usage-stat-table-wrapper {
+  .usage-heat-map-wrapper {
     height: 160px;
     padding: 8px 0 !important;
     padding-top: 12px !important;
@@ -143,7 +143,7 @@ body.dark {
       }
     }
 
-    > .usage-stat-table {
+    > .usage-heat-map {
       width: 248px;
 
       > .stat-container {

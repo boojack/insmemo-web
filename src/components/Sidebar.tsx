@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import UserBanner from "./UserBanner";
 import TagList from "./TagList";
-import UsageStatTable from "./UsageStatTable";
+import UsageHeatMap from "./UsageHeatMap";
 import "../less/siderbar.less";
 
 interface Props {}
@@ -25,7 +25,7 @@ const Sidebar: React.FC<Props> = () => {
   return (
     <div className="sidebar-wrapper" onClick={handleWrapperClick}>
       <UserBanner />
-      <UsageStatTable />
+      <UsageHeatMap />
       <TagList />
     </div>
   );
