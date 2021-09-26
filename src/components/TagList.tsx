@@ -137,9 +137,14 @@ interface TagItemContainerProps {
 const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContainerProps) => {
   const { tag, tagQuery } = props;
   const isActive = tagQuery === tag.text;
+  const hasSubTags = tag.subTags.length > 0;
   const [showSubTags, toggleSubTags] = useToggle(tagQuery.includes(tag.text) && !isActive);
 
-  const hasSubTags = tag.subTags.length > 0;
+  useEffect(() => {
+    if (!showSubTags) {
+      toggleSubTags(tagQuery.includes(tag.text) && !isActive);
+    }
+  }, [tagQuery, tag]);
 
   const handleTagClick = () => {
     const tagText = isActive ? "" : tag.text;
