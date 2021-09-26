@@ -6,7 +6,7 @@ import { utils } from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toastHelper from "./Toast";
 import Editor, { EditorRefActions } from "./Editor/Editor";
-import "../less/main-editor.less";
+import "../less/memo-editor.less";
 
 interface Props {}
 
@@ -142,7 +142,7 @@ const MemoEditor: React.FC<Props> = () => {
   // 编辑器配置
   const editorConfig = useMemo(
     () => ({
-      className: "main-editor",
+      className: "memo-editor",
       content: getEditorContentCache(),
       placeholder: "现在的想法是...",
       showConfirmBtn: true,
@@ -157,7 +157,7 @@ const MemoEditor: React.FC<Props> = () => {
   );
 
   return (
-    <div className={"main-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>
+    <div className={"memo-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>
       <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor {...editorConfig} />
     </div>
