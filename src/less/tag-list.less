@@ -59,6 +59,10 @@
 
         > .tag-text {
           color: white;
+
+          > .icon-text {
+            color: white;
+          }
         }
       }
 
@@ -72,11 +76,19 @@
         overflow: hidden;
         text-overflow: ellipsis;
         flex-shrink: 0;
+
+        > .icon-text {
+          font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+          color: gray;
+          font-size: 13px;
+          margin-right: 4px;
+        }
       }
 
       > .toggle-btn {
         width: 24px;
         height: 24px;
+        margin-top: 4px;
         flex-shrink: 0;
         display: flex;
         flex-direction: row;

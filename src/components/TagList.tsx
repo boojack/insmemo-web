@@ -152,7 +152,8 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     <>
       <div className={`tag-item-container ${isActive ? "active" : ""}`} onClick={handleTagClick}>
         <span className="tag-text" style={{ paddingLeft: tag.deep * 12 }}>
-          # {tag.key}
+          <span className="icon-text">#</span>
+          {tag.key}
         </span>
         {hasSubTags ? (
           <span className={`toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
