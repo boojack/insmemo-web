@@ -16,7 +16,7 @@ interface Props {
   memo: Model.Memo;
 }
 
-const Memo: React.FC<Props> = (props: Props) => {
+const Memo: React.FC<Props> = React.memo((props: Props) => {
   const { memo: propsMemo } = props;
   const memo: FormattedMemo = {
     ...propsMemo,
@@ -119,7 +119,7 @@ const Memo: React.FC<Props> = (props: Props) => {
       </Only>
     </div>
   );
-};
+});
 
 export function formatMemoContent(content: string): string {
   const tempDivContainer = document.createElement("div");
@@ -173,6 +173,4 @@ export function formatMemoContent(content: string): string {
   return content;
 }
 
-export default React.memo(({ memo }: Props) => {
-  return <Memo memo={memo} />;
-});
+export default Memo;

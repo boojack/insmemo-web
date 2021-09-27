@@ -59,9 +59,8 @@ const SearchBarDialog: React.FC<Props> = ({ destroy }) => {
           <span className="section-text">Type:</span>
           {MEMO_TYPES.map((t, idx) => {
             return (
-              <>
+              <div key={t.type}>
                 <span
-                  key={t.type}
                   className={`type-item ${memoType === t.type ? "selected" : ""}`}
                   onClick={() => {
                     handleMemoTypeItemClick(t.type as MemoType);
@@ -70,7 +69,7 @@ const SearchBarDialog: React.FC<Props> = ({ destroy }) => {
                   {t.text}
                 </span>
                 {idx + 1 < MEMO_TYPES.length ? <span className="split-text">/</span> : null}
-              </>
+              </div>
             );
           })}
         </div>

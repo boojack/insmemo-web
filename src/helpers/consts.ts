@@ -2,7 +2,7 @@
 export const PAGE_CONTAINER_SELECTOR = "div#page-container";
 
 // 移动端样式适配额外类名
-export const MOBILE_ADDITION_CLASSNAME = "show-user-banner-dialog";
+export const MOBILE_ADDITION_CLASSNAME = "mobile-show-sidebar";
 
 // 每次获取 memo 的数量
 export const FETCH_MEMO_AMOUNT = 20;
@@ -20,7 +20,7 @@ export const DAILY_TIMESTAMP = 3600 * 24 * 1000;
 export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 // 标签 正则
-export const TAG_REG = /# (.+?) /g;
+export const TAG_REG = /#\s?(.+?)\s/g;
 
 // URL 正则
 export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;

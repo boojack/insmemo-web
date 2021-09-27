@@ -33,64 +33,51 @@ const TagList: React.FC<Props> = () => {
     memoService
       .getMyTags()
       .then((tags) => {
-        if (tags) {
-          const sortedTags = tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level);
-          const tree: IterObject = {};
-          for (const tag of sortedTags) {
-            const subtags = tag.text.split("/");
-            let tempObj = tree;
-            let tagText = "";
-            for (let i = 0; i < subtags.length; i++) {
-              const key = subtags[i];
-              if (i === 0) {
-                tagText += key;
-              } else {
-                tagText += "/" + key;
-              }
-
-              if (tempObj[key]) {
-                tempObj[key].level += tag.level;
-              } else {
-                tempObj[key] = {
-                  id: tag.id,
-                  key,
-                  text: tagText,
-                  level: tag.level,
-                  subTags: [],
-                };
-              }
-
-              if (tempObj.subTags) {
-                if (!tempObj.subTags.includes(tempObj[key])) {
-                  tempObj.subTags.push(tempObj[key]);
-                }
-              } else {
-                tempObj.subTags = [tempObj[key]];
-              }
-
-              if (tagText === tag.text) {
-                tempObj[key].id = tag.id;
-              }
-              tempObj = tempObj[key];
+        const sortedTags = tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level);
+        const tree: IterObject<any> = {};
+        for (const tag of sortedTags) {
+          const subtags = tag.text.split("/");
+          let tempObj = tree;
+          let tagText = "";
+          for (let i = 0; i < subtags.length; i++) {
+            const key = subtags[i];
+            if (i === 0) {
+              tagText += key;
+            } else {
+              tagText += "/" + key;
             }
-          }
 
-          const fc = (nodes: Tag[], deep: number) => {
-            nodes = nodes.sort((a: any, b: any) => b.level - a.level);
-            for (const n of nodes) {
-              n.deep = deep;
-              if (n.subTags) {
-                fc(n.subTags, deep + 1);
-              }
+            if (tempObj[key]) {
+              tempObj[key].level += tag.level;
+            } else {
+              tempObj[key] = {
+                id: tag.id,
+                key,
+                text: tagText,
+                level: tag.level,
+                subTags: [],
+                deep: i,
+              };
             }
-          };
 
-          if (tree.subTags) {
-            fc(tree.subTags, 0);
-            setTags(tree.subTags);
-            loadingState.setFinish();
+            if (tempObj.subTags) {
+              if (!tempObj.subTags.includes(tempObj[key])) {
+                tempObj.subTags.push(tempObj[key]);
+              }
+            } else {
+              tempObj.subTags = [tempObj[key]];
+            }
+
+            if (tagText === tag.text) {
+              tempObj[key].id = tag.id;
+            }
+            tempObj = tempObj[key];
           }
         }
+
+        const formatedTags = tree.subTags.sort((a: any, b: any) => b.level - a.level) as Tag[];
+        setTags(formatedTags);
+        loadingState.setFinish();
       })
       .catch((error) => {
         loadingState.setError();

@@ -36,10 +36,10 @@
 
     > .tag-item-container {
       width: 100%;
-      padding: 8px 16px;
+      height: 40px;
+      padding: 6px 16px;
       padding-right: 8px;
       margin-bottom: 4px;
-      line-height: 24px;
       border-radius: 8px;
       font-size: 14px;
       cursor: pointer;
@@ -47,6 +47,8 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
+      user-select: none;
 
       &:hover {
         background-color: #efefef;
@@ -73,7 +75,8 @@
       }
 
       > .toggle-btn {
-        width: 20px;
+        width: 24px;
+        height: 24px;
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
@@ -88,7 +91,9 @@
         }
 
         &.shown {
-          transform: rotate(90deg);
+          > .icon-img {
+            transform: rotate(90deg);
+          }
         }
       }
     }
