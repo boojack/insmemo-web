@@ -91,7 +91,7 @@ const MemoList: React.FC<Props> = () => {
         setFetchStatus(false);
       });
     }
-  }, [showFilter, isComplete]);
+  }, [isComplete, showFilter]);
 
   const fetchMoreMemos = async () => {
     if (isFetching || isComplete) {
@@ -101,7 +101,7 @@ const MemoList: React.FC<Props> = () => {
     setFetchStatus(true);
     try {
       const fetchedMemos = await memoService.fetchMoreMemos();
-      if (fetchedMemos && fetchedMemos.length === 0) {
+      if (Array.isArray(fetchedMemos) && fetchedMemos.length === 0) {
         setCompleteStatus(true);
       }
     } catch (error: any) {

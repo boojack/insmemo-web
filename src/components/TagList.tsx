@@ -35,10 +35,12 @@ const TagList: React.FC<Props> = () => {
       .getMyTags()
       .then((tags) => {
         const sortedTags = tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level);
-        const tree: IterObject<any> = {};
+        const root: IterObject<any> = {
+          subTags: [],
+        };
         for (const tag of sortedTags) {
           const subtags = tag.text.split("/");
-          let tempObj = tree;
+          let tempObj = root;
           let tagText = "";
           for (let i = 0; i < subtags.length; i++) {
             const key = subtags[i];
@@ -48,10 +50,19 @@ const TagList: React.FC<Props> = () => {
               tagText += "/" + key;
             }
 
-            if (tempObj[key]) {
-              tempObj[key].level += tag.level;
+            let obj = null;
+
+            for (const t of tempObj.subTags) {
+              if (t.text === tagText) {
+                obj = t;
+                break;
+              }
+            }
+
+            if (obj) {
+              obj.level += tag.level;
             } else {
-              tempObj[key] = {
+              obj = {
                 id: tag.id,
                 key,
                 text: tagText,
@@ -59,25 +70,19 @@ const TagList: React.FC<Props> = () => {
                 subTags: [],
                 deep: i,
               };
+              tempObj.subTags.push(obj);
             }
 
-            if (tempObj.subTags) {
-              if (!tempObj.subTags.includes(tempObj[key])) {
-                tempObj.subTags.push(tempObj[key]);
-              }
-            } else {
-              tempObj.subTags = [tempObj[key]];
-            }
-
+            tempObj.subTags.sort((a: Tag, b: Tag) => b.level - a.level) as Tag[];
             if (tagText === tag.text) {
-              tempObj[key].id = tag.id;
+              obj.id = tag.id;
             }
-            tempObj = tempObj[key];
+            tempObj = obj;
           }
         }
 
-        const formatedTags = tree.subTags.sort((a: Tag, b: Tag) => b.level - a.level) as Tag[];
-        setTags(formatedTags);
+        root.subTags.sort((a: Tag, b: Tag) => b.level - a.level);
+        setTags(root.subTags as Tag[]);
         loadingState.setFinish();
       })
       .catch((error) => {

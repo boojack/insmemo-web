@@ -11,7 +11,7 @@ class MemoService {
   }
 
   public async fetchMoreMemos() {
-    if (!userService.getState() || this.isFetching) {
+    if (!userService.getState().user || this.isFetching) {
       return false;
     }
 
@@ -25,21 +25,19 @@ class MemoService {
       updatedAt: new Date(m.updatedAt).getTime(),
     }));
 
-    if (memos.length > 0) {
-      appStore.dispatch({
-        type: "PUSH_MEMOS",
-        payload: {
-          memos,
-        },
-      });
-    }
+    appStore.dispatch({
+      type: "PUSH_MEMOS",
+      payload: {
+        memos,
+      },
+    });
     this.isFetching = false;
 
     return memos;
   }
 
   public async fetchAllMemos() {
-    if (!userService.getState() || this.isFetching) {
+    if (!userService.getState().user || this.isFetching) {
       return false;
     }
 
@@ -144,6 +142,10 @@ class MemoService {
   }
 
   public async getMyTags(): Promise<Api.Tag[]> {
+    if (!userService.getState().user) {
+      return [];
+    }
+
     const { data: tags } = await api.getMyTags();
     return tags;
   }
