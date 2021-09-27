@@ -62,7 +62,7 @@ const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }) => {
   );
 };
 
-export default function showPreviewImageDialog(imgUrl: string) {
+export default function showPreviewImageDialog(imgUrl: string): void {
   showDialog(
     {
       className: "preview-image-dialog",

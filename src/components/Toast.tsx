@@ -81,11 +81,11 @@ const toastHelper = (() => {
     return cbs;
   };
 
-  const info = (content: string, duration: number = 3000) => {
+  const info = (content: string, duration = 3000) => {
     return showToast({ type: "normal", content, duration });
   };
 
-  const error = (content: string, duration: number = 3000) => {
+  const error = (content: string, duration = 3000) => {
     return showToast({ type: "error", content, duration });
   };
 

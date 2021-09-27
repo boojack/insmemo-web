@@ -5,8 +5,8 @@ type DateStamp = number;
 // 时间戳
 type TimeStamp = number;
 
-type FunctionType = (...args: any) => any;
+type FunctionType = (...args: unknown[]) => unknown;
 
-interface IterObject<T = any> {
+interface IterObject<T = unknown> {
   [key: string]: T;
 }

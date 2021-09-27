@@ -132,7 +132,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-export default function showPreferencesDialog() {
+export default function showPreferencesDialog(): void {
   showDialog(
     {
       className: "preferences-dialog",

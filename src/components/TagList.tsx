@@ -76,7 +76,7 @@ const TagList: React.FC<Props> = () => {
           }
         }
 
-        const formatedTags = tree.subTags.sort((a: any, b: any) => b.level - a.level) as Tag[];
+        const formatedTags = tree.subTags.sort((a: Tag, b: Tag) => b.level - a.level) as Tag[];
         setTags(formatedTags);
         loadingState.setFinish();
       })

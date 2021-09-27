@@ -22,11 +22,11 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
       <div className="dialog-content-container">
         <p>
           <b>Memos</b>，有感于{" "}
-          <a target="_blank" href="https://www.zsxq.com/">
+          <a target="_blank" href="https://www.zsxq.com/" rel="noreferrer">
             知识星球
           </a>{" "}
           和{" "}
-          <a target="_blank" href="https://flomoapp.com/">
+          <a target="_blank" href="https://flomoapp.com/" rel="noreferrer">
             flomo
           </a>{" "}
         </p>
@@ -44,7 +44,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <ul>
           <li>
             ✨{" "}
-            <a target="_blank" href="https://github.com/boojack/insmemo-web">
+            <a target="_blank" href="https://github.com/boojack/insmemo-web" rel="noreferrer">
               开源项目
             </a>
             ，用于学习；
@@ -57,7 +57,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <hr />
         <p className="normal-text">
           BTW, my personal site:{" "}
-          <a target="_blank" href="https://justsven.top">
+          <a target="_blank" href="https://justsven.top" rel="noreferrer">
             https://justsven.top
           </a>{" "}
           👀
@@ -68,7 +68,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-export default function showAboutSiteDialog() {
+export default function showAboutSiteDialog(): void {
   showDialog(
     {
       className: "about-site-dialog",

@@ -67,14 +67,14 @@ export namespace api {
     return post<boolean>("/api/user/checkpassword", { password });
   }
 
-  export function updateUserinfo(username: string = "", password: string = "") {
+  export function updateUserinfo(username = "", password = "") {
     return post("/api/user/update", {
       username,
       password,
     });
   }
 
-  export function getMyMemos(offset: number = 0, amount: number = 20) {
+  export function getMyMemos(offset = 0, amount = 20) {
     return get<Model.Memo[]>(`/api/memo/all?offset=${offset}&amount=${amount}`);
   }
 

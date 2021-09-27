@@ -78,9 +78,9 @@ const SearchBarDialog: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-const toggleSearchBarDialog = () => {
+const toggleSearchBarDialog = (): void => {
   const className = "search-bar-dialog-wrapper";
-  let container = document.querySelector(`.${className}`);
+  const container = document.querySelector(`.${className}`);
 
   if (container && container.parentElement) {
     container.classList.remove("showup");

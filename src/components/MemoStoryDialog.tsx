@@ -138,7 +138,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
   );
 };
 
-export default function showMemoStoryDialog(memoId: string) {
+export default function showMemoStoryDialog(memoId: string): void {
   showDialog(
     {
       className: "memo-story-dialog",

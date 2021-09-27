@@ -10,7 +10,7 @@ interface Props extends DialogProps {}
 
 const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   const { userState } = useContext(appContext);
-  const user = userState.user!;
+  const user = userState.user as Model.User;
   const [username, setUsername] = useState<string>(user.username);
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
   const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
@@ -98,7 +98,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
           </label>
           <label className="form-label input-form-label">
             <span className="normal-text">创建时间：</span>
-            <span className="normal-text">{utils.getDateString(user.createdAt!)}</span>
+            <span className="normal-text">{utils.getDateString(user.createdAt)}</span>
           </label>
           <label className="form-label input-form-label username-label">
             <span className="normal-text">账号：</span>
@@ -268,7 +268,7 @@ function showChangePasswordDialog() {
   );
 }
 
-export default function showMyAccountDialog() {
+export default function showMyAccountDialog(): void {
   showDialog(
     {
       className: "my-account-dialog",

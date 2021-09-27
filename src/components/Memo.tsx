@@ -16,7 +16,7 @@ interface Props {
   memo: Model.Memo;
 }
 
-const Memo: React.FC<Props> = React.memo((props: Props) => {
+const Memo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo } = props;
   const memo: FormattedMemo = {
     ...propsMemo,
@@ -119,7 +119,7 @@ const Memo: React.FC<Props> = React.memo((props: Props) => {
       </Only>
     </div>
   );
-});
+};
 
 export function formatMemoContent(content: string): string {
   const tempDivContainer = document.createElement("div");
@@ -149,7 +149,7 @@ export function formatMemoContent(content: string): string {
 
   // 中英文之间加空格（这里只是简单的用正则分开了）
   if (shouldSplitMemoWord) {
-    content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;\[\]\(\)]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+    content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;[\]]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
   }
 
   if (shouldHideImageUrl) {
@@ -173,4 +173,4 @@ export function formatMemoContent(content: string): string {
   return content;
 }
 
-export default Memo;
+export default React.memo(Memo);

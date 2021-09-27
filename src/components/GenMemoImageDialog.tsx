@@ -35,16 +35,18 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
           window.scrollTo(0, 0);
         }
 
-        html2canvas(memoEl!, {
-          scale: window.devicePixelRatio * 2,
-          allowTaint: true,
-          useCORS: true,
-          backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
-          scrollX: -window.scrollX,
-          scrollY: -window.scrollY,
-        }).then((canvas) => {
-          setImgUrl(canvas.toDataURL());
-        });
+        if (memoEl) {
+          html2canvas(memoEl, {
+            scale: window.devicePixelRatio * 2,
+            allowTaint: true,
+            useCORS: true,
+            backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
+            scrollX: -window.scrollX,
+            scrollY: -window.scrollY,
+          }).then((canvas) => {
+            setImgUrl(canvas.toDataURL());
+          });
+        }
       }
     }, ANIMATION_DURATION + 100);
   }, [imageAmount]);
@@ -104,7 +106,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
   );
 };
 
-export default function showGenMemoImageDialog(memo: Model.Memo) {
+export default function showGenMemoImageDialog(memo: Model.Memo): void {
   showDialog(
     {
       className: "gen-memo-image-dialog",

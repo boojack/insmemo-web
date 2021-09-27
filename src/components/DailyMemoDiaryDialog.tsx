@@ -62,16 +62,18 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         window.scrollTo(0, 0);
       }
 
-      html2canvas(memosElRef.current!, {
-        scale: window.devicePixelRatio * 2,
-        allowTaint: true,
-        useCORS: true,
-        backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
-        scrollX: -window.scrollX,
-        scrollY: -window.scrollY,
-      }).then((canvas) => {
-        showPreviewImageDialog(canvas.toDataURL());
-      });
+      if (memosElRef.current) {
+        html2canvas(memosElRef.current, {
+          scale: window.devicePixelRatio * 2,
+          allowTaint: true,
+          useCORS: true,
+          backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
+          scrollX: -window.scrollX,
+          scrollY: -window.scrollY,
+        }).then((canvas) => {
+          showPreviewImageDialog(canvas.toDataURL());
+        });
+      }
     }, 0);
   };
 
@@ -136,7 +138,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default function showDailyMemoDiaryDialog(datestamp: DateStamp = Date.now()) {
+export default function showDailyMemoDiaryDialog(datestamp: DateStamp = Date.now()): void {
   showDialog(
     {
       className: "daily-memo-diary-dialog",

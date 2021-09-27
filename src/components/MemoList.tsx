@@ -129,9 +129,11 @@ const MemoList: React.FC<Props> = () => {
         return;
       }
 
-      const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current!;
-      if (offsetHeight + scrollTop + 10 > scrollHeight) {
-        fetchMoreMemos();
+      if (wrapperElement.current) {
+        const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current;
+        if (offsetHeight + scrollTop + 10 > scrollHeight) {
+          fetchMoreMemos();
+        }
       }
     },
     100,

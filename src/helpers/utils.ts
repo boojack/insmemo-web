@@ -114,7 +114,7 @@ export namespace utils {
     };
   }
 
-  export function iterObjectToParamsString(object: IterObject): string {
+  export function iterObjectToParamsString(object: IterObject<any>): string {
     const params = [];
 
     const keys = Object.keys(object);

@@ -132,7 +132,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-export default function showSigninDialog() {
+export default function showSigninDialog(): void {
   showDialog(
     {
       className: "signin-dialog",
