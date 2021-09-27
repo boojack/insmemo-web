@@ -122,7 +122,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <button className="btn export-btn" onClick={handleExportBtnClick}>
               导出数据(JSON)
             </button>
-            <button className="btn clean-btn" onClick={handleMemoCleanBtnClick}>
+            <button className="btn clean-btn hidden" onClick={handleMemoCleanBtnClick}>
               Memo Clean
             </button>
           </div>
