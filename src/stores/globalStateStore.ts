@@ -2,7 +2,6 @@ export interface AppSetting {
   shouldSplitMemoWord: boolean;
   shouldHideImageUrl: boolean;
   shouldUseMarkdownParser: boolean;
-  tagTextClickedAction: "copy" | "insert";
   showDarkMode: boolean;
 }
 
@@ -64,6 +63,5 @@ export const defaultState: State = {
   shouldSplitMemoWord: true,
   shouldHideImageUrl: true,
   shouldUseMarkdownParser: true,
-  tagTextClickedAction: "copy",
   showDarkMode: false,
 };

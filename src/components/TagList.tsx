@@ -6,6 +6,7 @@ import Only from "./common/OnlyWhen";
 import toastHelper from "./Toast";
 import appContext from "../labs/appContext";
 import useLoading from "../hooks/useLoading";
+import { utils } from "../helpers/utils";
 import "../less/tag-list.less";
 
 interface Tag extends Api.Tag {
@@ -136,6 +137,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   const handleTagClick = () => {
     const tagText = isActive ? "" : tag.text;
     if (tagText) {
+      utils.copyTextToClipboard(`# ${tagText} `);
       memoService.polishTag(tag.id).catch(() => {
         // do nth
       });
@@ -151,7 +153,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   return (
     <>
       <div className={`tag-item-container ${isActive ? "active" : ""}`} onClick={handleTagClick}>
-        <span className="tag-text" style={{ paddingLeft: tag.deep * 12 }}>
+        <span className="tag-text">
           <span className="icon-text">#</span>
           {tag.key}
         </span>
@@ -166,11 +168,13 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
         ) : null}
       </div>
 
-      {hasSubTags && showSubTags
-        ? tag.subTags.map((st) => {
-            return <TagItemContainer key={st.id} tag={st} tagQuery={tagQuery} />;
-          })
-        : null}
+      {hasSubTags ? (
+        <div className={`subtags-container ${showSubTags ? "" : "hidden"}`}>
+          {tag.subTags.map((st) => (
+            <TagItemContainer key={st.id} tag={st} tagQuery={tagQuery} />
+          ))}
+        </div>
+      ) : null}
     </>
   );
 };

@@ -39,22 +39,6 @@ const MemoEditor: React.FC<Props> = () => {
     }
   }, [globalState]);
 
-  useEffect(() => {
-    const tagText = query.tag;
-
-    if (tagText) {
-      if (globalState.tagTextClickedAction === "insert") {
-        const editorContent = editorRef.current?.getContent() ?? "";
-        const text = `#${tagText}#`;
-        if (!editorContent.includes(text)) {
-          editorRef.current?.insertText(`#${tagText}#`);
-        }
-      } else {
-        utils.copyTextToClipboard(`#${tagText}#`);
-      }
-    }
-  }, [query]);
-
   const handleSaveBtnClick = async (content: string) => {
     if (content === "") {
       toastHelper.error("内容不能为空呀");
@@ -69,6 +53,9 @@ const MemoEditor: React.FC<Props> = () => {
     try {
       // 保存标签
       for (const t of tagTexts) {
+        if (t.length > 36) {
+          throw new Error("标签太长了");
+        }
         const tag = await memoService.createTag(t);
         tags.push(tag);
       }

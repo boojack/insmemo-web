@@ -7,7 +7,6 @@ class GlobalStateService {
     const cachedSetting = storage.get([
       "shouldSplitMemoWord",
       "shouldHideImageUrl",
-      "tagTextClickedAction",
       "shouldUseMarkdownParser",
       "showDarkMode",
     ]);
@@ -15,7 +14,6 @@ class GlobalStateService {
       shouldSplitMemoWord: cachedSetting.shouldSplitMemoWord ?? true,
       shouldHideImageUrl: cachedSetting.shouldHideImageUrl ?? true,
       shouldUseMarkdownParser: cachedSetting.shouldUseMarkdownParser ?? true,
-      tagTextClickedAction: cachedSetting.tagTextClickedAction ?? "copy",
       showDarkMode: cachedSetting.showDarkMode ?? false,
     };
 

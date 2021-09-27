@@ -13,7 +13,7 @@ interface Props extends DialogProps {}
  */
 const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   const {
-    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser, showDarkMode, tagTextClickedAction },
+    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser, showDarkMode },
   } = useContext(appContext);
 
   useEffect(() => {
@@ -49,13 +49,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     const nextStatus = e.target.checked;
     globalStateService.setAppSetting({
       shouldUseMarkdownParser: nextStatus,
-    });
-  };
-
-  const handleTagTextClickValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextStatus = e.target.value as "copy" | "insert";
-    globalStateService.setAppSetting({
-      tagTextClickedAction: nextStatus,
     });
   };
 
@@ -123,35 +116,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <span className="tip-text">目前支持列表、代码块</span>
           </label>
         </div>
-        <div className="section-container">
-          <p className="title-text">动作相关</p>
-          <label className="form-label checkbox-form-label">
-            <span className="normal-text">标签点击处理:</span>
-            <label className="form-label">
-              <input
-                className="hidden"
-                type="radio"
-                value="copy"
-                checked={tagTextClickedAction === "copy"}
-                onChange={handleTagTextClickValueChanged}
-              />
-              <img className="icon-img" src={tagTextClickedAction === "copy" ? "/icons/radio-active.svg" : "/icons/radio.svg"} />
-              <span>复制文字</span>
-            </label>
-            <label className="form-label">
-              <input
-                className="hidden"
-                type="radio"
-                value="insert"
-                checked={tagTextClickedAction === "insert"}
-                onChange={handleTagTextClickValueChanged}
-              />
-              <img className="icon-img" src={tagTextClickedAction === "insert" ? "/icons/radio-active.svg" : "/icons/radio.svg"} />
-              <span>加入编辑器</span>
-            </label>
-          </label>
-        </div>
-
         <div className="section-container">
           <p className="title-text">其他</p>
           <div className="btn-container">

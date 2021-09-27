@@ -8,8 +8,6 @@ interface StorageData {
   shouldSplitMemoWord: boolean;
   // 是否隐藏图片链接地址
   shouldHideImageUrl: boolean;
-  // 标签点击动作
-  tagTextClickedAction: "copy" | "insert";
   // markdown 解析开关
   shouldUseMarkdownParser: boolean;
   // 黑暗模式 开关
