@@ -105,26 +105,50 @@
         }
       }
 
-      > .toggle-btn {
-        width: 24px;
-        height: 24px;
-        margin-top: 4px;
-        flex-shrink: 0;
+      > .btns-container {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
-        transition: all 0.1s linear;
-        transform: rotate(0);
 
-        > .icon-img {
-          width: 20px;
-          height: 20px;
-        }
+        > .action-btn {
+          width: 24px;
+          height: 24px;
+          margin-top: 4px;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          transition: all 0.1s linear;
+          transform: rotate(0);
 
-        &.shown {
           > .icon-img {
-            transform: rotate(90deg);
+            width: 20px;
+            height: 20px;
+          }
+
+          &.shown {
+            > .icon-img {
+              transform: rotate(90deg);
+            }
+          }
+
+          &.rename-btn {
+            display: none;
+
+            > .icon-img {
+              width: 14px;
+              height: 14px;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        > .btns-container {
+          > .rename-btn {
+            display: flex;
           }
         }
       }
@@ -150,6 +174,63 @@
   }
 }
 
+.rename-tag-dialog {
+  > .dialog-container {
+    width: 320px;
+
+    > .dialog-content-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-content: flex-start;
+
+      > .tag-text {
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      > .text-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid lightgray;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        margin-bottom: 12px;
+      }
+
+      > .btns-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+
+        > .btn-text {
+          font-size: 14px;
+          margin-left: 12px;
+          cursor: pointer;
+
+          &:hover {
+            opacity: 0.8;
+          }
+
+          &.cancel-btn {
+            color: @text-gray;
+          }
+
+          &.confirm-btn {
+            background-color: @text-green;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+          }
+        }
+      }
+    }
+  }
+}
+
 body.dark {
   .tags-container {
     .subtags-container {
@@ -164,6 +245,12 @@ body.dark {
 
       > .tag-text {
         color: @dark-text-white;
+      }
+    }
+
+    > .tag-tip-container {
+      > .code-text {
+        background-color: @dark-bg-black;
       }
     }
   }

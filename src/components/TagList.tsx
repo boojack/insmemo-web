@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import useToggle from "../hooks/useToggle";
 import Only from "./common/OnlyWhen";
+import { showDialog } from "./Dialog";
 import toastHelper from "./Toast";
 import appContext from "../labs/appContext";
 import useLoading from "../hooks/useLoading";
@@ -63,7 +64,7 @@ const TagList: React.FC<Props> = () => {
               obj.level += tag.level;
             } else {
               obj = {
-                id: tag.id,
+                id: "",
                 key,
                 text: tagText,
                 level: tag.level,
@@ -107,8 +108,8 @@ const TagList: React.FC<Props> = () => {
           <></>
         ) : (
           <>
-            {tags.map((t) => (
-              <TagItemContainer key={t.id} tag={t} tagQuery={tagQuery} />
+            {tags.map((t, idx) => (
+              <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
             ))}
             <Only when={tags.length < 5}>
               <p className="tag-tip-container">
@@ -132,6 +133,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   const isActive = tagQuery === tag.text;
   const hasSubTags = tag.subTags.length > 0;
   const [showSubTags, toggleSubTags] = useToggle(tagQuery.includes(tag.text) && !isActive);
+  const renameAble = tag.id !== "";
 
   useEffect(() => {
     if (!showSubTags) {
@@ -150,6 +152,13 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     locationService.setTagQuery(tagText);
   };
 
+  const handleRenameTagBtnClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (renameAble) {
+      showRenameTagDialog(tag);
+    }
+  };
+
   const handleToggleBtnClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     toggleSubTags();
@@ -162,26 +171,105 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
           <span className="icon-text">#</span>
           {tag.key}
         </span>
-        {hasSubTags ? (
-          <span className={`toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
-            {isActive ? (
-              <img className="icon-img" src="/icons/arrow-right-white.svg" />
-            ) : (
-              <img className="icon-img" src="/icons/arrow-right.svg" />
-            )}
-          </span>
-        ) : null}
+        <div className="btns-container">
+          {renameAble ? (
+            <span className="action-btn rename-btn" onClick={handleRenameTagBtnClick}>
+              {isActive ? <img className="icon-img" src="/icons/edit-white.svg" /> : <img className="icon-img" src="/icons/edit.svg" />}
+            </span>
+          ) : null}
+          {hasSubTags ? (
+            <span className={`action-btn toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
+              {isActive ? (
+                <img className="icon-img" src="/icons/arrow-right-white.svg" />
+              ) : (
+                <img className="icon-img" src="/icons/arrow-right.svg" />
+              )}
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {hasSubTags ? (
         <div className={`subtags-container ${showSubTags ? "" : "hidden"}`}>
-          {tag.subTags.map((st) => (
-            <TagItemContainer key={st.id} tag={st} tagQuery={tagQuery} />
+          {tag.subTags.map((st, idx) => (
+            <TagItemContainer key={st.id + "-" + idx} tag={st} tagQuery={tagQuery} />
           ))}
         </div>
       ) : null}
     </>
   );
 };
+
+interface RenameTagDialogProps extends DialogProps {
+  tag: Tag;
+}
+
+const RenameTagDialog: React.FC<RenameTagDialogProps> = (props) => {
+  const { destroy, tag } = props;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleCloseBtnClick = () => {
+    destroy();
+  };
+
+  const handleConfirmBtnClick = () => {
+    const text = inputRef.current?.value;
+    if (!text || text === tag.text) {
+      destroy();
+      return;
+    }
+    if (text.length > 36) {
+      toastHelper.error("标签太长啦，MAX=36");
+      return;
+    }
+    memoService
+      .updateTagText(tag.id, text)
+      .then(() => {
+        memoService.clearMemos();
+        memoService.fetchAllMemos();
+        destroy();
+      })
+      .catch(() => {
+        // do nth
+      });
+  };
+
+  return (
+    <>
+      <div className="dialog-header-container">
+        <p className="title-text">
+          <span className="icon-text">🏷️</span>标签重命名
+        </p>
+        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+          <img className="icon-img" src="/icons/close.svg" />
+        </button>
+      </div>
+      <div className="dialog-content-container">
+        <p className="tag-text">旧：{tag.text}</p>
+        <input className="text-input" type="text" placeholder="输入新标签" ref={inputRef} />
+        <div className="btns-container">
+          <span className="btn-text cancel-btn" onClick={handleCloseBtnClick}>
+            取消
+          </span>
+          <span className="btn-text confirm-btn" onClick={handleConfirmBtnClick}>
+            确定
+          </span>
+        </div>
+      </div>
+    </>
+  );
+};
+
+function showRenameTagDialog(tag: Tag): void {
+  showDialog(
+    {
+      className: "rename-tag-dialog",
+    },
+    RenameTagDialog,
+    {
+      tag,
+    }
+  );
+}
 
 export default TagList;

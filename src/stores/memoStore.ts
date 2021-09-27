@@ -2,8 +2,15 @@ export interface State {
   memos: Model.Memo[];
 }
 
+interface SetMemosAction {
+  type: "SET_MEMOS";
+  payload: {
+    memos: Model.Memo[];
+  };
+}
+
 interface PushMemoAction {
-  type: "PUSH";
+  type: "PUSH_MEMO";
   payload: {
     memo: Model.Memo;
   };
@@ -17,7 +24,7 @@ interface PushMemosAction {
 }
 
 interface DeleteMemoByIdAction {
-  type: "DELETE_BY_ID";
+  type: "DELETE_MEMO_BY_ID";
   payload: {
     id: string;
   };
@@ -28,11 +35,16 @@ interface EditMemoByIdAction {
   payload: Model.Memo;
 }
 
-export type Actions = PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
+export type Actions = SetMemosAction | PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
 
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
-    case "PUSH": {
+    case "SET_MEMOS": {
+      return {
+        memos: [...action.payload.memos],
+      };
+    }
+    case "PUSH_MEMO": {
       const memos = [action.payload.memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
 
       return {
@@ -46,7 +58,7 @@ export function reducer(state: State, action: Actions): State {
         memos,
       };
     }
-    case "DELETE_BY_ID": {
+    case "DELETE_MEMO_BY_ID": {
       return {
         memos: [...state.memos].filter((memo) => memo.id !== action.payload.id),
       };

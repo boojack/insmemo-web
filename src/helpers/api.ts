@@ -136,6 +136,10 @@ export namespace api {
     return post("/api/tag/polish", { tagId });
   }
 
+  export function updateTagText(id: string, text: string) {
+    return post("/api/tag/update", { id, text });
+  }
+
   export function getMyDataAmount() {
     return get<Api.DataAmounts>("/api/user/amount");
   }

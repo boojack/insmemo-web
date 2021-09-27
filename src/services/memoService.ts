@@ -67,7 +67,7 @@ class MemoService {
 
   public pushMemo(memo: Model.Memo) {
     appStore.dispatch({
-      type: "PUSH",
+      type: "PUSH_MEMO",
       payload: {
         memo: {
           id: memo.id,
@@ -94,7 +94,7 @@ class MemoService {
   public async deleteMemoById(id: string) {
     await api.deleteMemo(id);
     appStore.dispatch({
-      type: "DELETE_BY_ID",
+      type: "DELETE_MEMO_BY_ID",
       payload: {
         id: id,
       },
@@ -105,6 +105,15 @@ class MemoService {
     appStore.dispatch({
       type: "EDIT_MEMO",
       payload: memo,
+    });
+  }
+
+  public clearMemos() {
+    appStore.dispatch({
+      type: "SET_MEMOS",
+      payload: {
+        memos: [],
+      },
     });
   }
 
@@ -152,6 +161,10 @@ class MemoService {
 
   public async polishTag(tagId: string) {
     await api.polishTag(tagId);
+  }
+
+  public async updateTagText(tagId: string, text: string) {
+    await api.updateTagText(tagId, text);
   }
 }
 
