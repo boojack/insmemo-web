@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import Only from "../common/OnlyWhen";
 import "../../less/editor.less";
 
@@ -47,8 +47,6 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    document.execCommand("defaultParagraphSeparator", false, "p");
-
     if (content && editorRef.current) {
       editorRef.current.innerHTML = content;
     }
@@ -80,38 +78,72 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     },
   }));
 
-  const handleInputerPasted = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const content = e.clipboardData.getData("text/plain");
-    const divTemp = document.createElement("div");
-    divTemp.innerHTML = content;
-    document.execCommand("insertText", false, divTemp.innerText);
-    divTemp.remove();
-  };
+  const handleInputerPasted = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
+    const text = event.clipboardData.getData("text");
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) {
+      return;
+    }
+    selection.deleteFromDocument();
+    selection.getRangeAt(0).insertNode(document.createTextNode(text));
+    event.preventDefault();
+    setContent(text);
+    if (handleContentChange) {
+      handleContentChange(text);
+    }
+  }, []);
 
-  const handleInputerChanged = (e: React.FormEvent<HTMLDivElement>) => {
+  const handleInputerChanged = useCallback((e: React.FormEvent<HTMLDivElement>) => {
     const content = e.currentTarget.innerHTML;
     setContent(content);
 
     if (handleContentChange) {
       handleContentChange(content);
     }
-  };
+  }, []);
 
-  const handleInputerKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    e.stopPropagation();
+  const handleInputerKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+    event.stopPropagation();
 
-    if (e.key === "Tab") {
-      e.preventDefault();
-      document.execCommand("insertText", false, "  ");
-    } else if (e.key === "Backspace") {
-      if (editorRef.current?.innerHTML === "<br>") {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      const selection = window.getSelection();
+      if (!selection || !selection.rangeCount) {
+        return;
+      }
+      selection.deleteFromDocument();
+      const range = selection.getRangeAt(0);
+      const spaceNode = document.createTextNode("    ");
+      range.insertNode(spaceNode);
+      range.setEndAfter(spaceNode);
+      range.setStartAfter(spaceNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } else if (event.key === "Backspace") {
+      if (editorRef.current && editorRef.current.innerHTML === "<br>") {
+        editorRef.current.innerHTML = "";
         setContent("");
       }
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      const selection = window.getSelection();
+      if (!selection || !selection.rangeCount) {
+        return;
+      }
+      selection.deleteFromDocument();
+      const range = selection.getRangeAt(0);
+      const pElement = document.createElement("p");
+      const brElement = document.createElement("br");
+      pElement.appendChild(brElement);
+      range.insertNode(pElement);
+      range.setEndAfter(brElement);
+      range.setStartAfter(brElement);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
-  };
+  }, []);
 
-  const handleCommonConfirmBtnClick = () => {
+  const handleCommonConfirmBtnClick = useCallback(() => {
     if (handleConfirmBtnClick) {
       handleConfirmBtnClick(content);
       // 清空内容
@@ -120,13 +152,13 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       }
       setContent("");
     }
-  };
+  }, [content]);
 
-  const handleCommonCancelBtnClick = () => {
+  const handleCommonCancelBtnClick = useCallback(() => {
     if (handleCancelBtnClick) {
       handleCancelBtnClick();
     }
-  };
+  }, []);
 
   return (
     <div className={"common-editor-wrapper " + className}>

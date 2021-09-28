@@ -136,22 +136,6 @@ export namespace utils {
       } catch (error: any) {
         console.warn("Copy to clipboard failed.", error);
       }
-    } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-      const textarea = document.createElement("textarea");
-      textarea.textContent = text;
-      textarea.style.position = "fixed";
-      textarea.style.zIndex = "-1";
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      try {
-        return document.execCommand("copy"); // Security exception may be thrown by some browsers.
-      } catch (error: any) {
-        console.warn("Copy to clipboard failed.", error);
-        return false;
-      } finally {
-        document.body.removeChild(textarea);
-      }
     } else {
       console.warn("Copy to clipboard failed, methods not supports.");
     }
