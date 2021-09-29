@@ -77,10 +77,20 @@
       &.active {
         background-color: @text-green !important;
 
-        > .tag-text {
-          color: white;
+        > .tag-text-container {
+          > .icon-container {
+            > .icon-text {
+              color: white;
+            }
 
-          > .icon-text {
+            &.rename-able {
+              &:hover {
+                background-color: @dark-bg-black;
+              }
+            }
+          }
+
+          > .tag-text {
             color: white;
           }
         }
@@ -90,18 +100,59 @@
         margin-top: 4px;
       }
 
-      > .tag-text {
+      > .tag-text-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
         max-width: calc(100% - 24px);
         color: @text-gray;
         overflow: hidden;
         text-overflow: ellipsis;
         flex-shrink: 0;
 
-        > .icon-text {
+        > .icon-container {
           font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
           color: gray;
           font-size: 13px;
+          width: 20px;
+          height: 20px;
           margin-right: 4px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          border-radius: 4px;
+
+          > .rename-btn {
+            display: none;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            > .icon-img {
+              width: 13px;
+              height: 13px;
+            }
+          }
+
+          &.rename-able {
+            &:hover {
+              background-color: lightgray;
+
+              > .icon-text {
+                display: none;
+              }
+              > .rename-btn {
+                display: flex;
+              }
+            }
+          }
+        }
+
+        > .tag-text {
+          flex-shrink: 0;
         }
       }
 
@@ -243,7 +294,7 @@ body.dark {
         background-color: @dark-bg-black;
       }
 
-      > .tag-text {
+      > .tag-text-container {
         color: @dark-text-white;
       }
     }

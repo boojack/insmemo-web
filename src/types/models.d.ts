@@ -1,8 +1,8 @@
 declare namespace Model {
   interface BaseModel {
     id: string;
-    createdAt: TimeStamp;
-    updatedAt: TimeStamp;
+    createdAt: string;
+    updatedAt: string;
   }
 
   interface User extends BaseModel {

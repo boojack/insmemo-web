@@ -35,7 +35,9 @@ const TagList: React.FC<Props> = () => {
     memoService
       .getMyTags()
       .then((tags) => {
-        const sortedTags = tags.sort((a, b) => b.createdAt - a.createdAt).sort((a, b) => b.level - a.level);
+        const sortedTags = tags
+          .sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
+          .sort((a, b) => b.level - a.level);
         const root: IterObject<any> = {
           subTags: [],
         };
@@ -167,16 +169,18 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   return (
     <>
       <div className={`tag-item-container ${isActive ? "active" : ""}`} onClick={handleTagClick}>
-        <span className="tag-text">
-          <span className="icon-text">#</span>
-          {tag.key}
-        </span>
+        <p className="tag-text-container">
+          <div className={`icon-container ${renameAble ? "rename-able" : ""}`}>
+            <span className="icon-text">#</span>
+            {renameAble ? (
+              <span className="rename-btn" onClick={handleRenameTagBtnClick}>
+                {isActive ? <img className="icon-img" src="/icons/edit-white.svg" /> : <img className="icon-img" src="/icons/edit.svg" />}
+              </span>
+            ) : null}
+          </div>
+          <span className="tag-text">{tag.key}</span>
+        </p>
         <div className="btns-container">
-          {renameAble ? (
-            <span className="action-btn rename-btn" onClick={handleRenameTagBtnClick}>
-              {isActive ? <img className="icon-img" src="/icons/edit-white.svg" /> : <img className="icon-img" src="/icons/edit.svg" />}
-            </span>
-          ) : null}
           {hasSubTags ? (
             <span className={`action-btn toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
               {isActive ? (

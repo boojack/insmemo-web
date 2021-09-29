@@ -19,13 +19,22 @@ export namespace utils {
   }
 
   export function getTimeStampByDate(t: Date | number | string): number {
+    if (typeof t === "string") {
+      t = t.replaceAll("-", "/");
+    }
     const d = new Date(t);
+
+    return d.getTime();
+  }
+
+  export function getDateStampByDate(t: Date | number | string): number {
+    const d = new Date(getTimeStampByDate(t));
 
     return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
   }
 
   export function getDateString(t: Date | number | string): string {
-    const d = new Date(t);
+    const d = new Date(getTimeStampByDate(t));
 
     const year = d.getFullYear();
     const month = d.getMonth() + 1;
@@ -35,8 +44,8 @@ export namespace utils {
   }
 
   // For example: 2021-4-8 17:52:17
-  export function getTimeString(t: Date | number | string): string {
-    const d = new Date(t);
+  export function getTimeStampString(t: Date | number | string): string {
+    const d = new Date(getTimeStampByDate(t));
 
     const year = d.getFullYear();
     const month = d.getMonth() + 1;
@@ -54,8 +63,8 @@ export namespace utils {
     return `${year}-${monthStr}-${dateStr} ${hoursStr}:${minsStr}:${secsStr}`;
   }
 
-  export function getTimeStampString(t: Date | number | string): string {
-    const d = new Date(t);
+  export function getTimeString(t: Date | number | string): string {
+    const d = new Date(getTimeStampByDate(t));
 
     const hours = d.getHours();
     const mins = d.getMinutes();

@@ -28,7 +28,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
         setMemo({
           ...memoTemp,
           formattedContent: formatMemoContent(memoTemp.content),
-          createdAtStr: utils.getTimeString(memoTemp.createdAt),
+          createdAtStr: utils.getTimeStampString(memoTemp.createdAt),
         });
       }
     };
@@ -53,7 +53,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
             downMemoList.push({
               ...memoTemp,
               formattedContent: formatMemoContent(memoTemp.content),
-              createdAtStr: utils.getTimeString(memoTemp.createdAt),
+              createdAtStr: utils.getTimeStampString(memoTemp.createdAt),
             });
             setDownMemos([...downMemoList]);
           }

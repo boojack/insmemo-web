@@ -19,7 +19,7 @@ interface DailyUsageStat {
 interface Props {}
 
 const UsageHeatMap: React.FC<Props> = () => {
-  const todayTimeStamp = utils.getTimeStampByDate(Date.now());
+  const todayTimeStamp = utils.getDateStampByDate(Date.now());
   const todayDay = new Date(todayTimeStamp).getDay() || 7;
   const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
   const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
@@ -53,7 +53,7 @@ const UsageHeatMap: React.FC<Props> = () => {
       .getMemosStat()
       .then((stats) => {
         for (const d of stats) {
-          const index = (utils.getTimeStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
+          const index = (utils.getDateStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
           if (index >= 0) {
             newStat[index].count = d.amount;
           }

@@ -86,7 +86,7 @@ const MemoEditor: React.FC<Props> = () => {
           const editedMemo = await memoService.updateMemo(prevMemo.id, content);
           prevMemo.content = editedMemo.content;
           prevMemo.tags = tags;
-          prevMemo.updatedAt = Date.now();
+          prevMemo.updatedAt = utils.getTimeStampString(Date.now());
           memoService.editMemo(prevMemo);
         }
         globalStateService.setEditMemoId("");

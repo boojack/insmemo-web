@@ -48,6 +48,43 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
     showAboutSiteDialog();
   };
 
+  const handleSignUpBtnClick = async () => {
+    const usernameValidResult = validate(username, validateConfig);
+    if (!usernameValidResult.result) {
+      toastHelper.error("用户名 " + usernameValidResult.reason);
+      return;
+    }
+
+    const passwordValidResult = validate(password, validateConfig);
+    if (!passwordValidResult.result) {
+      toastHelper.error("密码 " + passwordValidResult.reason);
+      return;
+    }
+
+    try {
+      const actionFunc = api.signup;
+      const { succeed, message } = await actionFunc(username, password);
+
+      if (!succeed && message) {
+        toastHelper.error("😟 " + message);
+        return;
+      }
+
+      const user = await userService.doSignIn();
+      if (user) {
+        memoService.fetchMoreMemos().catch(() => {
+          // do nth
+        });
+        destroy();
+      } else {
+        toastHelper.error("😟 不知道发生了什么错误");
+      }
+    } catch (error: any) {
+      console.error(error);
+      toastHelper.error("😟 " + error.message);
+    }
+  };
+
   const handleSignInBtnClick = async () => {
     const usernameValidResult = validate(username, validateConfig);
     if (!usernameValidResult.result) {
@@ -119,9 +156,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
         </div>
       </div>
       <p className="tip-text">
-        仅用于作品展示，注册暂时关闭；
-        <br />
-        可输入 <code>guest, 123456</code> 进行体验。
+        仅用于作品展示，可输入 <code>guest, 123456</code> 进行体验。
         <br />
         <span className="text-btn" onClick={handleAboutBtnClick}>
           <span className="icon-text">😀</span>

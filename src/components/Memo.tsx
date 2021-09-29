@@ -21,7 +21,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const memo: FormattedMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
-    createdAtStr: utils.getTimeString(propsMemo.createdAt),
+    createdAtStr: utils.getTimeStampString(propsMemo.createdAt),
   };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
@@ -29,7 +29,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const handleShowMemoStoryDialog = () => {
     // NOTE: Memo Story 待升级
     // showMemoStoryDialog(memo.id);
-    showDailyMemoDiaryDialog(memo.createdAt);
+    showDailyMemoDiaryDialog(utils.getTimeStampByDate(memo.createdAt));
   };
 
   const handleMarkMemoClick = () => {

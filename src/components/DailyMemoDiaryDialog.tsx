@@ -21,7 +21,7 @@ const weekdayChineseStrArray = ["周日", "周一", "周二", "周三", "周四"
 const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   const loadingState = useLoading();
   const [memos, setMemos] = useState<Model.Memo[]>([]);
-  const [currentDateStamp, setCurrentDateStamp] = useState(utils.getTimeStampByDate(utils.getDateString(props.currentDateStamp)));
+  const [currentDateStamp, setCurrentDateStamp] = useState(utils.getDateStampByDate(utils.getDateString(props.currentDateStamp)));
   const [showDatePicker, toggleShowDatePicker] = useToggle(false);
   const memosElRef = useRef(null);
   const currentDate = new Date(currentDateStamp);
@@ -30,15 +30,19 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
     const setDailyMemos = () => {
       const dailyMemos = memoService
         .getState()
-        .memos.filter((a) => a.createdAt >= currentDateStamp && a.createdAt < currentDateStamp + DAILY_TIMESTAMP)
-        .sort((a, b) => a.createdAt - b.createdAt);
+        .memos.filter(
+          (a) =>
+            utils.getTimeStampByDate(a.createdAt) >= currentDateStamp &&
+            utils.getTimeStampByDate(a.createdAt) < currentDateStamp + DAILY_TIMESTAMP
+        )
+        .sort((a, b) => utils.getTimeStampByDate(a.createdAt) - utils.getTimeStampByDate(b.createdAt));
       setMemos(dailyMemos);
       loadingState.setFinish();
     };
 
     const { memos } = memoService.getState();
     const lastMemo = memos.slice(-1).pop();
-    if (lastMemo && lastMemo.createdAt >= currentDateStamp) {
+    if (lastMemo && utils.getTimeStampByDate(lastMemo.createdAt) >= currentDateStamp) {
       loadingState.setLoading();
       memoService
         .fetchAllMemos()

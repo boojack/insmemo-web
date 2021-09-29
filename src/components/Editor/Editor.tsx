@@ -177,7 +177,7 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
         </Only>
         <div className="btns-right-container">
           <Only when={showCancelBtn}>
-            <button className="action-btn cancel-btn" disabled={content.length === 0} onClick={handleCommonCancelBtnClick}>
+            <button className="action-btn cancel-btn" onClick={handleCommonCancelBtnClick}>
               撤销修改
             </button>
           </Only>

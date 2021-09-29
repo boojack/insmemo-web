@@ -4,6 +4,7 @@ import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import toastHelper from "./Toast";
+import { utils } from "../helpers/utils";
 import "../less/user-banner.less";
 
 interface AmountState {
@@ -24,7 +25,7 @@ const UserBanner: React.FC<Props> = () => {
   });
   const [showMenuBtnsPopup, setPopupStatus] = useState<boolean>(false);
   const username = user ? user.username : "Memos";
-  const createdDays = user ? Math.ceil((Date.now() - new Date(user.createdAt).getTime()) / 1000 / 3600 / 24) : 0;
+  const createdDays = user ? Math.ceil((Date.now() - utils.getTimeStampByDate(user.createdAt)) / 1000 / 3600 / 24) : 0;
 
   useEffect(() => {
     if (!userService.getState().user) {

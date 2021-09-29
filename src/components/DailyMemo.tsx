@@ -18,8 +18,8 @@ const DailyMemo: React.FC<Props> = (props: Props) => {
   const memo: DailyMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
-    createdAtStr: utils.getTimeString(propsMemo.createdAt),
-    timeStr: utils.getTimeStampString(propsMemo.createdAt),
+    createdAtStr: utils.getTimeStampString(propsMemo.createdAt),
+    timeStr: utils.getTimeString(propsMemo.createdAt),
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 

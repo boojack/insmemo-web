@@ -18,11 +18,7 @@ class MemoService {
     this.isFetching = true;
     const { data } = await api.getMyMemos(this.getState().memos.length, FETCH_MEMO_AMOUNT);
     const memos: Model.Memo[] = data.map((m) => ({
-      id: m.id,
-      content: m.content,
-      tags: m.tags,
-      createdAt: new Date(m.createdAt).getTime(),
-      updatedAt: new Date(m.updatedAt).getTime(),
+      ...m,
     }));
 
     appStore.dispatch({
@@ -47,11 +43,7 @@ class MemoService {
     } = await api.getMyDataAmount();
     const { data } = await api.getMyMemos(this.getState().memos.length, memosAmount);
     const memos = data.map((m) => ({
-      id: m.id,
-      content: m.content,
-      tags: m.tags,
-      createdAt: new Date(m.createdAt).getTime(),
-      updatedAt: new Date(m.updatedAt).getTime(),
+      ...m,
     }));
 
     if (memos.length > 0) {
@@ -70,11 +62,7 @@ class MemoService {
       type: "PUSH_MEMO",
       payload: {
         memo: {
-          id: memo.id,
-          content: memo.content,
-          tags: memo.tags,
-          createdAt: new Date(memo.createdAt).getTime(),
-          updatedAt: new Date(memo.updatedAt).getTime(),
+          ...memo,
         },
       },
     });

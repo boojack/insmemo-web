@@ -57,7 +57,11 @@ const MemoList: React.FC<Props> = () => {
     if (tagQuery !== "" && !memoTags.includes(tagQuery)) {
       shouldShow = false;
     }
-    if (duration.from !== 0 && duration.from < duration.to && (memo.createdAt < duration.from || memo.createdAt > duration.to)) {
+    if (
+      duration.from !== 0 &&
+      duration.from < duration.to &&
+      (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
+    ) {
       shouldShow = false;
     }
     if (memoType !== "") {

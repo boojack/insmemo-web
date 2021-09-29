@@ -1,3 +1,5 @@
+import { utils } from "../helpers/utils";
+
 export interface State {
   memos: Model.Memo[];
 }
@@ -45,14 +47,18 @@ export function reducer(state: State, action: Actions): State {
       };
     }
     case "PUSH_MEMO": {
-      const memos = [action.payload.memo, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
+      const memos = [action.payload.memo, ...state.memos].sort(
+        (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
+      );
 
       return {
         memos,
       };
     }
     case "PUSH_MEMOS": {
-      const memos = [...action.payload.memos, ...state.memos].sort((a, b) => b.createdAt - a.createdAt);
+      const memos = [...action.payload.memos, ...state.memos].sort(
+        (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
+      );
 
       return {
         memos,
