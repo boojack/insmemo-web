@@ -91,7 +91,7 @@ const MemoList: React.FC<Props> = () => {
     if (!isComplete && showFilter) {
       setFetchStatus(true);
       memoService.fetchAllMemos().then((result) => {
-        if (!result) {
+        if (result !== false) {
           setCompleteStatus(true);
           setFetchStatus(false);
         }

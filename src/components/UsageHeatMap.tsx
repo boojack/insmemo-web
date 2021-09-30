@@ -113,11 +113,11 @@ const UsageHeatMap: React.FC<Props> = () => {
           const colorLevel =
             count <= 0
               ? ""
-              : count <= 2
+              : count <= 1
               ? "stat-day-L1-bg"
-              : count <= 4
+              : count <= 2
               ? "stat-day-L2-bg"
-              : count <= 6
+              : count <= 4
               ? "stat-day-L3-bg"
               : "stat-day-L4-bg";
 
