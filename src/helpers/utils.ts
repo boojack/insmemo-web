@@ -72,7 +72,7 @@ export namespace utils {
     const minsStr = mins < 10 ? "0" + mins : mins;
     const secsStr = secs < 10 ? "0" + secs : secs;
 
-    return `${year}-${monthStr}-${dateStr} ${hoursStr}:${minsStr}:${secsStr}`;
+    return `${year}/${monthStr}/${dateStr} ${hoursStr}:${minsStr}:${secsStr}`;
   }
 
   export function dedupe<T>(data: T[]): T[] {
