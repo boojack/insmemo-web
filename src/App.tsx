@@ -10,6 +10,7 @@ import MemoList from "./components/MemoList";
 import Sidebar from "./components/Sidebar";
 import toggleSearchBarDialog from "./components/SearchBarDialog";
 import showSigninDialog from "./components/SigninDialog";
+import useLoading from "./hooks/useLoading";
 import "./helpers/polyfill";
 import "./less/global.less";
 import "./less/index.less";
@@ -18,6 +19,7 @@ function App() {
   const {
     globalState: { showDarkMode },
   } = useContext(appContext);
+  const loadingState = useLoading();
 
   useEffect(() => {
     userService
@@ -31,6 +33,7 @@ function App() {
         } else {
           showSigninDialog();
         }
+        loadingState.setFinish();
       });
 
     const handleSearchKeyDown = (event: KeyboardEvent) => {
@@ -67,7 +70,7 @@ function App() {
         <div className="content-wrapper">
           <MobileHeader />
           <MemoEditor />
-          <MemoList />
+          {loadingState.isLoading ? null : <MemoList />}
         </div>
       </div>
     </>

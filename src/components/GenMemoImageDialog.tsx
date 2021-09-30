@@ -20,7 +20,7 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
   const memo: FormattedMemo = {
     ...propsMemo,
     formattedContent: formatMemoContent(propsMemo.content),
-    createdAtStr: utils.getTimeStampString(propsMemo.createdAt),
+    createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
   const [imageAmount, setImageAmount] = useState(imageUrls.length);

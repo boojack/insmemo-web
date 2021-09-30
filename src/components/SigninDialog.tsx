@@ -142,7 +142,7 @@ const SigninDialog: React.FC<Props> = ({ destroy }) => {
       <div className="dialog-footer-container">
         <div className="btns-container">
           <a className="btn-text" href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">
-            Login with GitHub
+            Sign In with GitHub
           </a>
         </div>
         <div className="btns-container">

@@ -90,9 +90,11 @@ const MemoList: React.FC<Props> = () => {
     wrapperElement.current?.scrollTo({ top: 0 });
     if (!isComplete && showFilter) {
       setFetchStatus(true);
-      memoService.fetchAllMemos().then(() => {
-        setCompleteStatus(true);
-        setFetchStatus(false);
+      memoService.fetchAllMemos().then((result) => {
+        if (!result) {
+          setCompleteStatus(true);
+          setFetchStatus(false);
+        }
       });
     }
   }, [isComplete, showFilter]);
@@ -159,7 +161,7 @@ const MemoList: React.FC<Props> = () => {
 
       {showFilter ? (
         <div className={`status-text-container`}>
-          <p className="status-text">{isFetching ? "努力请求数据中..." : shownMemos.length === 0 ? "空空如也" : ""}</p>
+          <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
         </div>
       ) : (
         <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>

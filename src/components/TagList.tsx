@@ -155,8 +155,8 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   };
 
   const handleRenameTagBtnClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
     if (renameAble) {
+      event.stopPropagation();
       showRenameTagDialog(tag);
     }
   };
@@ -169,17 +169,17 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   return (
     <>
       <div className={`tag-item-container ${isActive ? "active" : ""}`} onClick={handleTagClick}>
-        <p className="tag-text-container">
-          <div className={`icon-container ${renameAble ? "rename-able" : ""}`}>
+        <div className="tag-text-container">
+          <div className={`icon-container ${renameAble ? "rename-able" : ""}`} onClick={handleRenameTagBtnClick}>
             <span className="icon-text">#</span>
             {renameAble ? (
-              <span className="rename-btn" onClick={handleRenameTagBtnClick}>
+              <span className="rename-btn">
                 {isActive ? <img className="icon-img" src="/icons/edit-white.svg" /> : <img className="icon-img" src="/icons/edit.svg" />}
               </span>
             ) : null}
           </div>
           <span className="tag-text">{tag.key}</span>
-        </p>
+        </div>
         <div className="btns-container">
           {hasSubTags ? (
             <span className={`action-btn toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>

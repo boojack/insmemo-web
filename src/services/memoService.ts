@@ -33,7 +33,7 @@ class MemoService {
   }
 
   public async fetchAllMemos() {
-    if (!userService.getState().user || this.isFetching) {
+    if (!userService.getState().user) {
       return false;
     }
 
@@ -41,20 +41,21 @@ class MemoService {
     const {
       data: { memosAmount },
     } = await api.getMyDataAmount();
-    const { data } = await api.getMyMemos(this.getState().memos.length, memosAmount);
+    const { data } = await api.getMyMemos(0, memosAmount);
     const memos = data.map((m) => ({
       ...m,
     }));
 
     if (memos.length > 0) {
       appStore.dispatch({
-        type: "PUSH_MEMOS",
+        type: "SET_MEMOS",
         payload: {
           memos,
         },
       });
     }
     this.isFetching = false;
+    return data;
   }
 
   public pushMemo(memo: Model.Memo) {

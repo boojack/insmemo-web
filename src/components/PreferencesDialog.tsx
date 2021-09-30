@@ -116,13 +116,13 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <span className="tip-text">目前支持列表、代码块</span>
           </label>
         </div>
-        <div className="section-container">
+        <div className="section-container hidden">
           <p className="title-text">其他</p>
           <div className="btn-container">
             <button className="btn export-btn" onClick={handleExportBtnClick}>
               导出数据(JSON)
             </button>
-            <button className="btn clean-btn hidden" onClick={handleMemoCleanBtnClick}>
+            <button className="btn clean-btn" onClick={handleMemoCleanBtnClick}>
               Memo Clean
             </button>
           </div>
