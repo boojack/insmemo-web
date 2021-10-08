@@ -1,5 +1,7 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import Only from "../common/OnlyWhen";
+import { parseHtmlToRawText } from "../../helpers/marked";
+import useRefresh from "../../hooks/useRefresh";
 import "../../less/editor.less";
 
 export interface EditorRefActions {
@@ -9,76 +11,65 @@ export interface EditorRefActions {
   getContent: () => string;
 }
 
-interface EditorProps {
+interface Props {
   className: string;
-  content: string;
+  initialContent: string;
   placeholder: string;
   showConfirmBtn: boolean;
-  handleConfirmBtnClick?: (content: string) => void;
   showCancelBtn: boolean;
-  handleCancelBtnClick?: () => void;
   showTools: boolean;
-  handleContentChange?: (content: string) => void;
+  onConfirmBtnClick: (content: string) => void;
+  onCancelBtnClick: () => void;
+  onContentChange: (content: string) => void;
   editorRef?: React.RefObject<EditorRefActions>;
 }
 
-const DEFAULT_EDITOR_PROPS: EditorProps = {
-  className: "",
-  content: "",
-  placeholder: "",
-  showConfirmBtn: true,
-  showCancelBtn: false,
-  showTools: false,
-};
-
-const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
+const Editor = React.forwardRef((props: Props, ref: React.ForwardedRef<EditorRefActions>) => {
   const {
     className,
-    content: initialContent,
+    initialContent,
     placeholder,
     showConfirmBtn,
     showCancelBtn,
     showTools,
-    handleConfirmBtnClick,
-    handleCancelBtnClick,
-    handleContentChange,
+    onConfirmBtnClick: handleConfirmBtnClickCallback,
+    onCancelBtnClick: handleCancelBtnClickCallback,
+    onContentChange: handleContentChangeCallback,
   } = props;
-  const [content, setContent] = useState<string>(initialContent);
   const editorRef = useRef<HTMLDivElement>(null);
+  const refresh = useRefresh();
 
   useEffect(() => {
-    if (content && editorRef.current) {
-      editorRef.current.innerHTML = content;
+    if (initialContent) {
+      editorRef.current!.innerHTML = initialContent;
+    } else {
+      editorRef.current!.innerHTML = "<br>";
     }
   }, []);
 
-  useImperativeHandle(props.editorRef, () => ({
-    focus: () => {
-      editorRef.current?.focus();
-    },
-    insertText: (rawText: string) => {
-      const text = content + rawText;
-      setContent(text);
-      if (editorRef.current) {
-        editorRef.current.innerHTML = text;
-      }
-      if (handleContentChange) {
-        handleContentChange(text);
-      }
-    },
-    setContent: (rawText: string) => {
-      const text = rawText;
-      setContent(text);
-      if (editorRef.current) {
-        editorRef.current.innerHTML = text;
-      }
-    },
-    getContent: (): string => {
-      return content;
-    },
-  }));
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => {
+        editorRef.current!.focus();
+      },
+      insertText: (rawText: string) => {
+        editorRef.current!.innerHTML += `<br>${rawText}`;
+        handleContentChangeCallback(editorRef.current!.innerText);
+        refresh();
+      },
+      setContent: (text: string) => {
+        editorRef.current!.innerText = parseHtmlToRawText(text);
+        refresh();
+      },
+      getContent: (): string => {
+        return editorRef.current?.innerText ?? "";
+      },
+    }),
+    []
+  );
 
-  const handleInputerPasted = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
+  const handleEditorPaste = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
     const text = event.clipboardData.getData("text");
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) {
@@ -87,24 +78,17 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
     selection.deleteFromDocument();
     selection.getRangeAt(0).insertNode(document.createTextNode(text));
     event.preventDefault();
-    setContent(text);
-    if (handleContentChange) {
-      handleContentChange(text);
-    }
+    handleContentChangeCallback(editorRef.current!.innerText);
+    refresh();
   }, []);
 
-  const handleInputerChanged = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    const content = e.currentTarget.innerHTML;
-    setContent(content);
-
-    if (handleContentChange) {
-      handleContentChange(content);
-    }
+  const handleEditorInput = useCallback(() => {
+    handleContentChangeCallback(editorRef.current!.innerText);
+    refresh();
   }, []);
 
-  const handleInputerKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleEditorKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
     event.stopPropagation();
-
     if (event.key === "Tab") {
       event.preventDefault();
       const selection = window.getSelection();
@@ -113,52 +97,58 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       }
       selection.deleteFromDocument();
       const range = selection.getRangeAt(0);
-      const spaceNode = document.createTextNode("    ");
-      range.insertNode(spaceNode);
-      range.setEndAfter(spaceNode);
-      range.setStartAfter(spaceNode);
+      const tabTextNode = document.createTextNode("\t");
+      range.insertNode(tabTextNode);
+      range.setStartAfter(tabTextNode);
+      range.setEndAfter(tabTextNode);
       selection.removeAllRanges();
       selection.addRange(range);
     } else if (event.key === "Backspace") {
-      if (editorRef.current && editorRef.current.innerHTML === "<br>") {
-        editorRef.current.innerHTML = "";
-        setContent("");
-      }
+      setTimeout(() => {
+        if (editorRef.current?.innerText === "") {
+          editorRef.current!.innerHTML = "<br>";
+          refresh();
+        }
+      }, 0);
     } else if (event.key === "Enter") {
-      event.preventDefault();
-      const selection = window.getSelection();
-      if (!selection || !selection.rangeCount) {
-        return;
+      if (event.shiftKey) {
+        // do nth
+      } else {
+        event.preventDefault();
+        if (!editorRef.current?.lastElementChild || editorRef.current?.lastElementChild !== editorRef.current?.lastChild) {
+          const brElement = document.createElement("br");
+          editorRef.current?.appendChild(brElement);
+        }
+        const selection = window.getSelection();
+        if (!selection || !selection.rangeCount) {
+          return;
+        }
+        selection.deleteFromDocument();
+        const range = selection.getRangeAt(0);
+        const blankTextNode = document.createTextNode(" ");
+        const brElement = document.createElement("br");
+        range.insertNode(brElement);
+        range.insertNode(blankTextNode);
+        range.setStartAfter(brElement);
+        range.setEndAfter(brElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
       }
-      selection.deleteFromDocument();
-      const range = selection.getRangeAt(0);
-      const pElement = document.createElement("p");
-      const brElement = document.createElement("br");
-      pElement.appendChild(brElement);
-      range.insertNode(pElement);
-      range.setEndAfter(brElement);
-      range.setStartAfter(brElement);
-      selection.removeAllRanges();
-      selection.addRange(range);
     }
+    refresh();
   }, []);
 
   const handleCommonConfirmBtnClick = useCallback(() => {
-    if (handleConfirmBtnClick) {
-      handleConfirmBtnClick(content);
-      // 清空内容
-      if (editorRef.current) {
-        editorRef.current.innerHTML = "";
-      }
-      setContent("");
-    }
-  }, [content]);
+    handleConfirmBtnClickCallback(editorRef.current?.innerText ?? "");
+    editorRef.current!.innerHTML = "<br>";
+    refresh();
+  }, []);
 
   const handleCommonCancelBtnClick = useCallback(() => {
-    if (handleCancelBtnClick) {
-      handleCancelBtnClick();
-    }
+    handleCancelBtnClickCallback();
   }, []);
+
+  const isEditorEmpty = Boolean(editorRef.current?.innerHTML === "<br>");
 
   return (
     <div className={"common-editor-wrapper " + className}>
@@ -166,11 +156,11 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
         className="common-editor-inputer"
         contentEditable
         ref={editorRef}
-        onPaste={handleInputerPasted}
-        onInput={handleInputerChanged}
-        onKeyDown={handleInputerKeyDown}
+        onPaste={handleEditorPaste}
+        onInput={handleEditorInput}
+        onKeyDown={handleEditorKeyDown}
       ></div>
-      <p className={content === "" ? "common-editor-placeholder" : "hidden"}>{placeholder}</p>
+      <p className={isEditorEmpty ? "common-editor-placeholder" : "hidden"}>{placeholder}</p>
       <div className="common-tools-wrapper">
         <Only when={showTools}>
           <div className={"common-tools-container"}>{/* nth */}</div>
@@ -182,7 +172,7 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
             </button>
           </Only>
           <Only when={showConfirmBtn}>
-            <button className="action-btn confirm-btn" disabled={content.length === 0} onClick={handleCommonConfirmBtnClick}>
+            <button className="action-btn confirm-btn" disabled={isEditorEmpty} onClick={handleCommonConfirmBtnClick}>
               记下<span className="icon-text">✍️</span>
             </button>
           </Only>
@@ -190,6 +180,6 @@ const Editor = (props: EditorProps = DEFAULT_EDITOR_PROPS) => {
       </div>
     </div>
   );
-};
+});
 
-export default forwardRef(Editor);
+export default Editor;

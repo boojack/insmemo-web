@@ -69,11 +69,9 @@ const UsageHeatMap: React.FC<Props> = () => {
   const handleUsageStatItemMouseEnter = useCallback((event: React.MouseEvent, item: DailyUsageStat) => {
     setPopupStat(item);
 
-    if (popupRef.current) {
-      const targetEl = event.target as HTMLElement;
-      popupRef.current.style.left = targetEl.offsetLeft + "px";
-      popupRef.current.style.top = targetEl.offsetTop + "px";
-    }
+    const targetEl = event.target as HTMLElement;
+    popupRef.current!.style.left = targetEl.offsetLeft + "px";
+    popupRef.current!.style.top = targetEl.offsetTop + "px";
   }, []);
 
   const handleUsageStatItemMouseLeave = useCallback(() => {

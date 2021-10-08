@@ -222,10 +222,6 @@ const RenameTagDialog: React.FC<RenameTagDialogProps> = (props) => {
       destroy();
       return;
     }
-    if (text.length > 36) {
-      toastHelper.error("标签太长啦，MAX=36");
-      return;
-    }
     memoService
       .updateTagText(tag.id, text)
       .then(() => {

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import appContext from "../labs/appContext";
 import { showDialog } from "./Dialog";
+import { parseHtmlToRawText } from "../helpers/marked";
 import { globalStateService, memoService } from "../services";
 import "../less/preferences-dialog.less";
 
@@ -55,7 +56,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   const handleMemoCleanBtnClick = async () => {
     await memoService.fetchAllMemos();
     for (const m of memoService.getState().memos) {
-      await memoService.updateMemo(m.id, m.content.replace("&nbsp;", " ").replace(/#(.+?)#/g, "# $1 "));
+      await memoService.updateMemo(m.id, parseHtmlToRawText(m.content));
     }
   };
 

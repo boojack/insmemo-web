@@ -23,7 +23,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   const [memos, setMemos] = useState<Model.Memo[]>([]);
   const [currentDateStamp, setCurrentDateStamp] = useState(utils.getDateStampByDate(utils.getDateString(props.currentDateStamp)));
   const [showDatePicker, toggleShowDatePicker] = useToggle(false);
-  const memosElRef = useRef(null);
+  const memosElRef = useRef<HTMLDivElement>(null);
   const currentDate = new Date(currentDateStamp);
 
   useEffect(() => {
@@ -66,18 +66,16 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         window.scrollTo(0, 0);
       }
 
-      if (memosElRef.current) {
-        html2canvas(memosElRef.current, {
-          scale: window.devicePixelRatio * 2,
-          allowTaint: true,
-          useCORS: true,
-          backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
-          scrollX: -window.scrollX,
-          scrollY: -window.scrollY,
-        }).then((canvas) => {
-          showPreviewImageDialog(canvas.toDataURL());
-        });
-      }
+      html2canvas(memosElRef.current!, {
+        scale: window.devicePixelRatio * 2,
+        allowTaint: true,
+        useCORS: true,
+        backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
+        scrollX: -window.scrollX,
+        scrollY: -window.scrollY,
+      }).then((canvas) => {
+        showPreviewImageDialog(canvas.toDataURL());
+      });
     }, 0);
   };
 

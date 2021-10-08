@@ -1,6 +1,6 @@
 import React from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
-import { parseMarkedToHtml } from "../helpers/marked";
+import { parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
 import { utils } from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
@@ -121,23 +121,17 @@ const Memo: React.FC<Props> = (props: Props) => {
 
 export function formatMemoContent(content: string): string {
   const tempDivContainer = document.createElement("div");
-  tempDivContainer.innerHTML = content;
-  const tempFirstPElement = document.createElement("p");
-
-  while (tempDivContainer.firstChild && tempDivContainer.firstChild.nodeName !== "P") {
-    const node = tempDivContainer.firstChild;
-    if (node.nodeName === "#text") {
-      tempFirstPElement.innerHTML += node.nodeValue;
-    } else {
-      tempFirstPElement.innerHTML += (node as Element).outerHTML;
-    }
-    node.remove();
-  }
-
-  if (tempFirstPElement.innerHTML !== "") {
-    tempDivContainer.prepend(tempFirstPElement);
-    content = tempDivContainer.innerHTML;
-  }
+  tempDivContainer.innerHTML = parseRawTextToHtml(content)
+    .split(/<br>/)
+    .map((t) => {
+      if (t !== "") {
+        return `<p>${t}</p>`;
+      } else {
+        return "";
+      }
+    })
+    .join("");
+  content = tempDivContainer.innerHTML;
 
   const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = globalStateService.getState();
 
@@ -154,7 +148,7 @@ export function formatMemoContent(content: string): string {
     content = content.replace(IMAGE_URL_REG, "");
   }
 
-  // 清楚空行
+  // 清除空行: <p></p>
   tempDivContainer.innerHTML = content;
   for (const p of tempDivContainer.querySelectorAll("p")) {
     if (p.textContent === "" && p.firstElementChild?.tagName !== "BR") {
