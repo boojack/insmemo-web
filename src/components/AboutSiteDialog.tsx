@@ -46,12 +46,6 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <p className="normal-text">
           Last update at <pre> 2021/10/08 16:34:39 </pre> 🎉
         </p>
-        <p className="normal-text">
-          BTW, my personal site:
-          <a target="_blank" href="https://justsven.top" rel="noreferrer">
-            https://justsven.top
-          </a>
-        </p>
       </div>
     </>
   );

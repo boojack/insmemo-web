@@ -21,7 +21,6 @@ interface Props {
   onConfirmBtnClick: (content: string) => void;
   onCancelBtnClick: () => void;
   onContentChange: (content: string) => void;
-  editorRef?: React.RefObject<EditorRefActions>;
 }
 
 const Editor = React.forwardRef((props: Props, ref: React.ForwardedRef<EditorRefActions>) => {
@@ -111,29 +110,26 @@ const Editor = React.forwardRef((props: Props, ref: React.ForwardedRef<EditorRef
         }
       }, 0);
     } else if (event.key === "Enter") {
-      if (event.shiftKey) {
-        // do nth
-      } else {
-        event.preventDefault();
-        if (!editorRef.current?.lastElementChild || editorRef.current?.lastElementChild !== editorRef.current?.lastChild) {
-          const brElement = document.createElement("br");
-          editorRef.current?.appendChild(brElement);
-        }
-        const selection = window.getSelection();
-        if (!selection || !selection.rangeCount) {
-          return;
-        }
-        selection.deleteFromDocument();
-        const range = selection.getRangeAt(0);
-        const blankTextNode = document.createTextNode(" ");
+      event.preventDefault();
+      const { lastElementChild, lastChild } = editorRef.current!;
+      if (!lastElementChild || lastElementChild !== lastChild) {
         const brElement = document.createElement("br");
-        range.insertNode(brElement);
-        range.insertNode(blankTextNode);
-        range.setStartAfter(brElement);
-        range.setEndAfter(brElement);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        editorRef.current?.appendChild(brElement);
       }
+      const selection = window.getSelection();
+      if (!selection || !selection.rangeCount) {
+        return;
+      }
+      selection.deleteFromDocument();
+      const range = selection.getRangeAt(0);
+      const blankTextNode = document.createTextNode(" ");
+      const brElement = document.createElement("br");
+      range.insertNode(brElement);
+      range.insertNode(blankTextNode);
+      range.setStartAfter(brElement);
+      range.setEndAfter(brElement);
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
     refresh();
   }, []);

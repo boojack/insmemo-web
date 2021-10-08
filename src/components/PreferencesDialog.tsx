@@ -114,7 +114,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <span className="normal-text">markdown 格式解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
-            <span className="tip-text">目前支持列表、代码块</span>
+            <span className="tip-text">支持列表、加粗、代码块</span>
           </label>
         </div>
         <div className="section-container hidden">
