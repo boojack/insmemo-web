@@ -44,13 +44,14 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <p>Enjoy it and have fun~ </p>
         <hr />
         <p className="normal-text">
-          BTW, my personal site:{" "}
+          Last update at <pre> 2021/10/08 16:34:39 </pre> 🎉
+        </p>
+        <p className="normal-text">
+          BTW, my personal site:
           <a target="_blank" href="https://justsven.top" rel="noreferrer">
             https://justsven.top
-          </a>{" "}
-          👀
+          </a>
         </p>
-        <p className="normal-text">Last update at 2021/9/30 10:28:20 🎉</p>
       </div>
     </>
   );

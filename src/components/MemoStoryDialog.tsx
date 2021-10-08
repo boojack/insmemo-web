@@ -3,7 +3,7 @@ import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { memoService } from "../services";
 import { showDialog } from "./Dialog";
-import showGenMemoImageDialog from "./GenMemoImageDialog";
+import showShareMemoImageDialog from "./ShareMemoImageDialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
 import Image from "./Image";
@@ -66,7 +66,7 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
 
   const handleGenMemoImageBtnClick = () => {
     if (memo) {
-      showGenMemoImageDialog(memo as Model.Memo);
+      showShareMemoImageDialog(memo as Model.Memo);
     }
   };
 

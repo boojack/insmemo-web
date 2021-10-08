@@ -18,7 +18,7 @@ const parseMarkedToHtml = (markedStr: string): string => {
 
 const parseHtmlToRawText = (htmlStr: string): string => {
   const tempEl = document.createElement("div");
-  tempEl.className = "memo-content-text hidden";
+  tempEl.className = "memo-content-text";
   tempEl.innerHTML = htmlStr;
   document.body.appendChild(tempEl);
   const text = tempEl.innerText;

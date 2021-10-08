@@ -6,13 +6,13 @@ import { showDialog } from "./Dialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
 import toastHelper from "./Toast";
-import "../less/gen-memo-image-dialog.less";
+import "../less/share-memo-image-dialog.less";
 
 interface Props extends DialogProps {
   memo: Model.Memo;
 }
 
-const GenMemoImageDialog: React.FC<Props> = (props) => {
+const ShareMemoImageDialog: React.FC<Props> = (props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
   const memoElRef = useRef<HTMLDivElement>(null);
@@ -102,12 +102,12 @@ const GenMemoImageDialog: React.FC<Props> = (props) => {
   );
 };
 
-export default function showGenMemoImageDialog(memo: Model.Memo): void {
+export default function showShareMemoImageDialog(memo: Model.Memo): void {
   showDialog(
     {
-      className: "gen-memo-image-dialog",
+      className: "share-memo-image-dialog",
     },
-    GenMemoImageDialog,
+    ShareMemoImageDialog,
     { memo }
   );
 }
