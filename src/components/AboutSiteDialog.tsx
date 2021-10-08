@@ -44,7 +44,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <p>Enjoy it and have fun~ </p>
         <hr />
         <p className="normal-text">
-          Last update at <pre> 2021/10/08 16:34:39 </pre> 🎉
+          Last update at <span className="pre-text">2021/10/08 21:34:39</span> 🎉
         </p>
       </div>
     </>
