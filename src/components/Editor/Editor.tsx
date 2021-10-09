@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import Only from "../common/OnlyWhen";
 import { parseHtmlToRawText } from "../../helpers/marked";
 import useRefresh from "../../hooks/useRefresh";
@@ -23,7 +23,7 @@ interface Props {
   onContentChange: (content: string) => void;
 }
 
-const Editor = React.forwardRef((props: Props, ref: React.ForwardedRef<EditorRefActions>) => {
+const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefActions>) => {
   const {
     className,
     initialContent,

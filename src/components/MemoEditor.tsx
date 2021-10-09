@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { globalStateService, locationService, memoService } from "../services";
 import { TAG_REG } from "../helpers/consts";
 import appContext from "../labs/appContext";

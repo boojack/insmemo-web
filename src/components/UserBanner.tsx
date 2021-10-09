@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { locationService, memoService, userService } from "../services";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";

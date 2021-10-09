@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom";
 import appContext from "../labs/appContext";
 import Provider from "../labs/Provider";

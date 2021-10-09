@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Provider from "./labs/Provider";
 import appContext from "./labs/appContext";

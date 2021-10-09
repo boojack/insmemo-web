@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import appContext from "../labs/appContext";
 import { showDialog } from "./Dialog";
 import { parseHtmlToRawText } from "../helpers/marked";

@@ -1,4 +1,3 @@
-import React from "react";
 import { userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";

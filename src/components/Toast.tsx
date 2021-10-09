@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { TOAST_ANIMATION_DURATION } from "../helpers/consts";
 import "../less/toast.less";

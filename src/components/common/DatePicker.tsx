@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DAILY_TIMESTAMP } from "../../helpers/consts";
 import "../../less/common/date-picker.less";
 

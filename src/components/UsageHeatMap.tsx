@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService, userService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import appContext from "../labs/appContext";

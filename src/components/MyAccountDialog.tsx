@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { userService } from "../services";
 import { utils } from "../helpers/utils";
 import appContext from "../labs/appContext";

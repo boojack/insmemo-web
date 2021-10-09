@@ -1,4 +1,3 @@
-import React from "react";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import "../less/image.less";
 

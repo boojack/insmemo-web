@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { memoService } from "../services";

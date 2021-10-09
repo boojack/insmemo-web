@@ -1,5 +1,3 @@
-import React from "react";
-
 interface OnlyWhenProps {
   children: React.ReactElement;
   when: boolean;

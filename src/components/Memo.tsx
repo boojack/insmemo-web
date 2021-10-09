@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import { parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
 import { utils } from "../helpers/utils";
@@ -165,4 +165,4 @@ export function formatMemoContent(content: string): string {
   return content;
 }
 
-export default React.memo(Memo);
+export default memo(Memo);

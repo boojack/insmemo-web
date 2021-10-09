@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import { memoService, userService } from "../services";

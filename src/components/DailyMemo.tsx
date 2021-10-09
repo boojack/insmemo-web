@@ -1,4 +1,3 @@
-import React from "react";
 import { IMAGE_URL_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
