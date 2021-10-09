@@ -35,14 +35,12 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     onCancelBtnClick: handleCancelBtnClickCallback,
     onContentChange: handleContentChangeCallback,
   } = props;
-  const editorRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLTextAreaElement>(null);
   const refresh = useRefresh();
 
   useEffect(() => {
     if (initialContent) {
-      editorRef.current!.innerHTML = initialContent;
-    } else {
-      editorRef.current!.innerHTML = "<br>";
+      editorRef.current!.value = initialContent;
     }
   }, []);
 
@@ -53,90 +51,37 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
         editorRef.current!.focus();
       },
       insertText: (rawText: string) => {
-        editorRef.current!.innerHTML += `<br>${rawText}`;
-        handleContentChangeCallback(editorRef.current!.innerText);
+        if (editorRef.current!.value) {
+          rawText = "\n" + rawText;
+        }
+        editorRef.current!.value += rawText;
+        handleContentChangeCallback(editorRef.current!.value);
         refresh();
       },
       setContent: (text: string) => {
-        editorRef.current!.innerText = parseHtmlToRawText(text);
+        editorRef.current!.value = parseHtmlToRawText(text);
         refresh();
       },
       getContent: (): string => {
-        return editorRef.current?.innerText ?? "";
+        return editorRef.current?.value ?? "";
       },
     }),
     []
   );
 
-  const handleEditorPaste = useCallback((event: React.ClipboardEvent<HTMLDivElement>) => {
-    const text = event.clipboardData.getData("text");
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) {
-      return;
-    }
-    selection.deleteFromDocument();
-    selection.getRangeAt(0).insertNode(document.createTextNode(text));
-    event.preventDefault();
-    handleContentChangeCallback(editorRef.current!.innerText);
-    refresh();
-  }, []);
-
   const handleEditorInput = useCallback(() => {
-    handleContentChangeCallback(editorRef.current!.innerText);
+    handleContentChangeCallback(editorRef.current!.value);
     refresh();
   }, []);
 
-  const handleEditorKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleEditorKeyDown = useCallback((event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
-    if (event.key === "Tab") {
-      event.preventDefault();
-      const selection = window.getSelection();
-      if (!selection || !selection.rangeCount) {
-        return;
-      }
-      selection.deleteFromDocument();
-      const range = selection.getRangeAt(0);
-      const tabTextNode = document.createTextNode("\t");
-      range.insertNode(tabTextNode);
-      range.setStartAfter(tabTextNode);
-      range.setEndAfter(tabTextNode);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    } else if (event.key === "Backspace") {
-      setTimeout(() => {
-        if (editorRef.current?.innerText === "") {
-          editorRef.current!.innerHTML = "<br>";
-          refresh();
-        }
-      }, 0);
-    } else if (event.key === "Enter") {
-      event.preventDefault();
-      const { lastElementChild, lastChild } = editorRef.current!;
-      if (!lastElementChild || lastElementChild !== lastChild) {
-        const brElement = document.createElement("br");
-        editorRef.current?.appendChild(brElement);
-      }
-      const selection = window.getSelection();
-      if (!selection || !selection.rangeCount) {
-        return;
-      }
-      selection.deleteFromDocument();
-      const range = selection.getRangeAt(0);
-      const blankTextNode = document.createTextNode(" ");
-      const brElement = document.createElement("br");
-      range.insertNode(brElement);
-      range.insertNode(blankTextNode);
-      range.setStartAfter(brElement);
-      range.setEndAfter(brElement);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
     refresh();
   }, []);
 
   const handleCommonConfirmBtnClick = useCallback(() => {
-    handleConfirmBtnClickCallback(editorRef.current?.innerText ?? "");
-    editorRef.current!.innerHTML = "<br>";
+    handleConfirmBtnClickCallback(editorRef.current!.value);
+    editorRef.current!.value = "";
     refresh();
   }, []);
 
@@ -144,19 +89,19 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     handleCancelBtnClickCallback();
   }, []);
 
-  const isEditorEmpty = Boolean(editorRef.current?.innerHTML === "<br>");
+  const isEditorEmpty = Boolean(editorRef.current?.value === "");
+  const editorHeight = (editorRef.current?.value.split("\n").length ?? 1) * 24 + 8;
 
   return (
     <div className={"common-editor-wrapper " + className}>
-      <div
+      <textarea
         className="common-editor-inputer"
-        contentEditable
+        style={{ height: editorHeight + "px" }}
+        placeholder={placeholder}
         ref={editorRef}
-        onPaste={handleEditorPaste}
         onInput={handleEditorInput}
         onKeyDown={handleEditorKeyDown}
-      ></div>
-      <p className={isEditorEmpty ? "common-editor-placeholder" : "hidden"}>{placeholder}</p>
+      ></textarea>
       <div className="common-tools-wrapper">
         <Only when={showTools}>
           <div className={"common-tools-container"}>{/* nth */}</div>

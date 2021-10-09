@@ -100,7 +100,7 @@ const Memo: React.FC<Props> = (props: Props) => {
               <span className="text-btn" onClick={handleEditMemoClick}>
                 编辑
               </span>
-              <span className="text-btn delete-btn" onClick={handleDeleteMemoClick}>
+              <span className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>
                 {showConfirmDeleteBtn ? "确定删除！" : "删除"}
               </span>
             </div>
@@ -122,12 +122,12 @@ const Memo: React.FC<Props> = (props: Props) => {
 export function formatMemoContent(content: string): string {
   const tempDivContainer = document.createElement("div");
   tempDivContainer.innerHTML = parseRawTextToHtml(content)
-    .split(/<br>/)
+    .split("<br>")
     .map((t) => {
       if (t !== "") {
         return `<p>${t}</p>`;
       } else {
-        return "";
+        return "<br>";
       }
     })
     .join("");

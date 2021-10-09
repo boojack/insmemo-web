@@ -13,9 +13,10 @@
   > .common-editor-inputer {
     display: inline-block;
     width: 100%;
-    min-height: 24px;
+    min-height: 32px;
     max-height: 300px;
-    line-height: 1.7;
+    font-size: 15px;
+    line-height: 24px;
     resize: none;
     outline: none;
     overflow-x: hidden;
@@ -23,12 +24,16 @@
     border: none;
     background-color: rgba(0, 0, 0, 0);
     z-index: 1;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     white-space: pre-wrap;
-    .pretty-scroll-bar();
+    .pretty-scroll-bar(0);
+
+    &::placeholder {
+      padding-left: 2px;
+    }
 
     &:focus {
-      + .common-editor-placeholder {
+      &::placeholder {
         color: lightgray;
       }
     }
@@ -121,10 +126,10 @@ body.dark {
 
     > .common-editor-inputer {
       color: @dark-text-white;
-    }
 
-    > .common-editor-placeholder {
-      color: @dark-text-white;
+      &::placeholder {
+        color: @dark-text-white;
+      }
     }
   }
 }

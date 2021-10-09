@@ -145,7 +145,11 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
                 <a className="value-text" href={"https://github.com/" + user.githubName}>
                   {user.githubName}
                 </a>
-                <span className="btn-text" onMouseLeave={() => setShowConfirmUnbindBtn(false)} onClick={handleUnbindGithubBtnClick}>
+                <span
+                  className={`btn-text unbind-btn ${showConfirmUnbindBtn ? "final-confirm" : ""}`}
+                  onMouseLeave={() => setShowConfirmUnbindBtn(false)}
+                  onClick={handleUnbindGithubBtnClick}
+                >
                   {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
                 </span>
               </>
