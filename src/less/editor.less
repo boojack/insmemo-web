@@ -13,7 +13,7 @@
   > .common-editor-inputer {
     display: inline-block;
     width: 100%;
-    min-height: 32px;
+    min-height: 24px;
     max-height: 300px;
     font-size: 15px;
     line-height: 24px;
@@ -24,9 +24,9 @@
     border: none;
     background-color: rgba(0, 0, 0, 0);
     z-index: 1;
-    padding-bottom: 4px;
+    margin-bottom: 4px;
     white-space: pre-wrap;
-    .pretty-scroll-bar(0);
+    .pretty-scroll-bar();
 
     &::placeholder {
       padding-left: 2px;
@@ -37,14 +37,6 @@
         color: lightgray;
       }
     }
-  }
-
-  > .common-editor-placeholder {
-    position: absolute;
-    user-select: none;
-    color: gray;
-    line-height: 1.7;
-    padding-left: 2px;
   }
 
   > .common-tools-wrapper {

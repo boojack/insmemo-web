@@ -44,6 +44,13 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     }
   }, []);
 
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.style.height = "auto";
+      editorRef.current.style.height = (editorRef.current.scrollHeight ?? 0) + "px";
+    }
+  }, [editorRef.current?.value]);
+
   useImperativeHandle(
     ref,
     () => ({
@@ -89,14 +96,10 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     handleCancelBtnClickCallback();
   }, []);
 
-  const isEditorEmpty = Boolean(editorRef.current?.value === "");
-  const editorHeight = (editorRef.current?.value.split("\n").length ?? 1) * 24 + 8;
-
   return (
     <div className={"common-editor-wrapper " + className}>
       <textarea
         className="common-editor-inputer"
-        style={{ height: editorHeight + "px" }}
         placeholder={placeholder}
         ref={editorRef}
         onInput={handleEditorInput}
@@ -113,7 +116,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
             </button>
           </Only>
           <Only when={showConfirmBtn}>
-            <button className="action-btn confirm-btn" disabled={isEditorEmpty} onClick={handleCommonConfirmBtnClick}>
+            <button className="action-btn confirm-btn" disabled={editorRef.current?.value === ""} onClick={handleCommonConfirmBtnClick}>
               记下<span className="icon-text">✍️</span>
             </button>
           </Only>
