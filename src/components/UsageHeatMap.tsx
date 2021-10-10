@@ -55,7 +55,7 @@ const UsageHeatMap: React.FC<Props> = () => {
         for (const d of stats) {
           const index = (utils.getDateStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
           if (index >= 0) {
-            newStat[index].count = d.amount;
+            newStat[index].count += 1;
           }
         }
 
