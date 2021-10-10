@@ -3,7 +3,6 @@ import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { memoService } from "../services";
 import { showDialog } from "./Dialog";
-import showShareMemoImageDialog from "./ShareMemoImageDialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
 import Image from "./Image";
@@ -64,12 +63,6 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
     fetchDownMemos();
   }, [memo]);
 
-  const handleGenMemoImageBtnClick = () => {
-    if (memo) {
-      showShareMemoImageDialog(memo as Model.Memo);
-    }
-  };
-
   const handleMemoContentClick = async (e: React.MouseEvent) => {
     const targetEl = e.target as HTMLElement;
 
@@ -87,11 +80,16 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
     }
   };
 
+  const handleMemoTimeClick = (memoId: string) => {
+    destroy();
+    showMemoStoryDialog(memoId);
+  };
+
   return (
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">📕</span>Memo Story
+          <span className="icon-text">📦</span>Memo Story
         </p>
         <button className="text-btn close-btn" onClick={destroy}>
           <img className="icon-img" src="/icons/close.svg" />
@@ -101,9 +99,6 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
         <div className="memo-container current">
           <div className="memo-header-container">
             <p className="time-text">{memo?.createdAtStr}</p>
-            <span className="action-btn" onClick={handleGenMemoImageBtnClick}>
-              Share
-            </span>
           </div>
           <div
             className="memo-content-text"
@@ -123,7 +118,14 @@ const MemoStoryDialog: React.FC<Props> = (props) => {
           {downMemos.map((m) => (
             <div className="memo-container" key={m.id}>
               <div className="memo-header-container">
-                <p className="time-text">{m.createdAtStr}</p>
+                <p
+                  className="time-text"
+                  onClick={() => {
+                    handleMemoTimeClick(m.id);
+                  }}
+                >
+                  {m.createdAtStr}
+                </p>
               </div>
               <div
                 className="memo-content-text"

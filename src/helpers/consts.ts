@@ -26,7 +26,7 @@ export const LINK_REG = /(https?:\/\/[^\s<\\*>']+)/g;
 export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/g;
 
 // memo 关联正则
-export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
+export const MEMO_LINK_REG = /\[\@(.+?)\]\((.+?)\)/g;
 
 // memo filter special type
 export const MEMO_TYPES = [

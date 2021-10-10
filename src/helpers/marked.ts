@@ -3,9 +3,12 @@
  * - 列表解析；
  * - 代码块；
  * - 加粗；
+ * - TODO;
  */
 const CODE_BLOCK_REG = /```([\s\S]*?)```/g;
 const BOLD_TEXT_REG = /\*\*(.+?)\*\*/g;
+const TODO_BLOCK_REG = /\[ \] /g;
+const DONE_BLOCK_REG = /\[x\] /g;
 const DOT_LI_REG = /[*] /g;
 const NUM_LI_REG = /(\d+)\. /g;
 
@@ -13,8 +16,10 @@ const parseMarkedToHtml = (markedStr: string): string => {
   const htmlText = markedStr
     .replace(CODE_BLOCK_REG, "<pre lang=''>$1</pre>")
     .replace(BOLD_TEXT_REG, "<b>$1</b>")
-    .replace(DOT_LI_REG, "<span class='counter-text'>•</span>")
-    .replace(NUM_LI_REG, "<span class='counter-text'>$1.</span>");
+    .replace(DOT_LI_REG, "<span class='counter-block'>•</span>")
+    .replace(NUM_LI_REG, "<span class='counter-block'>$1.</span>")
+    .replace(TODO_BLOCK_REG, "<span class='todo-block' data-type='todo'>⬜️</span>")
+    .replace(DONE_BLOCK_REG, "<span class='todo-block' data-type='done'>✔️</span>");
 
   return htmlText;
 };

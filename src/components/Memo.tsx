@@ -6,7 +6,6 @@ import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
 import Only from "./common/OnlyWhen";
 import Image from "./Image";
-import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
 import showMemoStoryDialog from "./MemoStoryDialog";
 import showShareMemoImageDialog from "./ShareMemoImageDialog";
 import toastHelper from "./Toast";
@@ -27,7 +26,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   const handleShowMemoStoryDialog = () => {
-    showDailyMemoDiaryDialog(utils.getTimeStampByDate(memo.createdAt));
+    showMemoStoryDialog(memo.id);
   };
 
   const handleMarkMemoClick = () => {
@@ -78,17 +77,21 @@ const Memo: React.FC<Props> = (props: Props) => {
           showMemoStoryDialog(memoId);
         }
       }
+    } else if (targetEl.className === "todo-block") {
+      // do nth
     }
   };
 
   return (
-    <div className="memo-wrapper" onMouseLeave={handleMouseLeaveMemoWrapper}>
+    <div className={`memo-wrapper ${"memos-" + memo.id}`} onMouseLeave={handleMouseLeaveMemoWrapper}>
       <div className="memo-top-wrapper">
         <span className="time-text" onClick={handleShowMemoStoryDialog}>
           {memo.createdAtStr}
         </span>
         <div className="btns-container">
-          <span className="text-btn more-action-btn"></span>
+          <span className="text-btn more-action-btn">
+            <img className="icon-img" src="/icons/more.svg" />
+          </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
               <span className="text-btn" onClick={handleMarkMemoClick}>
@@ -139,11 +142,6 @@ export function formatMemoContent(content: string): string {
     content = parseMarkedToHtml(content);
   }
 
-  // 中英文之间加空格（这里只是简单的用正则分开了）
-  if (shouldSplitMemoWord) {
-    content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;[\]]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
-  }
-
   if (shouldHideImageUrl) {
     content = content.replace(IMAGE_URL_REG, "");
   }
@@ -161,6 +159,11 @@ export function formatMemoContent(content: string): string {
     .replace(TAG_REG, "<span class='tag-span'>#$1</span>")
     .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
     .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
+
+  // 中英文之间加空格
+  if (shouldSplitMemoWord) {
+    content = content.replace(/([\u4e00-\u9fa5])([A-Za-z0-9?.,;[\]]+)([\u4e00-\u9fa5]?)/g, "$1 $2 $3");
+  }
 
   return content;
 }

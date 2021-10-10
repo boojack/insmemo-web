@@ -11,7 +11,11 @@
   margin-bottom: 8px;
   border-radius: 8px;
   background-color: white;
-  border: 1px solid white;
+  border: 2px solid transparent;
+
+  &:hover {
+    border: 2px solid #eee;
+  }
 
   > .memo-top-wrapper {
     width: 100%;
@@ -107,11 +111,12 @@
           width: 16px;
           height: 16px;
           padding: 0;
-          background-image: url(/icons/more.svg);
-          background-size: 16px auto;
-          background-repeat: no-repeat;
-          background-position: center;
           cursor: unset;
+
+          > .icon-img {
+            width: 16px;
+            height: 16px;
+          }
 
           &:hover {
             background-color: unset;
