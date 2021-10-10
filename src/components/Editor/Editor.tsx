@@ -100,6 +100,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     <div className={"common-editor-wrapper " + className}>
       <textarea
         className="common-editor-inputer"
+        rows={1}
         placeholder={placeholder}
         ref={editorRef}
         onInput={handleEditorInput}
