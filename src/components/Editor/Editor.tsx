@@ -83,6 +83,12 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
 
   const handleEditorKeyDown = useCallback((event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
+
+    if (event.code === "Enter") {
+      if (event.metaKey || event.ctrlKey) {
+        handleCommonConfirmBtnClick();
+      }
+    }
     refresh();
   }, []);
 

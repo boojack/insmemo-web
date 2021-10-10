@@ -97,7 +97,7 @@ const MemoList: React.FC<Props> = () => {
         }
       });
     }
-  }, [isComplete, showFilter]);
+  }, [isComplete, showFilter, query]);
 
   const fetchMoreMemos = async () => {
     if (isFetching || isComplete) {
