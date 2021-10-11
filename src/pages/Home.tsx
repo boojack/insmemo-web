@@ -1,14 +1,16 @@
 import { useEffect } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
-import { memoService, userService } from "../services";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { locationService, memoService, userService } from "../services";
 import Sidebar from "../components/Sidebar";
 import Memos from "./Memos";
+import MemoTrash from "./MemoTrash";
 import useLoading from "../hooks/useLoading";
 import "../less/index.less";
 
 function Home() {
   const loadingState = useLoading();
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     userService
@@ -26,6 +28,10 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    locationService.clearQuery();
+  }, [location.pathname]);
+
   return (
     <>
       {loadingState.isLoading ? (
@@ -35,8 +41,8 @@ function Home() {
           <Sidebar />
           <div className="content-wrapper">
             <Switch>
-              <Route exact path="/recycle">
-                <p>recycle</p>
+              <Route exact path="/trash">
+                <MemoTrash />
               </Route>
               <Route exact path="/">
                 <Memos />

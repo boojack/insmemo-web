@@ -58,6 +58,15 @@ class MemoService {
     return data;
   }
 
+  public async fetchDeletedMemos() {
+    if (!userService.getState().user) {
+      return false;
+    }
+
+    const { data } = await api.getMyDeletedMemos();
+    return data;
+  }
+
   public pushMemo(memo: Model.Memo) {
     appStore.dispatch({
       type: "PUSH_MEMO",
@@ -80,14 +89,24 @@ class MemoService {
     return data;
   }
 
-  public async deleteMemoById(id: string) {
-    await api.deleteMemo(id);
+  public async hideMemoById(id: string) {
+    await api.hideMemo(id);
     appStore.dispatch({
       type: "DELETE_MEMO_BY_ID",
       payload: {
         id: id,
       },
     });
+  }
+
+  public async restoreMemoById(id: string) {
+    await api.restoreMemo(id);
+    memoService.clearMemos();
+    memoService.fetchMoreMemos();
+  }
+
+  public async deleteMemoById(id: string) {
+    await api.deleteMemo(id);
   }
 
   public editMemo(memo: Model.Memo) {

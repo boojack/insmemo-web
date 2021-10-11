@@ -13,6 +13,7 @@ declare namespace Model {
   interface Memo extends BaseModel {
     content: string;
     tags: Tag[];
+    deletedAt?: string;
   }
 
   interface Tag extends BaseModel {

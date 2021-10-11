@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import UserBanner from "./UserBanner";
 import TagList from "./TagList";
@@ -9,6 +9,8 @@ import "../less/siderbar.less";
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
+  const location = useLocation();
+
   const handleWrapperClick = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
     const el = event.target as HTMLElement;
@@ -31,9 +33,9 @@ const Sidebar: React.FC<Props> = () => {
         </NavLink>
       </div>
       <TagList />
-      <div className="nav-btn-container recycle-btn hidden">
-        <NavLink className="nav-btn" exact to="/recycle">
-          <span className="icon-text">♻️</span>
+      <div className="nav-btn-container recycle-btn">
+        <NavLink className="nav-btn" exact to="/trash">
+          <img src={location.pathname === "/trash" ? "/icons/trash-white.svg" : "/icons/trash.svg"} className="icon-img" />
           <span className="btn-text">回收站</span>
         </NavLink>
       </div>

@@ -78,12 +78,28 @@ export namespace api {
     return get<Model.Memo[]>(`/api/memo/all?offset=${offset}&amount=${amount}`);
   }
 
+  export function getMyDeletedMemos() {
+    return get<Model.Memo[]>(`/api/memo/trash`);
+  }
+
   export function createMemo(content: string) {
     return post<Model.Memo>("/api/memo/new", { content });
   }
 
   export function getMemoById(id: string) {
     return get<Model.Memo>("/api/memo/?id=" + id);
+  }
+
+  export function hideMemo(memoId: string) {
+    return post("/api/memo/hide", {
+      memoId,
+    });
+  }
+
+  export function restoreMemo(memoId: string) {
+    return post("/api/memo/restore", {
+      memoId,
+    });
   }
 
   export function deleteMemo(memoId: string) {

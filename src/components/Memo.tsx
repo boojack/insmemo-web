@@ -40,7 +40,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const handleDeleteMemoClick = async () => {
     if (showConfirmDeleteBtn) {
       try {
-        await memoService.deleteMemoById(memo.id);
+        await memoService.hideMemoById(memo.id);
         await memoService.fetchMoreMemos();
       } catch (error: any) {
         toastHelper.error(error.message);
