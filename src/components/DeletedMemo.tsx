@@ -63,11 +63,11 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
           </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
-              <span className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>
-                {showConfirmDeleteBtn ? "确定删除！" : "完全删除"}
-              </span>
               <span className={`text-btn restore-btn`} onClick={handleRestoreMemoClick}>
                 恢复
+              </span>
+              <span className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>
+                {showConfirmDeleteBtn ? "确定删除！" : "完全删除"}
               </span>
             </div>
           </div>

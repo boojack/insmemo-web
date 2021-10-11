@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useRef } from "react";
 import { MEMO_TYPES } from "../helpers/consts";
 import { locationService } from "../services";
 import appContext from "../labs/appContext";
@@ -14,10 +14,6 @@ const SearchBar: React.FC<Props> = () => {
   } = useContext(appContext);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
   const handleMemoTypeItemClick = (type: MemoType | "") => {
     const { type: prevType } = locationService.getState().query;
     if (type === prevType) {
@@ -31,24 +27,11 @@ const SearchBar: React.FC<Props> = () => {
     locationService.setTextQuery(text);
   };
 
-  const handleTextQueryKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === "Enter") {
-    }
-  };
-
   return (
     <div className="search-bar-container">
       <div className="search-bar-inputer">
         <img className="icon-img" src="/icons/search.svg" />
-        <input
-          className="text-input"
-          type="text"
-          placeholder=""
-          ref={inputRef}
-          value={textQuery}
-          onChange={handleTextQueryInput}
-          onKeyPress={handleTextQueryKeyPress}
-        />
+        <input className="text-input" type="text" placeholder="" ref={inputRef} value={textQuery} onChange={handleTextQueryInput} />
       </div>
       <div className="quickly-action-wrapper">
         <div className="quickly-action-container">

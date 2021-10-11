@@ -36,9 +36,7 @@ function Home() {
 
   return (
     <>
-      {loadingState.isLoading ? (
-        <></>
-      ) : (
+      {loadingState.isLoading ? null : (
         <div id="page-container">
           <Sidebar />
           <div className="content-wrapper">
