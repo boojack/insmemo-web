@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import { userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
@@ -9,8 +10,18 @@ interface Props {
 }
 
 const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
+  const history = useHistory();
+
+  const handleMyAccountBtnClick = () => {
+    showMyAccountDialog();
+  };
+
   const handlePreferencesBtnClick = () => {
     showPreferencesDialog();
+  };
+
+  const handleMemosTrashBtnClick = () => {
+    history.push("/trash");
   };
 
   const handleAboutBtnClick = () => {
@@ -24,11 +35,14 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
 
   return (
     <div className={"menu-btns-popup " + (visibility ? "" : "hidden")}>
-      <button className="text-btn action-btn" onClick={showMyAccountDialog}>
+      <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">🤠</span> 我的账号
       </button>
       <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
         <span className="icon">⚙️</span> 偏好设置
+      </button>
+      <button className="text-btn action-btn" onClick={handleMemosTrashBtnClick}>
+        <span className="icon">🗑</span> 回收站
       </button>
       <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
         <span className="icon">😀</span> 关于
