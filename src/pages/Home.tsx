@@ -29,7 +29,9 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    locationService.clearQuery();
+    if (location.pathname !== "/") {
+      locationService.clearQuery();
+    }
   }, [location.pathname]);
 
   return (

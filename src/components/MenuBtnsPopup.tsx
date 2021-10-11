@@ -19,7 +19,7 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
 
   const handleSignOutBtnClick = () => {
     userService.doSignOut();
-    location.reload();
+    window.location.reload();
   };
 
   return (

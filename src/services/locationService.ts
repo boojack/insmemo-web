@@ -8,7 +8,7 @@ const updateLocationUrl = () => {
   } else {
     queryString = "";
   }
-  history.replaceState(null, "", "/" + queryString);
+  window.history.replaceState(null, "", window.location.pathname + queryString);
 };
 
 class LocationService {
