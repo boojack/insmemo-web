@@ -1,14 +1,37 @@
 @import "./mixin.less";
 
-.signin-dialog {
+.page-wrapper.signin {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
+  background-color: white;
 
-  > .dialog-container {
+  > .page-container {
     width: 360px;
     border-radius: 8px;
     padding: 16px 20px;
 
-    > .dialog-content-container {
+    > .page-header-container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      > .title-text {
+        font-size: 24px;
+
+        > .icon-text {
+          margin-right: 6px;
+        }
+      }
+    }
+
+    > .page-content-container {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -23,27 +46,26 @@
         justify-content: flex-start;
         align-items: flex-start;
         line-height: 1.6;
-        margin-top: 4px;
+        margin-top: 8px;
 
         > .normal-text {
           position: absolute;
-          left: 8px;
-          padding-left: 4px;
+          top: 18px;
+          left: 12px;
           flex-shrink: 0;
-          font-size: 13px;
-          line-height: 38px;
+          font-size: 14px;
+          line-height: 2;
           color: gray;
-          transition: all 0.3s ease;
           cursor: text;
+          padding: 0 4px;
+          background-color: transparent;
+          border-radius: 12px;
+          transition: all 0.3s ease;
 
           &.not-null {
-            top: -3px;
-            left: 8px;
+            top: -6px;
+            left: 12px;
             background-color: white;
-            font-size: 13px;
-            line-height: 18px;
-            padding: 0 4px;
-            border-radius: 12px;
           }
         }
 
@@ -52,11 +74,11 @@
 
           > input {
             width: 100%;
-            padding: 6px 8px;
-            font-size: 13px;
-            line-height: 24px;
+            padding: 8px 12px;
+            font-size: 15px;
+            line-height: 2;
             outline: none;
-            border-radius: 4px;
+            border-radius: 8px;
             border: 1px solid lightgray;
           }
         }
@@ -67,14 +89,14 @@
       }
     }
 
-    > .dialog-footer-container {
+    > .page-footer-container {
       width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-top: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
 
       > .btns-container {
         height: 100%;
@@ -84,7 +106,7 @@
         align-items: center;
 
         > .text-btn {
-          padding: 6px 12px;
+          padding: 6px 16px;
           font-size: 14px;
           border-radius: 4px;
           cursor: pointer;
@@ -119,11 +141,11 @@
     > .tip-text {
       border-top: 1px solid lightgray;
       color: gray;
-      margin-top: 6px;
-      padding-top: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
       width: 100%;
       font-size: 12px;
-      line-height: 1.8;
+      line-height: 2;
       word-wrap: break-word;
 
       > .text-btn {
@@ -133,7 +155,7 @@
         text-align: center;
         color: @text-green;
         font-weight: bold;
-        padding: 4px 8px;
+        padding: 4px 12px;
         border-radius: 4px;
         background-color: #eee;
 
@@ -150,9 +172,10 @@
 }
 
 body.dark {
-  .signin-dialog {
-    > .dialog-container {
-      > .dialog-content-container {
+  .page-wrapper.signin {
+    background-color: @dark-bg-black;
+    > .page-container {
+      > .page-content-container {
         > .form-label {
           > .normal-text {
             color: lightgray;

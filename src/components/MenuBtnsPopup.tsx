@@ -2,7 +2,6 @@ import { userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
-import toggleSearchBarDialog from "./SearchBarDialog";
 import "../less/menu-btns-popup.less";
 
 interface Props {
@@ -23,10 +22,6 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
     location.reload();
   };
 
-  const handleSearchBtnClick = () => {
-    toggleSearchBarDialog();
-  };
-
   return (
     <div className={"menu-btns-popup " + (visibility ? "" : "hidden")}>
       <button className="text-btn action-btn" onClick={showMyAccountDialog}>
@@ -34,9 +29,6 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
       </button>
       <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
         <span className="icon">⚙️</span> 偏好设置
-      </button>
-      <button className="text-btn action-btn" onClick={handleSearchBtnClick}>
-        <span className="icon">🔍</span> 搜索
       </button>
       <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
         <span className="icon">😀</span> 关于

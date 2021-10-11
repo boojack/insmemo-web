@@ -3,18 +3,15 @@
 .tags-wrapper {
   width: 100%;
   padding: 0 8px;
-  height: calc(100% - 128px - 110px);
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: nowrap;
-  overflow: hidden;
 
   > .title-text {
     width: 100%;
-    margin-top: 24px;
-    margin-bottom: 4px;
     padding: 0 16px;
     font-size: 13px;
     line-height: 20px;
@@ -24,15 +21,13 @@
 
   > .tags-container {
     width: 100%;
-    height: calc(100% - 36px);
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: nowrap;
     overflow-y: auto;
-    padding-bottom: 16px;
-    .pretty-scroll-bar(0px);
 
     .subtags-container {
       display: flex;
@@ -309,7 +304,8 @@ body.dark {
 
 @media only screen and (max-width: 875px) {
   .tags-container {
-    height: calc(100% - 154px - 158px);
+    min-height: calc(100% - 154px - 158px);
+    height: auto;
 
     > .title-text {
       font-size: 13px;
@@ -317,10 +313,6 @@ body.dark {
 
     > .tag-item-container {
       font-size: 15px;
-
-      &:last-of-type {
-        margin-bottom: 96px;
-      }
     }
   }
 

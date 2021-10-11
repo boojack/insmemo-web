@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router";
 import { locationService, memoService, userService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import useToggle from "../hooks/useToggle";
@@ -131,6 +132,7 @@ interface TagItemContainerProps {
 }
 
 const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContainerProps) => {
+  const history = useHistory();
   const { tag, tagQuery } = props;
   const isActive = tagQuery === tag.text;
   const hasSubTags = tag.subTags.length > 0;
@@ -138,9 +140,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
   const renameAble = tag.id !== "";
 
   useEffect(() => {
-    if (!showSubTags) {
-      toggleSubTags(tagQuery.includes(tag.text) && !isActive);
-    }
+    toggleSubTags(tagQuery.indexOf(tag.text) === 0 && !isActive);
   }, [tagQuery, tag]);
 
   const handleTagClick = () => {
@@ -151,6 +151,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
         // do nth
       });
     }
+    history.push("/");
     locationService.setTagQuery(tagText);
   };
 

@@ -4,20 +4,78 @@
   width: 248px;
   height: 100%;
   padding-top: 16px;
+  padding-bottom: 24px;
   padding-right: 8px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow-y: hidden;
+  overflow-y: auto;
   flex-shrink: 0;
   .pretty-scroll-bar(0px);
+
+  > * {
+    flex-shrink: 0;
+  }
+
+  > .nav-btn-container {
+    width: 100%;
+    padding: 0 8px;
+    padding-top: 8px;
+
+    > .nav-btn {
+      width: 100%;
+      height: 40px;
+      padding: 6px 16px;
+      padding-top: 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      flex-shrink: 0;
+      user-select: none;
+      text-decoration: none;
+      line-height: 40px;
+
+      > .icon-text {
+        font-size: 13px;
+        margin-right: 8px;
+      }
+
+      &:hover {
+        background-color: #efefef;
+      }
+
+      &.active {
+        background-color: @text-green !important;
+
+        > .btn-text {
+          color: white;
+        }
+      }
+    }
+
+    &.recycle-btn {
+      padding-bottom: 16px;
+    }
+  }
 }
 
 body.dark {
   .sidebar-wrapper {
     > * {
       background-color: @dark-bg-light-black;
+    }
+
+    > .nav-btn-container {
+      > .nav-btn {
+        &:hover {
+          background-color: @dark-bg-black;
+        }
+      }
     }
   }
 }
@@ -42,7 +100,7 @@ body.dark {
     width: 100%;
     height: 100%;
     padding: 0;
-    overflow-y: hidden;
+    overflow-y: auto;
     display: flex;
     transition: all 0.4s ease;
     .pretty-scroll-bar(0px);
@@ -50,6 +108,15 @@ body.dark {
     > * {
       margin-left: calc(-100%);
       transition: all 0.4s ease;
+      width: 320px;
+      max-width: 95%;
+      background-color: @bg-whitegray;
+      flex-shrink: 0;
+      padding-left: 32px;
+      padding-right: 16px;
+    }
+
+    > .nav-btn-container {
       width: 320px;
       max-width: 95%;
       background-color: @bg-whitegray;

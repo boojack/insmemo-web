@@ -1,59 +1,13 @@
 import { useContext, useEffect } from "react";
-import ReactDOM from "react-dom";
-import Provider from "./labs/Provider";
 import appContext from "./labs/appContext";
-import appStore from "./stores";
-import { memoService, userService } from "./services";
-import MobileHeader from "./components/MobileHeader";
-import MemoEditor from "./components/MemoEditor";
-import MemoList from "./components/MemoList";
-import Sidebar from "./components/Sidebar";
-import toggleSearchBarDialog from "./components/SearchBarDialog";
-import showSigninDialog from "./components/SigninDialog";
-import useLoading from "./hooks/useLoading";
-import "./helpers/polyfill";
-import "./less/global.less";
-import "./less/index.less";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import Home from "./pages/Home";
+import Signin from "./pages/Signin";
 
 function App() {
   const {
     globalState: { showDarkMode },
   } = useContext(appContext);
-  const loadingState = useLoading();
-
-  useEffect(() => {
-    userService
-      .doSignIn()
-      .catch(() => {
-        // do nth
-      })
-      .finally(() => {
-        if (userService.getState().user) {
-          memoService.fetchMoreMemos();
-        } else {
-          showSigninDialog();
-        }
-        loadingState.setFinish();
-      });
-
-    const handleSearchKeyDown = (event: KeyboardEvent) => {
-      if (!userService.getState().user) {
-        return;
-      }
-
-      const { ctrlKey, metaKey, code } = event;
-      if ((ctrlKey || metaKey) && code === "KeyP") {
-        event.preventDefault();
-        toggleSearchBarDialog();
-      }
-    };
-
-    window.addEventListener("keydown", handleSearchKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleSearchKeyDown);
-    };
-  }, []);
 
   useEffect(() => {
     if (showDarkMode) {
@@ -64,22 +18,17 @@ function App() {
   }, [showDarkMode]);
 
   return (
-    <>
-      <div id="page-container">
-        <Sidebar />
-        <div className="content-wrapper">
-          <MobileHeader />
-          <MemoEditor />
-          {loadingState.isLoading ? null : <MemoList />}
-        </div>
-      </div>
-    </>
+    <Router>
+      <Switch>
+        <Route exact path="/signin">
+          <Signin />
+        </Route>
+        <Route path="*">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
-ReactDOM.render(
-  <Provider store={appStore} context={appContext}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
+export default App;

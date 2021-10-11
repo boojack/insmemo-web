@@ -1,0 +1,119 @@
+@import "./mixin.less";
+
+.search-bar-container {
+  width: 200px;
+
+  > .search-bar-inputer {
+    display: flex;
+    background-color: #eaeaea;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+
+    > .icon-img {
+      margin-right: 8px;
+      width: 16px;
+      height: auto;
+    }
+
+    > .text-input {
+      width: 100%;
+      font-size: 15px;
+      border: none;
+      outline: none;
+
+      &::placeholder {
+        padding-left: 4px;
+      }
+
+      &:focus {
+        &::placeholder {
+          color: lightgray;
+        }
+      }
+    }
+
+    &:hover {
+      + .quickly-action-wrapper {
+        display: flex;
+      }
+    }
+  }
+
+  > .quickly-action-wrapper {
+    display: none;
+    position: absolute;
+    top: 56px;
+    right: -8px;
+    z-index: 2;
+    padding: 8px;
+    width: 272px;
+
+    > .quickly-action-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      background-color: white;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+      > .title-text {
+        color: gray;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      > .types-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 13px;
+
+        > .section-text {
+          color: gray;
+          margin-right: 4px;
+        }
+
+        .type-item {
+          cursor: pointer;
+          padding: 4px 6px;
+          border-radius: 6px;
+
+          &:hover {
+            background-color: @bg-whitegray;
+          }
+
+          &.selected {
+            background-color: @text-green;
+            color: white;
+          }
+        }
+
+        .split-text {
+          color: lightgray;
+          margin: 0 4px;
+        }
+      }
+    }
+
+    &:hover {
+      display: flex;
+    }
+  }
+}
+
+body.dark {
+  .search-bar-container {
+    > .search-bar-inputer {
+      border-bottom: 1px solid gray;
+    }
+  }
+}
