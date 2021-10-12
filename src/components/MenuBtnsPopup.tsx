@@ -1,14 +1,17 @@
 import { locationService, userService } from "../services";
+import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
 import "../less/menu-btns-popup.less";
 
-interface Props {
-  visibility: boolean;
-}
+interface Props {}
 
-const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
+const MenuBtnsPopup: React.FC<Props> = () => {
+  const handlePopupClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
+
   const handleMyAccountBtnClick = () => {
     showMyAccountDialog();
   };
@@ -19,6 +22,9 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
 
   const handleMemosTrashBtnClick = () => {
     locationService.pushHistory("/trash");
+    // 删除移动端样式
+    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
+    pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
   };
 
   const handleAboutBtnClick = () => {
@@ -31,7 +37,7 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
   };
 
   return (
-    <div className={"menu-btns-popup " + (visibility ? "" : "hidden")}>
+    <div className="menu-btns-popup" onClick={handlePopupClick}>
       <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">🤠</span> 我的账号
       </button>

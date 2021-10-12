@@ -23,7 +23,6 @@ const UserBanner: React.FC<Props> = () => {
     memosAmount: 0,
     tagsAmount: 0,
   });
-  const [showMenuBtnsPopup, setPopupStatus] = useState<boolean>(false);
   const username = user ? user.username : "Memos";
   const createdDays = user ? Math.ceil((Date.now() - utils.getTimeStampByDate(user.createdAt)) / 1000 / 3600 / 24) : 0;
 
@@ -41,25 +40,6 @@ const UserBanner: React.FC<Props> = () => {
       });
   }, [memos]);
 
-  const toggleBtnsDialog = useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation();
-      const nextState = !showMenuBtnsPopup;
-
-      if (nextState) {
-        const bodyClickHandler = () => {
-          setPopupStatus(false);
-          document.body.removeEventListener("click", bodyClickHandler);
-        };
-
-        document.body.addEventListener("click", bodyClickHandler);
-      }
-
-      setPopupStatus(nextState);
-    },
-    [showMenuBtnsPopup]
-  );
-
   const handleUsernameClick = useCallback(() => {
     locationService.pushHistory("/");
     locationService.clearQuery();
@@ -71,8 +51,8 @@ const UserBanner: React.FC<Props> = () => {
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <button className="action-btn menu-popup-btn" onClick={toggleBtnsDialog}></button>
-        <MenuBtnsPopup visibility={showMenuBtnsPopup} />
+        <button className="action-btn menu-popup-btn"></button>
+        <MenuBtnsPopup />
       </div>
       <div className="status-text-container">
         <div className="status-text memos-text">

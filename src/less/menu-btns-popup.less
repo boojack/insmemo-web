@@ -3,7 +3,7 @@
 .menu-btns-popup {
   .flex(column, flex-start, flex-start);
   position: absolute;
-  top: 60px;
+  top: 56px;
   margin-left: 91px;
   padding: 4px;
   width: 180px;
@@ -11,6 +11,11 @@
   z-index: 2;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   background-color: white;
+  display: none;
+
+  &:hover {
+    display: flex;
+  }
 
   &::before {
     content: "";

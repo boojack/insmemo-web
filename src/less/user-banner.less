@@ -32,7 +32,6 @@
       font-size: 13px;
       font-weight: bold;
       color: @text-black;
-      cursor: pointer;
       user-select: none;
       border: none;
       background-color: unset;
@@ -47,6 +46,12 @@
         background-position: center;
         background-repeat: no-repeat;
         background-color: transparent;
+
+        &:hover {
+          & + .menu-btns-popup {
+            display: flex;
+          }
+        }
       }
     }
   }
