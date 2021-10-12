@@ -2,7 +2,7 @@
 
 一个碎片化知识记录工具。
 
-仅用了屈指可数的 libs: React + TypeScript + Less + React Router + Vite 🙌
+仅用了屈指可数的 libs: React + TypeScript + Less + Vite 🙌
 
 ---
 

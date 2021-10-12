@@ -39,52 +39,54 @@ const MemoList: React.FC<Props> = () => {
   const textQuery = query.text;
   const showFilter = Boolean(tagQuery || (duration.from !== 0 && duration.from < duration.to) || memoType || textQuery);
 
-  const shownMemos = memos.filter((memo) => {
-    let shouldShow = true;
-    const memoTags = [];
-    for (const t of memo.tags) {
-      const subTags = t.text.split("/");
-      let tempTag = "";
-      for (let i = 0; i < subTags.length; i++) {
-        if (i === 0) {
-          tempTag += subTags[i];
-        } else {
-          tempTag += "/" + subTags[i];
+  const shownMemos = showFilter
+    ? memos.filter((memo) => {
+        let shouldShow = true;
+        const memoTags = [];
+        for (const t of memo.tags) {
+          const subTags = t.text.split("/");
+          let tempTag = "";
+          for (let i = 0; i < subTags.length; i++) {
+            if (i === 0) {
+              tempTag += subTags[i];
+            } else {
+              tempTag += "/" + subTags[i];
+            }
+            memoTags.push(tempTag);
+          }
         }
-        memoTags.push(tempTag);
-      }
-    }
-    if (tagQuery !== "" && !memoTags.includes(tagQuery)) {
-      shouldShow = false;
-    }
-    if (
-      duration.from !== 0 &&
-      duration.from < duration.to &&
-      (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
-    ) {
-      shouldShow = false;
-    }
-    if (memoType !== "") {
-      if (memoType === "NOT_TAGGED") {
-        if (memo.content.match(TAG_REG) !== null) {
+        if (tagQuery !== "" && !memoTags.includes(tagQuery)) {
           shouldShow = false;
         }
-      } else if (memoType === "LINKED") {
-        if (memo.content.match(LINK_REG) === null) {
+        if (
+          duration.from !== 0 &&
+          duration.from < duration.to &&
+          (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
+        ) {
           shouldShow = false;
         }
-      } else if (memoType === "IMAGED") {
-        if (memo.content.match(IMAGE_URL_REG) === null) {
+        if (memoType !== "") {
+          if (memoType === "NOT_TAGGED") {
+            if (memo.content.match(TAG_REG) !== null) {
+              shouldShow = false;
+            }
+          } else if (memoType === "LINKED") {
+            if (memo.content.match(LINK_REG) === null) {
+              shouldShow = false;
+            }
+          } else if (memoType === "IMAGED") {
+            if (memo.content.match(IMAGE_URL_REG) === null) {
+              shouldShow = false;
+            }
+          }
+        }
+        if (textQuery !== "" && !memo.content.includes(textQuery)) {
           shouldShow = false;
         }
-      }
-    }
-    if (textQuery !== "" && !memo.content.includes(textQuery)) {
-      shouldShow = false;
-    }
 
-    return shouldShow;
-  });
+        return shouldShow;
+      })
+    : memos;
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
@@ -152,11 +154,9 @@ const MemoList: React.FC<Props> = () => {
       ref={wrapperElement}
     >
       <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
-
       {shownMemos.map((memo) => (
         <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
       ))}
-
       {showFilter ? (
         <div className={`status-text-container`}>
           <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>

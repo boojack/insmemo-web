@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
-import { memoService, userService } from "../services";
+import { locationService, memoService, userService } from "../services";
 import showAboutSiteDialog from "../components/AboutSiteDialog";
 import toastHelper from "../components/Toast";
-import { useHistory } from "react-router";
 import "../less/signin.less";
 
 interface Props {}
@@ -17,7 +16,6 @@ const validateConfig: ValidatorConfig = {
 };
 
 const Signin: React.FC<Props> = () => {
-  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const signinBtn = useRef<HTMLButtonElement>(null);
@@ -76,7 +74,7 @@ const Signin: React.FC<Props> = () => {
         memoService.fetchMoreMemos().catch(() => {
           // do nth
         });
-        history.replace("/");
+        locationService.replaceHistory("/");
       } else {
         toastHelper.error("😟 不知道发生了什么错误");
       }

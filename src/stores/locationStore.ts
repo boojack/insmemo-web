@@ -1,14 +1,15 @@
-interface Query {
-  tag: string;
-  from: number;
-  to: number;
-  type: MemoType | "";
-  text: string;
+export type State = AppLocation;
+
+interface SetLocation {
+  type: "SET_LOCATION";
+  payload: State;
 }
 
-export interface State {
-  hash: string;
-  query: Query;
+interface SetPathnameAction {
+  type: "SET_PATHNAME";
+  payload: {
+    pathname: string;
+  };
 }
 
 interface SetTagQueryAction {
@@ -47,10 +48,26 @@ interface SetHashAction {
   };
 }
 
-export type Actions = SetTagQueryAction | SetFromAndToQueryAction | SetTypeAction | SetTextAction | SetHashAction;
+export type Actions =
+  | SetLocation
+  | SetPathnameAction
+  | SetTagQueryAction
+  | SetFromAndToQueryAction
+  | SetTypeAction
+  | SetTextAction
+  | SetHashAction;
 
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
+    case "SET_LOCATION": {
+      return action.payload;
+    }
+    case "SET_PATHNAME": {
+      return {
+        ...state,
+        pathname: action.payload.pathname,
+      };
+    }
     case "SET_TAG_QUERY": {
       return {
         ...state,
@@ -101,6 +118,7 @@ export function reducer(state: State, action: Actions) {
 }
 
 export const defaultState: State = {
+  pathname: "/",
   hash: "",
   query: {
     tag: "",

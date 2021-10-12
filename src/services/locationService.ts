@@ -1,27 +1,57 @@
 import { utils } from "../helpers/utils";
 import appStore from "../stores";
 
-const updateLocationUrl = () => {
-  let queryString = utils.iterObjectToParamsString(appStore.getState().locationState.query);
+const updateLocationUrl = (method: "replace" | "push" = "replace") => {
+  const { query, pathname, hash } = appStore.getState().locationState;
+  let queryString = utils.iterObjectToParamsString(query);
   if (queryString) {
     queryString = "?" + queryString;
   } else {
     queryString = "";
   }
-  window.history.replaceState(null, "", window.location.pathname + queryString);
+
+  if (method === "replace") {
+    window.history.replaceState(null, "", pathname + hash + queryString);
+  } else {
+    window.history.pushState(null, "", pathname + hash + queryString);
+  }
 };
 
 class LocationService {
   constructor() {
-    this.initLocation();
+    this.updateStateWithLocation();
+    window.onpopstate = () => {
+      this.updateStateWithLocation();
+    };
   }
 
-  public initLocation = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.setTagQuery(urlParams.get("tag") ?? "");
-    this.setFromAndToQuery(parseInt(urlParams.get("from") ?? "0"), parseInt(urlParams.get("to") ?? "0"));
-    this.setMemoTypeQuery((urlParams.get("type") ?? "") as MemoType);
-    this.setTextQuery(urlParams.get("text") ?? "");
+  public updateStateWithLocation = () => {
+    const { pathname, search, hash } = window.location;
+    const urlParams = new URLSearchParams(search);
+    const state: AppLocation = {
+      pathname: "/",
+      hash: "",
+      query: {
+        tag: "",
+        from: 0,
+        to: 0,
+        text: "",
+        type: "",
+      },
+    };
+    state.query = {
+      tag: urlParams.get("tag") ?? "",
+      from: parseInt(urlParams.get("from") ?? "0"),
+      to: parseInt(urlParams.get("to") ?? "0"),
+      type: (urlParams.get("type") ?? "") as MemoType,
+      text: urlParams.get("text") ?? "",
+    };
+    state.hash = hash;
+    state.pathname = this.getValidPathname(pathname);
+    appStore.dispatch({
+      type: "SET_LOCATION",
+      payload: state,
+    });
   };
 
   public getState = () => {
@@ -56,6 +86,39 @@ class LocationService {
     });
 
     updateLocationUrl();
+  };
+
+  public setPathname = (pathname: string) => {
+    appStore.dispatch({
+      type: "SET_PATHNAME",
+      payload: {
+        pathname,
+      },
+    });
+
+    updateLocationUrl();
+  };
+
+  public pushHistory = (pathname: string) => {
+    appStore.dispatch({
+      type: "SET_PATHNAME",
+      payload: {
+        pathname,
+      },
+    });
+
+    updateLocationUrl("push");
+  };
+
+  public replaceHistory = (pathname: string) => {
+    appStore.dispatch({
+      type: "SET_PATHNAME",
+      payload: {
+        pathname,
+      },
+    });
+
+    updateLocationUrl("replace");
   };
 
   public setMemoTypeQuery = (type: MemoType | "" = "") => {
@@ -101,6 +164,14 @@ class LocationService {
     });
 
     updateLocationUrl();
+  };
+
+  public getValidPathname = (pathname: string): AppRouter => {
+    if (["/", "/signin", "/trash"].includes(pathname)) {
+      return pathname as AppRouter;
+    } else {
+      return "/";
+    }
   };
 }
 

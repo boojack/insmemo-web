@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react";
 import appContext from "./labs/appContext";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import Home from "./pages/Home";
-import Signin from "./pages/Signin";
+import { appRouterSwitch } from "./routers";
 
 function App() {
   const {
+    locationState: { pathname },
     globalState: { showDarkMode },
   } = useContext(appContext);
 
@@ -17,18 +16,7 @@ function App() {
     }
   }, [showDarkMode]);
 
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/signin">
-          <Signin />
-        </Route>
-        <Route path="*">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
-  );
+  return <>{appRouterSwitch(pathname)}</>;
 }
 
 export default App;

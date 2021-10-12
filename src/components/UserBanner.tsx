@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router";
 import { locationService, memoService, userService } from "../services";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
@@ -16,7 +15,6 @@ interface AmountState {
 interface Props {}
 
 const UserBanner: React.FC<Props> = () => {
-  const history = useHistory();
   const {
     userState: { user },
     memoState: { memos },
@@ -63,7 +61,7 @@ const UserBanner: React.FC<Props> = () => {
   );
 
   const handleUsernameClick = useCallback(() => {
-    history.push("/");
+    locationService.pushHistory("/");
     locationService.clearQuery();
   }, []);
 

@@ -1,5 +1,4 @@
-import { useHistory } from "react-router";
-import { userService } from "../services";
+import { locationService, userService } from "../services";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
@@ -10,8 +9,6 @@ interface Props {
 }
 
 const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
-  const history = useHistory();
-
   const handleMyAccountBtnClick = () => {
     showMyAccountDialog();
   };
@@ -21,7 +18,7 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
   };
 
   const handleMemosTrashBtnClick = () => {
-    history.push("/trash");
+    locationService.pushHistory("/trash");
   };
 
   const handleAboutBtnClick = () => {

@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { locationService, memoService, userService } from "../services";
+import { homeRouterSwitch } from "../routers";
+import appContext from "../labs/appContext";
 import Sidebar from "../components/Sidebar";
-import Memos from "./Memos";
-import MemoTrash from "./MemoTrash";
 import useLoading from "../hooks/useLoading";
 import "../less/index.less";
 
 function Home() {
+  const {
+    locationState: { pathname },
+  } = useContext(appContext);
   const loadingState = useLoading();
-  const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
     userService
@@ -23,7 +23,7 @@ function Home() {
           memoService.fetchMoreMemos();
           loadingState.setFinish();
         } else {
-          history.replace("/signin");
+          locationService.replaceHistory("/signin");
         }
       });
   }, []);
@@ -39,16 +39,7 @@ function Home() {
       {loadingState.isLoading ? null : (
         <div id="page-container">
           <Sidebar />
-          <div className="content-wrapper">
-            <Switch>
-              <Route exact path="/trash">
-                <MemoTrash />
-              </Route>
-              <Route exact path="/">
-                <Memos />
-              </Route>
-            </Switch>
-          </div>
+          <div className="content-wrapper">{homeRouterSwitch(pathname)}</div>
         </div>
       )}
     </>

@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { NavLink } from "react-router-dom";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import UserBanner from "./UserBanner";
 import TagList from "./TagList";
@@ -24,19 +23,7 @@ const Sidebar: React.FC<Props> = () => {
     <div className="sidebar-wrapper" onClick={handleWrapperClick}>
       <UserBanner />
       <UsageHeatMap />
-      <div className="nav-btn-container hidden">
-        <NavLink className="nav-btn" exact to="/">
-          <span className="icon-text">😊</span>
-          <span className="btn-text">MEMO</span>
-        </NavLink>
-      </div>
       <TagList />
-      <div className="nav-btn-container recycle-btn hidden">
-        <NavLink className="nav-btn" exact to="/trash">
-          <span className="icon-text">🗑</span>
-          <span className="btn-text">回收站</span>
-        </NavLink>
-      </div>
     </div>
   );
 };
