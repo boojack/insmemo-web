@@ -37,7 +37,7 @@ const SearchBar: React.FC<Props> = () => {
         <div className="quickly-action-container">
           <p className="title-text">QUICKLY FILTER</p>
           <div className="section-container types-container">
-            <span className="section-text">Type:</span>
+            <span className="section-text">类型:</span>
             {MEMO_TYPES.map((t, idx) => {
               return (
                 <div key={t.type}>
