@@ -1,12 +1,9 @@
 @import "./mixin.less";
 
 #root {
+  .flex(row, flex-start, flex-start);
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
   background-color: @bg-whitegray;
 }
 
@@ -17,10 +14,7 @@ body.dark {
 }
 
 #page-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  .flex(row, flex-start, flex-start);
   width: 848px;
   max-width: 100%;
   height: 100%;
@@ -28,23 +22,17 @@ body.dark {
   transform: translateX(-16px);
 
   > .content-wrapper {
+    .flex(column, flex-start, flex-start);
     position: relative;
     width: 600px;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
     padding-top: 16px;
   }
 }
 
 @media only screen and (max-width: 875px) {
   #page-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    .flex(column, flex-start, flex-start);
     width: 100%;
     height: 100%;
     padding: 0 12px;

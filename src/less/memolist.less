@@ -1,23 +1,17 @@
 @import "./mixin.less";
 
 .memolist-wrapper {
+  .flex(column, flex-start, flex-start);
   flex-grow: 1;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   overflow-y: auto;
   margin-top: 4px;
   padding-top: 4px;
   .pretty-scroll-bar(0px);
 
   > .filter-query-container {
+    .flex(row, flex-start, flex-start);
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
     flex-wrap: wrap;
 
     > .tip-text {
@@ -50,11 +44,8 @@
   }
 
   > .status-text-container {
+    .flex(column, flex-start, center);
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     margin-top: 16px;
     margin-bottom: 16px;
 

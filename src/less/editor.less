@@ -1,13 +1,10 @@
 @import "./mixin.less";
 
 .common-editor-wrapper {
+  .flex(column, flex-start, flex-start);
   position: relative;
   width: 100%;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   background-color: white;
 
   > .common-editor-inputer {
@@ -40,24 +37,15 @@
   }
 
   > .common-tools-wrapper {
+    .flex(row, space-between, center);
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 
     > .common-tools-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
+      .flex(row, flex-start, center);
     }
 
     > .btns-right-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
+      .flex(row, flex-end, center);
       flex-grow: 0;
       flex-shrink: 0;
 

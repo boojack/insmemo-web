@@ -42,7 +42,7 @@ const MenuBtnsPopup: React.FC<Props> = ({ visibility }) => {
         <span className="icon">⚙️</span> 偏好设置
       </button>
       <button className="text-btn action-btn" onClick={handleMemosTrashBtnClick}>
-        <span className="icon">🗑</span> 回收站
+        <span className="icon">🗑️</span> 回收站
       </button>
       <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
         <span className="icon">😀</span> 关于

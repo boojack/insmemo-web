@@ -1,18 +1,12 @@
 @import "../mixin.less";
 
 .date-picker-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  .flex(column, flex-start, flex-start);
   padding: 16px;
 
   > .date-picker-header {
+    .flex(row, center, center);
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 
     > .btn-text {
       width: 24px;
@@ -38,27 +32,18 @@
   }
 
   > .date-picker-day-container {
+    .flex(row, flex-start, flex-start);
     width: 280px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
     flex-wrap: wrap;
 
     > .date-picker-day-header {
+      .flex(row, space-around, center);
       width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
 
       > .day-item {
+        .flex(column, center, center);
         width: 36px;
         height: 36px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         user-select: none;
         color: gray;
         font-size: 13px;
@@ -67,12 +52,9 @@
     }
 
     > .day-item {
+      .flex(column, center, center);
       width: 36px;
       height: 36px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       border-radius: 50%;
       font-size: 14px;
       user-select: none;

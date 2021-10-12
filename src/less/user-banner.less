@@ -1,20 +1,14 @@
 @import "./mixin.less";
 
 .user-banner-container {
+  .flex(column, flex-start, flex-start);
   width: 100%;
   height: 128px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
 
   > .userinfo-header-container {
+    .flex(row, space-between, center);
     width: 100%;
     padding: 0 24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     flex-wrap: nowrap;
     margin-bottom: 12px;
 
@@ -44,13 +38,10 @@
       background-color: unset;
 
       &.menu-popup-btn {
+        .flex(column, center, center);
         width: 40px;
         height: 40px;
         margin-right: -8px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         background-image: url(/icons/more.svg);
         background-size: 20px 20px;
         background-position: center;
@@ -61,19 +52,13 @@
   }
 
   > .status-text-container {
+    .flex(row, space-between, flex-start);
     padding: 0 24px;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
     user-select: none;
 
     > .status-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
+      .flex(column, flex-start, flex-start);
 
       > .amount-text {
         font-weight: bold;

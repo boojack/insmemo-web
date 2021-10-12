@@ -42,13 +42,17 @@ export type Actions = SetMemosAction | PushMemosAction | PushMemoAction | Delete
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
     case "SET_MEMOS": {
+      const memos = utils.dedupeObjectWithId(
+        action.payload.memos.sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
+      );
+
       return {
-        memos: [...action.payload.memos],
+        memos: [...memos],
       };
     }
     case "PUSH_MEMO": {
-      const memos = [action.payload.memo, ...state.memos].sort(
-        (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
+      const memos = utils.dedupeObjectWithId(
+        [action.payload.memo, ...state.memos].sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
       );
 
       return {
@@ -56,8 +60,10 @@ export function reducer(state: State, action: Actions): State {
       };
     }
     case "PUSH_MEMOS": {
-      const memos = [...action.payload.memos, ...state.memos].sort(
-        (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
+      const memos = utils.dedupeObjectWithId(
+        [...action.payload.memos, ...state.memos].sort(
+          (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
+        )
       );
 
       return {

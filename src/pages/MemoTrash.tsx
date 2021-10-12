@@ -41,7 +41,7 @@ const MemoTrash: React.FC<Props> = () => {
           <button className="action-btn" onClick={handleMoreActionBtnClick}>
             <img className="icon-img" src="/icons/fold.svg" alt="fold" />
           </button>
-          回收站
+          <span className="normal-text">回收站</span>
         </div>
       </div>
       {deletedMemos.map((memo) => (

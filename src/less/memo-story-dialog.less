@@ -28,12 +28,9 @@
     }
 
     > .dialog-content-container {
+      .flex(column, flex-start, flex-start);
       width: 100%;
       min-height: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
 
       > .tip-text {
         padding: 0 24px;
@@ -43,11 +40,8 @@
       }
 
       .memo-container {
+        .flex(column, flex-start, flex-start);
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
         padding: 12px 24px;
         border-top: 1px solid lightgray;
 
@@ -61,11 +55,8 @@
         }
 
         > .memo-header-container {
+          .flex(row, space-between, center);
           width: 100%;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
 
           > .time-text {
             margin-top: 4px;
@@ -89,12 +80,9 @@
         }
 
         > .images-wrapper {
+          .flex(row, flex-start, flex-start);
           margin-top: 8px;
           width: 100%;
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-start;
-          align-items: flex-start;
           overflow-x: auto;
           overflow-y: hidden;
           padding-bottom: 2px;
@@ -127,11 +115,8 @@
       }
 
       > .down-memos-wrapper {
+        .flex(column, flex-start, flex-start);
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
         background-color: @bg-whitegray;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;

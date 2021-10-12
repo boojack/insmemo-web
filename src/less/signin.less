@@ -1,12 +1,9 @@
 @import "./mixin.less";
 
 .page-wrapper.signin {
+  .flex(row, center, center);
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   background-color: white;
 
   > .page-container {
@@ -15,11 +12,8 @@
     padding: 16px 20px;
 
     > .page-header-container {
+      .flex(row, space-between, center);
       width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 16px;
 
       > .title-text {
@@ -32,19 +26,13 @@
     }
 
     > .page-content-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
+      .flex(column, flex-start, flex-start);
       flex-wrap: nowrap;
 
       > .form-label {
+        .flex(column, flex-start, flex-start);
         position: relative;
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
         line-height: 1.6;
         margin-top: 8px;
 
@@ -90,20 +78,14 @@
     }
 
     > .page-footer-container {
+      .flex(row, space-between, center);
       width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
       margin-top: 8px;
       margin-bottom: 8px;
 
       > .btns-container {
+        .flex(row, flex-start, center);
         height: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
 
         > .text-btn {
           padding: 6px 16px;

@@ -1,3 +1,5 @@
+@import "./mixin.less";
+
 .about-site-dialog {
   > .dialog-container {
     width: 512px;
@@ -20,19 +22,10 @@
         border: none;
       }
 
-      .tip-text {
-        font-size: 13px;
-        color: gray;
-        font-style: italic;
-      }
-
       .normal-text {
+        .flex(row, flex-start, center);
         font-size: 13px;
         color: gray;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
         white-space: pre-wrap;
       }
 

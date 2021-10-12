@@ -1,13 +1,10 @@
 @import "./mixin.less";
 
 .memo-editor-wrapper {
+  .flex(column, flex-start, flex-start);
   position: relative;
   width: 100%;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   background-color: white;
   padding: 16px;
   border: 2px solid #eee;
@@ -28,13 +25,10 @@
   }
 
   > .memo-editor {
+    .flex(column, flex-start, flex-start);
     position: relative;
     width: 100%;
     height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
     background-color: white;
   }
 }

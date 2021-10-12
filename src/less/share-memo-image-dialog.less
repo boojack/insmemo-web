@@ -14,13 +14,10 @@
     }
 
     > .dialog-content-container {
+      .flex(column, flex-start, flex-start);
       position: relative;
       width: 100%;
       min-height: 128px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
 
       > .memo-img {
         width: 100%;
@@ -29,11 +26,8 @@
       }
 
       > .tip-words-container {
+        .flex(column, center, center);
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
 
         > .tip-text {
           text-align: center;
@@ -66,15 +60,12 @@
       }
 
       > .memo-container {
+        .flex(column, flex-start, flex-start);
         position: fixed;
         top: 0;
         left: -200%;
         width: 380px;
         max-width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
 
         > .time-text {
           width: 100%;
@@ -92,13 +83,10 @@
         }
 
         > .images-container {
+          .flex(column, flex-start, flex-start);
           width: 100%;
           height: auto;
           padding: 0 24px;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: flex-start;
           .pretty-scroll-bar(0, 0);
 
           > img {
@@ -110,12 +98,9 @@
         }
 
         > .watermark-container {
+          .flex(row, flex-start, flex-end);
           width: 100%;
           padding: 16px 24px;
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-start;
-          align-items: flex-end;
           background-color: @bg-whitegray;
 
           > .normal-text {

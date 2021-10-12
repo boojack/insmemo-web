@@ -1,10 +1,7 @@
 @import "./mixin.less";
 
 .menu-btns-popup {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  .flex(column, flex-start, flex-start);
   position: absolute;
   top: 60px;
   margin-left: 91px;
@@ -26,10 +23,7 @@
   }
 
   > .action-btn {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    .flex(row, flex-start, center);
     width: 100%;
     cursor: pointer;
     padding: 8px 16px;
@@ -45,7 +39,7 @@
       width: 28px;
       text-align: center;
       margin-right: 4px;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     &:hover {
