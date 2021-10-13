@@ -1,15 +1,13 @@
 @import "./mixin.less";
 
 .tags-wrapper {
+  .flex(column, flex-start, flex-start);
   width: 100%;
   padding: 0 8px;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   flex-wrap: nowrap;
   padding-bottom: 16px;
+  flex-grow: 1;
 
   > .title-text {
     width: 100%;
@@ -96,16 +94,13 @@
         flex-shrink: 0;
 
         > .icon-container {
+          .flex(row, center, center);
           font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
           color: gray;
           font-size: 13px;
           width: 20px;
           height: 20px;
           margin-right: 4px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
           text-align: center;
           border-radius: 4px;
 
