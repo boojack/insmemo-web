@@ -123,7 +123,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
             </button>
           </Only>
           <Only when={showConfirmBtn}>
-            <button className="action-btn confirm-btn" disabled={editorRef.current?.value === ""} onClick={handleCommonConfirmBtnClick}>
+            <button className="action-btn confirm-btn" disabled={!editorRef.current?.value} onClick={handleCommonConfirmBtnClick}>
               记下<span className="icon-text">✍️</span>
             </button>
           </Only>
