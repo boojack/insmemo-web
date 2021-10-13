@@ -51,7 +51,9 @@ const UserBanner: React.FC<Props> = () => {
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <button className="action-btn menu-popup-btn"></button>
+        <span className="action-btn menu-popup-btn">
+          <img src="/icons/more.svg" className="icon-img" />
+        </span>
         <MenuBtnsPopup />
       </div>
       <div className="status-text-container">

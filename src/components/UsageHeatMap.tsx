@@ -11,6 +11,17 @@ const tableConfig = {
   height: 7,
 };
 
+const getInitialUsageStat = (usedDaysAmount: number, beginDayTimestemp: number): DailyUsageStat[] => {
+  const initialUsageStat: DailyUsageStat[] = [];
+  for (let i = 1; i <= usedDaysAmount; i++) {
+    initialUsageStat.push({
+      timestamp: beginDayTimestemp + DAILY_TIMESTAMP * i,
+      count: 0,
+    });
+  }
+  return initialUsageStat;
+};
+
 interface DailyUsageStat {
   timestamp: number;
   count: number;
@@ -21,34 +32,27 @@ interface Props {}
 const UsageHeatMap: React.FC<Props> = () => {
   const todayTimeStamp = utils.getDateStampByDate(Date.now());
   const todayDay = new Date(todayTimeStamp).getDay() || 7;
-  const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
-  const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
   const nullCell = new Array(7 - todayDay).fill(0);
-
-  const getInitialUsageStat = (): DailyUsageStat[] => {
-    const initialUsageStat: DailyUsageStat[] = [];
-    for (let i = 1; i <= usedDaysAmount; i++) {
-      initialUsageStat.push({
-        timestamp: beginDayTimestemp + DAILY_TIMESTAMP * i,
-        count: 0,
-      });
-    }
-    return initialUsageStat;
-  };
 
   const {
     memoState: { memos },
   } = useContext(appContext);
-  const [allStat, setAllStat] = useState<DailyUsageStat[]>(getInitialUsageStat());
+  const [allStat, setAllStat] = useState<DailyUsageStat[]>([]);
   const [popupStat, setPopupStat] = useState<DailyUsageStat | null>(null);
   const [currentStat, setCurrentStat] = useState<DailyUsageStat | null>(null);
+  const containerElRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!userService.getState().user) {
       return;
     }
-    const newStat: DailyUsageStat[] = getInitialUsageStat();
+
+    const todayTimeStamp = utils.getDateStampByDate(Date.now());
+    const todayDay = new Date(todayTimeStamp).getDay() || 7;
+    const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
+    const beginDayTimestemp = todayTimeStamp - usedDaysAmount * DAILY_TIMESTAMP;
+    const newStat: DailyUsageStat[] = getInitialUsageStat(usedDaysAmount, beginDayTimestemp);
     memoService
       .getMemosStat()
       .then((stats) => {
@@ -70,7 +74,7 @@ const UsageHeatMap: React.FC<Props> = () => {
     setPopupStat(item);
 
     const targetEl = event.target as HTMLElement;
-    popupRef.current!.style.left = targetEl.offsetLeft + "px";
+    popupRef.current!.style.left = targetEl.offsetLeft - (containerElRef.current?.offsetLeft ?? 0) + "px";
     popupRef.current!.style.top = targetEl.offsetTop + "px";
   }, []);
 
@@ -89,7 +93,7 @@ const UsageHeatMap: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className="usage-heat-map-wrapper">
+    <div className="usage-heat-map-wrapper" ref={containerElRef}>
       <div className="day-tip-text-container">
         <span className="tip-text">Mon</span>
         <span className="tip-text"></span>

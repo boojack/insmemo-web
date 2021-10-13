@@ -9,8 +9,9 @@
 
   > p,
   > div {
-    display: inline-block;
+    .flex(row, flex-start, flex-start);
     width: 100%;
+    height: auto;
     margin: 4px 0;
     font-size: 15px;
     line-height: 24px;
@@ -52,9 +53,8 @@
   .counter-block,
   .todo-block {
     flex-shrink: 0;
-    display: inline-block;
     text-align: center;
-    width: 24px;
+    width: 2rem;
   }
 
   pre {

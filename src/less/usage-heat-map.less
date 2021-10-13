@@ -10,6 +10,7 @@
   width: 100%;
   height: 122px;
   flex-wrap: wrap;
+  padding-right: 24px;
   padding-bottom: 12px;
 
   &:hover {
@@ -20,7 +21,7 @@
 
   > .day-tip-text-container {
     .flex(column, space-between, center);
-    width: 22px;
+    width: 24px;
     height: 100%;
     padding-bottom: 2px;
     flex-wrap: wrap;
@@ -38,10 +39,13 @@
   }
 
   > .usage-heat-map {
-    .flex(column, space-around, center);
     width: 192px;
     height: 100%;
     flex-wrap: wrap;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-flow: column;
 
     > .stat-container {
       display: block;
@@ -77,7 +81,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    margin-left: 8px;
+    margin-left: 9px;
     transform: translateX(-50%);
     margin-top: -36px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -121,22 +125,21 @@ body.dark {
     height: 160px;
     padding: 8px 0 !important;
     padding-top: 12px !important;
-    padding-left: 4px !important;
 
     > .day-tip-text-container {
       visibility: visible;
-      width: 42px;
+      width: 48px;
       padding-bottom: 4px;
 
       > .tip-text {
-        padding-right: 4px;
+        padding-right: 6px;
         font-size: 12px;
         line-height: unset !important;
       }
     }
 
     > .usage-heat-map {
-      width: 248px;
+      width: 240px;
 
       > .stat-container {
         width: 16px;
@@ -147,6 +150,7 @@ body.dark {
 
     > .usage-detail-container {
       margin-top: -36px;
+      margin-left: 8px;
       font-size: 12px;
 
       &::before {
