@@ -31,9 +31,9 @@ const MenuBtnsPopup: React.FC<Props> = () => {
     showAboutSiteDialog();
   };
 
-  const handleSignOutBtnClick = () => {
-    userService.doSignOut();
-    window.location.reload();
+  const handleSignOutBtnClick = async () => {
+    await userService.doSignOut();
+    locationService.replaceHistory("/signin");
   };
 
   return (
