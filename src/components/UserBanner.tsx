@@ -30,6 +30,7 @@ const UserBanner: React.FC<Props> = () => {
     if (!userService.getState().user) {
       return;
     }
+
     memoService
       .getMyDataAmount()
       .then((amounts) => {

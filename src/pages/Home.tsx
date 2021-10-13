@@ -18,9 +18,11 @@ function Home() {
       .catch(() => {
         // do nth
       })
-      .finally(() => {
+      .finally(async () => {
         if (userService.getState().user) {
-          memoService.fetchMoreMemos();
+          await memoService.fetchMoreMemos().catch(() => {
+            // do nth
+          });
           loadingState.setFinish();
         } else {
           locationService.replaceHistory("/signin");
