@@ -63,12 +63,20 @@ export function reducer(state: State, action: Actions) {
       return action.payload;
     }
     case "SET_PATHNAME": {
+      if (action.payload.pathname === state.pathname) {
+        return state;
+      }
+
       return {
         ...state,
         pathname: action.payload.pathname,
       };
     }
     case "SET_TAG_QUERY": {
+      if (action.payload.tag === state.query.tag) {
+        return state;
+      }
+
       return {
         ...state,
         query: {
@@ -78,6 +86,10 @@ export function reducer(state: State, action: Actions) {
       };
     }
     case "SET_FROM_TO_QUERY": {
+      if (action.payload.from === state.query.from && action.payload.to === state.query.to) {
+        return state;
+      }
+
       return {
         ...state,
         query: {
@@ -88,6 +100,10 @@ export function reducer(state: State, action: Actions) {
       };
     }
     case "SET_TYPE": {
+      if (action.payload.type === state.query.type) {
+        return state;
+      }
+
       return {
         ...state,
         query: {
@@ -97,6 +113,10 @@ export function reducer(state: State, action: Actions) {
       };
     }
     case "SET_TEXT": {
+      if (action.payload.text === state.query.text) {
+        return state;
+      }
+
       return {
         ...state,
         query: {
@@ -106,6 +126,10 @@ export function reducer(state: State, action: Actions) {
       };
     }
     case "SET_HASH": {
+      if (action.payload.hash === state.hash) {
+        return state;
+      }
+
       return {
         ...state,
         hash: action.payload.hash,

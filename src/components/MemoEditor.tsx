@@ -14,16 +14,17 @@ interface Props {}
 const MemoEditor: React.FC<Props> = () => {
   const { globalState } = useContext(appContext);
   const editorRef = useRef<EditorRefActions>(null);
+  const prevGlobalStateRef = useRef(globalState);
 
   useEffect(() => {
-    // Mark memo
     if (globalState.markMemoId) {
-      const memoLinkText = `Mark: [@MEMO](${globalState.markMemoId})`;
+      const editorCurrentValue = editorRef.current?.getContent();
+      const memoLinkText = `${editorCurrentValue ? "\n" : ""}Mark: [@MEMO](${globalState.markMemoId})`;
       editorRef.current?.insertText(memoLinkText);
+      globalStateService.setMarkMemoId("");
     }
 
-    // Edit memo
-    if (globalState.editMemoId) {
+    if (prevGlobalStateRef.current.editMemoId !== globalState.editMemoId && globalState.editMemoId) {
       memoService.getMemoById(globalState.editMemoId).then((editMemo) => {
         if (editMemo) {
           editorRef.current?.setContent(editMemo.content ?? "");
@@ -31,7 +32,9 @@ const MemoEditor: React.FC<Props> = () => {
         }
       });
     }
-  }, [globalState]);
+
+    prevGlobalStateRef.current = globalState;
+  }, [globalState.markMemoId, globalState.editMemoId]);
 
   const handleSaveBtnClick = useCallback(async (content: string) => {
     if (content === "") {

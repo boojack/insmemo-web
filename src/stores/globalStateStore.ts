@@ -34,12 +34,20 @@ export type Actions = SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingA
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
     case "SET_MARK_MEMO_ID": {
+      if (action.payload.markMemoId === state.markMemoId) {
+        return state;
+      }
+
       return {
         ...state,
         markMemoId: action.payload.markMemoId,
       };
     }
     case "SET_EDIT_MEMO_ID": {
+      if (action.payload.editMemoId === state.editMemoId) {
+        return state;
+      }
+
       return {
         ...state,
         editMemoId: action.payload.editMemoId,

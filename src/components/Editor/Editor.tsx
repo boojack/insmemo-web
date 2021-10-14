@@ -58,10 +58,8 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
         editorRef.current!.focus();
       },
       insertText: (rawText: string) => {
-        if (editorRef.current!.value) {
-          rawText = "\n" + rawText;
-        }
-        editorRef.current!.value += rawText;
+        const prevValue = editorRef.current!.value;
+        editorRef.current!.value = prevValue + rawText;
         handleContentChangeCallback(editorRef.current!.value);
         refresh();
       },
