@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import appContext from "../labs/appContext";
 import { showDialog } from "./Dialog";
-import { parseHtmlToRawText } from "../helpers/marked";
 import { globalStateService, memoService } from "../services";
 import "../less/preferences-dialog.less";
 
@@ -51,13 +50,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     globalStateService.setAppSetting({
       shouldUseMarkdownParser: nextStatus,
     });
-  };
-
-  const handleMemoCleanBtnClick = async () => {
-    await memoService.fetchAllMemos();
-    for (const m of memoService.getState().memos) {
-      await memoService.updateMemo(m.id, parseHtmlToRawText(m.content));
-    }
   };
 
   const handleExportBtnClick = async () => {
@@ -114,7 +106,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
             <span className="normal-text">markdown 格式解析</span>
             <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
-            <span className="tip-text">支持列表、加粗、代码块</span>
+            <span className="tip-text">支持列表、加粗/斜体、代码块</span>
           </label>
         </div>
         <div className="section-container hidden">
@@ -122,9 +114,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           <div className="btn-container">
             <button className="btn export-btn" onClick={handleExportBtnClick}>
               导出数据(JSON)
-            </button>
-            <button className="btn clean-btn" onClick={handleMemoCleanBtnClick}>
-              Memo Clean
             </button>
           </div>
         </div>

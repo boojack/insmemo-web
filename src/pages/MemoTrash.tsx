@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import useLoading from "../hooks/useLoading";
 import { memoService } from "../services";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import DeletedMemo from "../components/DeletedMemo";
@@ -8,6 +9,7 @@ import "../less/memos-header.less";
 interface Props {}
 
 const MemoTrash: React.FC<Props> = () => {
+  const loadingState = useLoading();
   const [deletedMemos, setDeletedMemos] = useState<Model.Memo[]>([]);
 
   useEffect(() => {
@@ -15,6 +17,7 @@ const MemoTrash: React.FC<Props> = () => {
       if (result !== false) {
         setDeletedMemos(result);
       }
+      loadingState.setFinish();
     });
   }, []);
 
@@ -44,9 +47,15 @@ const MemoTrash: React.FC<Props> = () => {
           <span className="normal-text">回收站</span>
         </div>
       </div>
-      {deletedMemos.map((memo) => (
-        <DeletedMemo key={`${memo.id}-${memo.updatedAt}`} memo={memo} handleDeletedMemoAction={handleDeletedMemoAction} />
-      ))}
+      {loadingState.isLoading ? null : deletedMemos.length === 0 ? (
+        <div className="empty-container">
+          <p className="empty-text">空空如也</p>
+        </div>
+      ) : (
+        deletedMemos.map((memo) => (
+          <DeletedMemo key={`${memo.id}-${memo.updatedAt}`} memo={memo} handleDeletedMemoAction={handleDeletedMemoAction} />
+        ))
+      )}
     </div>
   );
 };

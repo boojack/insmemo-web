@@ -71,6 +71,7 @@ const Signin: React.FC<Props> = () => {
 
       const user = await userService.doSignIn();
       if (user) {
+        memoService.clearMemos();
         memoService.fetchMoreMemos().catch(() => {
           // do nth
         });
