@@ -47,7 +47,8 @@
     right: -8px;
     z-index: 2;
     padding: 8px;
-    width: 272px;
+    min-width: 272px;
+    width: auto;
 
     > .quickly-action-container {
       .flex(column, flex-start, flex-start);
@@ -67,6 +68,7 @@
         .flex(row, flex-start, center);
         width: 100%;
         font-size: 13px;
+        margin-top: 4px;
 
         > .section-text {
           color: gray;

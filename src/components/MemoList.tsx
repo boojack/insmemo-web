@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
 import useDebounce from "../hooks/useDebounce";
 import appContext from "../labs/appContext";
-import { IMAGE_URL_REG, LINK_REG, MEMO_TYPES, TAG_REG } from "../helpers/consts";
+import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MEMO_TYPES, TAG_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import Memo from "./Memo";
 import toastHelper from "./Toast";
@@ -76,6 +76,10 @@ const MemoList: React.FC<Props> = () => {
             }
           } else if (memoType === "IMAGED") {
             if (memo.content.match(IMAGE_URL_REG) === null) {
+              shouldShow = false;
+            }
+          } else if (memoType === "CONNECTED") {
+            if (memo.content.match(MEMO_LINK_REG) === null) {
               shouldShow = false;
             }
           }

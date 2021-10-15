@@ -6,7 +6,7 @@ import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
 import Only from "./common/OnlyWhen";
 import Image from "./Image";
-import showMemoStoryDialog from "./MemoStoryDialog";
+import showMemoCardDialog from "./MemoCardDialog";
 import showShareMemoImageDialog from "./ShareMemoImageDialog";
 import toastHelper from "./Toast";
 import "../less/memo.less";
@@ -26,7 +26,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   const handleShowMemoStoryDialog = () => {
-    showMemoStoryDialog(memo.id);
+    showMemoCardDialog(memo.id);
   };
 
   const handleMarkMemoClick = () => {
@@ -71,11 +71,7 @@ const Memo: React.FC<Props> = (props: Props) => {
       const memoId = targetEl.dataset?.value;
 
       if (memoId) {
-        const memoTemp = await memoService.getMemoById(memoId);
-
-        if (memoTemp) {
-          showMemoStoryDialog(memoId);
-        }
+        showMemoCardDialog(memoId);
       }
     } else if (targetEl.className === "todo-block") {
       // do nth

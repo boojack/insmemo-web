@@ -116,6 +116,10 @@ export namespace api {
     return get("/api/memo/count");
   }
 
+  export function getLinkedMemos(memoId: string) {
+    return get<Model.Memo[]>("/api/memo/linkeds?memoId=" + memoId);
+  }
+
   export function createTag(text: string) {
     return post<Model.Tag>("/api/tag/new", {
       text,

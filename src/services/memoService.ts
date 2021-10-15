@@ -158,6 +158,11 @@ class MemoService {
     return data;
   }
 
+  public async getLinkedMemos(memoId: string): Promise<Model.Memo[]> {
+    const { data } = await api.getLinkedMemos(memoId);
+    return data;
+  }
+
   public async getMyTags(): Promise<Api.Tag[]> {
     if (!userService.getState().user) {
       return [];

@@ -49,7 +49,7 @@ const MemoTrash: React.FC<Props> = () => {
       </div>
       {loadingState.isLoading ? null : deletedMemos.length === 0 ? (
         <div className="empty-container">
-          <p className="empty-text">空空如也</p>
+          <p className="empty-text">No Zettels.</p>
         </div>
       ) : (
         deletedMemos.map((memo) => (
