@@ -1,5 +1,4 @@
 import { locationService, userService } from "../services";
-import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import showPreferencesDialog from "./PreferencesDialog";
@@ -22,9 +21,6 @@ const MenuBtnsPopup: React.FC<Props> = () => {
 
   const handleMemosTrashBtnClick = () => {
     locationService.pushHistory("/trash");
-    // 删除移动端样式
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-    pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
   };
 
   const handleAboutBtnClick = () => {

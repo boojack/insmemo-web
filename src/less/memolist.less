@@ -7,7 +7,7 @@
   overflow-y: auto;
   margin-top: 4px;
   padding-top: 4px;
-  .pretty-scroll-bar(0px);
+  .pretty-scroll-bar(0px, 0px);
 
   > .filter-query-container {
     .flex(row, flex-start, flex-start);
@@ -32,6 +32,10 @@
       cursor: pointer;
       background-color: #eaeaea;
       border-radius: 4px;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       > .icon-text {
         letter-spacing: 2px;

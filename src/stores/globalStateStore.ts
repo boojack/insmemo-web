@@ -8,6 +8,7 @@ export interface AppSetting {
 export interface State extends AppSetting {
   markMemoId: string;
   editMemoId: string;
+  isMobileView: boolean;
 }
 
 interface SetMarkMemoIdAction {
@@ -24,12 +25,19 @@ interface SetEditMemoIdAction {
   };
 }
 
+interface SetMobileViewAction {
+  type: "SET_MOBILE_VIEW";
+  payload: {
+    isMobileView: boolean;
+  };
+}
+
 interface SetAppSettingAction {
   type: "SET_APP_SETTING";
   payload: Partial<AppSetting>;
 }
 
-export type Actions = SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingAction;
+export type Actions = SetMobileViewAction | SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingAction;
 
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
@@ -53,6 +61,16 @@ export function reducer(state: State, action: Actions) {
         editMemoId: action.payload.editMemoId,
       };
     }
+    case "SET_MOBILE_VIEW": {
+      if (action.payload.isMobileView === state.isMobileView) {
+        return state;
+      }
+
+      return {
+        ...state,
+        isMobileView: action.payload.isMobileView,
+      };
+    }
     case "SET_APP_SETTING": {
       return {
         ...state,
@@ -72,4 +90,5 @@ export const defaultState: State = {
   shouldHideImageUrl: true,
   shouldUseMarkdownParser: true,
   showDarkMode: false,
+  isMobileView: false,
 };

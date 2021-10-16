@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService, userService } from "../services";
-import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import useToggle from "../hooks/useToggle";
 import Only from "./common/OnlyWhen";
 import { showDialog } from "./Dialog";
@@ -96,10 +95,6 @@ const TagList: React.FC<Props> = () => {
 
   useEffect(() => {
     setTagQuery(query.tag);
-
-    // Hide user banner in mobile view
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-    pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
   }, [query]);
 
   return (

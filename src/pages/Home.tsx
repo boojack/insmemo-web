@@ -39,10 +39,10 @@ function Home() {
   return (
     <>
       {loadingState.isLoading ? null : (
-        <div id="page-container">
+        <section id="page-container">
           <Sidebar />
-          <div className="content-wrapper">{homeRouterSwitch(pathname)}</div>
-        </div>
+          <main className="content-wrapper">{homeRouterSwitch(pathname)}</main>
+        </section>
       )}
     </>
   );

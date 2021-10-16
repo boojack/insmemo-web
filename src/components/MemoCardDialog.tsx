@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { memoService } from "../services";
+import { parseHtmlToRawText } from "../helpers/marked";
+import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
@@ -13,25 +15,24 @@ interface LinkedMemo extends FormattedMemo {
 }
 
 interface Props extends DialogProps {
-  memoId: string;
+  memo: Model.Memo;
 }
 
 const MemoCardDialog: React.FC<Props> = (props) => {
-  const [memoId, setMemoId] = useState<string>(props.memoId);
-  const [prevMemoIds, setPrevMemoIds] = useState<string[]>([]);
-  const [memo, setMemo] = useState<FormattedMemo>();
+  const [memo, setMemo] = useState<FormattedMemo>({
+    ...props.memo,
+    formattedContent: formatMemoContent(props.memo.content),
+    createdAtStr: utils.getDateTimeString(props.memo.createdAt),
+  });
   const [linkMemoIds, setLinkMemoIds] = useState<string[]>([]);
   const [linkedMemos, setLinkedMemos] = useState<LinkedMemo[]>([]);
   const imageUrls = Array.from(memo?.content.match(IMAGE_URL_REG) ?? []);
 
   useEffect(() => {
-    const fetchMemo = async () => {
-      const memoTemp = await memoService.getMemoById(memoId);
-
-      if (memoTemp) {
+    const fetchLinkedMemos = async () => {
+      try {
         const linkMemoIds: string[] = [];
-        const matchedArr = [...memoTemp.content.matchAll(MEMO_LINK_REG)];
-
+        const matchedArr = [...memo.content.matchAll(MEMO_LINK_REG)];
         for (const matchRes of matchedArr) {
           if (matchRes && matchRes.length === 3) {
             const id = matchRes[2];
@@ -42,15 +43,9 @@ const MemoCardDialog: React.FC<Props> = (props) => {
             }
           }
         }
-
-        const linkedMemos = await memoService.getLinkedMemos(memoId);
-
-        setMemo({
-          ...memoTemp,
-          formattedContent: formatMemoContent(memoTemp.content),
-          createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
-        });
         setLinkMemoIds([...linkMemoIds]);
+
+        const linkedMemos = await memoService.getLinkedMemos(memo.id);
         setLinkedMemos(
           linkedMemos.map((m) => ({
             ...m,
@@ -59,39 +54,38 @@ const MemoCardDialog: React.FC<Props> = (props) => {
             dateStr: utils.getDateString(m.createdAt),
           }))
         );
-      } else {
-        props.destroy();
+      } catch (error) {
+        // do nth
       }
     };
 
-    fetchMemo();
-  }, [memoId]);
+    fetchLinkedMemos();
+  }, [memo]);
 
-  const handleMemoContentClick = async (e: React.MouseEvent) => {
+  const handleMemoContentClick = useCallback(async (e: React.MouseEvent) => {
     const targetEl = e.target as HTMLElement;
 
     if (targetEl.className === "memo-link-text") {
       const nextMemoId = targetEl.dataset?.value;
+      const memoTemp = await memoService.getMemoById(nextMemoId ?? "");
 
-      if (nextMemoId) {
-        setMemoId(nextMemoId);
-        setPrevMemoIds([...prevMemoIds, memoId]);
+      if (memoTemp) {
+        const nextMemo = {
+          ...memoTemp,
+          formattedContent: formatMemoContent(memoTemp.content),
+          createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
+        };
+        setMemo(nextMemo);
+      } else {
+        toastHelper.error("Not Found");
+        targetEl.classList.remove("memo-link-text");
       }
     }
-  };
+  }, []);
 
-  const handleBackBtnClick = () => {
-    const prevMemoId = prevMemoIds.pop();
-    if (prevMemoId) {
-      setMemoId(prevMemoId);
-      setPrevMemoIds(prevMemoIds);
-    }
-  };
-
-  const handleLinkedMemoClick = (id: string) => {
-    setMemoId(id);
-    setPrevMemoIds([...prevMemoIds, memoId]);
-  };
+  const handleLinkedMemoClick = useCallback((memo: FormattedMemo) => {
+    setMemo(memo);
+  }, []);
 
   return (
     <>
@@ -99,9 +93,6 @@ const MemoCardDialog: React.FC<Props> = (props) => {
         <div className="header-container">
           <p className="time-text">{memo?.createdAtStr}</p>
           <div className="btns-container">
-            <button className={`text-btn ${prevMemoIds.length === 0 ? "hidden" : ""}`} onClick={handleBackBtnClick}>
-              <img className="icon-img" src="/icons/arrow-left.svg" />
-            </button>
             <button className="text-btn close-btn" onClick={props.destroy}>
               <img className="icon-img" src="/icons/close.svg" />
             </button>
@@ -128,10 +119,11 @@ const MemoCardDialog: React.FC<Props> = (props) => {
             return (
               <div
                 className="background-layer-container"
+                key={idx}
                 style={{
                   bottom: (idx + 1) * -3 + "px",
-                  left: (idx + 1) * 3 + "px",
-                  width: `calc(100% - ${(idx + 1) * 6}px)`,
+                  left: (idx + 1) * 5 + "px",
+                  width: `calc(100% - ${(idx + 1) * 10}px)`,
                   zIndex: -idx - 1,
                 }}
               ></div>
@@ -143,25 +135,29 @@ const MemoCardDialog: React.FC<Props> = (props) => {
       </div>
       {linkedMemos.length > 0 ? (
         <div className="linked-memos-wrapper">
-          <p className="normal-text">{linkedMemos.length} 个链接至此的 MEMO</p>
-          {linkedMemos.map((m) => (
-            <div className="linked-memo-container" onClick={() => handleLinkedMemoClick(m.id)}>
-              <span className="time-text">{m.dateStr}: </span>
-              <div className="content-text" dangerouslySetInnerHTML={{ __html: m.formattedContent ?? "" }}></div>
-            </div>
-          ))}
+          <p className="normal-text">{linkedMemos.length} 条链接至此的 MEMO</p>
+          {linkedMemos.map((m) => {
+            const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
+
+            return (
+              <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
+                <span className="time-text">{m.dateStr}: </span>
+                {rawtext}
+              </div>
+            );
+          })}
         </div>
       ) : null}
     </>
   );
 };
 
-export default function showMemoCardDialog(memoId: string): void {
+export default function showMemoCardDialog(memo: Model.Memo): void {
   showDialog(
     {
       className: "memo-card-dialog",
     },
     MemoCardDialog,
-    { memoId }
+    { memo }
   );
 }

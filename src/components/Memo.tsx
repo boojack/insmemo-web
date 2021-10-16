@@ -26,7 +26,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   const handleShowMemoStoryDialog = () => {
-    showMemoCardDialog(memo.id);
+    showMemoCardDialog(memo);
   };
 
   const handleMarkMemoClick = () => {
@@ -69,9 +69,13 @@ const Memo: React.FC<Props> = (props: Props) => {
 
     if (targetEl.className === "memo-link-text") {
       const memoId = targetEl.dataset?.value;
+      const memoTemp = await memoService.getMemoById(memoId ?? "");
 
-      if (memoId) {
-        showMemoCardDialog(memoId);
+      if (memoTemp) {
+        showMemoCardDialog(memoTemp);
+      } else {
+        toastHelper.error("Not Found");
+        targetEl.classList.remove("memo-link-text");
       }
     } else if (targetEl.className === "todo-block") {
       // do nth
@@ -90,6 +94,9 @@ const Memo: React.FC<Props> = (props: Props) => {
           </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
+              <span className="text-btn" onClick={handleShowMemoStoryDialog}>
+                查看详情
+              </span>
               <span className="text-btn" onClick={handleMarkMemoClick}>
                 Mark
               </span>

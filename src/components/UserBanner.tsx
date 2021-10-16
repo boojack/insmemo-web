@@ -46,13 +46,19 @@ const UserBanner: React.FC<Props> = () => {
     locationService.clearQuery();
   }, []);
 
+  const handlePopupBtnClick = () => {
+    const sidebarEl = document.querySelector(".sidebar-wrapper") as HTMLElement;
+    const popupEl = document.querySelector(".menu-btns-popup") as HTMLElement;
+    popupEl.style.top = 54 - sidebarEl.scrollTop + "px";
+  };
+
   return (
     <div className="user-banner-container">
       <div className="userinfo-header-container">
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <span className="action-btn menu-popup-btn">
+        <span className="action-btn menu-popup-btn" onMouseEnter={handlePopupBtnClick}>
           <img src="/icons/more.svg" className="icon-img" />
         </span>
         <MenuBtnsPopup />

@@ -3,7 +3,12 @@
 
 .dialog-wrapper.memo-card-dialog {
   > .dialog-container {
+    padding: 0;
     background-color: transparent;
+
+    > * {
+      flex-shrink: 0;
+    }
   }
 
   .memo-card-container {
@@ -158,35 +163,22 @@
     }
 
     > .linked-memo-container {
-      .flex(row, flex-start, flex-start);
-      flex-wrap: nowrap;
-      width: 100%;
+      font-size: 13px;
       line-height: 24px;
       margin-top: 8px;
       cursor: pointer;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:hover {
         opacity: 0.8;
       }
 
       > .time-text {
-        flex-shrink: 0;
-        margin-right: 4px;
         color: gray;
-        font-size: 14px;
         font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-      }
-
-      > .content-text {
-        line-height: 24px;
-        height: 24px;
-        font-size: 14px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
       }
     }
   }
@@ -206,12 +198,7 @@ body.dark {
 
 @media only screen and (max-width: 875px) {
   .dialog-wrapper.memo-card-dialog {
-    padding: 0;
-    padding-top: 56px;
-    justify-content: unset;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    padding: 24px 16px;
+    padding-top: 64px;
   }
 }
