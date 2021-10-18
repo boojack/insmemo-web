@@ -156,6 +156,14 @@ export namespace api {
     return post("/api/tag/polish", { tagId });
   }
 
+  export function pinTag(tagId: string) {
+    return post("/api/tag/pin", { tagId });
+  }
+
+  export function unpinTag(tagId: string) {
+    return post("/api/tag/unpin", { tagId });
+  }
+
   export function updateTagText(id: string, text: string) {
     return post("/api/tag/update", { id, text });
   }

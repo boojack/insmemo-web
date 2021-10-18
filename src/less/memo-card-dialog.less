@@ -18,6 +18,7 @@
     min-height: 64px;
     max-width: 100%;
     padding: 12px 24px;
+    margin-bottom: 12px;
     border-radius: 4px;
     background-color: @bg-paper-yellow;
 
@@ -137,6 +138,7 @@
       background-color: @bg-paper-yellow;
       border-bottom: 1px solid lightgray;
     }
+
     > .layer-container {
       z-index: 0;
       background-color: @bg-paper-yellow;
@@ -153,11 +155,14 @@
     .flex(column, flex-start, flex-start);
     width: 512px;
     max-width: 100%;
-    margin-top: 16px;
-    margin-bottom: 36px;
+    margin-top: 8px;
     padding: 12px 24px;
     border-radius: 4px;
     background-color: white;
+
+    &:last-child {
+      margin-bottom: 36px;
+    }
 
     > .normal-text {
       font-size: 13px;

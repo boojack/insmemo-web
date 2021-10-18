@@ -16,12 +16,12 @@ const NUM_LI_REG = /(\d+)\. /g;
 const parseMarkedToHtml = (markedStr: string): string => {
   const htmlText = markedStr
     .replace(CODE_BLOCK_REG, "<pre lang=''>$1</pre>")
-    .replace(BOLD_TEXT_REG, "<strong>$1</strong>")
-    .replace(EM_TEXT_REG, "<em>$1</em>")
     .replace(DOT_LI_REG, "<span class='counter-block'>-</span>")
     .replace(NUM_LI_REG, "<span class='counter-block'>$1.</span>")
     .replace(TODO_BLOCK_REG, "<span class='todo-block' data-type='todo'>⬜</span>")
-    .replace(DONE_BLOCK_REG, "<span class='todo-block' data-type='done'>✔️</span>");
+    .replace(DONE_BLOCK_REG, "<span class='todo-block' data-type='done'>✅</span>")
+    .replace(BOLD_TEXT_REG, "<strong>$1</strong>")
+    .replace(EM_TEXT_REG, "<em>$1</em>");
 
   return htmlText;
 };

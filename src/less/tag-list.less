@@ -8,6 +8,7 @@
   flex-wrap: nowrap;
   padding-bottom: 16px;
   flex-grow: 1;
+  .pretty-scroll-bar(0px, 0px);
 
   > .title-text {
     width: 100%;
@@ -20,11 +21,11 @@
 
   > .tags-container {
     .flex(column, flex-start, flex-start);
+    position: relative;
     width: 100%;
     height: auto;
     flex-wrap: nowrap;
-    overflow-y: auto;
-    .pretty-scroll-bar(0px, 0px);
+    margin-bottom: 8px;
 
     .subtags-container {
       .flex(column, flex-start, flex-start);
@@ -64,26 +65,10 @@
         background-color: @text-green !important;
 
         > .tag-text-container {
-          > .icon-container {
-            > .icon-text {
-              color: white;
-            }
-
-            &.rename-able {
-              &:hover {
-                background-color: @bg-black;
-              }
-            }
-          }
-
-          > .tag-text {
+          > * {
             color: white;
           }
         }
-      }
-
-      &:first-of-type {
-        margin-top: 4px;
       }
 
       > .tag-text-container {
@@ -93,44 +78,67 @@
         overflow: hidden;
         text-overflow: ellipsis;
         flex-shrink: 0;
+        line-height: 20px;
 
-        > .icon-container {
-          .flex(row, center, center);
+        > .icon-text {
           font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-          color: gray;
-          font-size: 13px;
-          width: 20px;
           height: 20px;
-          margin-right: 4px;
+          width: 20px;
           text-align: center;
-          border-radius: 4px;
+          flex-shrink: 0;
 
-          > .rename-btn {
-            .flex(row, center, center);
-            display: none;
-
-            > .icon-img {
-              width: 13px;
-              height: 13px;
-            }
-          }
-
-          &.rename-able {
-            &:hover {
-              background-color: lightgray;
-
-              > .icon-text {
-                display: none;
-              }
-              > .rename-btn {
-                display: flex;
-              }
+          &:hover {
+            + .action-btns-wrapper {
+              display: flex;
             }
           }
         }
 
         > .tag-text {
           flex-shrink: 0;
+        }
+
+        > .action-btns-wrapper {
+          .flex(column, flex-start, flex-start);
+          position: absolute;
+          width: auto;
+          height: auto;
+          padding: 8px;
+          padding-top: 24px;
+          margin-top: 80px;
+          margin-left: -8px;
+          z-index: 1;
+          display: none;
+
+          &:hover {
+            display: flex;
+          }
+
+          > .action-btns-container {
+            .flex(column, flex-start, flex-start);
+            width: 96px;
+            height: auto;
+            white-space: nowrap;
+            border-radius: 4px;
+            padding: 4px;
+            background-color: white;
+            box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+            > .text-btn {
+              width: 100%;
+              padding: 4px 0;
+              padding-left: 12px;
+              border-radius: 4px;
+              font-size: 12px;
+              height: unset;
+              line-height: unset;
+              justify-content: flex-start;
+
+              &:hover {
+                background-color: @bg-whitegray;
+              }
+            }
+          }
         }
       }
 
@@ -141,7 +149,6 @@
           .flex(row, center, center);
           width: 24px;
           height: 24px;
-          margin-top: 4px;
           flex-shrink: 0;
           transition: all 0.1s linear;
           transform: rotate(0);
@@ -152,26 +159,7 @@
           }
 
           &.shown {
-            > .icon-img {
-              transform: rotate(90deg);
-            }
-          }
-
-          &.rename-btn {
-            display: none;
-
-            > .icon-img {
-              width: 14px;
-              height: 14px;
-            }
-          }
-        }
-      }
-
-      &:hover {
-        > .btns-container {
-          > .rename-btn {
-            display: flex;
+            transform: rotate(90deg);
           }
         }
       }
@@ -250,8 +238,11 @@
 
 @media only screen and (max-width: 875px) {
   .tags-container {
-    min-height: calc(100% - 154px - 158px);
     height: auto;
+
+    &:last-child {
+      flex-grow: 1;
+    }
 
     > .title-text {
       font-size: 13px;

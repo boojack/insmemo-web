@@ -19,5 +19,6 @@ declare namespace Model {
   interface Tag extends BaseModel {
     text: string;
     level: number;
+    pinnedAt?: string;
   }
 }

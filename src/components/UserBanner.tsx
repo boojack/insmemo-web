@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { locationService, memoService, userService } from "../services";
+import { locationService, memoService } from "../services";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
@@ -27,10 +27,6 @@ const UserBanner: React.FC<Props> = () => {
   const createdDays = user ? Math.ceil((Date.now() - utils.getTimeStampByDate(user.createdAt)) / 1000 / 3600 / 24) : 0;
 
   useEffect(() => {
-    if (!userService.getState().user) {
-      return;
-    }
-
     memoService
       .getMyDataAmount()
       .then((amounts) => {

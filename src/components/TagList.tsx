@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { locationService, memoService, userService } from "../services";
+import { locationService, memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import Only from "./common/OnlyWhen";
 import { showDialog } from "./Dialog";
@@ -12,7 +12,6 @@ import "../less/tag-list.less";
 interface Tag extends Api.Tag {
   key: string;
   subTags: Tag[];
-  deep: number;
 }
 
 interface Props {}
@@ -22,15 +21,12 @@ const TagList: React.FC<Props> = () => {
     locationState: { query },
     memoState: { memos },
   } = useContext(appContext);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [tagQuery, setTagQuery] = useState(query.tag);
   const loadingState = useLoading();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [pinnedTags, setPinnedTags] = useState<Tag[]>([]);
+  const [tagQuery, setTagQuery] = useState<string>(query.tag);
 
   useEffect(() => {
-    if (!userService.getState().user) {
-      return;
-    }
-
     memoService
       .getMyTags()
       .then((tags) => {
@@ -40,7 +36,16 @@ const TagList: React.FC<Props> = () => {
         const root: IterObject<any> = {
           subTags: [],
         };
+        const pinnedTagsTemp: Tag[] = [];
         for (const tag of sortedTags) {
+          if (tag.pinnedAt) {
+            pinnedTagsTemp.push({
+              ...tag,
+              key: tag.text,
+              subTags: [],
+            });
+          }
+
           const subtags = tag.text.split("/");
           let tempObj = root;
           let tagText = "";
@@ -70,7 +75,6 @@ const TagList: React.FC<Props> = () => {
                 text: tagText,
                 level: tag.level,
                 subTags: [],
-                deep: i,
               };
               tempObj.subTags.push(obj);
             }
@@ -85,6 +89,8 @@ const TagList: React.FC<Props> = () => {
 
         root.subTags.sort((a: Tag, b: Tag) => b.level - a.level);
         setTags(root.subTags as Tag[]);
+        pinnedTagsTemp.sort((a, b) => utils.getTimeStampByDate(b.pinnedAt!) - utils.getTimeStampByDate(a.pinnedAt!));
+        setPinnedTags(pinnedTagsTemp);
         loadingState.setFinish();
       })
       .catch((error) => {
@@ -97,26 +103,32 @@ const TagList: React.FC<Props> = () => {
     setTagQuery(query.tag);
   }, [query]);
 
-  return (
-    <div className="tags-wrapper">
-      <p className="title-text">常用标签</p>
-      <div className="tags-container">
-        {loadingState.isLoading ? (
-          <></>
-        ) : (
+  return loadingState.isLoading ? null : (
+    <>
+      <div className="tags-wrapper">
+        {pinnedTags.length === 0 ? null : (
           <>
-            {tags.map((t, idx) => (
-              <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
-            ))}
-            <Only when={tags.length < 5}>
-              <p className="tag-tip-container">
-                输入<span className="code-text"># Tag </span>来创建标签吧~
-              </p>
-            </Only>
+            <p className="title-text">置顶标签</p>
+            <div className="tags-container">
+              {pinnedTags.map((t, idx) => (
+                <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
+              ))}
+            </div>
           </>
         )}
+        <p className="title-text">常用标签</p>
+        <div className="tags-container">
+          {tags.map((t, idx) => (
+            <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
+          ))}
+          <Only when={tags.length < 5}>
+            <p className="tag-tip-container">
+              输入<span className="code-text"># Tag </span>来创建标签吧~
+            </p>
+          </Only>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -148,6 +160,17 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     locationService.setTagQuery(tagText);
   };
 
+  const handleTogglePinTagBtnClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (tag.pinnedAt) {
+      memoService.unpinTag(tag.id);
+    } else {
+      memoService.pinTag(tag.id);
+    }
+    memoService.clearMemos();
+    memoService.fetchMoreMemos();
+  };
+
   const handleRenameTagBtnClick = (event: React.MouseEvent) => {
     if (renameAble) {
       event.stopPropagation();
@@ -164,13 +187,16 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     <>
       <div className={`tag-item-container ${isActive ? "active" : ""}`} onClick={handleTagClick}>
         <div className="tag-text-container">
-          <div className={`icon-container ${renameAble ? "rename-able" : ""}`} onClick={handleRenameTagBtnClick}>
-            <span className="icon-text">#</span>
-            {renameAble ? (
-              <span className="rename-btn">
-                <img className="icon-img" src={`/icons/edit${isActive ? "-white" : ""}.svg`} />
+          <span className="icon-text">#</span>
+          <div className="action-btns-wrapper">
+            <div className="action-btns-container">
+              <span className="text-btn" onClick={handleTogglePinTagBtnClick}>
+                {tag.pinnedAt ? "取消置顶" : "置顶"}
               </span>
-            ) : null}
+              <span className="text-btn" onClick={handleRenameTagBtnClick}>
+                重命名
+              </span>
+            </div>
           </div>
           <span className="tag-text">{tag.key}</span>
         </div>

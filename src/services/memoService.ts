@@ -176,6 +176,14 @@ class MemoService {
     await api.polishTag(tagId);
   }
 
+  public async pinTag(tagId: string) {
+    await api.pinTag(tagId);
+  }
+
+  public async unpinTag(tagId: string) {
+    await api.unpinTag(tagId);
+  }
+
   public async updateTagText(tagId: string, text: string) {
     await api.updateTagText(tagId, text);
   }

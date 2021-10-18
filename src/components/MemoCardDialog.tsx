@@ -24,25 +24,30 @@ const MemoCardDialog: React.FC<Props> = (props) => {
     formattedContent: formatMemoContent(props.memo.content),
     createdAtStr: utils.getDateTimeString(props.memo.createdAt),
   });
-  const [linkMemoIds, setLinkMemoIds] = useState<string[]>([]);
+  const [linkMemos, setLinkMemos] = useState<LinkedMemo[]>([]);
   const [linkedMemos, setLinkedMemos] = useState<LinkedMemo[]>([]);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   useEffect(() => {
     const fetchLinkedMemos = async () => {
       try {
-        const linkMemoIds: string[] = [];
+        const linkMemos: LinkedMemo[] = [];
         const matchedArr = [...memo.content.matchAll(MEMO_LINK_REG)];
         for (const matchRes of matchedArr) {
           if (matchRes && matchRes.length === 3) {
             const id = matchRes[2];
             const memoTemp = await memoService.getMemoById(id);
             if (memoTemp) {
-              linkMemoIds.push(id);
+              linkMemos.push({
+                ...memoTemp,
+                formattedContent: formatMemoContent(memoTemp.content),
+                createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
+                dateStr: utils.getDateString(memoTemp.createdAt),
+              });
             }
           }
         }
-        setLinkMemoIds([...linkMemoIds]);
+        setLinkMemos([...linkMemos]);
 
         const linkedMemos = await memoService.getLinkedMemos(memo.id);
         setLinkedMemos(
@@ -76,6 +81,7 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           formattedContent: formatMemoContent(memoTemp.content),
           createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
         };
+        setLinkMemos([]);
         setLinkedMemos([]);
         setMemo(nextMemo);
       } else {
@@ -86,6 +92,7 @@ const MemoCardDialog: React.FC<Props> = (props) => {
   }, []);
 
   const handleLinkedMemoClick = useCallback((memo: FormattedMemo) => {
+    setLinkMemos([]);
     setLinkedMemos([]);
     setMemo(memo);
   }, []);
@@ -123,9 +130,8 @@ const MemoCardDialog: React.FC<Props> = (props) => {
             </div>
           </Only>
         </div>
-        <p className={"normal-text " + (linkMemoIds.length === 0 ? "hidden" : "")}>关联了 {linkMemoIds.length} 个 MEMO</p>
         <div className="layer-container"></div>
-        {linkMemoIds.map((_, idx) => {
+        {linkMemos.map((_, idx) => {
           if (idx < 4) {
             return (
               <div
@@ -144,6 +150,21 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           }
         })}
       </div>
+      {linkMemos.length > 0 ? (
+        <div className="linked-memos-wrapper">
+          <p className="normal-text">关联了 {linkMemos.length} 个 MEMO</p>
+          {linkMemos.map((m) => {
+            const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
+
+            return (
+              <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
+                <span className="time-text">{m.dateStr}: </span>
+                {rawtext}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
       {linkedMemos.length > 0 ? (
         <div className="linked-memos-wrapper">
           <p className="normal-text">{linkedMemos.length} 条链接至此的 MEMO</p>
