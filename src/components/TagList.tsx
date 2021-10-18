@@ -22,6 +22,7 @@ const TagList: React.FC<Props> = () => {
     memoState: { memos },
   } = useContext(appContext);
   const loadingState = useLoading();
+  const [status, refresh] = useToggle();
   const [tags, setTags] = useState<Tag[]>([]);
   const [pinnedTags, setPinnedTags] = useState<Tag[]>([]);
   const [tagQuery, setTagQuery] = useState<string>(query.tag);
@@ -70,10 +71,10 @@ const TagList: React.FC<Props> = () => {
               obj.level += tag.level;
             } else {
               obj = {
+                ...tag,
                 id: "",
                 key,
                 text: tagText,
-                level: tag.level,
                 subTags: [],
               };
               tempObj.subTags.push(obj);
@@ -97,7 +98,7 @@ const TagList: React.FC<Props> = () => {
         loadingState.setError();
         toastHelper.error(error);
       });
-  }, [memos]);
+  }, [memos, status]);
 
   useEffect(() => {
     setTagQuery(query.tag);
@@ -111,7 +112,7 @@ const TagList: React.FC<Props> = () => {
             <p className="title-text">置顶标签</p>
             <div className="tags-container">
               {pinnedTags.map((t, idx) => (
-                <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
+                <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} refresh={refresh} />
               ))}
             </div>
           </>
@@ -119,7 +120,7 @@ const TagList: React.FC<Props> = () => {
         <p className="title-text">常用标签</p>
         <div className="tags-container">
           {tags.map((t, idx) => (
-            <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} />
+            <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} refresh={refresh} />
           ))}
           <Only when={tags.length < 5}>
             <p className="tag-tip-container">
@@ -135,10 +136,11 @@ const TagList: React.FC<Props> = () => {
 interface TagItemContainerProps {
   tag: Tag;
   tagQuery: string;
+  refresh: () => void;
 }
 
 const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContainerProps) => {
-  const { tag, tagQuery } = props;
+  const { refresh, tag, tagQuery } = props;
   const isActive = tagQuery === tag.text;
   const hasSubTags = tag.subTags.length > 0;
   const [showSubTags, toggleSubTags] = useToggle(tagQuery.includes(tag.text) && !isActive);
@@ -167,8 +169,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     } else {
       memoService.pinTag(tag.id);
     }
-    memoService.clearMemos();
-    memoService.fetchMoreMemos();
+    refresh();
   };
 
   const handleRenameTagBtnClick = (event: React.MouseEvent) => {
@@ -194,7 +195,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
                 {tag.pinnedAt ? "取消置顶" : "置顶"}
               </span>
               <span className="text-btn" onClick={handleRenameTagBtnClick}>
-                重命名
+                重命名
               </span>
             </div>
           </div>
@@ -212,7 +213,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
       {hasSubTags ? (
         <div className={`subtags-container ${showSubTags ? "" : "hidden"}`}>
           {tag.subTags.map((st, idx) => (
-            <TagItemContainer key={st.id + "-" + idx} tag={st} tagQuery={tagQuery} />
+            <TagItemContainer key={st.id + "-" + idx} tag={st} tagQuery={tagQuery} refresh={refresh} />
           ))}
         </div>
       ) : null}
@@ -242,7 +243,7 @@ const RenameTagDialog: React.FC<RenameTagDialogProps> = (props) => {
       .updateTagText(tag.id, text)
       .then(() => {
         memoService.clearMemos();
-        memoService.fetchAllMemos();
+        memoService.fetchMoreMemos();
         destroy();
       })
       .catch(() => {
