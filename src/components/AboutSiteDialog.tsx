@@ -24,7 +24,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <i>为何做这个？</i>
         <ul>
           <li>
-            实践 <strong>卢曼卡片笔记法</strong>；
+            实践 <strong>卢曼卡片盒笔记法</strong>；
           </li>
           <li>用于记录：📅 每日/周计划、💡 突发奇想、📕 读后感...</li>
           <li>代替了我在微信上经常使用的“文件传输助手”；</li>
