@@ -6,7 +6,6 @@ import { globalStateService } from "./services";
 function App() {
   const {
     locationState: { pathname },
-    globalState: { showDarkMode },
   } = useContext(appContext);
 
   useEffect(() => {
@@ -22,14 +21,6 @@ function App() {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
-
-  useEffect(() => {
-    if (showDarkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, [showDarkMode]);
 
   return <>{appRouterSwitch(pathname)}</>;
 }

@@ -253,52 +253,6 @@
   }
 }
 
-body.dark {
-  .my-account-dialog {
-    > .dialog-container {
-      > .dialog-content-container {
-        hr {
-          background-color: gray;
-        }
-
-        > .section-container {
-          > .form-label {
-            &.username-label {
-              > .btns-container {
-                > .text-btn {
-                  &.edit-username-btn {
-                    background-color: gray;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .change-password-dialog {
-    > .dialog-container {
-      > .dialog-content-container {
-        > .tip-text {
-          color: lightgray;
-        }
-
-        > .form-label {
-          > .normal-text {
-            color: lightgray;
-
-            &.not-null {
-              background-color: @dark-bg-black;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: 875px) {
   .dialog-wrapper.my-account-dialog {
     padding: 24px 16px;

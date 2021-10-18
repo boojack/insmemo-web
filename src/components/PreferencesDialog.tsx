@@ -13,7 +13,7 @@ interface Props extends DialogProps {}
  */
 const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
   const {
-    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser, showDarkMode },
+    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser },
   } = useContext(appContext);
 
   useEffect(() => {
@@ -35,13 +35,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     const nextStatus = e.target.checked;
     globalStateService.setAppSetting({
       shouldHideImageUrl: nextStatus,
-    });
-  };
-
-  const handleShowDarkModeValueChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextStatus = e.target.checked;
-    globalStateService.setAppSetting({
-      showDarkMode: nextStatus,
     });
   };
 
@@ -82,14 +75,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <div className="section-container preferences-section-container">
-          <p className="title-text">常规</p>
-          <label className="form-label checkbox-form-label">
-            <span className="normal-text">深色模式</span>
-            <img className="icon-img" src={showDarkMode ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
-            <input className="hidden" type="checkbox" checked={showDarkMode} onChange={handleShowDarkModeValueChanged} />
-          </label>
-        </div>
         <div className="section-container preferences-section-container">
           <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">

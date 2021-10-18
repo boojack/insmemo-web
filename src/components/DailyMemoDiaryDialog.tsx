@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { globalStateService, memoService } from "../services";
+import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
@@ -70,7 +70,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         scale: window.devicePixelRatio * 2,
         allowTaint: true,
         useCORS: true,
-        backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
+        backgroundColor: "white",
         scrollX: -window.scrollX,
         scrollY: -window.scrollY,
       }).then((canvas) => {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { globalStateService, userService } from "../services";
+import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
 import { showDialog } from "./Dialog";
@@ -37,7 +37,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props) => {
           scale: window.devicePixelRatio * 2,
           allowTaint: true,
           useCORS: true,
-          backgroundColor: globalStateService.getState().showDarkMode ? "#2f3437" : "white",
+          backgroundColor: "white",
           scrollX: -window.scrollX,
           scrollY: -window.scrollY,
         }).then((canvas) => {

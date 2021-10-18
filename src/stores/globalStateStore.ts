@@ -2,7 +2,6 @@ export interface AppSetting {
   shouldSplitMemoWord: boolean;
   shouldHideImageUrl: boolean;
   shouldUseMarkdownParser: boolean;
-  showDarkMode: boolean;
 }
 
 export interface State extends AppSetting {
@@ -89,6 +88,5 @@ export const defaultState: State = {
   shouldSplitMemoWord: true,
   shouldHideImageUrl: true,
   shouldUseMarkdownParser: true,
-  showDarkMode: false,
   isMobileView: false,
 };
