@@ -74,7 +74,7 @@ const Memo: React.FC<Props> = (props: Props) => {
       if (memoTemp) {
         showMemoCardDialog(memoTemp);
       } else {
-        toastHelper.error("Not Found");
+        toastHelper.error("MEMO Not Found");
         targetEl.classList.remove("memo-link-text");
       }
     } else if (targetEl.className === "todo-block") {

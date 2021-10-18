@@ -86,7 +86,7 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           <p className="title-text">常规</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">深色模式</span>
-            <img className="icon-img" src={showDarkMode ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <img className="icon-img" src={showDarkMode ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
             <input className="hidden" type="checkbox" checked={showDarkMode} onChange={handleShowDarkModeValueChanged} />
           </label>
         </div>
@@ -94,17 +94,17 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
           <p className="title-text">Memo 显示相关</p>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">中英文内容自动间隔</span>
-            <img className="icon-img" src={shouldSplitMemoWord ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <img className="icon-img" src={shouldSplitMemoWord ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
             <input className="hidden" type="checkbox" checked={shouldSplitMemoWord} onChange={handleSplitWordsValueChanged} />
           </label>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">隐藏图片链接地址</span>
-            <img className="icon-img" src={shouldHideImageUrl ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <img className="icon-img" src={shouldHideImageUrl ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
             <input className="hidden" type="checkbox" checked={shouldHideImageUrl} onChange={handleHideImageUrlValueChanged} />
           </label>
           <label className="form-label checkbox-form-label">
             <span className="normal-text">markdown 格式解析</span>
-            <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/check-active.svg" : "/icons/check.svg"} />
+            <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
             <input className="hidden" type="checkbox" checked={shouldUseMarkdownParser} onChange={handleUseMarkdownParserChanged} />
             <span className="tip-text">支持列表、加粗/斜体、代码块</span>
           </label>

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { TOAST_ANIMATION_DURATION } from "../helpers/consts";
 import "../less/toast.less";
 
-type ToastType = "normal" | "info" | "error";
+type ToastType = "normal" | "success" | "info" | "error";
 
 type ToastConfig = {
   type: ToastType;
@@ -36,20 +36,37 @@ const Toast: React.FC<ToastItemProps> = (props) => {
   );
 };
 
-const toastHelper = (() => {
-  const toastContainerDiv = document.createElement("div");
-  toastContainerDiv.className = "toast-list-container";
-  document.body.appendChild(toastContainerDiv);
+class ToastHelper {
+  private shownToastAmount = 0;
+  private toastWrapper: HTMLDivElement;
+  private shownToastContainers: HTMLDivElement[] = [];
 
-  let shownToastAmount = 0;
-  const shownToastContainers: HTMLDivElement[] = [];
+  constructor() {
+    const wrapperClassName = "toast-list-container";
+    const tempDiv = document.createElement("div");
+    tempDiv.className = wrapperClassName;
+    document.body.appendChild(tempDiv);
+    this.toastWrapper = tempDiv;
+  }
 
-  const showToast = (config: ToastConfig) => {
+  public info = (content: string, duration = 3000) => {
+    return this.showToast({ type: "normal", content, duration });
+  };
+
+  public success = (content: string, duration = 3000) => {
+    return this.showToast({ type: "success", content, duration });
+  };
+
+  public error = (content: string, duration = 3000) => {
+    return this.showToast({ type: "error", content, duration });
+  };
+
+  private showToast = (config: ToastConfig) => {
     const tempDiv = document.createElement("div");
     tempDiv.className = `toast-wrapper ${config.type}`;
-    toastContainerDiv.appendChild(tempDiv);
-    shownToastAmount++;
-    shownToastContainers.push(tempDiv);
+    this.toastWrapper.appendChild(tempDiv);
+    this.shownToastAmount++;
+    this.shownToastContainers.push(tempDiv);
 
     setTimeout(() => {
       tempDiv.classList.add("showup");
@@ -64,13 +81,13 @@ const toastHelper = (() => {
             return;
           }
 
-          shownToastAmount--;
-          if (shownToastAmount === 0) {
-            for (const d of shownToastContainers) {
+          this.shownToastAmount--;
+          if (this.shownToastAmount === 0) {
+            for (const d of this.shownToastContainers) {
               ReactDOM.unmountComponentAtNode(d);
               d.remove();
             }
-            shownToastContainers.splice(0, shownToastContainers.length);
+            this.shownToastContainers.splice(0, this.shownToastContainers.length);
           }
         }, TOAST_ANIMATION_DURATION);
       },
@@ -80,16 +97,6 @@ const toastHelper = (() => {
 
     return cbs;
   };
+}
 
-  const info = (content: string, duration = 3000) => {
-    return showToast({ type: "normal", content, duration });
-  };
-
-  const error = (content: string, duration = 3000) => {
-    return showToast({ type: "error", content, duration });
-  };
-
-  return { info, error };
-})();
-
-export default toastHelper;
+export default new ToastHelper();

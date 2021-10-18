@@ -168,7 +168,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
             <span className="icon-text">#</span>
             {renameAble ? (
               <span className="rename-btn">
-                {isActive ? <img className="icon-img" src="/icons/edit-white.svg" /> : <img className="icon-img" src="/icons/edit.svg" />}
+                <img className="icon-img" src={`/icons/edit${isActive ? "-white" : ""}.svg`} />
               </span>
             ) : null}
           </div>
@@ -177,11 +177,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
         <div className="btns-container">
           {hasSubTags ? (
             <span className={`action-btn toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
-              {isActive ? (
-                <img className="icon-img" src="/icons/arrow-right-white.svg" />
-              ) : (
-                <img className="icon-img" src="/icons/arrow-right.svg" />
-              )}
+              <img className="icon-img" src={`/icons/arrow-right${isActive ? "-white" : ""}.svg`} />
             </span>
           ) : null}
         </div>

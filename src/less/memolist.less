@@ -9,44 +9,6 @@
   padding-top: 4px;
   .pretty-scroll-bar(0px, 0px);
 
-  > .filter-query-container {
-    .flex(row, flex-start, flex-start);
-    width: 100%;
-    flex-wrap: wrap;
-
-    > .tip-text {
-      margin-left: 4px;
-      font-size: 13px;
-      padding: 2px 4px;
-      margin-bottom: 8px;
-      color: gray;
-      line-height: 1.6;
-    }
-
-    > .filter-item-container {
-      font-size: 13px;
-      padding: 2px 6px;
-      margin-bottom: 8px;
-      margin-right: 6px;
-      line-height: 1.6;
-      cursor: pointer;
-      background-color: #eaeaea;
-      border-radius: 4px;
-      max-width: 200px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      > .icon-text {
-        letter-spacing: 2px;
-      }
-
-      &:hover {
-        text-decoration: line-through;
-      }
-    }
-  }
-
   > .status-text-container {
     .flex(column, flex-start, center);
     width: 100%;
@@ -72,22 +34,52 @@
   }
 }
 
-body.dark {
-  .memolist-wrapper {
-    > .filter-query-container {
-      > .tip-text {
-        color: lightgray;
-      }
+.filter-query-container {
+  .flex(row, flex-start, flex-start);
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.8;
 
-      > .filter-item-container {
-        background-color: @dark-bg-black;
-      }
+  > .tip-text {
+    margin-left: 4px;
+    padding: 2px 4px;
+  }
+
+  > .filter-item-container {
+    padding: 2px 8px;
+    margin-right: 6px;
+    cursor: pointer;
+    background-color: @bg-gray;
+    border-radius: 4px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    > .icon-text {
+      letter-spacing: 2px;
     }
 
+    &:hover {
+      text-decoration: line-through;
+    }
+  }
+}
+
+body.dark {
+  .memolist-wrapper {
     > .status-text-container {
       > .status-text {
         color: lightgray;
       }
+    }
+  }
+
+  .filter-query-container {
+    > .filter-item-container {
+      background-color: @dark-bg-black;
     }
   }
 }

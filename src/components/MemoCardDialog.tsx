@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import { utils } from "../helpers/utils";
-import { memoService } from "../services";
+import { globalStateService, memoService } from "../services";
 import { parseHtmlToRawText } from "../helpers/marked";
+import { formatMemoContent } from "./Memo";
 import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
 import Only from "./common/OnlyWhen";
-import { formatMemoContent } from "./Memo";
 import Image from "./Image";
 import "../less/memo-card-dialog.less";
 
@@ -26,7 +26,7 @@ const MemoCardDialog: React.FC<Props> = (props) => {
   });
   const [linkMemoIds, setLinkMemoIds] = useState<string[]>([]);
   const [linkedMemos, setLinkedMemos] = useState<LinkedMemo[]>([]);
-  const imageUrls = Array.from(memo?.content.match(IMAGE_URL_REG) ?? []);
+  const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
   useEffect(() => {
     const fetchLinkedMemos = async () => {
@@ -37,7 +37,6 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           if (matchRes && matchRes.length === 3) {
             const id = matchRes[2];
             const memoTemp = await memoService.getMemoById(id);
-
             if (memoTemp) {
               linkMemoIds.push(id);
             }
@@ -47,12 +46,14 @@ const MemoCardDialog: React.FC<Props> = (props) => {
 
         const linkedMemos = await memoService.getLinkedMemos(memo.id);
         setLinkedMemos(
-          linkedMemos.map((m) => ({
-            ...m,
-            formattedContent: formatMemoContent(m.content),
-            createdAtStr: utils.getDateTimeString(m.createdAt),
-            dateStr: utils.getDateString(m.createdAt),
-          }))
+          linkedMemos
+            .sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
+            .map((m) => ({
+              ...m,
+              formattedContent: formatMemoContent(m.content),
+              createdAtStr: utils.getDateTimeString(m.createdAt),
+              dateStr: utils.getDateString(m.createdAt),
+            }))
         );
       } catch (error) {
         // do nth
@@ -60,7 +61,7 @@ const MemoCardDialog: React.FC<Props> = (props) => {
     };
 
     fetchLinkedMemos();
-  }, [memo]);
+  }, [memo.id]);
 
   const handleMemoContentClick = useCallback(async (e: React.MouseEvent) => {
     const targetEl = e.target as HTMLElement;
@@ -75,24 +76,34 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           formattedContent: formatMemoContent(memoTemp.content),
           createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
         };
+        setLinkedMemos([]);
         setMemo(nextMemo);
       } else {
-        toastHelper.error("Not Found");
+        toastHelper.error("MEMO Not Found");
         targetEl.classList.remove("memo-link-text");
       }
     }
   }, []);
 
   const handleLinkedMemoClick = useCallback((memo: FormattedMemo) => {
+    setLinkedMemos([]);
     setMemo(memo);
   }, []);
+
+  const handleEditMemoBtnClick = useCallback(() => {
+    props.destroy();
+    globalStateService.setEditMemoId(memo.id);
+  }, [memo.id]);
 
   return (
     <>
       <div className="memo-card-container">
         <div className="header-container">
-          <p className="time-text">{memo?.createdAtStr}</p>
+          <p className="time-text">{memo.createdAtStr}</p>
           <div className="btns-container">
+            <button className="text-btn edit-btn" onClick={handleEditMemoBtnClick}>
+              <img className="icon-img" src="/icons/edit.svg" />
+            </button>
             <button className="text-btn close-btn" onClick={props.destroy}>
               <img className="icon-img" src="/icons/close.svg" />
             </button>
@@ -102,7 +113,7 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           <div
             className="memo-content-text"
             onClick={handleMemoContentClick}
-            dangerouslySetInnerHTML={{ __html: memo?.formattedContent ?? "" }}
+            dangerouslySetInnerHTML={{ __html: memo.formattedContent ?? "" }}
           ></div>
           <Only when={imageUrls.length > 0}>
             <div className="images-wrapper">

@@ -23,7 +23,10 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <br />
         <i>为何做这个？</i>
         <ul>
-          <li>用于记录：📅每日/周计划、💡突发奇想、📕读后感...</li>
+          <li>
+            实践 <strong>卢曼卡片笔记法</strong>；
+          </li>
+          <li>用于记录：📅 每日/周计划、💡 突发奇想、📕 读后感...</li>
           <li>代替了我在微信上经常使用的“文件传输助手”；</li>
           <li>打造一个属于自己的轻量化“卡片”笔记簿；</li>
         </ul>
@@ -43,7 +46,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
         <p>Enjoy it and have fun~ </p>
         <hr />
         <p className="normal-text">
-          Last updated on <span className="pre-text">2021/10/15 16:18:56</span> 🎉
+          Last updated on <span className="pre-text">2021/10/18 08:01:03</span> 🎉
         </p>
       </div>
     </>

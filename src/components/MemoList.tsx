@@ -151,26 +151,28 @@ const MemoList: React.FC<Props> = () => {
   );
 
   return (
-    <div
-      className={`memolist-wrapper ${isComplete ? "completed" : ""}`}
-      onClick={handleMemoListClick}
-      onScroll={handleContainerScroll}
-      ref={wrapperElement}
-    >
+    <>
       <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
-      {shownMemos.map((memo) => (
-        <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
-      ))}
-      {showFilter ? (
-        <div className={`status-text-container`}>
-          <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
-        </div>
-      ) : (
-        <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>
-          <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
-        </div>
-      )}
-    </div>
+      <div
+        className={`memolist-wrapper ${isComplete ? "completed" : ""}`}
+        onClick={handleMemoListClick}
+        onScroll={handleContainerScroll}
+        ref={wrapperElement}
+      >
+        {shownMemos.map((memo) => (
+          <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+        ))}
+        {showFilter ? (
+          <div className={`status-text-container`}>
+            <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
+          </div>
+        ) : (
+          <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>
+            <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

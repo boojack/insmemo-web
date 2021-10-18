@@ -32,7 +32,7 @@ export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
 export const MEMO_TYPES = [
   {
     type: "CONNECTED",
-    text: "有连接",
+    text: "有关联",
   },
   {
     type: "NOT_TAGGED",

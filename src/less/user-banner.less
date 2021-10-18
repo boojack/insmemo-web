@@ -10,15 +10,14 @@
     width: 100%;
     padding: 0 24px;
     flex-wrap: nowrap;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 
     > .username-text {
       max-width: calc(100% - 32px);
       font-weight: bold;
       font-size: 18px;
       line-height: 36px;
-      color: rgba(25, 23, 17, 0.8);
-      margin-right: 8px;
+      color: @text-black;
       overflow: hidden;
       text-overflow: ellipsis;
       cursor: pointer;
@@ -27,18 +26,14 @@
     }
 
     > .action-btn {
-      letter-spacing: 2px;
       flex-shrink: 0;
-      font-size: 13px;
-      font-weight: bold;
-      color: @text-black;
       user-select: none;
       border: none;
       background-color: unset;
 
       &.menu-popup-btn {
         .flex(column, center, center);
-        width: 40px;
+        width: 36px;
         height: 40px;
         margin-right: -8px;
 
@@ -68,8 +63,9 @@
       > .amount-text {
         font-weight: bold;
         font-size: 26px;
-        line-height: 1.6;
-        color: rgba(25, 23, 17, 0.6);
+        line-height: 1.8;
+        color: @text-black;
+        opacity: 0.7;
       }
 
       > .type-text {

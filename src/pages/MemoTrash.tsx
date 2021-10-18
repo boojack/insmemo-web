@@ -42,7 +42,7 @@ const MemoTrash: React.FC<Props> = () => {
       <div className="header-container">
         <div className="title-text">
           <button className="action-btn" onClick={handleMoreActionBtnClick}>
-            <img className="icon-img" src="/icons/fold.svg" alt="fold" />
+            <img className="icon-img" src="/icons/menu.svg" alt="menu" />
           </button>
           <span className="normal-text">回收站</span>
         </div>

@@ -10,23 +10,25 @@ function App() {
   } = useContext(appContext);
 
   useEffect(() => {
-    if (showDarkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-
-    globalStateService.setIsMobileView(document.body.clientWidth <= 875);
-
     const handleWindowResize = () => {
       globalStateService.setIsMobileView(document.body.clientWidth <= 875);
     };
+
+    handleWindowResize();
 
     window.addEventListener("resize", handleWindowResize);
 
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
+  }, []);
+
+  useEffect(() => {
+    if (showDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
   }, [showDarkMode]);
 
   return <>{appRouterSwitch(pathname)}</>;
