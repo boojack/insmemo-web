@@ -126,7 +126,9 @@ const UsageHeatMap: React.FC<Props> = () => {
 
           return (
             <span
-              className={"stat-container " + colorLevel + (currentStat === v ? " current" : " ")}
+              className={`stat-container ${colorLevel} ${currentStat === v ? "current" : ""} ${
+                todayTimeStamp === v.timestamp ? "today" : ""
+              }`}
               key={i}
               onMouseEnter={(e) => handleUsageStatItemMouseEnter(e, v)}
               onMouseLeave={handleUsageStatItemMouseLeave}

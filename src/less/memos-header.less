@@ -1,12 +1,13 @@
 @import "./mixin.less";
 
-.memos-header-container,
-.header-container {
+.section-header-container,
+.memos-header-container {
   .flex(row, space-between, center);
   width: 100%;
   height: 40px;
   flex-wrap: nowrap;
   margin-bottom: 8px;
+  flex-shrink: 0;
 
   > .title-text {
     .flex(row, flex-start, center);
@@ -43,8 +44,8 @@
 }
 
 @media only screen and (max-width: 875px) {
-  .memos-header-container,
-  .header-container {
+  .section-header-container,
+  .memos-header-container {
     margin-top: 16px;
 
     > .title-text {

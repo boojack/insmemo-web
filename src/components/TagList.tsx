@@ -45,6 +45,7 @@ const TagList: React.FC<Props> = () => {
               key: tag.text,
               subTags: [],
             });
+            continue;
           }
 
           const subtags = tag.text.split("/");
@@ -117,7 +118,7 @@ const TagList: React.FC<Props> = () => {
             </div>
           </>
         )}
-        <p className="title-text">常用标签</p>
+        <p className="title-text">全部标签</p>
         <div className="tags-container">
           {tags.map((t, idx) => (
             <TagItemContainer key={t.id + "-" + idx} tag={t} tagQuery={tagQuery} refresh={refresh} />
@@ -176,6 +177,8 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
     if (renameAble) {
       event.stopPropagation();
       showRenameTagDialog(tag);
+    } else {
+      toastHelper.info("这个不是真正的标签，所以无法重命名。试试重命名它的子标签吧");
     }
   };
 

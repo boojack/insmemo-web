@@ -12,11 +12,11 @@
 
   > .title-text {
     width: 100%;
-    padding: 8px 16px;
+    padding: 4px 16px;
     font-size: 13px;
-    line-height: 20px;
-    font-weight: bold;
+    line-height: 24px;
     color: @text-lightgray;
+    font-weight: bold;
   }
 
   > .tags-container {
@@ -74,7 +74,7 @@
       > .tag-text-container {
         .flex(row, flex-start, center);
         max-width: calc(100% - 24px);
-        color: @text-gray;
+        color: @text-black;
         overflow: hidden;
         text-overflow: ellipsis;
         flex-shrink: 0;
@@ -105,7 +105,7 @@
           height: auto;
           padding: 8px;
           padding-top: 24px;
-          margin-top: 80px;
+          transform: translateY(40px);
           margin-left: -8px;
           z-index: 1;
           display: none;

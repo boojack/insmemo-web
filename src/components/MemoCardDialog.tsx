@@ -155,10 +155,9 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           <p className="normal-text">关联了 {linkMemos.length} 个 MEMO</p>
           {linkMemos.map((m) => {
             const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
-
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
-                <span className="time-text">{m.dateStr}: </span>
+                <span className="time-text">{m.dateStr} </span>
                 {rawtext}
               </div>
             );
@@ -170,10 +169,9 @@ const MemoCardDialog: React.FC<Props> = (props) => {
           <p className="normal-text">{linkedMemos.length} 条链接至此的 MEMO</p>
           {linkedMemos.map((m) => {
             const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
-
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
-                <span className="time-text">{m.dateStr}: </span>
+                <span className="time-text">{m.dateStr} </span>
                 {rawtext}
               </div>
             );
