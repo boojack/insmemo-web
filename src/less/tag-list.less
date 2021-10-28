@@ -50,7 +50,7 @@
       padding: 6px 12px;
       padding-right: 8px;
       margin-top: 4px;
-      border-radius: 8px;
+      border-radius: 20px;
       font-size: 14px;
       cursor: pointer;
       flex-shrink: 0;
@@ -61,11 +61,12 @@
       }
 
       &.active {
-        background-color: @text-green !important;
+        color: black;
+        font-weight: bold;
 
         > .tag-text-container {
           > * {
-            color: white;
+            color: black;
           }
         }
       }
@@ -121,7 +122,7 @@
             border-radius: 4px;
             padding: 4px;
             background-color: white;
-            box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+            box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
 
             > .text-btn {
               width: 100%;

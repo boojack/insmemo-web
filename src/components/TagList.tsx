@@ -120,7 +120,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
         <div className="btns-container">
           {hasSubTags ? (
             <span className={`action-btn toggle-btn ${showSubTags ? "shown" : ""}`} onClick={handleToggleBtnClick}>
-              <img className="icon-img" src={`/icons/arrow-right${isActive ? "-white" : ""}.svg`} />
+              <img className="icon-img" src="/icons/arrow-right.svg" />
             </span>
           ) : null}
         </div>

@@ -26,7 +26,7 @@ const MemosHeader: React.FC<Props> = () => {
         <button className="action-btn" onClick={handleMoreActionBtnClick}>
           <img className="icon-img" src="/icons/menu.svg" alt="menu" />
         </button>
-        <span className="normal-text">MEMO</span>
+        <span className="normal-text">MEMOS</span>
       </div>
       <SearchBar />
     </div>
