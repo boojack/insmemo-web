@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import "../less/preview-image-dialog.less";
 
@@ -7,7 +7,7 @@ interface Props extends DialogProps {
   imgUrl: string;
 }
 
-const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }) => {
+const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }: Props) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgWidth, setImgWidth] = useState<number>(-1);
 

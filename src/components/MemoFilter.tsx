@@ -1,0 +1,58 @@
+import { useContext } from "react";
+import { locationService, memoService } from "../services";
+import appContext from "../labs/appContext";
+import * as utils from "../helpers/utils";
+import "../less/memo-filter.less";
+
+interface FilterProps {}
+
+const MemoFilter: React.FC<FilterProps> = () => {
+  const {
+    locationState: { query },
+  } = useContext(appContext);
+
+  const { tag: tagQuery, duration, type: memoType, text: textQuery } = query;
+  const showFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
+
+  return (
+    <div className={`filter-query-container ${showFilter ? "" : "hidden"}`}>
+      <span className="tip-text">筛选：</span>
+      {duration && duration.from < duration.to ? (
+        <div
+          className="filter-item-container"
+          onClick={() => {
+            locationService.setFromAndToQuery(0, 0);
+          }}
+        >
+          <span className="icon-text">🗓️</span> {utils.getDateString(duration.from)} 至 {utils.getDateString(duration.to)}
+        </div>
+      ) : null}
+      <div
+        className={"filter-item-container " + (tagQuery ? "" : "hidden")}
+        onClick={() => {
+          locationService.setTagQuery("");
+        }}
+      >
+        <span className="icon-text">🏷️</span> {tagQuery}
+      </div>
+      <div
+        className={"filter-item-container " + (memoType ? "" : "hidden")}
+        onClick={() => {
+          locationService.setMemoTypeQuery("");
+        }}
+      >
+        <span className="icon-text">📦</span> {memoService.getTextWithMemoType(memoType as MemoType)}
+      </div>
+      <div
+        className={"filter-item-container " + (textQuery ? "" : "hidden")}
+        onClick={() => {
+          locationService.setTextQuery("");
+        }}
+      >
+        <span className="icon-text">🔍</span> {textQuery}
+      </div>
+    </div>
+  );
+};
+
+export default MemoFilter;

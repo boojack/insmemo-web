@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import { globalStateService, memoService } from "../services";
 import { parseHtmlToRawText } from "../helpers/marked";
 import { formatMemoContent } from "./Memo";
@@ -18,7 +18,7 @@ interface Props extends DialogProps {
   memo: Model.Memo;
 }
 
-const MemoCardDialog: React.FC<Props> = (props) => {
+const MemoCardDialog: React.FC<Props> = (props: Props) => {
   const [memo, setMemo] = useState<FormattedMemo>({
     ...props.memo,
     formattedContent: formatMemoContent(props.memo.content),

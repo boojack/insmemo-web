@@ -12,6 +12,11 @@ interface SetPathnameAction {
   };
 }
 
+interface SetQuery {
+  type: "SET_QUERY";
+  payload: Query;
+}
+
 interface SetTagQueryAction {
   type: "SET_TAG_QUERY";
   payload: {
@@ -20,10 +25,9 @@ interface SetTagQueryAction {
 }
 
 interface SetFromAndToQueryAction {
-  type: "SET_FROM_TO_QUERY";
+  type: "SET_DURATION_QUERY";
   payload: {
-    from: number;
-    to: number;
+    duration: Duration | null;
   };
 }
 
@@ -51,6 +55,7 @@ interface SetHashAction {
 export type Actions =
   | SetLocation
   | SetPathnameAction
+  | SetQuery
   | SetTagQueryAction
   | SetFromAndToQueryAction
   | SetTypeAction
@@ -72,6 +77,12 @@ export function reducer(state: State, action: Actions) {
         pathname: action.payload.pathname,
       };
     }
+    case "SET_QUERY": {
+      return {
+        ...state,
+        query: action.payload,
+      };
+    }
     case "SET_TAG_QUERY": {
       if (action.payload.tag === state.query.tag) {
         return state;
@@ -85,8 +96,8 @@ export function reducer(state: State, action: Actions) {
         },
       };
     }
-    case "SET_FROM_TO_QUERY": {
-      if (action.payload.from === state.query.from && action.payload.to === state.query.to) {
+    case "SET_DURATION_QUERY": {
+      if (action.payload.duration === state.query.duration) {
         return state;
       }
 
@@ -94,8 +105,10 @@ export function reducer(state: State, action: Actions) {
         ...state,
         query: {
           ...state.query,
-          from: action.payload.from,
-          to: action.payload.to,
+          duration: {
+            ...state.query.duration,
+            ...action.payload.duration,
+          },
         },
       };
     }
@@ -146,8 +159,7 @@ export const defaultState: State = {
   hash: "",
   query: {
     tag: "",
-    from: 0,
-    to: 0,
+    duration: null,
     type: "",
     text: "",
   },

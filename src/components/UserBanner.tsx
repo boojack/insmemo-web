@@ -1,41 +1,20 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { locationService, memoService } from "../services";
+import { useCallback, useContext } from "react";
+import { locationService } from "../services";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
-import toastHelper from "./Toast";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import "../less/user-banner.less";
-
-interface AmountState {
-  memosAmount: number;
-  tagsAmount: number;
-}
 
 interface Props {}
 
 const UserBanner: React.FC<Props> = () => {
   const {
     userState: { user },
-    memoState: { memos },
+    memoState: { memos, tags },
   } = useContext(appContext);
-  const [amountState, setAmountState] = useState<AmountState>({
-    memosAmount: 0,
-    tagsAmount: 0,
-  });
   const username = user ? user.username : "Memos";
   const createdDays = user ? Math.ceil((Date.now() - utils.getTimeStampByDate(user.createdAt)) / 1000 / 3600 / 24) : 0;
-
-  useEffect(() => {
-    memoService
-      .getMyDataAmount()
-      .then((amounts) => {
-        setAmountState(amounts);
-      })
-      .catch((error) => {
-        toastHelper.error(error.message);
-      });
-  }, [memos]);
 
   const handleUsernameClick = useCallback(() => {
     locationService.pushHistory("/");
@@ -61,11 +40,11 @@ const UserBanner: React.FC<Props> = () => {
       </div>
       <div className="status-text-container">
         <div className="status-text memos-text">
-          <span className="amount-text">{amountState.memosAmount}</span>
+          <span className="amount-text">{memos.length}</span>
           <span className="type-text">MEMO</span>
         </div>
         <div className="status-text tags-text">
-          <span className="amount-text">{amountState.tagsAmount}</span>
+          <span className="amount-text">{tags.length}</span>
           <span className="type-text">TAG</span>
         </div>
         <div className="status-text duration-text" onClick={() => showDailyMemoDiaryDialog()}>

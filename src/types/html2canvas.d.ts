@@ -25,7 +25,7 @@ interface Html2CanvasOptions {
   /** Whether to log events in the console. */
   logging?: boolean;
   /** Callback function which is called when the Document has been cloned for rendering, can be used to modify the contents that will be rendered without affecting the original source document. */
-  onclone?: { (doc: HTMLDocument): void };
+  onclone?: { (doc: Document): void };
   /** Url to the proxy which is to be used for loading cross-origin images. If left empty, cross-origin images won't be loaded. */
   proxy?: string;
   /** Whether to cleanup the cloned DOM elements html2canvas creates temporarily */

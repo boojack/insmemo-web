@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import { parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
 import Only from "./common/OnlyWhen";
@@ -41,7 +41,6 @@ const Memo: React.FC<Props> = (props: Props) => {
     if (showConfirmDeleteBtn) {
       try {
         await memoService.hideMemoById(memo.id);
-        await memoService.fetchMoreMemos();
       } catch (error: any) {
         toastHelper.error(error.message);
       }

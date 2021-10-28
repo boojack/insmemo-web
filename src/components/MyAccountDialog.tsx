@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { userService } from "../services";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
@@ -8,7 +8,7 @@ import "../less/my-account-dialog.less";
 
 interface Props extends DialogProps {}
 
-const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
+const MyAccountDialog: React.FC<Props> = ({ destroy }: Props) => {
   const { userState } = useContext(appContext);
   const user = userState.user as Model.User;
   const [username, setUsername] = useState<string>(user.username);
@@ -171,7 +171,7 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }) => {
   );
 };
 
-const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
+const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
@@ -239,16 +239,16 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }) => {
       <div className="dialog-content-container">
         <p className="tip-text">如果是 GitHub 登录，则初始密码为用户名</p>
         <label className="form-label input-form-label">
-          <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
           <span className={"normal-text " + (oldPassword === "" ? "" : "not-null")}>旧密码</span>
+          <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
         </label>
         <label className="form-label input-form-label">
-          <input type="password" value={newPassword} onChange={handleNewPasswordChanged} />
           <span className={"normal-text " + (newPassword === "" ? "" : "not-null")}>新密码</span>
+          <input type="password" value={newPassword} onChange={handleNewPasswordChanged} />
         </label>
         <label className="form-label input-form-label">
-          <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
           <span className={"normal-text " + (newPasswordAgain === "" ? "" : "not-null")}>再次输入新密码</span>
+          <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
         </label>
         <div className="btns-container">
           <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>

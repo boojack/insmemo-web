@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { globalStateService, locationService, memoService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import appContext from "../labs/appContext";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import toastHelper from "./Toast";
 import "../less/usage-heat-map.less";
 
@@ -44,6 +44,10 @@ const UsageHeatMap: React.FC<Props> = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (memos.length === 0) {
+      return;
+    }
+
     const todayTimeStamp = utils.getDateStampByDate(Date.now());
     const todayDay = new Date(todayTimeStamp).getDay() || 7;
     const usedDaysAmount = (tableConfig.width - 1) * tableConfig.height + todayDay;
@@ -68,15 +72,19 @@ const UsageHeatMap: React.FC<Props> = () => {
 
   const handleUsageStatItemMouseEnter = useCallback((event: React.MouseEvent, item: DailyUsageStat) => {
     setPopupStat(item);
+    if (!popupRef.current) {
+      return;
+    }
+
     const { isMobileView } = globalStateService.getState();
     const targetEl = event.target as HTMLElement;
     const sidebarEl = document.querySelector(".sidebar-wrapper") as HTMLElement;
-    popupRef.current!.style.left = targetEl.offsetLeft - (containerElRef.current?.offsetLeft ?? 0) + "px";
+    popupRef.current.style.left = targetEl.offsetLeft - (containerElRef.current?.offsetLeft ?? 0) + "px";
     let topValue = targetEl.offsetTop;
     if (!isMobileView) {
       topValue -= sidebarEl.scrollTop;
     }
-    popupRef.current!.style.top = topValue + "px";
+    popupRef.current.style.top = topValue + "px";
   }, []);
 
   const handleUsageStatItemMouseLeave = useCallback(() => {

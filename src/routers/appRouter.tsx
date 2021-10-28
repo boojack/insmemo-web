@@ -1,7 +1,7 @@
 import Home from "../pages/Home";
 import Signin from "../pages/Signin";
 
-const appRouter: Router = {
+const appRouter = {
   "/signin": <Signin />,
   "*": <Home />,
 };

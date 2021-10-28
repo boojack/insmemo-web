@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect } from "react";
 import appContext from "../labs/appContext";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import UserBanner from "./UserBanner";
+import QueryList from "./QueryList";
 import TagList from "./TagList";
 import UsageHeatMap from "./UsageHeatMap";
 import "../less/siderbar.less";
@@ -31,6 +32,7 @@ const Sidebar: React.FC<Props> = () => {
     <aside className="sidebar-wrapper" onClick={handleWrapperClick}>
       <UserBanner />
       <UsageHeatMap />
+      <QueryList />
       <TagList />
     </aside>
   );

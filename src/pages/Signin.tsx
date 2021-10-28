@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../helpers/api";
+import * as api from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
-import { locationService, memoService, userService } from "../services";
+import { locationService, userService } from "../services";
 import showAboutSiteDialog from "../components/AboutSiteDialog";
 import toastHelper from "../components/Toast";
 import "../less/signin.less";
@@ -71,13 +71,9 @@ const Signin: React.FC<Props> = () => {
 
       const user = await userService.doSignIn();
       if (user) {
-        memoService.clearMemos();
-        memoService.fetchMoreMemos().catch(() => {
-          // do nth
-        });
         locationService.replaceHistory("/");
       } else {
-        toastHelper.error("😟 不知道发生了什么错误");
+        toastHelper.error("😟 登录失败");
       }
     } catch (error: any) {
       console.error(error);
@@ -94,14 +90,14 @@ const Signin: React.FC<Props> = () => {
           </p>
         </div>
         <div className="page-content-container">
-          <label className="form-label input-form-label">
-            <input type="text" value={username} onChange={handleUsernameInputChanged} />
+          <div className="form-item-container input-form-container">
             <span className={"normal-text " + (username === "" ? "" : "not-null")}>账号</span>
-          </label>
-          <label className="form-label input-form-label">
-            <input type="password" value={password} onChange={handlePasswordInputChanged} />
+            <input type="text" value={username} onChange={handleUsernameInputChanged} />
+          </div>
+          <div className="form-item-container input-form-container">
             <span className={"normal-text " + (password === "" ? "" : "not-null")}>密码</span>
-          </label>
+            <input type="password" value={password} onChange={handlePasswordInputChanged} />
+          </div>
         </div>
         <div className="page-footer-container">
           <div className="btns-container">

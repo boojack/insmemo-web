@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
@@ -12,7 +12,7 @@ interface Props extends DialogProps {
   memo: Model.Memo;
 }
 
-const ShareMemoImageDialog: React.FC<Props> = (props) => {
+const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo, destroy } = props;
   const [imgUrl, setImgUrl] = useState("");
   const memoElRef = useRef<HTMLDivElement>(null);
@@ -27,13 +27,17 @@ const ShareMemoImageDialog: React.FC<Props> = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
+      if (!memoElRef.current) {
+        return; 
+      }
+      
       if (imageAmount === 0) {
         const osVersion = utils.getOSVersion();
         if (osVersion === "MacOS" || osVersion === "Unknown") {
           window.scrollTo(0, 0);
         }
 
-        html2canvas(memoElRef.current!, {
+        html2canvas(memoElRef.current, {
           scale: window.devicePixelRatio * 2,
           allowTaint: true,
           useCORS: true,
