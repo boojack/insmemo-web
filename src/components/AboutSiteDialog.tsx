@@ -3,7 +3,7 @@ import "../less/about-site-dialog.less";
 
 interface Props extends DialogProps {}
 
-const AboutSiteDialog: React.FC<Props> = ({ destroy }) => {
+const AboutSiteDialog: React.FC<Props> = ({ destroy }: Props) => {
   const handleCloseBtnClick = () => {
     destroy();
   };

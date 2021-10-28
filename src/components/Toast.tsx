@@ -18,7 +18,7 @@ type ToastItemProps = {
   destory: FunctionType;
 };
 
-const Toast: React.FC<ToastItemProps> = (props) => {
+const Toast: React.FC<ToastItemProps> = (props: ToastItemProps) => {
   const { destory, duration } = props;
 
   useEffect(() => {

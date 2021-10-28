@@ -1,7 +1,8 @@
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 
 export interface State {
   memos: Model.Memo[];
+  tags: string[];
 }
 
 interface SetMemosAction {
@@ -11,17 +12,17 @@ interface SetMemosAction {
   };
 }
 
-interface PushMemoAction {
-  type: "PUSH_MEMO";
+interface SetTagsAction {
+  type: "SET_TAGS";
   payload: {
-    memo: Model.Memo;
+    tags: string[];
   };
 }
 
-interface PushMemosAction {
-  type: "PUSH_MEMOS";
+interface InsertMemoAction {
+  type: "INSERT_MEMO";
   payload: {
-    memos: Model.Memo[];
+    memo: Model.Memo;
   };
 }
 
@@ -37,7 +38,7 @@ interface EditMemoByIdAction {
   payload: Model.Memo;
 }
 
-export type Actions = SetMemosAction | PushMemosAction | PushMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
+export type Actions = SetMemosAction | SetTagsAction | InsertMemoAction | DeleteMemoByIdAction | EditMemoByIdAction;
 
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
@@ -47,31 +48,29 @@ export function reducer(state: State, action: Actions): State {
       );
 
       return {
+        ...state,
         memos: [...memos],
       };
     }
-    case "PUSH_MEMO": {
+    case "SET_TAGS": {
+      return {
+        ...state,
+        tags: action.payload.tags,
+      };
+    }
+    case "INSERT_MEMO": {
       const memos = utils.dedupeObjectWithId(
         [action.payload.memo, ...state.memos].sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
       );
 
       return {
-        memos,
-      };
-    }
-    case "PUSH_MEMOS": {
-      const memos = utils.dedupeObjectWithId(
-        [...action.payload.memos, ...state.memos].sort(
-          (a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt)
-        )
-      );
-
-      return {
+        ...state,
         memos,
       };
     }
     case "DELETE_MEMO_BY_ID": {
       return {
+        ...state,
         memos: [...state.memos].filter((memo) => memo.id !== action.payload.id),
       };
     }
@@ -88,6 +87,7 @@ export function reducer(state: State, action: Actions): State {
       });
 
       return {
+        ...state,
         memos,
       };
     }
@@ -99,4 +99,5 @@ export function reducer(state: State, action: Actions): State {
 
 export const defaultState: State = {
   memos: [],
+  tags: [],
 };

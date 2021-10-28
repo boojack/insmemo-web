@@ -1,7 +1,11 @@
-interface Query {
-  tag: string;
+interface Duration {
   from: number;
   to: number;
+}
+
+interface Query {
+  tag: string;
+  duration: Duration | null;
   type: MemoType | "";
   text: string;
 }
@@ -12,10 +16,4 @@ interface AppLocation {
   pathname: AppRouter;
   hash: string;
   query: Query;
-}
-
-// just like React-Router
-interface Router {
-  [key: string]: JSX.Element | null;
-  "*": JSX.Element | null;
 }

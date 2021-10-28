@@ -1,9 +1,9 @@
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import appStore from "../stores";
 
 const updateLocationUrl = (method: "replace" | "push" = "replace") => {
   const { query, pathname, hash } = appStore.getState().locationState;
-  let queryString = utils.iterObjectToParamsString(query);
+  let queryString = utils.transformObjectToParamsString(query);
   if (queryString) {
     queryString = "?" + queryString;
   } else {
@@ -33,19 +33,22 @@ class LocationService {
       hash: "",
       query: {
         tag: "",
-        from: 0,
-        to: 0,
+        duration: null,
         text: "",
         type: "",
       },
     };
-    state.query = {
-      tag: urlParams.get("tag") ?? "",
-      from: parseInt(urlParams.get("from") ?? "0"),
-      to: parseInt(urlParams.get("to") ?? "0"),
-      type: (urlParams.get("type") ?? "") as MemoType,
-      text: urlParams.get("text") ?? "",
-    };
+    state.query.tag = urlParams.get("tag") ?? "";
+    state.query.type = (urlParams.get("type") ?? "") as MemoType;
+    state.query.text = urlParams.get("text") ?? "";
+    const from = parseInt(urlParams.get("from") ?? "0");
+    const to = parseInt(urlParams.get("to") ?? "0");
+    if (to > from && to !== 0) {
+      state.query.duration = {
+        from,
+        to,
+      };
+    }
     state.hash = hash;
     state.pathname = this.getValidPathname(pathname);
     appStore.dispatch({
@@ -60,18 +63,22 @@ class LocationService {
 
   public clearQuery = () => {
     appStore.dispatch({
-      type: "SET_TAG_QUERY",
+      type: "SET_QUERY",
       payload: {
         tag: "",
+        duration: null,
+        text: "",
+        type: "",
       },
     });
 
+    updateLocationUrl();
+  };
+
+  public setQuery = (query: Query) => {
     appStore.dispatch({
-      type: "SET_FROM_TO_QUERY",
-      payload: {
-        from: 0,
-        to: 0,
-      },
+      type: "SET_QUERY",
+      payload: query,
     });
 
     updateLocationUrl();
@@ -156,10 +163,9 @@ class LocationService {
 
   public setFromAndToQuery = (from: number, to: number) => {
     appStore.dispatch({
-      type: "SET_FROM_TO_QUERY",
+      type: "SET_DURATION_QUERY",
       payload: {
-        from,
-        to,
+        duration: { from, to },
       },
     });
 

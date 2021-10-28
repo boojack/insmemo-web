@@ -1,26 +1,10 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
-import useDebounce from "../hooks/useDebounce";
 import appContext from "../labs/appContext";
-import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MEMO_TYPES, TAG_REG } from "../helpers/consts";
-import { utils } from "../helpers/utils";
+import { MEMO_TYPES } from "../helpers/consts";
+import * as utils from "../helpers/utils";
 import Memo from "./Memo";
-import toastHelper from "./Toast";
 import "../less/memolist.less";
-
-const getTextWithMemoType = (type: string): string => {
-  for (const t of MEMO_TYPES) {
-    if (t.type === type) {
-      return t.text;
-    }
-  }
-  return "";
-};
-
-interface Duration {
-  from: number;
-  to: number;
-}
 
 interface Props {}
 
@@ -29,57 +13,30 @@ const MemoList: React.FC<Props> = () => {
     locationState: { query },
     memoState: { memos },
   } = useContext(appContext);
-  const [isFetching, setFetchStatus] = useState(false);
+  const [isFetching, setFetchStatus] = useState(true);
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
-  const tagQuery = query.tag;
-  const duration: Duration = { from: query.from, to: query.to };
-  const memoType = query.type;
-  const textQuery = query.text;
-  const showFilter = Boolean(tagQuery || (duration.from !== 0 && duration.from < duration.to) || memoType || textQuery);
+  const { tag: tagQuery, duration, type: memoType, text: textQuery } = query;
+  const showFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
 
   const shownMemos = showFilter
     ? memos.filter((memo) => {
         let shouldShow = true;
-        const memoTags = [];
-        for (const t of memo.tags) {
-          const subTags = t.text.split("/");
-          let tempTag = "";
-          for (let i = 0; i < subTags.length; i++) {
-            if (i === 0) {
-              tempTag += subTags[i];
-            } else {
-              tempTag += "/" + subTags[i];
-            }
-            memoTags.push(tempTag);
-          }
-        }
-        if (tagQuery !== "" && !memoTags.includes(tagQuery)) {
+
+        if (tagQuery !== "" && !memo.content.includes(`# ${tagQuery} `)) {
           shouldShow = false;
         }
         if (
-          duration.from !== 0 &&
+          duration &&
           duration.from < duration.to &&
           (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
         ) {
           shouldShow = false;
         }
         if (memoType !== "") {
-          if (memoType === "NOT_TAGGED") {
-            if (memo.content.match(TAG_REG) !== null) {
-              shouldShow = false;
-            }
-          } else if (memoType === "LINKED") {
-            if (memo.content.match(LINK_REG) === null) {
-              shouldShow = false;
-            }
-          } else if (memoType === "IMAGED") {
-            if (memo.content.match(IMAGE_URL_REG) === null) {
-              shouldShow = false;
-            }
-          } else if (memoType === "CONNECTED") {
-            if (memo.content.match(MEMO_LINK_REG) === null) {
+          for (const mt of MEMO_TYPES) {
+            if (memoType === mt.type) {
               shouldShow = false;
             }
           }
@@ -94,33 +51,13 @@ const MemoList: React.FC<Props> = () => {
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
-    if (!isComplete && showFilter) {
-      setFetchStatus(true);
-      memoService.fetchAllMemos().then((result) => {
-        if (result !== false) {
-          setCompleteStatus(true);
-          setFetchStatus(false);
-        }
-      });
-    }
-  }, [isComplete, showFilter, query]);
-
-  const fetchMoreMemos = async () => {
-    if (isFetching || isComplete) {
-      return;
-    }
-
-    setFetchStatus(true);
-    try {
-      const fetchedMemos = await memoService.fetchMoreMemos();
-      if (Array.isArray(fetchedMemos) && fetchedMemos.length === 0) {
+    memoService.fetchAllMemos().then((result) => {
+      if (result !== false) {
         setCompleteStatus(true);
+        setFetchStatus(false);
       }
-    } catch (error: any) {
-      toastHelper.error(error.message);
-    }
-    setFetchStatus(false);
-  };
+    });
+  }, []);
 
   const handleMemoListClick = useCallback((event: React.MouseEvent) => {
     const targetEl = event.target as HTMLElement;
@@ -135,93 +72,20 @@ const MemoList: React.FC<Props> = () => {
     }
   }, []);
 
-  const handleContainerScroll = useDebounce(
-    () => {
-      if (isFetching || isComplete) {
-        return;
-      }
-
-      const { offsetHeight, scrollTop, scrollHeight } = wrapperElement.current!;
-      if (offsetHeight + scrollTop + 10 > scrollHeight) {
-        fetchMoreMemos();
-      }
-    },
-    100,
-    [isFetching, isComplete]
-  );
-
   return (
-    <>
-      <MemoFilter {...{ showFilter, tagQuery, duration, memoType, textQuery }} />
-      <div
-        className={`memolist-wrapper ${isComplete ? "completed" : ""}`}
-        onClick={handleMemoListClick}
-        onScroll={handleContainerScroll}
-        ref={wrapperElement}
-      >
-        {shownMemos.map((memo) => (
-          <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
-        ))}
-        {showFilter ? (
-          <div className={`status-text-container`}>
-            <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
-          </div>
-        ) : (
-          <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>
-            <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
-          </div>
-        )}
-      </div>
-    </>
-  );
-};
-
-interface FilterProps {
-  showFilter: boolean;
-  tagQuery: string;
-  duration: Duration;
-  memoType: string;
-  textQuery: string;
-}
-
-const MemoFilter: React.FC<FilterProps> = (props) => {
-  const { showFilter, tagQuery, duration, memoType, textQuery } = props;
-
-  return (
-    <div className={`filter-query-container ${showFilter ? "" : "hidden"}`}>
-      <span className="tip-text">筛选：</span>
-      <div
-        className={"filter-item-container " + (duration.from !== 0 && duration.from < duration.to ? "" : "hidden")}
-        onClick={() => {
-          locationService.setFromAndToQuery(0, 0);
-        }}
-      >
-        <span className="icon-text">🗓️</span> {utils.getDateString(duration.from)} 至 {utils.getDateString(duration.to)}
-      </div>
-      <div
-        className={"filter-item-container " + (tagQuery ? "" : "hidden")}
-        onClick={() => {
-          locationService.setTagQuery("");
-        }}
-      >
-        <span className="icon-text">🏷️</span> {tagQuery}
-      </div>
-      <div
-        className={"filter-item-container " + (memoType ? "" : "hidden")}
-        onClick={() => {
-          locationService.setMemoTypeQuery("");
-        }}
-      >
-        <span className="icon-text">📦</span> {getTextWithMemoType(memoType as MemoType)}
-      </div>
-      <div
-        className={"filter-item-container " + (textQuery ? "" : "hidden")}
-        onClick={() => {
-          locationService.setTextQuery("");
-        }}
-      >
-        <span className="icon-text">🔍</span> {textQuery}
-      </div>
+    <div className={`memolist-wrapper ${isComplete ? "completed" : ""}`} onClick={handleMemoListClick} ref={wrapperElement}>
+      {shownMemos.map((memo) => (
+        <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+      ))}
+      {showFilter ? (
+        <div className={"status-text-container"}>
+          <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
+        </div>
+      ) : (
+        <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>
+          <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
+        </div>
+      )}
     </div>
   );
 };

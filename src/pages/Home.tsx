@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { locationService, memoService, userService } from "../services";
+import { locationService, userService } from "../services";
 import { homeRouterSwitch } from "../routers";
 import appContext from "../labs/appContext";
 import Sidebar from "../components/Sidebar";
@@ -13,21 +13,23 @@ function Home() {
   const loadingState = useLoading();
 
   useEffect(() => {
-    userService
-      .doSignIn()
-      .catch(() => {
-        // do nth
-      })
-      .finally(async () => {
-        if (userService.getState().user) {
-          await memoService.fetchMoreMemos().catch(() => {
-            // do nth
-          });
-          loadingState.setFinish();
-        } else {
-          locationService.replaceHistory("/signin");
-        }
-      });
+    const { user } = userService.getState();
+    if (!user) {
+      userService
+        .doSignIn()
+        .catch(() => {
+          // do nth
+        })
+        .finally(() => {
+          if (userService.getState().user) {
+            loadingState.setFinish();
+          } else {
+            locationService.replaceHistory("/signin");
+          }
+        });
+    } else {
+      loadingState.setFinish();
+    }
   }, []);
 
   useEffect(() => {

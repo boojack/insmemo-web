@@ -3,12 +3,11 @@ import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import DailyMemo from "./DailyMemo";
 import DatePicker from "./common/DatePicker";
-import toastHelper from "./Toast";
 import "../less/daily-memo-diary-dialog.less";
 
 interface Props extends DialogProps {
@@ -40,33 +39,23 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
       loadingState.setFinish();
     };
 
-    const { memos } = memoService.getState();
-    const lastMemo = memos.slice(-1).pop();
-    if (lastMemo && utils.getTimeStampByDate(lastMemo.createdAt) >= currentDateStamp) {
-      loadingState.setLoading();
-      memoService
-        .fetchAllMemos()
-        .then(() => {
-          setDailyMemos();
-        })
-        .catch((error) => {
-          toastHelper.error(error.message);
-        });
-    } else {
-      setDailyMemos();
-    }
+    setDailyMemos();
   }, [currentDateStamp]);
 
   const handleShareBtnClick = () => {
     toggleShowDatePicker(false);
 
     setTimeout(() => {
+      if (!memosElRef.current) {
+        return; 
+      }
+
       const osVersion = utils.getOSVersion();
       if (osVersion === "MacOS" || osVersion === "Unknown") {
         window.scrollTo(0, 0);
       }
 
-      html2canvas(memosElRef.current!, {
+      html2canvas(memosElRef.current, {
         scale: window.devicePixelRatio * 2,
         allowTaint: true,
         useCORS: true,

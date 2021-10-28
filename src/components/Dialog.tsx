@@ -11,9 +11,11 @@ interface DialogConfig {
   useAppContext?: boolean;
 }
 
-interface Props extends DialogConfig, DialogProps {}
+interface Props extends DialogConfig, DialogProps {
+  children: React.ReactNode;
+}
 
-const BaseDialog: React.FC<Props> = (props) => {
+const BaseDialog: React.FC<Props> = (props: Props) => {
   const { children, className, clickSpaceDestroy, destroy } = props;
 
   const handleSpaceClicked = () => {

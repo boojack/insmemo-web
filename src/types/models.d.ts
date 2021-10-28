@@ -12,13 +12,12 @@ declare namespace Model {
 
   interface Memo extends BaseModel {
     content: string;
-    tags: Tag[];
     deletedAt?: string;
   }
 
-  interface Tag extends BaseModel {
-    text: string;
-    level: number;
+  interface Query extends BaseModel {
+    title: string;
+    querystring: string;
     pinnedAt?: string;
   }
 }

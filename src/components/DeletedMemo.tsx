@@ -1,5 +1,5 @@
 import { IMAGE_URL_REG } from "../helpers/consts";
-import { utils } from "../helpers/utils";
+import * as utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { memoService } from "../services";
 import Only from "./common/OnlyWhen";
@@ -63,7 +63,7 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
           </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
-              <span className={`text-btn restore-btn`} onClick={handleRestoreMemoClick}>
+              <span className="text-btn restore-btn" onClick={handleRestoreMemoClick}>
                 恢复
               </span>
               <span className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>

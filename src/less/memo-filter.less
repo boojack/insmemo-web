@@ -1,0 +1,35 @@
+@import "./mixin.less";
+
+.filter-query-container {
+  .flex(row, flex-start, flex-start);
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.8;
+
+  > .tip-text {
+    margin-left: 4px;
+    padding: 2px 4px;
+  }
+
+  > .filter-item-container {
+    padding: 2px 8px;
+    margin-right: 6px;
+    cursor: pointer;
+    background-color: @bg-gray;
+    border-radius: 4px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    > .icon-text {
+      letter-spacing: 2px;
+    }
+
+    &:hover {
+      text-decoration: line-through;
+    }
+  }
+}

@@ -1,35 +1,11 @@
-import { api } from "../helpers/api";
-import { FETCH_MEMO_AMOUNT } from "../helpers/consts";
+import * as api from "../helpers/api";
+import { MEMO_TYPES, TAG_REG } from "../helpers/consts";
 import appStore from "../stores";
 import userService from "./userService";
 
 class MemoService {
-  public isFetching: boolean = false;
-
   public getState() {
     return appStore.getState().memoState;
-  }
-
-  public async fetchMoreMemos() {
-    if (!userService.getState().user || this.isFetching) {
-      return false;
-    }
-
-    this.isFetching = true;
-    const { data } = await api.getMyMemos(this.getState().memos.length, FETCH_MEMO_AMOUNT);
-    const memos: Model.Memo[] = data.map((m) => ({
-      ...m,
-    }));
-
-    appStore.dispatch({
-      type: "PUSH_MEMOS",
-      payload: {
-        memos,
-      },
-    });
-    this.isFetching = false;
-
-    return memos;
   }
 
   public async fetchAllMemos() {
@@ -37,14 +13,11 @@ class MemoService {
       return false;
     }
 
-    this.isFetching = true;
-    const {
-      data: { memosAmount },
-    } = await api.getMyDataAmount();
-    const { data } = await api.getMyMemos(0, memosAmount);
-    const memos = data.map((m) => ({
-      ...m,
-    }));
+    const { data } = await api.getMyMemos();
+    const memos = [];
+    for (const m of data) {
+      memos.push(m);
+    }
 
     if (memos.length > 0) {
       appStore.dispatch({
@@ -54,8 +27,7 @@ class MemoService {
         },
       });
     }
-    this.isFetching = false;
-    return data;
+    return memos;
   }
 
   public async fetchDeletedMemos() {
@@ -69,7 +41,7 @@ class MemoService {
 
   public pushMemo(memo: Model.Memo) {
     appStore.dispatch({
-      type: "PUSH_MEMO",
+      type: "INSERT_MEMO",
       payload: {
         memo: {
           ...memo,
@@ -102,7 +74,7 @@ class MemoService {
   public async restoreMemoById(id: string) {
     await api.restoreMemo(id);
     memoService.clearMemos();
-    memoService.fetchMoreMemos();
+    memoService.fetchAllMemos();
   }
 
   public async deleteMemoById(id: string) {
@@ -113,6 +85,23 @@ class MemoService {
     appStore.dispatch({
       type: "EDIT_MEMO",
       payload: memo,
+    });
+  }
+
+  public updateTagsState() {
+    const { memos } = this.getState();
+    const tagsSet = new Set<string>();
+    for (const m of memos) {
+      for (const t of Array.from(m.content.match(TAG_REG) ?? [])) {
+        tagsSet.add(t.replace(TAG_REG, "$1").trim());
+      }
+    }
+
+    appStore.dispatch({
+      type: "SET_TAGS",
+      payload: {
+        tags: Array.from(tagsSet),
+      },
     });
   }
 
@@ -135,24 +124,6 @@ class MemoService {
     return memo;
   }
 
-  public async createTag(text: string): Promise<Model.Tag> {
-    const { data: tag } = await api.createTag(text);
-    return tag;
-  }
-
-  public async removeMemoTag(memoId: string, tagId: string): Promise<void> {
-    await api.removeMemoTag(memoId, tagId);
-  }
-
-  public async createMemoTag(memoId: string, tagId: string): Promise<void> {
-    await api.createMemoTag(memoId, tagId);
-  }
-
-  public async getMyDataAmount(): Promise<Api.DataAmounts> {
-    const { data } = await api.getMyDataAmount();
-    return data;
-  }
-
   public async getMemosStat(): Promise<Api.MemosStat[]> {
     const { data } = await api.getMemosStat();
     return data;
@@ -163,29 +134,13 @@ class MemoService {
     return data;
   }
 
-  public async getMyTags(): Promise<Api.Tag[]> {
-    if (!userService.getState().user) {
-      return [];
+  public getTextWithMemoType(type: string): string {
+    for (const t of MEMO_TYPES) {
+      if (t.type === type) {
+        return t.text;
+      }
     }
-
-    const { data: tags } = await api.getMyTags();
-    return tags;
-  }
-
-  public async polishTag(tagId: string) {
-    await api.polishTag(tagId);
-  }
-
-  public async pinTag(tagId: string) {
-    await api.pinTag(tagId);
-  }
-
-  public async unpinTag(tagId: string) {
-    await api.unpinTag(tagId);
-  }
-
-  public async updateTagText(tagId: string, text: string) {
-    await api.updateTagText(tagId, text);
+    return "";
   }
 }
 

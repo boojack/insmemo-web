@@ -50,7 +50,6 @@ const PreferencesDialog: React.FC<Props> = ({ destroy }) => {
     const formatedMemos = memoService.getState().memos.map((m) => {
       return {
         ...m,
-        tags: m.tags.map((t) => t.text),
       };
     });
 
