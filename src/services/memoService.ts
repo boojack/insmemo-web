@@ -50,15 +50,14 @@ class MemoService {
     });
   }
 
-  public async getMemoById(id: string) {
+  public getMemoById(id: string) {
     for (const m of this.getState().memos) {
       if (m.id === id) {
         return m;
       }
     }
 
-    const { data } = await api.getMemoById(id);
-    return data;
+    return null;
   }
 
   public async hideMemoById(id: string) {

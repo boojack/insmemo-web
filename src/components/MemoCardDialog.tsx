@@ -36,7 +36,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         for (const matchRes of matchedArr) {
           if (matchRes && matchRes.length === 3) {
             const id = matchRes[2];
-            const memoTemp = await memoService.getMemoById(id);
+            const memoTemp = memoService.getMemoById(id);
             if (memoTemp) {
               linkMemos.push({
                 ...memoTemp,
@@ -73,7 +73,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
 
     if (targetEl.className === "memo-link-text") {
       const nextMemoId = targetEl.dataset?.value;
-      const memoTemp = await memoService.getMemoById(nextMemoId ?? "");
+      const memoTemp = memoService.getMemoById(nextMemoId ?? "");
 
       if (memoTemp) {
         const nextMemo = {

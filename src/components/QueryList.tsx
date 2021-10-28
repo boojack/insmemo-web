@@ -33,8 +33,11 @@ const QueryList: React.FC<Props> = () => {
 
   return (
     <div className="queries-wrapper">
-      <p className="title-text" onClick={() => showCreateQueryDialog()}>
-        快速检索
+      <p className="title-text">
+        <span className="normal-text">快速检索</span>
+        <span className="text-btn" onClick={() => showCreateQueryDialog()}>
+          +
+        </span>
       </p>
       <Only when={loadingState.isSucceed && sortedQueries.length === 0}>
         <div className="create-query-btn-container">

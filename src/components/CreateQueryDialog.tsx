@@ -35,6 +35,11 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
+    if (!title) {
+      toastHelper.error("标题不能为空！");
+      return;
+    }
+
     try {
       if (queryId) {
         const editedQuery = await queryService.updateQuery(queryId, title, querystring);
@@ -43,10 +48,10 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
         const query = await queryService.createQuery(title, querystring);
         queryService.pushQuery(query);
       }
-      destroy();
     } catch (error: any) {
       toastHelper.error(error.message);
     }
+    destroy();
   };
 
   return (
@@ -61,7 +66,13 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <p className="tip-text">⚠️ 这是一个实验性功能！</p>
+        <p className="tip-text">
+          ⚠️ 这是一个实验性功能！
+          <br />
+          通过使用"检索"的指定标签、文本、时间段等，可以对 Memos 进行快速分类。
+          <br />
+          💡 Idea comes from "The Archive"
+        </p>
         <div className="form-item-container input-form-container">
           <span className="normal-text">标题</span>
           <input type="text" value={title} onChange={handleTitleInputChange} />

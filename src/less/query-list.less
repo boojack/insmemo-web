@@ -9,18 +9,36 @@
   .pretty-scroll-bar(0px, 0px);
 
   > .title-text {
+    .flex(row, space-between, center);
     width: 100%;
     padding: 4px 16px;
-    font-size: 13px;
-    line-height: 24px;
-    color: @text-lightgray;
-    font-weight: bold;
+
+    > * {
+      font-size: 13px;
+      line-height: 24px;
+      color: @text-lightgray;
+      font-weight: bold;
+    }
+
+    > .text-btn {
+      display: none;
+      cursor: pointer;
+      padding: 0 4px;
+      font-size: 18px;
+    }
+
+    &:hover {
+      > .text-btn {
+        display: block;
+      }
+    }
   }
 
   > .create-query-btn-container {
+    .flex(row, center, center);
     width: 100%;
     margin-top: 8px;
-    .flex(row, center, center);
+    margin-bottom: 12px;
 
     > .text-btn {
       display: flex;

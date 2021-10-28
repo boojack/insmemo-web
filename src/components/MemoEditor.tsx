@@ -24,13 +24,12 @@ const MemoEditor: React.FC<Props> = () => {
       globalStateService.setMarkMemoId("");
     }
 
-    if (prevGlobalStateRef.current.editMemoId !== globalState.editMemoId && globalState.editMemoId) {
-      memoService.getMemoById(globalState.editMemoId).then((editMemo) => {
-        if (editMemo) {
-          editorRef.current?.setContent(editMemo.content ?? "");
-          editorRef.current?.focus();
-        }
-      });
+    if (globalState.editMemoId && globalState.editMemoId !== prevGlobalStateRef.current.editMemoId) {
+      const editMemo = memoService.getMemoById(globalState.editMemoId);
+      if (editMemo) {
+        editorRef.current?.setContent(editMemo.content ?? "");
+        editorRef.current?.focus();
+      }
     }
 
     prevGlobalStateRef.current = globalState;
@@ -49,7 +48,7 @@ const MemoEditor: React.FC<Props> = () => {
 
     try {
       if (editMemoId) {
-        const prevMemo = await memoService.getMemoById(editMemoId);
+        const prevMemo = memoService.getMemoById(editMemoId);
 
         if (prevMemo && prevMemo.content !== content) {
           const editedMemo = await memoService.updateMemo(prevMemo.id, content);

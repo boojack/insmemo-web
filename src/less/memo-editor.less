@@ -7,7 +7,7 @@
   height: auto;
   background-color: white;
   padding: 16px;
-  border: 1px solid @bg-whitegray;
+  border: 1px solid @bg-gray;
   margin-top: 4px;
 
   &.edit-ing {
@@ -26,5 +26,18 @@
     width: 100%;
     height: auto;
     background-color: white;
+  }
+}
+
+@media only screen and (max-width: 875px) {
+  .memo-editor-wrapper {
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    z-index: 1;
+    left: 0;
+    border: none;
+    border-top: 1px solid @bg-gray;
+    box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
   }
 }
