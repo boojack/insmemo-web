@@ -16,12 +16,12 @@ interface Props {}
 
 const TagList: React.FC<Props> = () => {
   const {
-    locationState: { query },
+    locationState: {
+      query: { tag: tagQuery },
+    },
     memoState: { tags: tagsText, memos },
   } = useContext(appContext);
-  const [status, refresh] = useToggle();
   const [tags, setTags] = useState<Tag[]>([]);
-  const [tagQuery, setTagQuery] = useState<string>(query.tag);
 
   useEffect(() => {
     memoService.updateTagsState();
@@ -65,20 +65,15 @@ const TagList: React.FC<Props> = () => {
         tempObj = obj;
       }
     }
-
     setTags(root.subTags as Tag[]);
-  }, [tagsText, status]);
-
-  useEffect(() => {
-    setTagQuery(query.tag);
-  }, [query]);
+  }, [tagsText]);
 
   return (
     <div className="tags-wrapper">
-      <p className="title-text">全部标签</p>
+      <p className="title-text">常用标签</p>
       <div className="tags-container">
         {tags.map((t, idx) => (
-          <TagItemContainer key={t.text + "-" + idx} tag={t} tagQuery={tagQuery} refresh={refresh} />
+          <TagItemContainer key={t.text + "-" + idx} tag={t} tagQuery={tagQuery} />
         ))}
         <Only when={tags.length < 5}>
           <p className="tag-tip-container">
@@ -93,17 +88,15 @@ const TagList: React.FC<Props> = () => {
 interface TagItemContainerProps {
   tag: Tag;
   tagQuery: string;
-  refresh: () => void;
 }
 
 const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContainerProps) => {
-  const { refresh, tag, tagQuery } = props;
+  const { tag, tagQuery } = props;
   const isActive = tagQuery === tag.text;
   const hasSubTags = tag.subTags.length > 0;
   const [showSubTags, toggleSubTags] = useToggle(false);
 
   const handleTagClick = () => {
-    locationService.pushHistory("/");
     if (isActive) {
       locationService.setTagQuery("");
     } else {
@@ -136,7 +129,7 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
       {hasSubTags ? (
         <div className={`subtags-container ${showSubTags ? "" : "hidden"}`}>
           {tag.subTags.map((st, idx) => (
-            <TagItemContainer key={st.text + "-" + idx} tag={st} tagQuery={tagQuery} refresh={refresh} />
+            <TagItemContainer key={st.text + "-" + idx} tag={st} tagQuery={tagQuery} />
           ))}
         </div>
       ) : null}

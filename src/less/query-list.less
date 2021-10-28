@@ -18,6 +18,26 @@
     font-weight: bold;
   }
 
+  > .create-query-btn-container {
+    width: 100%;
+    margin-top: 8px;
+    .flex(row, center, center);
+
+    > .text-btn {
+      display: flex;
+      padding: 4px 8px;
+      border: 1px dashed @bg-blue;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @bg-blue;
+        color: white;
+      }
+    }
+  }
+
   > .queries-container {
     .flex(column, flex-start, flex-start);
     position: relative;
@@ -121,7 +141,7 @@
             width: 80px;
             height: auto;
             white-space: nowrap;
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 4px;
             background-color: white;
             box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);

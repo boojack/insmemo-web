@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { locationService, memoService } from "../services";
 import appContext from "../labs/appContext";
-import { MEMO_TYPES } from "../helpers/consts";
+import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
 import Memo from "./Memo";
 import "../less/memolist.less";
@@ -24,7 +24,7 @@ const MemoList: React.FC<Props> = () => {
     ? memos.filter((memo) => {
         let shouldShow = true;
 
-        if (tagQuery !== "" && !memo.content.includes(`# ${tagQuery} `)) {
+        if (tagQuery && !memo.content.includes(`# ${tagQuery} `)) {
           shouldShow = false;
         }
         if (
@@ -34,14 +34,18 @@ const MemoList: React.FC<Props> = () => {
         ) {
           shouldShow = false;
         }
-        if (memoType !== "") {
-          for (const mt of MEMO_TYPES) {
-            if (memoType === mt.type) {
-              shouldShow = false;
-            }
+        if (memoType) {
+          if (memoType === "NOT_TAGGED" && memo.content.match(TAG_REG) !== null) {
+            shouldShow = false;
+          } else if (memoType === "LINKED" && memo.content.match(LINK_REG) === null) {
+            shouldShow = false;
+          } else if (memoType === "IMAGED" && memo.content.match(IMAGE_URL_REG) === null) {
+            shouldShow = false;
+          } else if (memoType === "CONNECTED" && memo.content.match(MEMO_LINK_REG) === null) {
+            shouldShow = false;
           }
         }
-        if (textQuery !== "" && !memo.content.includes(textQuery)) {
+        if (textQuery && !memo.content.includes(textQuery)) {
           shouldShow = false;
         }
 

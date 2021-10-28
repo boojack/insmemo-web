@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { locationService, queryService } from "../services";
 import * as utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
-import "../less/create-query-dialog.less";
 import toastHelper from "./Toast";
+import "../less/create-query-dialog.less";
 
 interface Props extends DialogProps {
   queryId?: string;
@@ -53,21 +53,22 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">🔖</span>创建索引
+          <span className="icon-text">🔖</span>
+          {queryId ? "编辑检索" : "创建检索"}
         </p>
         <button className="text-btn close-btn" onClick={destroy}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
       <div className="dialog-content-container">
-        <p className="tip-text">⚠️ 这是一个实验性功能</p>
+        <p className="tip-text">⚠️ 这是一个实验性功能！</p>
         <div className="form-item-container input-form-container">
           <span className="normal-text">标题</span>
           <input type="text" value={title} onChange={handleTitleInputChange} />
         </div>
         <div className="form-item-container input-form-container">
           <span className="normal-text">过滤器</span>
-          <textarea value={JSON.stringify(JSON.parse(querystring), null, 2)} onChange={handleQuerystringTextareaChange}></textarea>
+          <textarea value={JSON.stringify(JSON.parse(querystring), null, 2)} disabled onChange={handleQuerystringTextareaChange}></textarea>
         </div>
       </div>
       <div className="dialog-footer-container">

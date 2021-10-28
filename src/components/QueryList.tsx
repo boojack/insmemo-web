@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import appContext from "../labs/appContext";
 import useToggle from "../hooks/useToggle";
+import useLoading from "../hooks/useLoading";
+import Only from "./common/OnlyWhen";
+import * as utils from "../helpers/utils";
 import toastHelper from "./Toast";
 import { locationService, queryService } from "../services";
-import * as utils from "../helpers/utils";
 import showCreateQueryDialog from "./CreateQueryDialog";
 import "../less/query-list.less";
 
@@ -13,14 +15,20 @@ const QueryList: React.FC<Props> = () => {
   const {
     queryState: { queries },
   } = useContext(appContext);
+  const loadingState = useLoading();
   const sortedQueries = queries
     .sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
     .sort((a, b) => utils.getTimeStampByDate(b.pinnedAt ?? 0) - utils.getTimeStampByDate(a.pinnedAt ?? 0));
 
   useEffect(() => {
-    queryService.getMyAllQueries().catch(() => {
-      // do nth
-    });
+    queryService
+      .getMyAllQueries()
+      .catch(() => {
+        // do nth
+      })
+      .finally(() => {
+        loadingState.setFinish();
+      });
   }, []);
 
   return (
@@ -28,6 +36,13 @@ const QueryList: React.FC<Props> = () => {
       <p className="title-text" onClick={() => showCreateQueryDialog()}>
         快速检索
       </p>
+      <Only when={loadingState.isSucceed && sortedQueries.length === 0}>
+        <div className="create-query-btn-container">
+          <span className="text-btn" onClick={() => showCreateQueryDialog()}>
+            创建检索
+          </span>
+        </div>
+      </Only>
       <div className="queries-container">
         {sortedQueries.map((q) => {
           const paramsObject = JSON.parse(q.querystring) as Query;
