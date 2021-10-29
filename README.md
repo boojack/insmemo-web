@@ -19,4 +19,10 @@
 - 😋 精美且细节的视觉样式；
 - 📑 体验优良的交互逻辑；
 
+---
+
+部署教程
+
+- [https://github.com/boojack/insmemo-web/issues/6#issuecomment-954321549](https://github.com/boojack/insmemo-web/issues/6#issuecomment-954321549)
+
 Enjoy it and have fun~
