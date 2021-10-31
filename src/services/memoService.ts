@@ -18,15 +18,12 @@ class MemoService {
     for (const m of data) {
       memos.push(m);
     }
-
-    if (memos.length > 0) {
-      appStore.dispatch({
-        type: "SET_MEMOS",
-        payload: {
-          memos,
-        },
-      });
-    }
+    appStore.dispatch({
+      type: "SET_MEMOS",
+      payload: {
+        memos,
+      },
+    });
     return memos;
   }
 

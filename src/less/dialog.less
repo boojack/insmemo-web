@@ -9,28 +9,18 @@
   height: 100%;
   background-color: transparent;
   z-index: 100;
-  transition: all 0.2s linear;
+  transition: all 0.2s ease;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 64px 0;
   .pretty-scroll-bar(0px, 0px);
 
   &.showup {
-    background-color: rgb(0 0 0 / 70%);
-
-    > .dialog-container {
-      margin-top: 0px;
-      opacity: 1;
-    }
+    background-color: rgb(0 0 0 / 50%);
   }
 
   &.showoff {
-    background-color: transparent;
-
-    > .dialog-container {
-      margin-top: -16px;
-      opacity: 0;
-    }
+    display: none;
   }
 
   > .dialog-container {
@@ -38,9 +28,6 @@
     background-color: white;
     padding: 16px;
     border-radius: 8px;
-    margin-top: -12px;
-    opacity: 0.6;
-    transition: all 0.2s linear;
 
     > .dialog-header-container {
       .flex(row, space-between, center);

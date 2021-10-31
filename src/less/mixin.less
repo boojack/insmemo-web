@@ -6,14 +6,15 @@
 @text-red: #d28653;
 
 @bg-black: #2f3437;
-@bg-gray: #eaeaea;
-@bg-whitegray: #fafafa;
+@bg-gray: #e4e4e4;
+@bg-whitegray: #f8f8f8;
 @bg-blue: #1337a3;
 @bg-yellow: yellow;
 @bg-light-blue: #eef3fe;
 @bg-paper-yellow: #fbf4de;
 
 .pretty-scroll-bar(@width: 4px, @height: 4px) {
+  scrollbar-width: thin;
   &::-webkit-scrollbar {
     width: @width;
     height: @height;
@@ -30,8 +31,6 @@
       background-color: #ccc;
     }
   }
-
-  scrollbar-width: thin;
 }
 
 .flex(@direction, @justify, @align) {

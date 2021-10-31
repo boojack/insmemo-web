@@ -3,15 +3,15 @@
 .memo-trash-wrapper {
   .flex(column, flex-start, flex-start);
   width: 100%;
-  height: auto;
+  height: 100%;
   flex-grow: 1;
   overflow-y: auto;
-  padding-bottom: 24px;
   .pretty-scroll-bar(0px);
 
   > .section-header-container {
     width: 100%;
     height: 40px;
+    margin-bottom: 0;
 
     > .title-text {
       font-weight: bold;
@@ -20,9 +20,24 @@
     }
   }
 
-  > .empty-container {
+  > .tip-text-container {
     width: 100%;
     height: 128px;
     .flex(column, center, center);
+  }
+
+  > .deleted-memos-container {
+    .flex(column, flex-start, flex-start);
+    flex-grow: 1;
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: 64px;
+    .pretty-scroll-bar(0px, 0px);
+  }
+}
+
+@media only screen and (max-width: 875px) {
+  .deleted-memos-container {
+    padding: 0 12px;
   }
 }

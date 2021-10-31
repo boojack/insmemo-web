@@ -13,16 +13,12 @@ class QueryService {
     }
 
     const { data } = await api.getMyQueries();
-
-    if (data.length > 0) {
-      appStore.dispatch({
-        type: "SET_QUERIES",
-        payload: {
-          queries: data,
-        },
-      });
-    }
-
+    appStore.dispatch({
+      type: "SET_QUERIES",
+      payload: {
+        queries: data,
+      },
+    });
     return data;
   }
 

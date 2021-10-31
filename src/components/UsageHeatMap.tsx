@@ -1,9 +1,8 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { globalStateService, locationService, memoService } from "../services";
+import { globalStateService, locationService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import appContext from "../labs/appContext";
 import * as utils from "../helpers/utils";
-import toastHelper from "./Toast";
 import "../less/usage-heat-map.less";
 
 const tableConfig = {
@@ -46,27 +45,15 @@ const UsageHeatMap: React.FC<Props> = () => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (memos.length === 0) {
-      return;
-    }
-
     const newStat: DailyUsageStat[] = getInitialUsageStat(usedDaysAmount, beginDayTimestemp);
-    memoService
-      .getMemosStat()
-      .then((stats) => {
-        for (const d of stats) {
-          const index = (utils.getDateStampByDate(d.timestamp) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
-          if (index >= 0) {
-            newStat[index].count += 1;
-          }
-        }
-
-        setAllStat([...newStat]);
-      })
-      .catch((error) => {
-        toastHelper.error(error.message);
-      });
-  }, [memos.length]);
+    for (const m of memos) {
+      const index = (utils.getDateStampByDate(m.createdAt) - beginDayTimestemp) / (1000 * 3600 * 24) - 1;
+      if (index >= 0) {
+        newStat[index].count += 1;
+      }
+    }
+    setAllStat([...newStat]);
+  }, [memos]);
 
   const handleUsageStatItemMouseEnter = useCallback((event: React.MouseEvent, item: DailyUsageStat) => {
     setPopupStat(item);
