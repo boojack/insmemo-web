@@ -36,6 +36,7 @@ class LocationService {
         duration: null,
         text: "",
         type: "",
+        filter: "",
       },
     };
     state.query.tag = urlParams.get("tag") ?? "";
@@ -69,6 +70,7 @@ class LocationService {
         duration: null,
         text: "",
         type: "",
+        filter: "",
       },
     });
 
@@ -134,6 +136,15 @@ class LocationService {
       payload: {
         type,
       },
+    });
+
+    updateLocationUrl();
+  };
+
+  public setMemoFilter = (filterId: string) => {
+    appStore.dispatch({
+      type: "SET_QUERY_FILTER",
+      payload: filterId,
     });
 
     updateLocationUrl();

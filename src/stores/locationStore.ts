@@ -17,6 +17,11 @@ interface SetQuery {
   payload: Query;
 }
 
+interface SetQueryFilterAction {
+  type: "SET_QUERY_FILTER";
+  payload: string;
+}
+
 interface SetTagQueryAction {
   type: "SET_TAG_QUERY";
   payload: {
@@ -60,6 +65,7 @@ export type Actions =
   | SetFromAndToQueryAction
   | SetTypeAction
   | SetTextAction
+  | SetQueryFilterAction
   | SetHashAction;
 
 export function reducer(state: State, action: Actions) {
@@ -138,6 +144,19 @@ export function reducer(state: State, action: Actions) {
         },
       };
     }
+    case "SET_QUERY_FILTER": {
+      if (action.payload === state.query.filter) {
+        return state;
+      }
+
+      return {
+        ...state,
+        query: {
+          ...state.query,
+          filter: action.payload,
+        },
+      };
+    }
     case "SET_HASH": {
       if (action.payload.hash === state.hash) {
         return state;
@@ -162,5 +181,6 @@ export const defaultState: State = {
     duration: null,
     type: "",
     text: "",
+    filter: "",
   },
 };

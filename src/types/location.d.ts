@@ -8,6 +8,7 @@ interface Query {
   duration: Duration | null;
   type: MemoType | "";
   text: string;
+  filter: string;
 }
 
 type AppRouter = "/" | "/signin" | "/trash";

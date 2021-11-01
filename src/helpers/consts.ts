@@ -4,9 +4,6 @@ export const PAGE_CONTAINER_SELECTOR = "#page-container";
 // 移动端样式适配额外类名
 export const MOBILE_ADDITION_CLASSNAME = "mobile-show-sidebar";
 
-// 每次获取 memo 的数量
-export const FETCH_MEMO_AMOUNT = 20;
-
 // 默认动画持续时长
 export const ANIMATION_DURATION = 200;
 
@@ -27,23 +24,3 @@ export const IMAGE_URL_REG = /(https?:\/\/[^\s<\\*>']+\.(jpeg|jpg|gif|png|svg))/
 
 // memo 关联正则
 export const MEMO_LINK_REG = /\[@(.+?)\]\((.+?)\)/g;
-
-// memo filter special type
-export const MEMO_TYPES = [
-  {
-    type: "CONNECTED",
-    text: "有关联",
-  },
-  {
-    type: "NOT_TAGGED",
-    text: "无标签",
-  },
-  {
-    type: "LINKED",
-    text: "有超链接",
-  },
-  {
-    type: "IMAGED",
-    text: "有图片",
-  },
-];

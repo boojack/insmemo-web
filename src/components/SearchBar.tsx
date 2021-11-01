@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MEMO_TYPES } from "../helpers/consts";
+import { MEMO_TYPES } from "../helpers/filter";
 import { locationService } from "../services";
 import appContext from "../labs/appContext";
 import "../less/search-bar.less";
@@ -39,11 +39,11 @@ const SearchBar: React.FC<Props> = () => {
             <span className="section-text">类型:</span>
             {MEMO_TYPES.map((t, idx) => {
               return (
-                <div key={t.type}>
+                <div key={t.value}>
                   <span
-                    className={`type-item ${memoType === t.type ? "selected" : ""}`}
+                    className={`type-item ${memoType === t.value ? "selected" : ""}`}
                     onClick={() => {
-                      handleMemoTypeItemClick(t.type as MemoType);
+                      handleMemoTypeItemClick(t.value as MemoType);
                     }}
                   >
                     {t.text}

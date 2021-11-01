@@ -14,6 +14,9 @@ interface Props {}
 const QueryList: React.FC<Props> = () => {
   const {
     queryState: { queries },
+    locationState: {
+      query: { filter },
+    },
   } = useContext(appContext);
   const loadingState = useLoading();
   const sortedQueries = queries
@@ -48,11 +51,7 @@ const QueryList: React.FC<Props> = () => {
       </Only>
       <div className="queries-container">
         {sortedQueries.map((q) => {
-          const paramsObject = JSON.parse(q.querystring) as Query;
-          const paramsString = "?" + utils.transformObjectToParamsString(paramsObject);
-          const isActive = paramsString === window.location.search;
-
-          return <QueryItemContainer key={q.id} query={q} isActive={isActive} />;
+          return <QueryItemContainer key={q.id} query={q} isActive={q.id === filter} />;
         })}
       </div>
     </div>
@@ -66,14 +65,13 @@ interface QueryItemContainerProps {
 
 const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemContainerProps) => {
   const { query, isActive } = props;
-  const paramsObject = JSON.parse(query.querystring) as Query;
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
 
   const handleQueryClick = () => {
     if (isActive) {
-      locationService.clearQuery();
+      locationService.setMemoFilter("");
     } else {
-      locationService.setQuery(paramsObject);
+      locationService.setMemoFilter(query.id);
     }
   };
 

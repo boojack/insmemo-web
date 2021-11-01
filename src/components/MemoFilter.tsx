@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { locationService, memoService } from "../services";
+import { locationService } from "../services";
 import appContext from "../labs/appContext";
 import * as utils from "../helpers/utils";
+import { getTextWithMemoType } from "../helpers/filter";
 import "../less/memo-filter.less";
 
 interface FilterProps {}
@@ -41,7 +42,7 @@ const MemoFilter: React.FC<FilterProps> = () => {
           locationService.setMemoTypeQuery("");
         }}
       >
-        <span className="icon-text">📦</span> {memoService.getTextWithMemoType(memoType as MemoType)}
+        <span className="icon-text">📦</span> {getTextWithMemoType(memoType as MemoType)}
       </div>
       <div
         className={"filter-item-container " + (textQuery ? "" : "hidden")}

@@ -1,5 +1,5 @@
 import * as api from "../helpers/api";
-import { MEMO_TYPES, TAG_REG } from "../helpers/consts";
+import { TAG_REG } from "../helpers/consts";
 import appStore from "../stores";
 import userService from "./userService";
 
@@ -128,15 +128,6 @@ class MemoService {
   public async getLinkedMemos(memoId: string): Promise<Model.Memo[]> {
     const { data } = await api.getLinkedMemos(memoId);
     return data;
-  }
-
-  public getTextWithMemoType(type: string): string {
-    for (const t of MEMO_TYPES) {
-      if (t.type === type) {
-        return t.text;
-      }
-    }
-    return "";
   }
 }
 

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { locationService, memoService } from "../services";
+import { locationService, memoService, queryService } from "../services";
 import appContext from "../labs/appContext";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
@@ -17,41 +17,58 @@ const MemoList: React.FC<Props> = () => {
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
-  const { tag: tagQuery, duration, type: memoType, text: textQuery } = query;
-  const showFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
+  let { tag: tagQuery, duration, type: memoType, text: textQuery, filter: queryId } = query;
+  const showMemoFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
 
-  const shownMemos = showFilter
-    ? memos.filter((memo) => {
-        let shouldShow = true;
+  const shownMemos =
+    showMemoFilter || queryId
+      ? memos.filter((memo) => {
+          let shouldShow = true;
 
-        if (tagQuery && !memo.content.includes(`# ${tagQuery} `)) {
-          shouldShow = false;
-        }
-        if (
-          duration &&
-          duration.from < duration.to &&
-          (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
-        ) {
-          shouldShow = false;
-        }
-        if (memoType) {
-          if (memoType === "NOT_TAGGED" && memo.content.match(TAG_REG) !== null) {
-            shouldShow = false;
-          } else if (memoType === "LINKED" && memo.content.match(LINK_REG) === null) {
-            shouldShow = false;
-          } else if (memoType === "IMAGED" && memo.content.match(IMAGE_URL_REG) === null) {
-            shouldShow = false;
-          } else if (memoType === "CONNECTED" && memo.content.match(MEMO_LINK_REG) === null) {
+          const query = queryService.getQueryById(queryId);
+          if (query) {
+            const filters = JSON.parse(query.querystring) as Filter[];
+            if (Array.isArray(filters)) {
+              for (const f of filters) {
+                if (f.type === "TAG") {
+                  tagQuery = f.value.value;
+                } else if (f.type === "TYPE") {
+                  memoType = f.value.value as MemoType;
+                } else if (f.type === "TEXT") {
+                  textQuery = f.value.value;
+                }
+              }
+            }
+          }
+
+          if (tagQuery && !memo.content.includes(`# ${tagQuery} `)) {
             shouldShow = false;
           }
-        }
-        if (textQuery && !memo.content.includes(textQuery)) {
-          shouldShow = false;
-        }
+          if (
+            duration &&
+            duration.from < duration.to &&
+            (utils.getTimeStampByDate(memo.createdAt) < duration.from || utils.getTimeStampByDate(memo.createdAt) > duration.to)
+          ) {
+            shouldShow = false;
+          }
+          if (memoType) {
+            if (memoType === "NOT_TAGGED" && memo.content.match(TAG_REG) !== null) {
+              shouldShow = false;
+            } else if (memoType === "LINKED" && memo.content.match(LINK_REG) === null) {
+              shouldShow = false;
+            } else if (memoType === "IMAGED" && memo.content.match(IMAGE_URL_REG) === null) {
+              shouldShow = false;
+            } else if (memoType === "CONNECTED" && memo.content.match(MEMO_LINK_REG) === null) {
+              shouldShow = false;
+            }
+          }
+          if (textQuery && !memo.content.includes(textQuery)) {
+            shouldShow = false;
+          }
 
-        return shouldShow;
-      })
-    : memos;
+          return shouldShow;
+        })
+      : memos;
 
   useEffect(() => {
     wrapperElement.current?.scrollTo({ top: 0 });
@@ -81,7 +98,7 @@ const MemoList: React.FC<Props> = () => {
       {shownMemos.map((memo) => (
         <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
       ))}
-      {showFilter ? (
+      {showMemoFilter ? (
         <div className={"status-text-container"}>
           <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
         </div>
