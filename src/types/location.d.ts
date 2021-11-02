@@ -6,7 +6,7 @@ interface Duration {
 interface Query {
   tag: string;
   duration: Duration | null;
-  type: MemoType | "";
+  type: MemoSpecType | "";
   text: string;
   filter: string;
 }

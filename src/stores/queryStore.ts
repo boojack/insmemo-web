@@ -25,12 +25,12 @@ interface DeleteQueryByIdAction {
   };
 }
 
-interface EditQueryByIdAction {
-  type: "EDIT_QUERY";
+interface UpdateQueryAction {
+  type: "UPDATE_QUERY";
   payload: Model.Query;
 }
 
-export type Actions = SetQueries | InsertQueryAction | DeleteQueryByIdAction | EditQueryByIdAction;
+export type Actions = SetQueries | InsertQueryAction | DeleteQueryByIdAction | UpdateQueryAction;
 
 export function reducer(state: State, action: Actions): State {
   switch (action.type) {
@@ -64,7 +64,7 @@ export function reducer(state: State, action: Actions): State {
         queries: [...state.queries].filter((query) => query.id !== action.payload.id),
       };
     }
-    case "EDIT_QUERY": {
+    case "UPDATE_QUERY": {
       const queries = state.queries.map((m) => {
         if (m.id === action.payload.id) {
           return {

@@ -40,8 +40,9 @@ class LocationService {
       },
     };
     state.query.tag = urlParams.get("tag") ?? "";
-    state.query.type = (urlParams.get("type") ?? "") as MemoType;
+    state.query.type = (urlParams.get("type") ?? "") as MemoSpecType;
     state.query.text = urlParams.get("text") ?? "";
+    state.query.filter = urlParams.get("filter") ?? "";
     const from = parseInt(urlParams.get("from") ?? "0");
     const to = parseInt(urlParams.get("to") ?? "0");
     if (to > from && to !== 0) {
@@ -130,7 +131,7 @@ class LocationService {
     updateLocationUrl("replace");
   };
 
-  public setMemoTypeQuery = (type: MemoType | "" = "") => {
+  public setMemoTypeQuery = (type: MemoSpecType | "" = "") => {
     appStore.dispatch({
       type: "SET_TYPE",
       payload: {

@@ -42,7 +42,7 @@ const MemoFilter: React.FC<FilterProps> = () => {
           locationService.setMemoTypeQuery("");
         }}
       >
-        <span className="icon-text">📦</span> {getTextWithMemoType(memoType as MemoType)}
+        <span className="icon-text">📦</span> {getTextWithMemoType(memoType as MemoSpecType)}
       </div>
       <div
         className={"filter-item-container " + (textQuery ? "" : "hidden")}

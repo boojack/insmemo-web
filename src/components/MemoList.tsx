@@ -3,6 +3,7 @@ import { locationService, memoService, queryService } from "../services";
 import appContext from "../labs/appContext";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
+import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import Memo from "./Memo";
 import "../less/memolist.less";
 
@@ -17,7 +18,7 @@ const MemoList: React.FC<Props> = () => {
   const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
-  let { tag: tagQuery, duration, type: memoType, text: textQuery, filter: queryId } = query;
+  const { tag: tagQuery, duration, type: memoType, text: textQuery, filter: queryId } = query;
   const showMemoFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
 
   const shownMemos =
@@ -29,15 +30,7 @@ const MemoList: React.FC<Props> = () => {
           if (query) {
             const filters = JSON.parse(query.querystring) as Filter[];
             if (Array.isArray(filters)) {
-              for (const f of filters) {
-                if (f.type === "TAG") {
-                  tagQuery = f.value.value;
-                } else if (f.type === "TYPE") {
-                  memoType = f.value.value as MemoType;
-                } else if (f.type === "TEXT") {
-                  textQuery = f.value.value;
-                }
-              }
+              shouldShow = checkShouldShowMemoWithFilters(memo, filters);
             }
           }
 

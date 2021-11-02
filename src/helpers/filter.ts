@@ -1,74 +1,72 @@
-// memo filter special type
-export const MEMO_TYPES = [
-  {
-    text: "有关联",
-    value: "CONNECTED",
-  },
-  {
-    text: "无标签",
-    value: "NOT_TAGGED",
-  },
-  {
-    text: "有超链接",
-    value: "LINKED",
-  },
-  {
-    text: "有图片",
-    value: "IMAGED",
-  },
-];
+import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "./consts";
 
-export const MEMO_FILTER_TYPES = [
-  {
-    text: "类型",
-    value: "TYPE",
-  },
-  {
-    text: "标签",
+export const filterConsts = {
+  TAG: {
     value: "TAG",
+    text: "标签",
+    operators: [
+      {
+        text: "包括",
+        value: "CONTAIN",
+      },
+      {
+        text: "排除",
+        value: "NOT_CONTAIN",
+      },
+    ],
   },
-  {
-    text: "文本",
+  TYPE: {
+    value: "TYPE",
+    text: "类型",
+    operators: [
+      {
+        value: "IS",
+        text: "是",
+      },
+      {
+        value: "IS_NOT",
+        text: "不是",
+      },
+    ],
+    values: [
+      {
+        value: "CONNECTED",
+        text: "有关联",
+      },
+      {
+        value: "NOT_TAGGED",
+        text: "无标签",
+      },
+      {
+        value: "LINKED",
+        text: "有超链接",
+      },
+      {
+        value: "IMAGED",
+        text: "有图片",
+      },
+    ],
+  },
+  TEXT: {
     value: "TEXT",
+    text: "文本",
+    operators: [
+      {
+        value: "CONTAIN",
+        text: "包括",
+      },
+      {
+        value: "NOT_CONTAIN",
+        text: "排除",
+      },
+    ],
   },
-];
-
-interface Operator {
-  text: string;
-  value: string;
-}
-
-export const MEMO_FILTER_OPERATORS: IterObject<Operator[]> = {
-  TYPE: [
-    {
-      text: "是",
-      value: "IS",
-    },
-  ],
-  TEXT: [
-    {
-      text: "含有",
-      value: "CONTAIN",
-    },
-    {
-      text: "不包括",
-      value: "NOT_CONTAIN",
-    },
-  ],
-  TAG: [
-    {
-      text: "含有",
-      value: "CONTAIN",
-    },
-    {
-      text: "不包括",
-      value: "NOT_CONTAIN",
-    },
-  ],
 };
 
+export const memoSpecialTypes = filterConsts["TYPE"].values;
+
 export const getTextWithMemoType = (type: string): string => {
-  for (const t of MEMO_TYPES) {
+  for (const t of memoSpecialTypes) {
     if (t.value === type) {
       return t.text;
     }
@@ -78,11 +76,67 @@ export const getTextWithMemoType = (type: string): string => {
 
 export const getDefaultFilter = (): BaseFilter => {
   return {
-    type: "TYPE",
+    type: "TAG",
     value: {
       operator: "CONTAIN",
       value: "",
     },
     relation: "AND",
   };
+};
+
+export const checkShouldShowMemoWithFilters = (memo: Model.Memo, filters: Filter[]) => {
+  let shouldShow = true;
+
+  for (const f of filters) {
+    const { relation } = f;
+    const r = checkShouldShowMemo(memo, f);
+    if (relation === "OR") {
+      shouldShow = shouldShow || r;
+    } else {
+      shouldShow = shouldShow && r;
+    }
+  }
+
+  return shouldShow;
+};
+
+export const checkShouldShowMemo = (memo: Model.Memo, filter: Filter) => {
+  let shouldShow = true;
+
+  const {
+    type,
+    value: { operator, value },
+  } = filter;
+
+  if (type === "TAG") {
+    let contained = memo.content.includes(`# ${value} `);
+    if (operator === "NOT_CONTAIN") {
+      contained = !contained;
+    }
+    shouldShow = contained;
+  } else if (type === "TYPE") {
+    let matched = false;
+    if (value === "NOT_TAGGED" && memo.content.match(TAG_REG) === null) {
+      matched = true;
+    } else if (value === "LINKED" && memo.content.match(LINK_REG) !== null) {
+      matched = true;
+    } else if (value === "IMAGED" && memo.content.match(IMAGE_URL_REG) !== null) {
+      matched = true;
+    } else if (value === "CONNECTED" && memo.content.match(MEMO_LINK_REG) !== null) {
+      matched = true;
+    }
+    if (operator === "IS_NOT") {
+      matched = !matched;
+    }
+    shouldShow = matched;
+  } else if (type === "TEXT") {
+    let contained = memo.content.includes(value);
+    if (operator === "NOT_CONTAIN") {
+      contained = !contained;
+    }
+    shouldShow = contained;
+  }
+
+  return shouldShow;
 };

@@ -12,6 +12,7 @@ const MemosHeader: React.FC<Props> = () => {
     locationState: {
       query: { filter },
     },
+    queryState: { queries },
   } = useContext(appContext);
 
   const [titleText, setTitleText] = useState("MEMOS");
@@ -23,7 +24,7 @@ const MemosHeader: React.FC<Props> = () => {
     } else {
       setTitleText("MEMOS");
     }
-  }, [filter]);
+  }, [filter, queries]);
 
   const handleMemoTextClick = useCallback(() => {
     locationService.clearQuery();

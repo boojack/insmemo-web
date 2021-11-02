@@ -39,7 +39,7 @@ interface SetFromAndToQueryAction {
 interface SetTypeAction {
   type: "SET_TYPE";
   payload: {
-    type: MemoType | "";
+    type: MemoSpecType | "";
   };
 }
 
@@ -86,7 +86,9 @@ export function reducer(state: State, action: Actions) {
     case "SET_QUERY": {
       return {
         ...state,
-        query: action.payload,
+        query: {
+          ...action.payload,
+        },
       };
     }
     case "SET_TAG_QUERY": {

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MEMO_TYPES } from "../helpers/filter";
+import { memoSpecialTypes } from "../helpers/filter";
 import { locationService } from "../services";
 import appContext from "../labs/appContext";
 import "../less/search-bar.less";
@@ -13,7 +13,7 @@ const SearchBar: React.FC<Props> = () => {
     },
   } = useContext(appContext);
 
-  const handleMemoTypeItemClick = (type: MemoType | "") => {
+  const handleMemoTypeItemClick = (type: MemoSpecType | "") => {
     const { type: prevType } = locationService.getState().query;
     if (type === prevType) {
       type = "";
@@ -37,18 +37,18 @@ const SearchBar: React.FC<Props> = () => {
           <p className="title-text">QUICKLY FILTER</p>
           <div className="section-container types-container">
             <span className="section-text">类型:</span>
-            {MEMO_TYPES.map((t, idx) => {
+            {memoSpecialTypes.map((t, idx) => {
               return (
                 <div key={t.value}>
                   <span
                     className={`type-item ${memoType === t.value ? "selected" : ""}`}
                     onClick={() => {
-                      handleMemoTypeItemClick(t.value as MemoType);
+                      handleMemoTypeItemClick(t.value as MemoSpecType);
                     }}
                   >
                     {t.text}
                   </span>
-                  {idx + 1 < MEMO_TYPES.length ? <span className="split-text">/</span> : null}
+                  {idx + 1 < memoSpecialTypes.length ? <span className="split-text">/</span> : null}
                 </div>
               );
             })}

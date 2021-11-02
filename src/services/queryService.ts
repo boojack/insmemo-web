@@ -43,7 +43,7 @@ class QueryService {
 
   public editQuery(query: Model.Query) {
     appStore.dispatch({
-      type: "EDIT_QUERY",
+      type: "UPDATE_QUERY",
       payload: query,
     });
   }

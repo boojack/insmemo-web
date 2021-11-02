@@ -17,19 +17,18 @@
           display: block;
           flex-shrink: 0;
           width: 40px;
-          margin-top: 7px;
           margin-right: 12px;
           text-align: right;
           color: gray;
           font-size: 13px;
-          line-height: 26px;
+          line-height: 32px;
         }
 
         > .title-input {
           width: 100%;
-          padding: 6px 12px;
+          padding: 0 12px;
           font-size: 14px;
-          line-height: 26px;
+          line-height: 32px;
           outline: none;
           border-radius: 4px;
           border: 1px solid @bg-gray;
@@ -43,8 +42,7 @@
           > .create-filter-btn {
             color: @text-green;
             font-size: 13px;
-            line-height: 26px;
-            margin-top: 7px;
+            line-height: 32px;
             cursor: pointer;
           }
         }
@@ -88,19 +86,22 @@
 .memo-filter-input-wrapper {
   .flex(row, flex-start, center);
   width: 100%;
-  height: 40px;
+  margin-top: 8px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
 
   > select,
   > input {
-    outline: none;
-    padding: 6px 0;
-    margin-right: 4px;
-    border-radius: 4px;
     height: 32px;
-    border: 1px solid @bg-gray;
+    padding: 0 4px;
     flex-shrink: 0;
     flex-grow: 1;
-    width: auto;
+    margin-right: 4px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid @bg-gray;
     background-color: transparent;
 
     &:hover {
@@ -109,9 +110,9 @@
     }
 
     &.relation-selector {
-      width: 36px;
+      width: 42px;
       flex-grow: 0;
-      margin-left: -40px;
+      margin-left: -46px;
     }
 
     &.type-selector {

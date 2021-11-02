@@ -43,7 +43,7 @@
   > .quickly-action-wrapper {
     display: none;
     position: absolute;
-    top: 56px;
+    top: 52px;
     right: -8px;
     z-index: 2;
     padding: 8px;
@@ -100,5 +100,11 @@
     &:hover {
       display: flex;
     }
+  }
+}
+
+@media only screen and (max-width: 875px) {
+  .search-bar-container > .quickly-action-wrapper {
+    right: 0px;
   }
 }

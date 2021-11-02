@@ -47,7 +47,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
 
     setTimeout(() => {
       if (!memosElRef.current) {
-        return; 
+        return;
       }
 
       const osVersion = utils.getOSVersion();

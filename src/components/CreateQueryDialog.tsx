@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { memoService, queryService } from "../services";
-import { getDefaultFilter, MEMO_FILTER_OPERATORS, MEMO_FILTER_TYPES, MEMO_TYPES } from "../helpers/filter";
+import { filterConsts, getDefaultFilter } from "../helpers/filter";
 import { showDialog } from "./Dialog";
 import toastHelper from "./Toast";
 import "../less/create-query-dialog.less";
@@ -129,10 +129,10 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
 
   useEffect(() => {
     let operatorElement = <></>;
-    if (Object.keys(MEMO_FILTER_OPERATORS).includes(type)) {
+    if (Object.keys(filterConsts).includes(type)) {
       operatorElement = (
         <select className="operator-selector" value={filter.value.operator} onChange={handleOperatorChange}>
-          {MEMO_FILTER_OPERATORS[type].map((t) => {
+          {filterConsts[type as FilterType].operators.map((t) => {
             return (
               <option key={t.value} value={t.value}>
                 {t.text}
@@ -148,7 +148,8 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
       case "TYPE": {
         valueElement = (
           <select className="value-selector" value={filter.value.value} onChange={handleValueChange}>
-            {MEMO_TYPES.map((t) => {
+            <option value=""></option>
+            {filterConsts["TYPE"].values.map((t) => {
               return (
                 <option key={t.value} value={t.value}>
                   {t.text}
@@ -162,6 +163,7 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
       case "TAG": {
         valueElement = (
           <select className="value-selector" value={filter.value.value} onChange={handleValueChange}>
+            <option value=""></option>
             {memoService.getState().tags.map((t) => {
               return (
                 <option key={t} value={t}>
@@ -243,7 +245,7 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
         </select>
       ) : null}
       <select className="type-selector" onChange={handleTypeChange} value={type}>
-        {MEMO_FILTER_TYPES.map((t) => {
+        {Object.values(filterConsts).map((t) => {
           return (
             <option key={t.value} value={t.value}>
               {t.text}
