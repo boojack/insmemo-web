@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { memoService, queryService } from "../services";
 import { filterConsts, getDefaultFilter } from "../helpers/filter";
+import useLoading from "../hooks/useLoading";
 import { showDialog } from "./Dialog";
 import toastHelper from "./Toast";
 import "../less/create-query-dialog.less";
@@ -14,6 +15,7 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
 
   const [title, setTitle] = useState<string>("");
   const [filters, setFilters] = useState<Filter[]>([]);
+  const requestState = useLoading(false);
 
   useEffect(() => {
     const queryTemp = queryService.getQueryById(queryId ?? "");
@@ -106,7 +108,7 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
       <div className="dialog-footer-container">
         <div></div>
         <div className="btns-container">
-          <button className="text-btn save-btn" onClick={handleSaveBtnClick}>
+          <button className={`text-btn save-btn ${requestState.isLoading ? "requesting" : ""}`} onClick={handleSaveBtnClick}>
             保存
           </button>
         </div>

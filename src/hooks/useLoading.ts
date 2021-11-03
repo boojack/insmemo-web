@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-function useLoading() {
-  const [state, setState] = useState({ isLoading: true, isFailed: false, isSucceed: false });
+function useLoading(initialState: boolean = true) {
+  const [state, setState] = useState({ isLoading: initialState, isFailed: false, isSucceed: false });
 
   return {
     ...state,

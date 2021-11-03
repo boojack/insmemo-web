@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { locationService } from "../services";
+import { locationService, queryService } from "../services";
 import appContext from "../labs/appContext";
 import * as utils from "../helpers/utils";
 import { getTextWithMemoType } from "../helpers/filter";
@@ -12,22 +12,21 @@ const MemoFilter: React.FC<FilterProps> = () => {
     locationState: { query },
   } = useContext(appContext);
 
-  const { tag: tagQuery, duration, type: memoType, text: textQuery } = query;
-  const showFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery);
+  const { tag: tagQuery, duration, type: memoType, text: textQuery, filter } = query;
+  const queryFilter = queryService.getQueryById(filter);
+  const showFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery || queryFilter);
 
   return (
     <div className={`filter-query-container ${showFilter ? "" : "hidden"}`}>
       <span className="tip-text">筛选：</span>
-      {duration && duration.from < duration.to ? (
-        <div
-          className="filter-item-container"
-          onClick={() => {
-            locationService.setFromAndToQuery(0, 0);
-          }}
-        >
-          <span className="icon-text">🗓️</span> {utils.getDateString(duration.from)} 至 {utils.getDateString(duration.to)}
-        </div>
-      ) : null}
+      <div
+        className={"filter-item-container " + (queryFilter ? "" : "hidden")}
+        onClick={() => {
+          locationService.setMemoFilter("");
+        }}
+      >
+        <span className="icon-text">🔖</span> {queryFilter?.title}
+      </div>
       <div
         className={"filter-item-container " + (tagQuery ? "" : "hidden")}
         onClick={() => {
@@ -44,6 +43,16 @@ const MemoFilter: React.FC<FilterProps> = () => {
       >
         <span className="icon-text">📦</span> {getTextWithMemoType(memoType as MemoSpecType)}
       </div>
+      {duration && duration.from < duration.to ? (
+        <div
+          className="filter-item-container"
+          onClick={() => {
+            locationService.setFromAndToQuery(0, 0);
+          }}
+        >
+          <span className="icon-text">🗓️</span> {utils.getDateString(duration.from)} 至 {utils.getDateString(duration.to)}
+        </div>
+      ) : null}
       <div
         className={"filter-item-container " + (textQuery ? "" : "hidden")}
         onClick={() => {

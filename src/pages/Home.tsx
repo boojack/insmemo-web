@@ -32,12 +32,6 @@ function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    if (pathname !== "/") {
-      locationService.clearQuery();
-    }
-  }, [pathname]);
-
   return (
     <>
       {loadingState.isLoading ? null : (

@@ -110,7 +110,7 @@ export const checkShouldShowMemo = (memo: Model.Memo, filter: Filter) => {
   } = filter;
 
   if (type === "TAG") {
-    let contained = memo.content.includes(`# ${value} `);
+    let contained = memo.content.includes(`# ${value}`);
     if (operator === "NOT_CONTAIN") {
       contained = !contained;
     }

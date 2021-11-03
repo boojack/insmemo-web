@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as api from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
+import useLoading from "../hooks/useLoading";
 import { locationService, userService } from "../services";
 import showAboutSiteDialog from "../components/AboutSiteDialog";
 import toastHelper from "../components/Toast";
@@ -19,6 +20,7 @@ const Signin: React.FC<Props> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const signinBtn = useRef<HTMLButtonElement>(null);
+  const signinBtnClickLoadingState = useLoading(false);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -48,6 +50,10 @@ const Signin: React.FC<Props> = () => {
   };
 
   const handleSignInBtnClick = async () => {
+    if (signinBtnClickLoadingState.isLoading) {
+      return;
+    }
+
     const usernameValidResult = validate(username, validateConfig);
     if (!usernameValidResult.result) {
       toastHelper.error("用户名 " + usernameValidResult.reason);
@@ -61,6 +67,7 @@ const Signin: React.FC<Props> = () => {
     }
 
     try {
+      signinBtnClickLoadingState.setLoading();
       const actionFunc = api.signin;
       const { succeed, message } = await actionFunc(username, password);
 
@@ -75,6 +82,7 @@ const Signin: React.FC<Props> = () => {
       } else {
         toastHelper.error("😟 登录失败");
       }
+      signinBtnClickLoadingState.setFinish();
     } catch (error: any) {
       console.error(error);
       toastHelper.error("😟 " + error.message);
@@ -101,7 +109,10 @@ const Signin: React.FC<Props> = () => {
         </div>
         <div className="page-footer-container">
           <div className="btns-container">
-            <a className="btn-text" href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">
+            <a
+              className={`btn-text ${window.location.origin.includes("justsven.top") ? "" : "hidden"}`}
+              href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+            >
               Sign In with GitHub
             </a>
           </div>
@@ -110,7 +121,11 @@ const Signin: React.FC<Props> = () => {
               注册
             </button>
             <span className="split-text">/</span>
-            <button className="text-btn signin-btn" ref={signinBtn} onClick={handleSignInBtnClick}>
+            <button
+              className={`text-btn signin-btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+              ref={signinBtn}
+              onClick={handleSignInBtnClick}
+            >
               登录
             </button>
           </div>
