@@ -109,12 +109,11 @@ const Signin: React.FC<Props> = () => {
         </div>
         <div className="page-footer-container">
           <div className="btns-container">
-            <a
-              className={`btn-text ${window.location.origin.includes("justsven.top") ? "" : "hidden"}`}
-              href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
-            >
-              Sign In with GitHub
-            </a>
+            {window.location.origin.includes("justsven.top") ? (
+              <a className="btn-text" href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">
+                Sign In with GitHub
+              </a>
+            ) : null}
           </div>
           <div className="btns-container">
             <button className="text-btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>

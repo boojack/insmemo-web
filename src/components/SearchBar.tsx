@@ -37,21 +37,23 @@ const SearchBar: React.FC<Props> = () => {
           <p className="title-text">QUICKLY FILTER</p>
           <div className="section-container types-container">
             <span className="section-text">类型:</span>
-            {memoSpecialTypes.map((t, idx) => {
-              return (
-                <div key={t.value}>
-                  <span
-                    className={`type-item ${memoType === t.value ? "selected" : ""}`}
-                    onClick={() => {
-                      handleMemoTypeItemClick(t.value as MemoSpecType);
-                    }}
-                  >
-                    {t.text}
-                  </span>
-                  {idx + 1 < memoSpecialTypes.length ? <span className="split-text">/</span> : null}
-                </div>
-              );
-            })}
+            <div className="values-container">
+              {memoSpecialTypes.map((t, idx) => {
+                return (
+                  <div key={t.value}>
+                    <span
+                      className={`type-item ${memoType === t.value ? "selected" : ""}`}
+                      onClick={() => {
+                        handleMemoTypeItemClick(t.value as MemoSpecType);
+                      }}
+                    >
+                      {t.text}
+                    </span>
+                    {idx + 1 < memoSpecialTypes.length ? <span className="split-text">/</span> : null}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

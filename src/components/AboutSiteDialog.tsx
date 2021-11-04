@@ -12,7 +12,7 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">
-          <span className="icon-text">😀</span>关于 <b>Memos</b>
+          <span className="icon-text">🤠</span>关于 <b>Memos</b>
         </p>
         <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
@@ -42,6 +42,10 @@ const AboutSiteDialog: React.FC<Props> = ({ destroy }: Props) => {
           <li>😋 精美且细节的视觉样式；</li>
           <li>📑 体验优良的交互逻辑；</li>
         </ul>
+        <br />
+        <a target="_blank" href="https://github.com/boojack/insmemo-web/discussions" rel="noreferrer">
+          🤔 问题反馈
+        </a>
         <br />
         <p>Enjoy it and have fun~ </p>
         <hr />

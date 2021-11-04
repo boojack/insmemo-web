@@ -44,7 +44,7 @@ const MemoEditor: React.FC<Props> = () => {
     const { editMemoId } = globalStateService.getState();
     const { query } = locationService.getState();
 
-    content = parseHtmlToRawText(content.replaceAll("&nbsp;", " "));
+    content = content.replaceAll("&nbsp;", " ");
 
     try {
       if (editMemoId) {

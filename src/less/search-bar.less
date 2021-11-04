@@ -1,14 +1,14 @@
 @import "./mixin.less";
 
 .search-bar-container {
-  width: 200px;
+  width: 160px;
 
   > .search-bar-inputer {
     .flex(row, flex-start, center);
     background-color: #efefef;
     width: 100%;
-    padding: 12px 20px;
-    border-radius: 21px;
+    padding: 10px 16px;
+    border-radius: 12px;
 
     > .icon-img {
       margin-right: 8px;
@@ -21,16 +21,6 @@
       font-size: 15px;
       border: none;
       outline: none;
-
-      &::placeholder {
-        padding-left: 4px;
-      }
-
-      &:focus {
-        &::placeholder {
-          color: lightgray;
-        }
-      }
     }
 
     &:hover {
@@ -43,12 +33,11 @@
   > .quickly-action-wrapper {
     display: none;
     position: absolute;
-    top: 52px;
+    top: 54px;
     right: -8px;
     z-index: 2;
     padding: 8px;
-    min-width: 272px;
-    width: auto;
+    width: 250px;
 
     > .quickly-action-container {
       .flex(column, flex-start, flex-start);
@@ -61,38 +50,45 @@
       > .title-text {
         color: gray;
         font-size: 12px;
-        margin-bottom: 8px;
       }
 
       > .types-container {
-        .flex(row, flex-start, center);
+        .flex(row, flex-start, flex-start);
         width: 100%;
         font-size: 13px;
-        margin-top: 4px;
+        margin-top: 8px;
 
         > .section-text {
           color: gray;
           margin-right: 4px;
+          flex-shrink: 0;
+          line-height: 24px;
         }
 
-        .type-item {
-          cursor: pointer;
-          padding: 4px 6px;
-          border-radius: 6px;
+        > .values-container {
+          .flex(row, flex-start, flex-start);
+          flex-wrap: wrap;
 
-          &:hover {
-            background-color: @bg-whitegray;
+          .type-item {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            line-height: 24px;
+
+            &:hover {
+              background-color: @bg-whitegray;
+            }
+
+            &.selected {
+              background-color: @text-green;
+              color: white;
+            }
           }
 
-          &.selected {
-            background-color: @text-green;
-            color: white;
+          .split-text {
+            color: lightgray;
+            margin: 0 4px;
           }
-        }
-
-        .split-text {
-          color: lightgray;
-          margin: 0 4px;
         }
       }
     }
@@ -105,6 +101,6 @@
 
 @media only screen and (max-width: 875px) {
   .search-bar-container > .quickly-action-wrapper {
-    right: 0px;
+    right: 4px;
   }
 }

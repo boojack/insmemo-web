@@ -35,7 +35,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
   return (
     <div className="menu-btns-popup" onClick={handlePopupClick}>
       <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
-        <span className="icon">🤠</span> 我的账号
+        <span className="icon">👤</span> 我的账号
       </button>
       <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
         <span className="icon">⚙️</span> 偏好设置
@@ -44,7 +44,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
         <span className="icon">🗑️</span> 回收站
       </button>
       <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
-        <span className="icon">😀</span> 关于
+        <span className="icon">🤠</span> 关于
       </button>
       <button className="text-btn action-btn" onClick={handleSignOutBtnClick}>
         <span className="icon">👋</span> 退出
