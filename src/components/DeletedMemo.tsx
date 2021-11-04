@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { IMAGE_URL_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
@@ -17,12 +18,20 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo, handleDeletedMemoAction } = props;
   const memo: FormattedMemo = {
     ...propsMemo,
-    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
     deletedAtStr: utils.getDateTimeString(propsMemo.deletedAt ?? Date.now()),
   };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+
+  const memoContentElRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (memoContentElRef.current) {
+      const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.append(...tempDiv.children);
+    }
+  }, []);
 
   const handleDeleteMemoClick = async () => {
     if (showConfirmDeleteBtn) {
@@ -73,7 +82,7 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+      <div className="memo-content-text" ref={memoContentElRef}></div>
       <Only when={imageUrls.length > 0}>
         <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (

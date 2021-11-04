@@ -37,7 +37,7 @@
     right: -8px;
     z-index: 2;
     padding: 8px;
-    width: 250px;
+    width: 300px;
 
     > .quickly-action-container {
       .flex(column, flex-start, flex-start);
@@ -62,32 +62,36 @@
           color: gray;
           margin-right: 4px;
           flex-shrink: 0;
-          line-height: 24px;
+          line-height: 26px;
         }
 
         > .values-container {
           .flex(row, flex-start, flex-start);
           flex-wrap: wrap;
 
-          .type-item {
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 6px;
-            line-height: 24px;
+          > div {
+            .flex(row, flex-start, center);
+            margin-bottom: 4px;
 
-            &:hover {
-              background-color: @bg-whitegray;
+            .type-item {
+              cursor: pointer;
+              padding: 4px 6px;
+              border-radius: 6px;
+
+              &:hover {
+                background-color: @bg-whitegray;
+              }
+
+              &.selected {
+                background-color: @text-green;
+                color: white;
+              }
             }
 
-            &.selected {
-              background-color: @text-green;
-              color: white;
+            .split-text {
+              color: lightgray;
+              margin: 0 4px;
             }
-          }
-
-          .split-text {
-            color: lightgray;
-            margin: 0 4px;
           }
         }
       }

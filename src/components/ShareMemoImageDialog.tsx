@@ -3,8 +3,8 @@ import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
-import Only from "./common/OnlyWhen";
 import { formatMemoContent } from "./Memo";
+import Only from "./common/OnlyWhen";
 import toastHelper from "./Toast";
 import "../less/share-memo-image-dialog.less";
 
@@ -19,18 +19,26 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
   const { user: userinfo } = userService.getState();
   const memo: FormattedMemo = {
     ...propsMemo,
-    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
   const [imageAmount, setImageAmount] = useState(imageUrls.length);
 
+  const memoContentElRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (memoContentElRef.current) {
+      const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.append(...tempDiv.children);
+    }
+  }, []);
+
   useEffect(() => {
     setTimeout(() => {
       if (!memoElRef.current) {
-        return; 
+        return;
       }
-      
+
       if (imageAmount === 0) {
         const osVersion = utils.getOSVersion();
         if (osVersion === "MacOS" || osVersion === "Unknown") {
@@ -80,7 +88,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         <img className="memo-img" src={imgUrl} />
         <div className="memo-container" ref={memoElRef}>
           <span className="time-text">{memo.createdAtStr}</span>
-          <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+          <div className="memo-content-text" ref={memoContentElRef}></div>
           <Only when={imageUrls.length > 0}>
             <div className="images-container">
               {imageUrls.map((imgUrl, idx) => (

@@ -215,3 +215,22 @@ export function getImageSize(src: string): Promise<{ width: number; height: numb
     imgEl.remove();
   });
 }
+
+export function clearDangerHTMLNode(node: Element) {
+  for (const c of node.children) {
+    if (c.tagName === "SCRIPT") {
+      c.insertAdjacentText("beforebegin", c.outerHTML);
+      c.remove();
+      continue;
+    } else if (c.tagName === "P") {
+      if (c.textContent === "" && c.firstElementChild?.tagName !== "BR") {
+        c.remove();
+        continue;
+      }
+    }
+
+    if (c.childElementCount > 0) {
+      clearDangerHTMLNode(c);
+    }
+  }
+}

@@ -7,8 +7,8 @@ import "../less/dialog.less";
 
 interface DialogConfig {
   className: string;
-  clickSpaceDestroy?: boolean;
   useAppContext?: boolean;
+  clickSpaceDestroy?: boolean;
 }
 
 interface Props extends DialogConfig, DialogProps {

@@ -7,7 +7,6 @@ interface DialogCallback {
 }
 
 interface FormattedMemo extends Model.Memo {
-  formattedContent: string;
   createdAtStr: string;
   deletedAtStr?: string;
 }

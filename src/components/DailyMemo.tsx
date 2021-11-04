@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { IMAGE_URL_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
@@ -16,11 +17,19 @@ const DailyMemo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo } = props;
   const memo: DailyMemo = {
     ...propsMemo,
-    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
     timeStr: utils.getTimeString(propsMemo.createdAt),
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+
+  const memoContentElRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (memoContentElRef.current) {
+      const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.append(...tempDiv.children);
+    }
+  }, []);
 
   return (
     <div className="daily-memo-wrapper">
@@ -28,7 +37,7 @@ const DailyMemo: React.FC<Props> = (props: Props) => {
         <span className="normal-text">{memo.timeStr}</span>
       </div>
       <div className="memo-content-container">
-        <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+        <div className="memo-content-text" ref={memoContentElRef}></div>
         <Only when={imageUrls.length > 0}>
           <div className="images-container">
             {imageUrls.map((imgUrl, idx) => (

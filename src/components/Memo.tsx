@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import { parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
 import * as utils from "../helpers/utils";
@@ -19,11 +19,19 @@ const Memo: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo } = props;
   const memo: FormattedMemo = {
     ...propsMemo,
-    formattedContent: formatMemoContent(propsMemo.content),
     createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
   };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+
+  const memoContentElRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (memoContentElRef.current) {
+      const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.append(...tempDiv.children);
+    }
+  }, []);
 
   const handleShowMemoStoryDialog = () => {
     showMemoCardDialog(memo);
@@ -112,7 +120,7 @@ const Memo: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="memo-content-text" onClick={handleMemoContentClick} dangerouslySetInnerHTML={{ __html: memo.formattedContent }}></div>
+      <div className="memo-content-text" ref={memoContentElRef} onClick={handleMemoContentClick}></div>
       <Only when={imageUrls.length > 0}>
         <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (
@@ -124,9 +132,8 @@ const Memo: React.FC<Props> = (props: Props) => {
   );
 };
 
-export function formatMemoContent(content: string): string {
-  const tempDivContainer = document.createElement("div");
-  tempDivContainer.innerHTML = parseRawTextToHtml(content)
+export function formatMemoContent(content: string): Element {
+  content = parseRawTextToHtml(content)
     .split("<br>")
     .map((t) => {
       if (t !== "") {
@@ -136,7 +143,6 @@ export function formatMemoContent(content: string): string {
       }
     })
     .join("");
-  content = tempDivContainer.innerHTML;
 
   const { shouldUseMarkdownParser, shouldSplitMemoWord, shouldHideImageUrl } = globalStateService.getState();
 
@@ -148,20 +154,6 @@ export function formatMemoContent(content: string): string {
     content = content.replace(IMAGE_URL_REG, "");
   }
 
-  // 清除空行: <p></p>
-  tempDivContainer.innerHTML = content;
-  for (const p of tempDivContainer.querySelectorAll("p")) {
-    if (p.textContent === "" && p.firstElementChild?.tagName !== "BR") {
-      p.remove();
-    }
-  }
-  content = tempDivContainer.innerHTML;
-
-  content = content
-    .replace(TAG_REG, "<span class='tag-span'>#$1</span>")
-    .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
-    .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
-
   // 中英文之间加空格
   if (shouldSplitMemoWord) {
     content = content
@@ -169,7 +161,16 @@ export function formatMemoContent(content: string): string {
       .replace(/([A-Za-z0-9?.,;[\]]+)([\u4e00-\u9fa5])/g, "$1 $2");
   }
 
-  return content;
+  content = content
+    .replace(TAG_REG, "<span class='tag-span'>#$1</span>")
+    .replace(LINK_REG, "<a class='link' target='_blank' rel='noreferrer' href='$1'>$1</a>")
+    .replace(MEMO_LINK_REG, "<span class='memo-link-text' data-value='$2'>$1</span>");
+
+  const tempDivContainer = document.createElement("div");
+  tempDivContainer.innerHTML = content;
+  utils.clearDangerHTMLNode(tempDivContainer);
+
+  return tempDivContainer;
 }
 
 export default memo(Memo);

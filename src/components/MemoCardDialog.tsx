@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
 import * as utils from "../helpers/utils";
 import { globalStateService, memoService } from "../services";
@@ -21,12 +21,20 @@ interface Props extends DialogProps {
 const MemoCardDialog: React.FC<Props> = (props: Props) => {
   const [memo, setMemo] = useState<FormattedMemo>({
     ...props.memo,
-    formattedContent: formatMemoContent(props.memo.content),
     createdAtStr: utils.getDateTimeString(props.memo.createdAt),
   });
   const [linkMemos, setLinkMemos] = useState<LinkedMemo[]>([]);
   const [linkedMemos, setLinkedMemos] = useState<LinkedMemo[]>([]);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+
+  const memoContentElRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (memoContentElRef.current) {
+      const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.append(...tempDiv.children);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchLinkedMemos = async () => {
@@ -40,7 +48,6 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
             if (memoTemp) {
               linkMemos.push({
                 ...memoTemp,
-                formattedContent: formatMemoContent(memoTemp.content),
                 createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
                 dateStr: utils.getDateString(memoTemp.createdAt),
               });
@@ -55,7 +62,6 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
             .sort((a, b) => utils.getTimeStampByDate(b.createdAt) - utils.getTimeStampByDate(a.createdAt))
             .map((m) => ({
               ...m,
-              formattedContent: formatMemoContent(m.content),
               createdAtStr: utils.getDateTimeString(m.createdAt),
               dateStr: utils.getDateString(m.createdAt),
             }))
@@ -78,7 +84,6 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
       if (memoTemp) {
         const nextMemo = {
           ...memoTemp,
-          formattedContent: formatMemoContent(memoTemp.content),
           createdAtStr: utils.getDateTimeString(memoTemp.createdAt),
         };
         setLinkMemos([]);
@@ -117,11 +122,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <div className="memo-container">
-          <div
-            className="memo-content-text"
-            onClick={handleMemoContentClick}
-            dangerouslySetInnerHTML={{ __html: memo.formattedContent ?? "" }}
-          ></div>
+          <div className="memo-content-text" ref={memoContentElRef} onClick={handleMemoContentClick}></div>
           <Only when={imageUrls.length > 0}>
             <div className="images-wrapper">
               {imageUrls.map((imgUrl, idx) => (
@@ -154,7 +155,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         <div className="linked-memos-wrapper">
           <p className="normal-text">关联了 {linkMemos.length} 个 MEMO</p>
           {linkMemos.map((m) => {
-            const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
+            const rawtext = parseHtmlToRawText(formatMemoContent(m.content).innerHTML).replaceAll("\n", " ");
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
                 <span className="time-text">{m.dateStr} </span>
@@ -168,7 +169,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         <div className="linked-memos-wrapper">
           <p className="normal-text">{linkedMemos.length} 条链接至此的 MEMO</p>
           {linkedMemos.map((m) => {
-            const rawtext = parseHtmlToRawText(m.formattedContent).replaceAll("\n", " ");
+            const rawtext = parseHtmlToRawText(formatMemoContent(m.content).innerHTML).replaceAll("\n", " ");
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
                 <span className="time-text">{m.dateStr} </span>
