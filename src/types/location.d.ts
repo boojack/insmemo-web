@@ -11,7 +11,7 @@ interface Query {
   filter: string;
 }
 
-type AppRouter = "/" | "/signin" | "/trash";
+type AppRouter = "/" | "/signin" | "/trash" | "/setting";
 
 interface AppLocation {
   pathname: AppRouter;

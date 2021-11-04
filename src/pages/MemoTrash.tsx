@@ -7,7 +7,6 @@ import * as utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import DeletedMemo from "../components/DeletedMemo";
 import MemoFilter from "../components/MemoFilter";
-import "../less/memos-header.less";
 import "../less/memo-trash.less";
 
 interface Props {}

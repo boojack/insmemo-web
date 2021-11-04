@@ -1,7 +1,5 @@
 import { locationService, userService } from "../services";
-import showMyAccountDialog from "./MyAccountDialog";
 import showAboutSiteDialog from "./AboutSiteDialog";
-import showPreferencesDialog from "./PreferencesDialog";
 import "../less/menu-btns-popup.less";
 
 interface Props {}
@@ -12,11 +10,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
   };
 
   const handleMyAccountBtnClick = () => {
-    showMyAccountDialog();
-  };
-
-  const handlePreferencesBtnClick = () => {
-    showPreferencesDialog();
+    locationService.pushHistory("/setting");
   };
 
   const handleMemosTrashBtnClick = () => {
@@ -35,10 +29,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
   return (
     <div className="menu-btns-popup" onClick={handlePopupClick}>
       <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
-        <span className="icon">👤</span> 我的账号
-      </button>
-      <button className="text-btn action-btn" onClick={handlePreferencesBtnClick}>
-        <span className="icon">⚙️</span> 偏好设置
+        <span className="icon">👤</span> 账号与设置
       </button>
       <button className="text-btn action-btn" onClick={handleMemosTrashBtnClick}>
         <span className="icon">🗑️</span> 回收站

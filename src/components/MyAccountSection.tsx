@@ -4,20 +4,16 @@ import * as utils from "../helpers/utils";
 import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
-import "../less/my-account-dialog.less";
+import "../less/my-account-section.less";
 
-interface Props extends DialogProps {}
+interface Props {}
 
-const MyAccountDialog: React.FC<Props> = ({ destroy }: Props) => {
+const MyAccountSection: React.FC<Props> = () => {
   const { userState } = useContext(appContext);
   const user = userState.user as Model.User;
   const [username, setUsername] = useState<string>(user.username);
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
   const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
-
-  const handleCloseBtnClick = () => {
-    destroy();
-  };
 
   const handleUsernameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextUsername = e.target.value as string;
@@ -81,63 +77,55 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }: Props) => {
 
   return (
     <>
-      <div className="dialog-header-container">
-        <p className="title-text">
-          <span className="icon-text">👤</span>我的账号
-        </p>
-        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-          <img className="icon-img" src="/icons/close.svg" />
-        </button>
-      </div>
-      <div className="dialog-content-container">
-        <div className="section-container account-section-container">
-          <p className="title-text">基本信息</p>
-          <label className="form-label input-form-label">
-            <span className="normal-text">ID：</span>
-            <span className="normal-text">{user.id}</span>
-          </label>
-          <label className="form-label input-form-label">
-            <span className="normal-text">创建时间：</span>
-            <span className="normal-text">{utils.getDateString(user.createdAt)}</span>
-          </label>
-          <label className="form-label input-form-label username-label">
-            <span className="normal-text">账号：</span>
-            <input
-              type="text"
-              readOnly={!showEditUsernameInputs}
-              value={username}
-              onClick={() => {
-                setShowEditUsernameInputs(true);
-              }}
-              onChange={handleUsernameChanged}
-            />
-            <div className="btns-container" onClick={handlePreventDefault}>
-              <span
-                className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
-                onClick={handleConfirmEditUsernameBtnClick}
-              >
-                保存
-              </span>
-              <span
-                className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
-                onClick={() => {
-                  setUsername(user.username);
-                  setShowEditUsernameInputs(false);
-                }}
-              >
-                撤销
-              </span>
-            </div>
-          </label>
-          <label className="form-label password-label">
-            <span className="normal-text">密码：</span>
-            <span className="text-btn" onClick={handleChangePasswordBtnClick}>
-              修改密码
+      <div className="section-container account-section-container">
+        <p className="title-text">基本信息</p>
+        <label className="form-label input-form-label">
+          <span className="normal-text">ID：</span>
+          <span className="normal-text">{user.id}</span>
+        </label>
+        <label className="form-label input-form-label">
+          <span className="normal-text">创建时间：</span>
+          <span className="normal-text">{utils.getDateString(user.createdAt)}</span>
+        </label>
+        <label className="form-label input-form-label username-label">
+          <span className="normal-text">账号：</span>
+          <input
+            type="text"
+            readOnly={!showEditUsernameInputs}
+            value={username}
+            onClick={() => {
+              setShowEditUsernameInputs(true);
+            }}
+            onChange={handleUsernameChanged}
+          />
+          <div className="btns-container" onClick={handlePreventDefault}>
+            <span
+              className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
+              onClick={handleConfirmEditUsernameBtnClick}
+            >
+              保存
             </span>
-          </label>
-        </div>
-        {window.location.origin.includes("justsven.top") ? (
-          <div className="section-container account-section-container">
+            <span
+              className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
+              onClick={() => {
+                setUsername(user.username);
+                setShowEditUsernameInputs(false);
+              }}
+            >
+              撤销
+            </span>
+          </div>
+        </label>
+        <label className="form-label password-label">
+          <span className="normal-text">密码：</span>
+          <span className="text-btn" onClick={handleChangePasswordBtnClick}>
+            修改密码
+          </span>
+        </label>
+      </div>
+      {window.location.origin.includes("justsven.top") ||
+        (true && (
+          <div className="section-container connect-section-container">
             <p className="title-text">关联账号</p>
             <label className="form-label input-form-label">
               <span className="normal-text">GitHub：</span>
@@ -167,13 +155,14 @@ const MyAccountDialog: React.FC<Props> = ({ destroy }: Props) => {
               )}
             </label>
           </div>
-        ) : null}
-      </div>
+        ))}
     </>
   );
 };
 
-const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
+interface ChangePasswordDialogProps extends DialogProps {}
+
+const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ destroy }: ChangePasswordDialogProps) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
@@ -239,7 +228,6 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <p className="tip-text">如果是 GitHub 登录，则初始密码为用户名</p>
         <label className="form-label input-form-label">
           <span className={"normal-text " + (oldPassword === "" ? "" : "not-null")}>旧密码</span>
           <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
@@ -274,12 +262,4 @@ function showChangePasswordDialog() {
   );
 }
 
-export default function showMyAccountDialog(): void {
-  showDialog(
-    {
-      className: "my-account-dialog",
-      useAppContext: true,
-    },
-    MyAccountDialog
-  );
-}
+export default MyAccountSection;

@@ -1,0 +1,179 @@
+@import "./mixin.less";
+
+.account-section-container {
+  > .form-label {
+    height: 28px;
+
+    &.username-label {
+      > input {
+        flex-grow: 0 !important;
+        width: 128px;
+        padding: 0 8px;
+        margin-right: 4px;
+        font-size: 14px;
+        outline: none;
+        border: 1px solid lightgray;
+        border-radius: 0;
+        border-radius: 4px;
+        line-height: 26px;
+        background-color: transparent;
+
+        &:focus {
+          border-color: black;
+        }
+      }
+
+      > .btns-container {
+        .flex(row, flex-start, center);
+        margin-left: 4px;
+        flex-shrink: 0;
+
+        > .text-btn {
+          font-size: 12px;
+          cursor: pointer;
+          padding: 0 16px;
+          border-radius: 4px;
+          line-height: 28px;
+          margin-right: 8px;
+          user-select: none;
+          background-color: lightgray;
+
+          &:hover {
+            opacity: 0.8;
+          }
+
+          &.cancel-btn {
+            background-color: unset;
+          }
+
+          &.confirm-btn {
+            background-color: @text-green;
+            color: white;
+          }
+        }
+      }
+    }
+
+    &.password-label {
+      > .text-btn {
+        color: @text-blue;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+.connect-section-container {
+  > .form-label {
+    > .btn-text {
+      padding: 0 8px;
+      margin-left: 12px;
+      color: #d28653;
+      background-color: @bg-lightgray;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      line-height: 28px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.unbind-btn {
+        &.final-confirm {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.change-password-dialog {
+  > .dialog-container {
+    width: 300px;
+    border-radius: 8px;
+
+    > .dialog-content-container {
+      .flex(column, flex-start, flex-start);
+      width: 100%;
+
+      > .form-label {
+        .flex(column, flex-start, flex-start);
+        position: relative;
+        width: 100%;
+        line-height: 1.6;
+
+        > .normal-text {
+          position: absolute;
+          left: 8px;
+          padding-left: 4px;
+          flex-shrink: 0;
+          font-size: 13px;
+          line-height: 38px;
+          color: gray;
+          transition: all 0.2s linear;
+          cursor: text;
+
+          &.not-null {
+            top: 2px;
+            left: 8px;
+            background-color: white;
+            font-size: 13px;
+            line-height: 18px;
+            padding: 0 4px;
+            border-radius: 12px;
+          }
+        }
+
+        &.input-form-label {
+          padding: 12px 0;
+          padding-bottom: 4px;
+
+          > input {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 13px;
+            line-height: 24px;
+            outline: none;
+            border-radius: 4px;
+            border: 1px solid lightgray;
+            background-color: transparent;
+          }
+        }
+      }
+
+      > .btns-container {
+        .flex(row, flex-end, center);
+        margin-top: 8px;
+        width: 100%;
+
+        > .text-btn {
+          font-size: 14px;
+          cursor: pointer;
+          padding: 6px 12px;
+          border-radius: 4px;
+          margin-right: 8px;
+          user-select: none;
+          background-color: lightgray;
+
+          &:hover {
+            opacity: 0.8;
+          }
+
+          &.cancel-btn {
+            background-color: unset;
+          }
+
+          &.confirm-btn {
+            background-color: @text-green;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
