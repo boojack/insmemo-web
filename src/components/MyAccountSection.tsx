@@ -1,10 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { userService } from "../services";
 import * as utils from "../helpers/utils";
+import { validate, ValidatorConfig } from "../helpers/validator";
 import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
 import { showDialog } from "./Dialog";
 import "../less/my-account-section.less";
+
+const validateConfig: ValidatorConfig = {
+  minLength: 4,
+  maxLength: 24,
+  noSpace: true,
+  noChinese: true,
+};
 
 interface Props {}
 
@@ -28,6 +36,12 @@ const MyAccountSection: React.FC<Props> = () => {
 
     if (username === user.username) {
       setShowEditUsernameInputs(false);
+      return;
+    }
+
+    const usernameValidResult = validate(username, validateConfig);
+    if (!usernameValidResult.result) {
+      toastHelper.error("用户名 " + usernameValidResult.reason);
       return;
     }
 
@@ -123,39 +137,38 @@ const MyAccountSection: React.FC<Props> = () => {
           </span>
         </label>
       </div>
-      {window.location.origin.includes("justsven.top") ||
-        (true && (
-          <div className="section-container connect-section-container">
-            <p className="title-text">关联账号</p>
-            <label className="form-label input-form-label">
-              <span className="normal-text">GitHub：</span>
-              {user.githubName ? (
-                <>
-                  <a className="value-text" href={"https://github.com/" + user.githubName}>
-                    {user.githubName}
-                  </a>
-                  <span
-                    className={`btn-text unbind-btn ${showConfirmUnbindBtn ? "final-confirm" : ""}`}
-                    onMouseLeave={() => setShowConfirmUnbindBtn(false)}
-                    onClick={handleUnbindGithubBtnClick}
-                  >
-                    {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="value-text">无</span>
-                  <a
-                    className="link-text"
-                    href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
-                  >
-                    前往绑定
-                  </a>
-                </>
-              )}
-            </label>
-          </div>
-        ))}
+      {window.location.origin.includes("justsven.top") && (
+        <div className="section-container connect-section-container">
+          <p className="title-text">关联账号</p>
+          <label className="form-label input-form-label">
+            <span className="normal-text">GitHub：</span>
+            {user.githubName ? (
+              <>
+                <a className="value-text" href={"https://github.com/" + user.githubName}>
+                  {user.githubName}
+                </a>
+                <span
+                  className={`btn-text unbind-btn ${showConfirmUnbindBtn ? "final-confirm" : ""}`}
+                  onMouseLeave={() => setShowConfirmUnbindBtn(false)}
+                  onClick={handleUnbindGithubBtnClick}
+                >
+                  {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="value-text">无</span>
+                <a
+                  className="link-text"
+                  href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+                >
+                  前往绑定
+                </a>
+              </>
+            )}
+          </label>
+        </div>
+      )}
     </>
   );
 };
@@ -199,6 +212,12 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ destroy }: 
     if (newPassword !== newPasswordAgain) {
       toastHelper.error("新密码两次输入不一致");
       setNewPasswordAgain("");
+      return;
+    }
+
+    const passwordValidResult = validate(newPassword, validateConfig);
+    if (!passwordValidResult.result) {
+      toastHelper.error("密码 " + passwordValidResult.reason);
       return;
     }
 

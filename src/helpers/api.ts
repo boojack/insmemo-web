@@ -66,10 +66,11 @@ export function checkPasswordValid(password: string) {
   return post<boolean>("/api/user/checkpassword", { password });
 }
 
-export function updateUserinfo(username = "", password = "") {
+export function updateUserinfo(username?: string, password?: string, githubName?: string) {
   return post("/api/user/update", {
     username,
     password,
+    githubName,
   });
 }
 
@@ -78,7 +79,7 @@ export function getMyMemos() {
 }
 
 export function getMyDeletedMemos() {
-  return get<Model.Memo[]>("/api/memo/trash");
+  return get<Model.Memo[]>("/api/memo/deleted");
 }
 
 export function createMemo(content: string) {
@@ -112,11 +113,7 @@ export function updateMemo(memoId: string, content: string) {
 }
 
 export function getLinkedMemos(memoId: string) {
-  return get<Model.Memo[]>("/api/memo/linkeds?memoId=" + memoId);
-}
-
-export function getMemosStat() {
-  return get<Api.MemosStat[]>("/api/memo/stat");
+  return get<Model.Memo[]>("/api/memo/linked?memoId=" + memoId);
 }
 
 export function removeGithubName() {

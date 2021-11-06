@@ -29,6 +29,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (memoContentElRef.current) {
       const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.innerHTML = "";
       memoContentElRef.current.append(...tempDiv.children);
     }
   }, []);

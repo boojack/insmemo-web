@@ -83,6 +83,16 @@ export function reducer(state: State, action: Actions) {
         pathname: action.payload.pathname,
       };
     }
+    case "SET_HASH": {
+      if (action.payload.hash === state.hash) {
+        return state;
+      }
+
+      return {
+        ...state,
+        hash: action.payload.hash,
+      };
+    }
     case "SET_QUERY": {
       return {
         ...state,
@@ -157,16 +167,6 @@ export function reducer(state: State, action: Actions) {
           ...state.query,
           filter: action.payload,
         },
-      };
-    }
-    case "SET_HASH": {
-      if (action.payload.hash === state.hash) {
-        return state;
-      }
-
-      return {
-        ...state,
-        hash: action.payload.hash,
       };
     }
     default: {

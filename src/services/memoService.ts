@@ -120,11 +120,6 @@ class MemoService {
     return memo;
   }
 
-  public async getMemosStat(): Promise<Api.MemosStat[]> {
-    const { data } = await api.getMemosStat();
-    return data;
-  }
-
   public async getLinkedMemos(memoId: string): Promise<Model.Memo[]> {
     const { data } = await api.getLinkedMemos(memoId);
     return data;

@@ -4,7 +4,7 @@ import { memoService } from "../services";
 import MyAccountSection from "../components/MyAccountSection";
 import PreferencesSection from "../components/PreferencesSection";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
-import "../less/preference.less";
+import "../less/setting.less";
 
 interface Props {}
 

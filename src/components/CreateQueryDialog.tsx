@@ -54,11 +54,18 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleAddFilterBenClick = () => {
+    if (filters.length > 0) {
+      const lastFilter = filters[filters.length - 1];
+      if (lastFilter.value.value === "") {
+        toastHelper.info("先完善上一个过滤器吧");
+        return;
+      }
+    }
+
     setFilters([...filters, getDefaultFilter()]);
   };
 
   const handleFilterChange = (index: number, filter: Filter) => {
-    console.log(index, filter);
     const temp = [...filters];
     temp[index] = filter;
     setFilters(temp);

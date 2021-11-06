@@ -13,9 +13,10 @@
   > .title-text {
     width: 100%;
     padding: 4px 16px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 24px;
-    color: @text-lightgray;
+    color: @text-black;
+    opacity: 0.5;
   }
 
   > .tags-container {
@@ -33,7 +34,7 @@
       height: auto;
       margin-top: 4px;
       margin-left: 18px;
-      border-left: 2px solid #eaeaea;
+      border-left: 2px solid @bg-gray;
       padding-left: 6px;
 
       > .tag-item-container {
@@ -80,9 +81,9 @@
         line-height: 20px;
 
         > .icon-text {
-          font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-          height: 20px;
+          display: block;
           width: 20px;
+          height: 20px;
           text-align: center;
           flex-shrink: 0;
 

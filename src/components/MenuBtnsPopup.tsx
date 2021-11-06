@@ -1,12 +1,30 @@
+import { useEffect } from "react";
 import { locationService, userService } from "../services";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import "../less/menu-btns-popup.less";
 
-interface Props {}
+interface Props {
+  shownStatus: boolean;
+  toggleShownStatus: (status?: boolean) => void;
+}
 
-const MenuBtnsPopup: React.FC<Props> = () => {
+const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
+  const { shownStatus, toggleShownStatus } = props;
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      toggleShownStatus(false);
+    };
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const handlePopupClick = (event: React.MouseEvent) => {
     event.stopPropagation();
+    toggleShownStatus(false);
   };
 
   const handleMyAccountBtnClick = () => {
@@ -14,7 +32,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
   };
 
   const handleMemosTrashBtnClick = () => {
-    locationService.pushHistory("/trash");
+    locationService.pushHistory("/recycle");
   };
 
   const handleAboutBtnClick = () => {
@@ -27,7 +45,7 @@ const MenuBtnsPopup: React.FC<Props> = () => {
   };
 
   return (
-    <div className="menu-btns-popup" onClick={handlePopupClick}>
+    <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`} onClick={handlePopupClick}>
       <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">👤</span> 账号与设置
       </button>

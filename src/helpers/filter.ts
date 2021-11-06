@@ -102,12 +102,16 @@ export const checkShouldShowMemoWithFilters = (memo: Model.Memo, filters: Filter
 };
 
 export const checkShouldShowMemo = (memo: Model.Memo, filter: Filter) => {
-  let shouldShow = true;
-
   const {
     type,
     value: { operator, value },
   } = filter;
+
+  if (value === "") {
+    return true;
+  }
+
+  let shouldShow = true;
 
   if (type === "TAG") {
     let contained = memo.content.includes(`# ${value}`);

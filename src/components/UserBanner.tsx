@@ -1,5 +1,6 @@
 import { useCallback, useContext } from "react";
 import { locationService } from "../services";
+import useToggle from "../hooks/useToggle";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
@@ -16,6 +17,8 @@ const UserBanner: React.FC<Props> = () => {
   const username = user ? user.username : "Memos";
   const createdDays = user ? Math.ceil((Date.now() - utils.getTimeStampByDate(user.createdAt)) / 1000 / 3600 / 24) : 0;
 
+  const [menuBtnsPopupShownStatus, toggleMenuBtnsPopupShownStatus] = useToggle(false);
+
   const handleUsernameClick = useCallback(() => {
     locationService.pushHistory("/");
     locationService.clearQuery();
@@ -25,6 +28,7 @@ const UserBanner: React.FC<Props> = () => {
     const sidebarEl = document.querySelector(".sidebar-wrapper") as HTMLElement;
     const popupEl = document.querySelector(".menu-btns-popup") as HTMLElement;
     popupEl.style.top = 54 - sidebarEl.scrollTop + "px";
+    toggleMenuBtnsPopupShownStatus();
   };
 
   return (
@@ -33,10 +37,10 @@ const UserBanner: React.FC<Props> = () => {
         <p className="username-text" onClick={handleUsernameClick}>
           {username}
         </p>
-        <span className="action-btn menu-popup-btn" onMouseEnter={handlePopupBtnClick}>
+        <span className="action-btn menu-popup-btn" onClick={handlePopupBtnClick}>
           <img src="/icons/more.svg" className="icon-img" />
         </span>
-        <MenuBtnsPopup />
+        <MenuBtnsPopup shownStatus={menuBtnsPopupShownStatus} toggleShownStatus={toggleMenuBtnsPopupShownStatus} />
       </div>
       <div className="status-text-container">
         <div className="status-text memos-text">

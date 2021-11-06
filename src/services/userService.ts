@@ -43,7 +43,7 @@ class UserService {
   }
 
   public async removeGithubName(): Promise<void> {
-    await api.removeGithubName();
+    await api.updateUserinfo(undefined, undefined, "");
   }
 
   public async checkPasswordValid(password: string): Promise<boolean> {
@@ -52,7 +52,7 @@ class UserService {
   }
 
   public async updatePassword(password: string): Promise<void> {
-    await api.updateUserinfo("", password);
+    await api.updateUserinfo(undefined, password);
   }
 }
 

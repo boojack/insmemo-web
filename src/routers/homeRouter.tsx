@@ -3,7 +3,7 @@ import MemoTrash from "../pages/MemoTrash";
 import Setting from "../pages/Setting";
 
 const homeRouter = {
-  "/trash": <MemoTrash />,
+  "/recycle": <MemoTrash />,
   "/setting": <Setting />,
   "*": <Memos />,
 };

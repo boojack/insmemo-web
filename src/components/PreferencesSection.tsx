@@ -1,18 +1,24 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import appContext from "../labs/appContext";
 import { globalStateService, memoService } from "../services";
+import { formatMemoContent } from "./Memo";
 import "../less/preferences-section.less";
 
 interface Props {}
 
 const PreferencesSection: React.FC<Props> = () => {
-  const {
-    globalState: { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser },
-  } = useContext(appContext);
+  const { globalState } = useContext(appContext);
+  const { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser } = globalState;
+
+  const demoContentElRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // do nth
-  }, []);
+    if (demoContentElRef.current) {
+      const tempDiv = formatMemoContent(`👋 你好呀～\n我是一个demo：\n* 👏 欢迎使用memos；`);
+      demoContentElRef.current.innerHTML = "";
+      demoContentElRef.current.append(...tempDiv.children);
+    }
+  }, [globalState]);
 
   const handleSplitWordsValueChanged = () => {
     globalStateService.setAppSetting({
@@ -33,7 +39,6 @@ const PreferencesSection: React.FC<Props> = () => {
   };
 
   const handleExportBtnClick = async () => {
-    await memoService.fetchAllMemos();
     const formatedMemos = memoService.getState().memos.map((m) => {
       return {
         ...m,
@@ -54,17 +59,18 @@ const PreferencesSection: React.FC<Props> = () => {
     <>
       <div className="section-container preferences-section-container">
         <p className="title-text">Memo 显示相关</p>
+        <div className="demo-content-container memo-content-text" ref={demoContentElRef}></div>
         <label className="form-label checkbox-form-label" onClick={handleSplitWordsValueChanged}>
           <span className="normal-text">中英文内容自动间隔</span>
           <img className="icon-img" src={shouldSplitMemoWord ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
         </label>
+        <label className="form-label checkbox-form-label" onClick={handleUseMarkdownParserChanged}>
+          <span className="normal-text">部分 markdown 格式解析</span>
+          <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
+        </label>
         <label className="form-label checkbox-form-label" onClick={handleHideImageUrlValueChanged}>
           <span className="normal-text">隐藏图片链接地址</span>
           <img className="icon-img" src={shouldHideImageUrl ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
-        </label>
-        <label className="form-label checkbox-form-label" onClick={handleUseMarkdownParserChanged}>
-          <span className="normal-text">markdown 格式解析</span>
-          <img className="icon-img" src={shouldUseMarkdownParser ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
         </label>
       </div>
       <div className="section-container hidden">

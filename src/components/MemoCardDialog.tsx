@@ -32,6 +32,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (memoContentElRef.current) {
       const tempDiv = formatMemoContent(memo.content);
+      memoContentElRef.current.innerHTML = "";
       memoContentElRef.current.append(...tempDiv.children);
     }
   }, []);
@@ -167,7 +168,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
       ) : null}
       {linkedMemos.length > 0 ? (
         <div className="linked-memos-wrapper">
-          <p className="normal-text">{linkedMemos.length} 条链接至此的 MEMO</p>
+          <p className="normal-text">{linkedMemos.length} 个链接至此的 MEMO</p>
           {linkedMemos.map((m) => {
             const rawtext = parseHtmlToRawText(formatMemoContent(m.content).innerHTML).replaceAll("\n", " ");
             return (
