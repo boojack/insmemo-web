@@ -54,6 +54,10 @@ class UserService {
   public async updatePassword(password: string): Promise<void> {
     await api.updateUserinfo(undefined, password);
   }
+
+  public async updateWxUserId(wxUserId: string): Promise<void> {
+    await api.updateUserinfo(undefined, undefined, undefined, wxUserId);
+  }
 }
 
 const userService = new UserService();

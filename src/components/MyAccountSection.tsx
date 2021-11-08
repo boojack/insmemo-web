@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { userService } from "../services";
 import * as utils from "../helpers/utils";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
-import { showDialog } from "./Dialog";
+import showChangePasswordDialog from "./ChangePasswordDialog";
+import showBindWxUserIdDialog from "./BindWxUserIdDialog";
 import "../less/my-account-section.less";
 
 const validateConfig: ValidatorConfig = {
@@ -21,7 +22,8 @@ const MyAccountSection: React.FC<Props> = () => {
   const user = userState.user as Model.User;
   const [username, setUsername] = useState<string>(user.username);
   const [showEditUsernameInputs, setShowEditUsernameInputs] = useState(false);
-  const [showConfirmUnbindBtn, setShowConfirmUnbindBtn] = useState(false);
+  const [showConfirmUnbindGithubBtn, setShowConfirmUnbindGithubBtn] = useState(false);
+  const [showConfirmUnbindWxBtn, setShowConfirmUnbindWxBtn] = useState(false);
 
   const handleUsernameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextUsername = e.target.value as string;
@@ -72,16 +74,30 @@ const MyAccountSection: React.FC<Props> = () => {
   };
 
   const handleUnbindGithubBtnClick = async () => {
-    if (showConfirmUnbindBtn) {
+    if (showConfirmUnbindGithubBtn) {
       try {
         await userService.removeGithubName();
         await userService.doSignIn();
       } catch (error: any) {
         toastHelper.error(error.message);
       }
-      setShowConfirmUnbindBtn(false);
+      setShowConfirmUnbindGithubBtn(false);
     } else {
-      setShowConfirmUnbindBtn(true);
+      setShowConfirmUnbindGithubBtn(true);
+    }
+  };
+
+  const handleUnbindWxBtnClick = async () => {
+    if (showConfirmUnbindWxBtn) {
+      try {
+        await userService.updateWxUserId("");
+        await userService.doSignIn();
+      } catch (error: any) {
+        toastHelper.error(error.message);
+      }
+      setShowConfirmUnbindWxBtn(false);
+    } else {
+      setShowConfirmUnbindWxBtn(true);
     }
   };
 
@@ -137,148 +153,65 @@ const MyAccountSection: React.FC<Props> = () => {
           </span>
         </label>
       </div>
-      {window.location.origin.includes("justsven.top") && (
-        <div className="section-container connect-section-container">
-          <p className="title-text">关联账号</p>
-          <label className="form-label input-form-label">
-            <span className="normal-text">GitHub：</span>
-            {user.githubName ? (
-              <>
-                <a className="value-text" href={"https://github.com/" + user.githubName}>
-                  {user.githubName}
-                </a>
-                <span
-                  className={`btn-text unbind-btn ${showConfirmUnbindBtn ? "final-confirm" : ""}`}
-                  onMouseLeave={() => setShowConfirmUnbindBtn(false)}
-                  onClick={handleUnbindGithubBtnClick}
-                >
-                  {showConfirmUnbindBtn ? "确定取消绑定！" : "取消绑定"}
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="value-text">无</span>
-                <a
-                  className="link-text"
-                  href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
-                >
-                  前往绑定
-                </a>
-              </>
-            )}
-          </label>
-        </div>
-      )}
-    </>
-  );
-};
-
-interface ChangePasswordDialogProps extends DialogProps {}
-
-const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ destroy }: ChangePasswordDialogProps) => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordAgain, setNewPasswordAgain] = useState("");
-
-  useEffect(() => {
-    // do nth
-  }, []);
-
-  const handleCloseBtnClick = () => {
-    destroy();
-  };
-
-  const handleOldPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value as string;
-    setOldPassword(text);
-  };
-
-  const handleNewPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value as string;
-    setNewPassword(text);
-  };
-
-  const handleNewPasswordAgainChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value as string;
-    setNewPasswordAgain(text);
-  };
-
-  const handleSaveBtnClick = async () => {
-    if (oldPassword === "" || newPassword === "" || newPasswordAgain === "") {
-      toastHelper.error("密码不能为空");
-      return;
-    }
-
-    if (newPassword !== newPasswordAgain) {
-      toastHelper.error("新密码两次输入不一致");
-      setNewPasswordAgain("");
-      return;
-    }
-
-    const passwordValidResult = validate(newPassword, validateConfig);
-    if (!passwordValidResult.result) {
-      toastHelper.error("密码 " + passwordValidResult.reason);
-      return;
-    }
-
-    try {
-      const isValid = await userService.checkPasswordValid(oldPassword);
-
-      if (!isValid) {
-        toastHelper.error("旧密码不匹配");
-        setOldPassword("");
-        return;
-      }
-
-      await userService.updatePassword(newPassword);
-      toastHelper.info("密码修改成功！");
-      handleCloseBtnClick();
-    } catch (error: any) {
-      toastHelper.error(error);
-    }
-  };
-
-  return (
-    <>
-      <div className="dialog-header-container">
-        <p className="title-text">修改密码</p>
-        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
-          <img className="icon-img" src="/icons/close.svg" />
-        </button>
-      </div>
-      <div className="dialog-content-container">
+      <div className="section-container connect-section-container">
+        <p className="title-text">关联账号</p>
         <label className="form-label input-form-label">
-          <span className={"normal-text " + (oldPassword === "" ? "" : "not-null")}>旧密码</span>
-          <input type="password" value={oldPassword} onChange={handleOldPasswordChanged} />
+          <span className="normal-text">微信 OpenID：</span>
+          {user.wxUserId ? (
+            <>
+              <span className="value-text">{user.wxUserId}</span>
+              <span
+                className={`btn-text unbind-btn ${showConfirmUnbindWxBtn ? "final-confirm" : ""}`}
+                onMouseLeave={() => setShowConfirmUnbindWxBtn(false)}
+                onClick={handleUnbindWxBtnClick}
+              >
+                {showConfirmUnbindWxBtn ? "确定取消绑定！" : "取消绑定"}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="value-text">无</span>
+              <span
+                className="btn-text bind-btn"
+                onClick={() => {
+                  showBindWxUserIdDialog();
+                }}
+              >
+                绑定 ID
+              </span>
+            </>
+          )}
         </label>
         <label className="form-label input-form-label">
-          <span className={"normal-text " + (newPassword === "" ? "" : "not-null")}>新密码</span>
-          <input type="password" value={newPassword} onChange={handleNewPasswordChanged} />
+          <span className="normal-text">GitHub：</span>
+          {user.githubName ? (
+            <>
+              <a className="value-text" href={"https://github.com/" + user.githubName}>
+                {user.githubName}
+              </a>
+              <span
+                className={`btn-text unbind-btn ${showConfirmUnbindGithubBtn ? "final-confirm" : ""}`}
+                onMouseLeave={() => setShowConfirmUnbindGithubBtn(false)}
+                onClick={handleUnbindGithubBtnClick}
+              >
+                {showConfirmUnbindGithubBtn ? "确定取消绑定！" : "取消绑定"}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="value-text">无</span>
+              <a
+                className="btn-text link-btn"
+                href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+              >
+                前往绑定
+              </a>
+            </>
+          )}
         </label>
-        <label className="form-label input-form-label">
-          <span className={"normal-text " + (newPasswordAgain === "" ? "" : "not-null")}>再次输入新密码</span>
-          <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
-        </label>
-        <div className="btns-container">
-          <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>
-            取消
-          </span>
-          <span className="text-btn confirm-btn" onClick={handleSaveBtnClick}>
-            保存
-          </span>
-        </div>
       </div>
     </>
   );
 };
-
-function showChangePasswordDialog() {
-  showDialog(
-    {
-      className: "change-password-dialog",
-    },
-    ChangePasswordDialog
-  );
-}
 
 export default MyAccountSection;
