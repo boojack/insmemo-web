@@ -1,4 +1,4 @@
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import appStore from "../stores";
 
 const updateLocationUrl = (method: "replace" | "push" = "replace") => {

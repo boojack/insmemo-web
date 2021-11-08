@@ -1,4 +1,4 @@
-import * as api from "../helpers/api";
+import api from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
 import appStore from "../stores";
 import userService from "./userService";

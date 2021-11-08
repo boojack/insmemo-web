@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
 import { IMAGE_URL_REG } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { memoService } from "../services";
 import Only from "./common/OnlyWhen";
@@ -23,16 +22,6 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
   };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-
-  const memoContentElRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (memoContentElRef.current) {
-      const tempDiv = formatMemoContent(memo.content);
-      memoContentElRef.current.innerHTML = "";
-      memoContentElRef.current.append(...tempDiv.children);
-    }
-  }, []);
 
   const handleDeleteMemoClick = async () => {
     if (showConfirmDeleteBtn) {
@@ -83,7 +72,7 @@ const DeletedMemo: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="memo-content-text" ref={memoContentElRef}></div>
+      <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
       <Only when={imageUrls.length > 0}>
         <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (

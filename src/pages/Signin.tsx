@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import * as api from "../helpers/api";
+import api from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import useLoading from "../hooks/useLoading";
 import { locationService, userService } from "../services";

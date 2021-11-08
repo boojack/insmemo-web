@@ -1,8 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { globalStateService, locationService, memoService } from "../services";
-import { TAG_REG } from "../helpers/consts";
 import appContext from "../labs/appContext";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toastHelper from "./Toast";
 import Editor, { EditorRefActions } from "./Editor/Editor";
@@ -41,7 +40,6 @@ const MemoEditor: React.FC<Props> = () => {
     }
 
     const { editMemoId } = globalStateService.getState();
-    const { query } = locationService.getState();
 
     content = content.replaceAll("&nbsp;", " ");
 
@@ -60,11 +58,7 @@ const MemoEditor: React.FC<Props> = () => {
         memoService.pushMemo(newMemo);
       }
 
-      const tagTexts = utils.dedupe(Array.from(content.match(TAG_REG) ?? [])).map((t) => t.replace(TAG_REG, "$1").trim());
-      const tagQuery = query.tag;
-      if (tagQuery !== "" && !tagTexts.includes(tagQuery)) {
-        locationService.setTagQuery("");
-      }
+      locationService.clearQuery();
     } catch (error: any) {
       toastHelper.error(error.message);
     }

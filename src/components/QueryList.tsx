@@ -3,7 +3,7 @@ import appContext from "../labs/appContext";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import Only from "./common/OnlyWhen";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import toastHelper from "./Toast";
 import { locationService, queryService } from "../services";
 import showCreateQueryDialog from "./CreateQueryDialog";
@@ -71,6 +71,9 @@ const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemC
     if (isActive) {
       locationService.setMemoFilter("");
     } else {
+      if (!["/", "/recycle"].includes(locationService.getState().pathname)) {
+        locationService.setPathname("/");
+      }
       locationService.setMemoFilter(query.id);
     }
   };

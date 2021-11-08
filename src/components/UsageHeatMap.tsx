@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { globalStateService, locationService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
 import appContext from "../labs/appContext";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import "../less/usage-heat-map.less";
 
 const tableConfig = {
@@ -81,6 +81,9 @@ const UsageHeatMap: React.FC<Props> = () => {
       locationService.setFromAndToQuery(0, 0);
       setCurrentStat(null);
     } else if (item.count > 0) {
+      if (!["/", "/recycle"].includes(locationService.getState().pathname)) {
+        locationService.setPathname("/");
+      }
       locationService.setFromAndToQuery(item.timestamp, item.timestamp + DAILY_TIMESTAMP);
       setCurrentStat(item);
     }

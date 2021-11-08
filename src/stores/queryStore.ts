@@ -1,4 +1,4 @@
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 
 export interface State {
   queries: Model.Query[];

@@ -47,6 +47,9 @@ const BindWxUserIdDialog: React.FC<Props> = ({ destroy }: Props) => {
         </button>
       </div>
       <div className="dialog-content-container">
+        <p className="tip-text">
+          关注微信公众号“小谈闲事”，主动发送任意消息，即可获取 <strong>OpenID</strong> 。
+        </p>
         <label className="form-label input-form-label">
           <span className={"normal-text " + (wxUserId === "" ? "" : "not-null")}>微信 OpenID</span>
           <input type="text" value={wxUserId} onChange={handleWxUserIdChanged} />

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import { formatMemoContent } from "./Memo";
 import Only from "./common/OnlyWhen";
@@ -23,16 +23,6 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
   const [imageAmount, setImageAmount] = useState(imageUrls.length);
-
-  const memoContentElRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (memoContentElRef.current) {
-      const tempDiv = formatMemoContent(memo.content);
-      memoContentElRef.current.innerHTML = "";
-      memoContentElRef.current.append(...tempDiv.children);
-    }
-  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -89,7 +79,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         <img className="memo-img" src={imgUrl} />
         <div className="memo-container" ref={memoElRef}>
           <span className="time-text">{memo.createdAtStr}</span>
-          <div className="memo-content-text" ref={memoContentElRef}></div>
+          <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
           <Only when={imageUrls.length > 0}>
             <div className="images-container">
               {imageUrls.map((imgUrl, idx) => (

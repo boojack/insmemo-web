@@ -1,7 +1,7 @@
-import { memo, useEffect, useRef } from "react";
+import { memo } from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import { encodeHtml, parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
 import Only from "./common/OnlyWhen";
@@ -23,16 +23,6 @@ const Memo: React.FC<Props> = (props: Props) => {
   };
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-
-  const memoContentElRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (memoContentElRef.current) {
-      const tempDiv = formatMemoContent(memo.content);
-      memoContentElRef.current.innerHTML = "";
-      memoContentElRef.current.append(...tempDiv.children);
-    }
-  }, []);
 
   const handleShowMemoStoryDialog = () => {
     showMemoCardDialog(memo);
@@ -121,7 +111,11 @@ const Memo: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="memo-content-text" ref={memoContentElRef} onClick={handleMemoContentClick}></div>
+      <div
+        className="memo-content-text"
+        onClick={handleMemoContentClick}
+        dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}
+      ></div>
       <Only when={imageUrls.length > 0}>
         <div className="images-wrapper">
           {imageUrls.map((imgUrl, idx) => (
@@ -133,7 +127,7 @@ const Memo: React.FC<Props> = (props: Props) => {
   );
 };
 
-export function formatMemoContent(content: string): Element {
+export function formatMemoContent(content: string) {
   content = encodeHtml(content);
   content = parseRawTextToHtml(content)
     .split("<br>")
@@ -170,9 +164,17 @@ export function formatMemoContent(content: string): Element {
 
   const tempDivContainer = document.createElement("div");
   tempDivContainer.innerHTML = content;
-  utils.clearDangerHTMLNode(tempDivContainer);
+  for (let i = 0; i < tempDivContainer.children.length; i++) {
+    const c = tempDivContainer.children[i];
 
-  return tempDivContainer;
+    if (c.tagName === "P" && c.textContent === "" && c.firstElementChild?.tagName !== "BR") {
+      c.remove();
+      i--;
+      continue;
+    }
+  }
+
+  return tempDivContainer.innerHTML;
 }
 
 export default memo(Memo);

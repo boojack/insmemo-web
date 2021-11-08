@@ -4,7 +4,7 @@ import useToggle from "../hooks/useToggle";
 import appContext from "../labs/appContext";
 import MenuBtnsPopup from "./MenuBtnsPopup";
 import showDailyMemoDiaryDialog from "./DailyMemoDiaryDialog";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import "../less/user-banner.less";
 
 interface Props {}

@@ -1,4 +1,4 @@
-import * as api from "../helpers/api";
+import api from "../helpers/api";
 import appStore from "../stores";
 
 class UserService {

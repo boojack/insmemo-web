@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { userService } from "../services";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
@@ -88,6 +88,7 @@ const MyAccountSection: React.FC<Props> = () => {
   };
 
   const handleUnbindWxBtnClick = async () => {
+    showBindWxUserIdDialog();
     if (showConfirmUnbindWxBtn) {
       try {
         await userService.updateWxUserId("");
@@ -159,7 +160,7 @@ const MyAccountSection: React.FC<Props> = () => {
           <span className="normal-text">微信 OpenID：</span>
           {user.wxUserId ? (
             <>
-              <span className="value-text">{user.wxUserId}</span>
+              <span className="value-text">************</span>
               <span
                 className={`btn-text unbind-btn ${showConfirmUnbindWxBtn ? "final-confirm" : ""}`}
                 onMouseLeave={() => setShowConfirmUnbindWxBtn(false)}

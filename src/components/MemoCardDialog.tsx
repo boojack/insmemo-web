@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { IMAGE_URL_REG, MEMO_LINK_REG } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { globalStateService, memoService } from "../services";
 import { parseHtmlToRawText } from "../helpers/marked";
 import { formatMemoContent } from "./Memo";
@@ -26,16 +26,6 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
   const [linkMemos, setLinkMemos] = useState<LinkedMemo[]>([]);
   const [linkedMemos, setLinkedMemos] = useState<LinkedMemo[]>([]);
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-
-  const memoContentElRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (memoContentElRef.current) {
-      const tempDiv = formatMemoContent(memo.content);
-      memoContentElRef.current.innerHTML = "";
-      memoContentElRef.current.append(...tempDiv.children);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchLinkedMemos = async () => {
@@ -123,7 +113,11 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <div className="memo-container">
-          <div className="memo-content-text" ref={memoContentElRef} onClick={handleMemoContentClick}></div>
+          <div
+            className="memo-content-text"
+            onClick={handleMemoContentClick}
+            dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}
+          ></div>
           <Only when={imageUrls.length > 0}>
             <div className="images-wrapper">
               {imageUrls.map((imgUrl, idx) => (
@@ -156,7 +150,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         <div className="linked-memos-wrapper">
           <p className="normal-text">关联了 {linkMemos.length} 个 MEMO</p>
           {linkMemos.map((m) => {
-            const rawtext = parseHtmlToRawText(formatMemoContent(m.content).innerHTML).replaceAll("\n", " ");
+            const rawtext = parseHtmlToRawText(formatMemoContent(m.content)).replaceAll("\n", " ");
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
                 <span className="time-text">{m.dateStr} </span>
@@ -170,7 +164,7 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         <div className="linked-memos-wrapper">
           <p className="normal-text">{linkedMemos.length} 个链接至此的 MEMO</p>
           {linkedMemos.map((m) => {
-            const rawtext = parseHtmlToRawText(formatMemoContent(m.content).innerHTML).replaceAll("\n", " ");
+            const rawtext = parseHtmlToRawText(formatMemoContent(m.content)).replaceAll("\n", " ");
             return (
               <div className="linked-memo-container" key={m.id} onClick={() => handleLinkedMemoClick(m)}>
                 <span className="time-text">{m.dateStr} </span>

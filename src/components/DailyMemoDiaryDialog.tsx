@@ -3,7 +3,7 @@ import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import DailyMemo from "./DailyMemo";

@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
 import { IMAGE_URL_REG } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { formatMemoContent } from "./Memo";
 import Only from "./common/OnlyWhen";
 import "../less/daily-memo.less";
@@ -22,23 +21,13 @@ const DailyMemo: React.FC<Props> = (props: Props) => {
   };
   const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
 
-  const memoContentElRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (memoContentElRef.current) {
-      const tempDiv = formatMemoContent(memo.content);
-      memoContentElRef.current.innerHTML = "";
-      memoContentElRef.current.append(...tempDiv.children);
-    }
-  }, []);
-
   return (
     <div className="daily-memo-wrapper">
       <div className="time-wrapper">
         <span className="normal-text">{memo.timeStr}</span>
       </div>
       <div className="memo-content-container">
-        <div className="memo-content-text" ref={memoContentElRef}></div>
+        <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
         <Only when={imageUrls.length > 0}>
           <div className="images-container">
             {imageUrls.map((imgUrl, idx) => (

@@ -3,7 +3,7 @@ import { locationService, memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import Only from "./common/OnlyWhen";
 import appContext from "../labs/appContext";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import "../less/tag-list.less";
 
 interface Tag {
@@ -101,6 +101,9 @@ const TagItemContainer: React.FC<TagItemContainerProps> = (props: TagItemContain
       locationService.setTagQuery("");
     } else {
       utils.copyTextToClipboard(`# ${tag.text} `);
+      if (!["/", "/recycle"].includes(locationService.getState().pathname)) {
+        locationService.setPathname("/");
+      }
       locationService.setTagQuery(tag.text);
     }
   };

@@ -3,7 +3,7 @@ import appContext from "../labs/appContext";
 import useLoading from "../hooks/useLoading";
 import { locationService, memoService, queryService } from "../services";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR, TAG_REG } from "../helpers/consts";
-import * as utils from "../helpers/utils";
+import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import DeletedMemo from "../components/DeletedMemo";
 import MemoFilter from "../components/MemoFilter";
