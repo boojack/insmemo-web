@@ -82,11 +82,11 @@ const Signin: React.FC<Props> = () => {
       } else {
         toastHelper.error("😟 登录失败");
       }
-      signinBtnClickLoadingState.setFinish();
     } catch (error: any) {
       console.error(error);
       toastHelper.error("😟 " + error.message);
     }
+    signinBtnClickLoadingState.setFinish();
   };
 
   return (

@@ -30,9 +30,7 @@ const parseHtmlToRawText = (htmlStr: string): string => {
   const tempEl = document.createElement("div");
   tempEl.className = "memo-content-text";
   tempEl.innerHTML = htmlStr;
-  document.body.appendChild(tempEl);
   const text = tempEl.innerText;
-  tempEl.remove();
   return text;
 };
 
@@ -41,4 +39,10 @@ const parseRawTextToHtml = (rawTextStr: string): string => {
   return htmlText;
 };
 
-export { parseMarkedToHtml, parseHtmlToRawText, parseRawTextToHtml };
+const encodeHtml = (htmlStr: string): string => {
+  const t = document.createElement("div");
+  t.textContent = htmlStr;
+  return t.innerHTML;
+};
+
+export { encodeHtml, parseMarkedToHtml, parseHtmlToRawText, parseRawTextToHtml };

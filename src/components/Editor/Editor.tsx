@@ -65,7 +65,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
         refresh();
       },
       setContent: (text: string) => {
-        editorRef.current!.value = parseHtmlToRawText(text);
+        editorRef.current!.value = text;
         refresh();
       },
       getContent: (): string => {

@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from "react";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
-import { parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
+import { encodeHtml, parseMarkedToHtml, parseRawTextToHtml } from "../helpers/marked";
 import * as utils from "../helpers/utils";
 import useToggle from "../hooks/useToggle";
 import { globalStateService, memoService } from "../services";
@@ -134,6 +134,7 @@ const Memo: React.FC<Props> = (props: Props) => {
 };
 
 export function formatMemoContent(content: string): Element {
+  content = encodeHtml(content);
   content = parseRawTextToHtml(content)
     .split("<br>")
     .map((t) => {

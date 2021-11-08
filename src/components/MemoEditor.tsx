@@ -2,7 +2,6 @@ import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { globalStateService, locationService, memoService } from "../services";
 import { TAG_REG } from "../helpers/consts";
 import appContext from "../labs/appContext";
-import { parseHtmlToRawText } from "../helpers/marked";
 import * as utils from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toastHelper from "./Toast";

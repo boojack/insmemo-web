@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import appContext from "../labs/appContext";
 import { globalStateService, memoService } from "../services";
+import { parseHtmlToRawText } from "../helpers/marked";
 import { formatMemoContent } from "./Memo";
 import "../less/preferences-section.less";
 
@@ -55,6 +56,13 @@ const PreferencesSection: React.FC<Props> = () => {
     document.body.removeChild(element);
   };
 
+  const handleFormatMemosBtnClick = async () => {
+    const memos = memoService.getState().memos;
+    for (const m of memos) {
+      memoService.updateMemo(m.id, parseHtmlToRawText(m.content));
+    }
+  };
+
   return (
     <>
       <div className="section-container preferences-section-container">
@@ -78,6 +86,9 @@ const PreferencesSection: React.FC<Props> = () => {
         <div className="btn-container">
           <button className="btn export-btn" onClick={handleExportBtnClick}>
             导出数据(JSON)
+          </button>
+          <button className="btn format-btn" onClick={handleFormatMemosBtnClick}>
+            格式化数据
           </button>
         </div>
       </div>
