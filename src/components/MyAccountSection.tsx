@@ -129,14 +129,11 @@ const MyAccountSection: React.FC<Props> = () => {
             onChange={handleUsernameChanged}
           />
           <div className="btns-container" onClick={handlePreventDefault}>
-            <span
-              className={"text-btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")}
-              onClick={handleConfirmEditUsernameBtnClick}
-            >
+            <span className={"btn confirm-btn " + (showEditUsernameInputs ? "" : "hidden")} onClick={handleConfirmEditUsernameBtnClick}>
               保存
             </span>
             <span
-              className={"text-btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
+              className={"btn cancel-btn " + (showEditUsernameInputs ? "" : "hidden")}
               onClick={() => {
                 setUsername(user.username);
                 setShowEditUsernameInputs(false);
@@ -148,7 +145,7 @@ const MyAccountSection: React.FC<Props> = () => {
         </label>
         <label className="form-label password-label">
           <span className="normal-text">密码：</span>
-          <span className="text-btn" onClick={handleChangePasswordBtnClick}>
+          <span className="btn" onClick={handleChangePasswordBtnClick}>
             修改密码
           </span>
         </label>

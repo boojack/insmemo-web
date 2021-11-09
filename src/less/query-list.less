@@ -21,15 +21,14 @@
       font-weight: bold;
     }
 
-    > .text-btn {
+    > .btn {
       display: none;
-      cursor: pointer;
       padding: 0 4px;
       font-size: 18px;
     }
 
     &:hover {
-      > .text-btn {
+      > .btn {
         display: block;
       }
     }
@@ -41,13 +40,12 @@
     margin-top: 8px;
     margin-bottom: 12px;
 
-    > .text-btn {
+    > .btn {
       display: flex;
       padding: 4px 8px;
       border: 1px dashed @bg-blue;
       border-radius: 8px;
       font-size: 13px;
-      cursor: pointer;
 
       &:hover {
         background-color: @bg-blue;
@@ -130,8 +128,8 @@
           flex-shrink: 0;
 
           > .icon-img {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
           }
 
           &:hover {
@@ -148,7 +146,7 @@
           width: auto;
           height: auto;
           padding: 8px;
-          transform: translateY(56px);
+          transform: translateY(60px);
           z-index: 1;
           display: none;
 
@@ -166,15 +164,15 @@
             background-color: white;
             box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 
-            > .text-btn {
+            > .btn {
               width: 100%;
-              padding: 4px 0;
-              padding-left: 12px;
+              padding: 6px 0;
+              padding-left: 16px;
               border-radius: 4px;
               font-size: 13px;
               height: unset;
               line-height: unset;
-              justify-content: flex-start;
+              text-align: left;
 
               &:hover {
                 background-color: @bg-whitegray;

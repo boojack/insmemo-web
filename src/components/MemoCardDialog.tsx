@@ -104,10 +104,10 @@ const MemoCardDialog: React.FC<Props> = (props: Props) => {
         <div className="header-container">
           <p className="time-text">{memo.createdAtStr}</p>
           <div className="btns-container">
-            <button className="text-btn edit-btn" onClick={handleEditMemoBtnClick}>
+            <button className="btn edit-btn" onClick={handleEditMemoBtnClick}>
               <img className="icon-img" src="/icons/edit.svg" />
             </button>
-            <button className="text-btn close-btn" onClick={props.destroy}>
+            <button className="btn close-btn" onClick={props.destroy}>
               <img className="icon-img" src="/icons/close.svg" />
             </button>
           </div>

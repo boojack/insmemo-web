@@ -81,7 +81,7 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">修改密码</p>
-        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+        <button className="btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
@@ -99,10 +99,10 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
           <input type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
         </label>
         <div className="btns-container">
-          <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>
+          <span className="btn cancel-btn" onClick={handleCloseBtnClick}>
             取消
           </span>
-          <span className="text-btn confirm-btn" onClick={handleSaveBtnClick}>
+          <span className="btn confirm-btn" onClick={handleSaveBtnClick}>
             保存
           </span>
         </div>

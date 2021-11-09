@@ -116,12 +116,12 @@ const Signin: React.FC<Props> = () => {
             ) : null}
           </div>
           <div className="btns-container">
-            <button className="text-btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
+            <button className="btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
               注册
             </button>
             <span className="split-text">/</span>
             <button
-              className={`text-btn signin-btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+              className={`btn signin-btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
               ref={signinBtn}
               onClick={handleSignInBtnClick}
             >
@@ -132,8 +132,8 @@ const Signin: React.FC<Props> = () => {
         <p className="tip-text">
           仅用于作品展示，可输入 <code>guest, 123456</code> 进行体验。
           <br />
-          <span className="text-btn" onClick={handleAboutBtnClick}>
-            <span className="icon-text">😀</span>
+          <span className="btn" onClick={handleAboutBtnClick}>
+            <span className="icon-text">🤠</span>
             关于本站
           </span>
         </p>

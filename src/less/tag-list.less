@@ -84,59 +84,10 @@
           height: 20px;
           text-align: center;
           flex-shrink: 0;
-
-          &:hover {
-            + .action-btns-wrapper {
-              display: flex;
-            }
-          }
         }
 
         > .tag-text {
           flex-shrink: 0;
-        }
-
-        > .action-btns-wrapper {
-          .flex(column, flex-start, flex-start);
-          position: absolute;
-          width: auto;
-          height: auto;
-          padding: 8px;
-          padding-top: 24px;
-          transform: translateY(40px);
-          margin-left: -8px;
-          z-index: 1;
-          display: none;
-
-          &:hover {
-            display: flex;
-          }
-
-          > .action-btns-container {
-            .flex(column, flex-start, flex-start);
-            width: 96px;
-            height: auto;
-            white-space: nowrap;
-            border-radius: 4px;
-            padding: 4px;
-            background-color: white;
-            box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
-
-            > .text-btn {
-              width: 100%;
-              padding: 4px 0;
-              padding-left: 12px;
-              border-radius: 4px;
-              font-size: 12px;
-              height: unset;
-              line-height: unset;
-              justify-content: flex-start;
-
-              &:hover {
-                background-color: @bg-whitegray;
-              }
-            }
-          }
         }
       }
 

@@ -37,7 +37,7 @@ const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }: Props) => {
 
   return (
     <>
-      <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+      <button className="btn close-btn" onClick={handleCloseBtnClick}>
         <img className="icon-img" src="/icons/close.svg" />
       </button>
 
@@ -48,13 +48,13 @@ const PreviewImageDialog: React.FC<Props> = ({ destroy, imgUrl }: Props) => {
       </div>
 
       <div className="action-btns-container">
-        <button className="text-btn" onClick={handleDecreaseImageSize}>
+        <button className="btn" onClick={handleDecreaseImageSize}>
           ➖
         </button>
-        <button className="text-btn" onClick={handleIncreaseImageSize}>
+        <button className="btn" onClick={handleIncreaseImageSize}>
           ➕
         </button>
-        <button className="text-btn" onClick={() => setImgWidth(80)}>
+        <button className="btn" onClick={() => setImgWidth(80)}>
           ⭕
         </button>
       </div>

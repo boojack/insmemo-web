@@ -87,24 +87,24 @@ const Memo: React.FC<Props> = (props: Props) => {
           {memo.createdAtStr}
         </span>
         <div className="btns-container">
-          <span className="text-btn more-action-btn">
+          <span className="btn more-action-btn">
             <img className="icon-img" src="/icons/more.svg" />
           </span>
           <div className="more-action-btns-wrapper">
             <div className="more-action-btns-container">
-              <span className="text-btn" onClick={handleShowMemoStoryDialog}>
+              <span className="btn" onClick={handleShowMemoStoryDialog}>
                 查看详情
               </span>
-              <span className="text-btn" onClick={handleMarkMemoClick}>
+              <span className="btn" onClick={handleMarkMemoClick}>
                 Mark
               </span>
-              <span className="text-btn" onClick={handleGenMemoImageBtnClick}>
+              <span className="btn" onClick={handleGenMemoImageBtnClick}>
                 分享
               </span>
-              <span className="text-btn" onClick={handleEditMemoClick}>
+              <span className="btn" onClick={handleEditMemoClick}>
                 编辑
               </span>
-              <span className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>
+              <span className={`btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`} onClick={handleDeleteMemoClick}>
                 {showConfirmDeleteBtn ? "确定删除！" : "删除"}
               </span>
             </div>

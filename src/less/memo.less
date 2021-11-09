@@ -54,7 +54,7 @@
           box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
           z-index: 1;
 
-          > .text-btn {
+          > .btn {
             width: 100%;
             padding: 8px 0;
             padding-left: 24px;
@@ -74,15 +74,13 @@
         }
       }
 
-      .text-btn {
+      .btn {
         .flex(row, center, center);
         width: 100%;
         height: 28px;
         padding: 0 6px;
         font-size: 13px;
-        cursor: pointer;
         border-radius: 4px;
-        user-select: none;
 
         &:hover {
           background-color: @bg-whitegray;
@@ -143,22 +141,6 @@
         width: auto;
         max-height: 128px;
         border-radius: 8px;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 875px) {
-  .memo-wrapper {
-    > .memo-top-wrapper {
-      > .btns-container {
-        .text-btn {
-          font-size: 14px;
-
-          &.more-action-btn {
-            font-size: 13px;
-          }
-        }
       }
     }
   }

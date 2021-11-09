@@ -46,16 +46,16 @@ const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`} onClick={handlePopupClick}>
-      <button className="text-btn action-btn" onClick={handleMyAccountBtnClick}>
+      <button className="btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">👤</span> 账号与设置
       </button>
-      <button className="text-btn action-btn" onClick={handleMemosTrashBtnClick}>
+      <button className="btn action-btn" onClick={handleMemosTrashBtnClick}>
         <span className="icon">🗑️</span> 回收站
       </button>
-      <button className="text-btn action-btn" onClick={handleAboutBtnClick}>
+      <button className="btn action-btn" onClick={handleAboutBtnClick}>
         <span className="icon">🤠</span> 关于
       </button>
-      <button className="text-btn action-btn" onClick={handleSignOutBtnClick}>
+      <button className="btn action-btn" onClick={handleSignOutBtnClick}>
         <span className="icon">👋</span> 退出
       </button>
     </div>

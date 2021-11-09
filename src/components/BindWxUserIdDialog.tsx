@@ -42,7 +42,7 @@ const BindWxUserIdDialog: React.FC<Props> = ({ destroy }: Props) => {
     <>
       <div className="dialog-header-container">
         <p className="title-text">绑定微信 OpenID</p>
-        <button className="text-btn close-btn" onClick={handleCloseBtnClick}>
+        <button className="btn close-btn" onClick={handleCloseBtnClick}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
@@ -55,10 +55,10 @@ const BindWxUserIdDialog: React.FC<Props> = ({ destroy }: Props) => {
           <input type="text" value={wxUserId} onChange={handleWxUserIdChanged} />
         </label>
         <div className="btns-container">
-          <span className="text-btn cancel-btn" onClick={handleCloseBtnClick}>
+          <span className="btn cancel-btn" onClick={handleCloseBtnClick}>
             取消
           </span>
-          <span className="text-btn confirm-btn" onClick={handleSaveBtnClick}>
+          <span className="btn confirm-btn" onClick={handleSaveBtnClick}>
             保存
           </span>
         </div>

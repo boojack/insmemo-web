@@ -38,13 +38,13 @@ const QueryList: React.FC<Props> = () => {
     <div className="queries-wrapper">
       <p className="title-text">
         <span className="normal-text">快速检索</span>
-        <span className="text-btn" onClick={() => showCreateQueryDialog()}>
+        <span className="btn" onClick={() => showCreateQueryDialog()}>
           +
         </span>
       </p>
       <Only when={loadingState.isSucceed && sortedQueries.length === 0}>
         <div className="create-query-btn-container">
-          <span className="text-btn" onClick={() => showCreateQueryDialog()}>
+          <span className="btn" onClick={() => showCreateQueryDialog()}>
             创建检索
           </span>
         </div>
@@ -137,14 +137,14 @@ const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemC
           </span>
           <div className="action-btns-wrapper">
             <div className="action-btns-container">
-              <span className="text-btn" onClick={handlePinQueryBtnClick}>
+              <span className="btn" onClick={handlePinQueryBtnClick}>
                 {query.pinnedAt ? "取消置顶" : "置顶"}
               </span>
-              <span className="text-btn" onClick={handleEditQueryBtnClick}>
+              <span className="btn" onClick={handleEditQueryBtnClick}>
                 编辑
               </span>
               <span
-                className={`text-btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`}
+                className={`btn delete-btn ${showConfirmDeleteBtn ? "final-confirm" : ""}`}
                 onClick={handleDeleteMemoClick}
                 onMouseLeave={handleDeleteBtnMouseLeave}
               >

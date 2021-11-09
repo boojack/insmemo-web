@@ -83,7 +83,7 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
           <span className="icon-text">🔖</span>
           {queryId ? "编辑检索" : "创建检索"}
         </p>
-        <button className="text-btn close-btn" onClick={destroy}>
+        <button className="btn close-btn" onClick={destroy}>
           <img className="icon-img" src="/icons/close.svg" />
         </button>
       </div>
@@ -115,7 +115,7 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
       <div className="dialog-footer-container">
         <div></div>
         <div className="btns-container">
-          <button className={`text-btn save-btn ${requestState.isLoading ? "requesting" : ""}`} onClick={handleSaveBtnClick}>
+          <button className={`btn save-btn ${requestState.isLoading ? "requesting" : ""}`} onClick={handleSaveBtnClick}>
             保存
           </button>
         </div>
