@@ -132,11 +132,7 @@ export function formatMemoContent(content: string) {
   content = parseRawTextToHtml(content)
     .split("<br>")
     .map((t) => {
-      if (t !== "") {
-        return `<p>${t}</p>`;
-      } else {
-        return "<br>";
-      }
+      return `<p>${t !== "" ? t : "<br>"}</p>`;
     })
     .join("");
 

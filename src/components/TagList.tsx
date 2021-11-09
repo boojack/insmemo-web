@@ -75,7 +75,7 @@ const TagList: React.FC<Props> = () => {
         {tags.map((t, idx) => (
           <TagItemContainer key={t.text + "-" + idx} tag={t} tagQuery={tagQuery} />
         ))}
-        <Only when={tags.length < 5}>
+        <Only when={tags.length < 5 && memoService.initialized}>
           <p className="tag-tip-container">
             输入<span className="code-text"># Tag </span>来创建标签吧~
           </p>

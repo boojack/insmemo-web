@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import appContext from "../labs/appContext";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import SearchBar from "./SearchBar";
-import { locationService, queryService } from "../services";
+import { memoService, queryService } from "../services";
 import "../less/memos-header.less";
 
 interface Props {}
@@ -27,7 +27,9 @@ const MemosHeader: React.FC<Props> = () => {
   }, [filter, queries]);
 
   const handleMemoTextClick = useCallback(() => {
-    locationService.clearQuery();
+    memoService.fetchAllMemos().catch(() => {
+      // do nth
+    });
   }, []);
 
   const handleMoreActionBtnClick = useCallback((event: React.MouseEvent) => {

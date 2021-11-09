@@ -9,7 +9,7 @@ interface SignInAction {
 
 interface SignOutAction {
   type: "SIGN_OUT";
-  payload: State;
+  payload: null;
 }
 
 export type Actions = SignInAction | SignOutAction;

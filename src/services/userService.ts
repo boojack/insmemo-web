@@ -28,7 +28,7 @@ class UserService {
       .finally(() => {
         appStore.dispatch({
           type: "SIGN_OUT",
-          payload: { user: null },
+          payload: null,
         });
       });
   }

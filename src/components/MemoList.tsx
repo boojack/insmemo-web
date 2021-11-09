@@ -5,6 +5,7 @@ import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/cons
 import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import Memo from "./Memo";
+import toastHelper from "./Toast";
 import "../less/memolist.less";
 
 interface Props {}
@@ -15,7 +16,6 @@ const MemoList: React.FC<Props> = () => {
     memoState: { memos },
   } = useContext(appContext);
   const [isFetching, setFetchStatus] = useState(true);
-  const [isComplete, setCompleteStatus] = useState(false);
   const wrapperElement = useRef<HTMLDivElement>(null);
 
   const { tag: tagQuery, duration, type: memoType, text: textQuery, filter: queryId } = query;
@@ -64,14 +64,19 @@ const MemoList: React.FC<Props> = () => {
       : memos;
 
   useEffect(() => {
-    wrapperElement.current?.scrollTo({ top: 0 });
-    memoService.fetchAllMemos().then((result) => {
-      if (result !== false) {
-        setCompleteStatus(true);
+    memoService
+      .fetchAllMemos()
+      .then(() => {
         setFetchStatus(false);
-      }
-    });
+      })
+      .catch(() => {
+        toastHelper.error("😭 请求数据失败了");
+      });
   }, []);
+
+  useEffect(() => {
+    wrapperElement.current?.scrollTo({ top: 0 });
+  }, [query]);
 
   const handleMemoListClick = useCallback((event: React.MouseEvent) => {
     const targetEl = event.target as HTMLElement;
@@ -87,19 +92,15 @@ const MemoList: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className={`memolist-wrapper ${isComplete ? "completed" : ""}`} onClick={handleMemoListClick} ref={wrapperElement}>
+    <div className={`memolist-wrapper ${isFetching ? "" : "completed"}`} onClick={handleMemoListClick} ref={wrapperElement}>
       {shownMemos.map((memo) => (
         <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
       ))}
-      {showMemoFilter ? (
-        <div className={"status-text-container"}>
-          <p className="status-text">{isFetching ? "努力请求数据中..." : isComplete && shownMemos.length === 0 ? "空空如也" : ""}</p>
-        </div>
-      ) : (
-        <div className={`status-text-container ${isComplete ? "completed" : ""} ${isFetching || isComplete ? "" : "invisible"}`}>
-          <p className="status-text">{isComplete ? "所有数据加载完啦 🎉" : "努力请求数据中..."}</p>
-        </div>
-      )}
+      <div className="status-text-container">
+        <p className="status-text">
+          {isFetching ? "努力请求数据中..." : shownMemos.length === 0 ? "空空如也" : showMemoFilter ? "" : "所有数据加载完啦 🎉"}
+        </p>
+      </div>
     </div>
   );
 };

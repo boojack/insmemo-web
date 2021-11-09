@@ -4,6 +4,8 @@ import appStore from "../stores";
 import userService from "./userService";
 
 class MemoService {
+  public initialized = false;
+
   public getState() {
     return appStore.getState().memoState;
   }
@@ -24,6 +26,11 @@ class MemoService {
         memos,
       },
     });
+
+    if (!this.initialized) {
+      this.initialized = true;
+    }
+
     return memos;
   }
 

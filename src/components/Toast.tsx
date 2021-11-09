@@ -99,4 +99,6 @@ class ToastHelper {
   };
 }
 
-export default new ToastHelper();
+const toastHelper = new ToastHelper();
+
+export default toastHelper;

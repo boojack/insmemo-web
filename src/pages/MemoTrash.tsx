@@ -5,6 +5,7 @@ import { locationService, memoService, queryService } from "../services";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR, TAG_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
+import toastHelper from "../components/Toast";
 import DeletedMemo from "../components/DeletedMemo";
 import MemoFilter from "../components/MemoFilter";
 import "../less/memo-trash.less";
@@ -65,12 +66,19 @@ const MemoTrash: React.FC<Props> = () => {
 
   useEffect(() => {
     memoService.fetchAllMemos();
-    memoService.fetchDeletedMemos().then((result) => {
-      if (result !== false) {
-        setDeletedMemos(result);
-      }
-      loadingState.setFinish();
-    });
+    memoService
+      .fetchDeletedMemos()
+      .then((result) => {
+        if (result !== false) {
+          setDeletedMemos(result);
+        }
+      })
+      .catch((error) => {
+        toastHelper.error("Failed to fetch deleted memos: ", error);
+      })
+      .finally(() => {
+        loadingState.setFinish();
+      });
     locationService.clearQuery();
   }, []);
 

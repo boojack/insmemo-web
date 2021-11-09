@@ -17,15 +17,15 @@ function Home() {
     if (!user) {
       userService
         .doSignIn()
-        .catch(() => {
-          // do nth
-        })
-        .finally(() => {
-          if (userService.getState().user) {
+        .then((user) => {
+          if (user) {
             loadingState.setFinish();
           } else {
             locationService.replaceHistory("/signin");
           }
+        })
+        .catch(() => {
+          // do nth
         });
     } else {
       loadingState.setFinish();
