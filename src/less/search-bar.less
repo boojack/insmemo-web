@@ -5,9 +5,9 @@
 
   > .search-bar-inputer {
     .flex(row, flex-start, center);
-    background-color: @bg-gray;
+    background-color: @bg-lightgray;
     width: 100%;
-    padding: 10px 16px;
+    padding: 8px 16px;
     border-radius: 12px;
 
     > .icon-img {
@@ -33,17 +33,18 @@
   > .quickly-action-wrapper {
     display: none;
     position: absolute;
-    top: 54px;
+    top: 52px;
     right: -8px;
     z-index: 2;
     padding: 8px;
-    width: 300px;
+    width: 310px;
 
     > .quickly-action-container {
       .flex(column, flex-start, flex-start);
       width: 100%;
       background-color: white;
       padding: 16px;
+      padding-bottom: 12px;
       border-radius: 4px;
       box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
 
@@ -71,11 +72,11 @@
 
           > div {
             .flex(row, flex-start, center);
-            margin-bottom: 4px;
+            line-height: 26px;
 
             .type-item {
               cursor: pointer;
-              padding: 4px 6px;
+              padding: 0 4px;
               border-radius: 6px;
 
               &:hover {
@@ -90,7 +91,7 @@
 
             .split-text {
               color: lightgray;
-              margin: 0 4px;
+              margin: 0 2px;
             }
           }
         }

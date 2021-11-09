@@ -4,12 +4,12 @@
   .flex(row, flex-start, flex-start);
   width: 100%;
   flex-wrap: wrap;
-  margin-top: 8px;
-  font-size: 13px;
+  padding: 12px 12px;
+  padding-bottom: 4px;
+  font-size: 12px;
   line-height: 1.8;
 
   > .tip-text {
-    margin-left: 4px;
     padding: 2px 4px;
   }
 
@@ -31,5 +31,11 @@
     &:hover {
       text-decoration: line-through;
     }
+  }
+}
+
+@media only screen and (max-width: 875px) {
+  .filter-query-container {
+    padding-top: 4px;
   }
 }

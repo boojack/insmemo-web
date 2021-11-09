@@ -7,8 +7,7 @@
   word-break: break-word;
   white-space: pre-wrap;
 
-  > p,
-  > div {
+  > p {
     display: inline-block;
     width: 100%;
     height: auto;
@@ -56,7 +55,7 @@
     display: inline-block;
     text-align: center;
     width: 2rem;
-    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: "Roboto Mono", monospace;
   }
 
   pre {
@@ -65,18 +64,16 @@
     padding: 8px 12px;
     border-radius: 4px;
     font-size: 14px;
-    line-height: 1.6;
-    background-color: #f1f1f1;
-    overflow-x: auto;
+    line-height: 1.5;
+    background-color: #f6f5f4;
     white-space: pre-wrap;
   }
 }
 
 @media only screen and (max-width: 875px) {
   .memo-content-text {
-    > p,
-    > div {
-      font-size: 16px;
+    > p {
+      font-size: 15px;
       line-height: 26px;
       min-height: 26px;
       white-space: pre-wrap;
@@ -85,10 +82,6 @@
     .tag-span {
       line-height: 26px;
       font-size: 14px;
-    }
-
-    pre {
-      font-size: 15px;
     }
   }
 }

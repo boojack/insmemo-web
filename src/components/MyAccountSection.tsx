@@ -88,7 +88,6 @@ const MyAccountSection: React.FC<Props> = () => {
   };
 
   const handleUnbindWxBtnClick = async () => {
-    showBindWxUserIdDialog();
     if (showConfirmUnbindWxBtn) {
       try {
         await userService.updateWxUserId("");
