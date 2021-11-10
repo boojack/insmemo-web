@@ -1,5 +1,5 @@
 import utils from "../helpers/utils";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 
 const updateLocationUrl = (method: "replace" | "push" = "replace") => {
   const { query, pathname, hash } = appStore.getState().locationState;

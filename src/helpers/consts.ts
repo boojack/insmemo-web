@@ -1,5 +1,5 @@
 // container 选择器
-export const PAGE_CONTAINER_SELECTOR = "#page-container";
+export const PAGE_CONTAINER_SELECTOR = "#page-wrapper";
 
 // 移动端样式适配额外类名
 export const MOBILE_ADDITION_CLASSNAME = "mobile-show-sidebar";

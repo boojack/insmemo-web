@@ -1,5 +1,5 @@
 import { storage } from "../helpers/storage";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 import { AppSetting } from "../stores/globalStateStore";
 
 class GlobalStateService {

@@ -1,5 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
-import appContext from "../stores/appContext";
+import { useCallback, useEffect } from "react";
 import { memoService } from "../services";
 import MyAccountSection from "../components/MyAccountSection";
 import PreferencesSection from "../components/PreferencesSection";
@@ -9,8 +8,6 @@ import "../less/setting.less";
 interface Props {}
 
 const Setting: React.FC<Props> = () => {
-  const {} = useContext(appContext);
-
   useEffect(() => {
     memoService.fetchAllMemos();
   }, []);

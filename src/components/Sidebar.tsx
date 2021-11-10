@@ -7,24 +7,24 @@ import TagList from "./TagList";
 import UsageHeatMap from "./UsageHeatMap";
 import "../less/siderbar.less";
 
+const removeMobileAdditionClass = () => {
+  const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
+  pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
+};
+
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
   const { locationState } = useContext(appContext);
 
   useEffect(() => {
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-    pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
+    removeMobileAdditionClass();
   }, [locationState]);
 
   const handleWrapperClick = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-    const el = event.target as HTMLElement;
-
-    if (el.className === "sidebar-wrapper") {
-      // 删除移动端样式
-      const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-      pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
+    if (event.target && (event.target as HTMLElement).className === "sidebar-wrapper") {
+      removeMobileAdditionClass();
     }
   }, []);
 

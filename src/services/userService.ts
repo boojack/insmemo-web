@@ -1,5 +1,5 @@
 import api from "../helpers/api";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 
 class UserService {
   public getState() {

@@ -1,6 +1,6 @@
 import userService from "./userService";
 import api from "../helpers/api";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 
 class QueryService {
   public getState() {

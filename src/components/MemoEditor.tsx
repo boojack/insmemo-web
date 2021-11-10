@@ -56,9 +56,8 @@ const MemoEditor: React.FC<Props> = () => {
       } else {
         const newMemo = await memoService.createMemo(content);
         memoService.pushMemo(newMemo);
+        locationService.clearQuery();
       }
-
-      locationService.clearQuery();
     } catch (error: any) {
       toastHelper.error(error.message);
     }

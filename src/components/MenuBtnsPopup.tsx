@@ -12,20 +12,16 @@ const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
   const { shownStatus, toggleShownStatus } = props;
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      toggleShownStatus(false);
-    };
-    window.addEventListener("click", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  const handlePopupClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    toggleShownStatus(false);
-  };
+    if (shownStatus) {
+      const handleClickOutside = () => {
+        toggleShownStatus(false);
+      };
+      window.addEventListener("click", handleClickOutside, {
+        capture: true,
+        once: true,
+      });
+    }
+  }, [shownStatus]);
 
   const handleMyAccountBtnClick = () => {
     locationService.pushHistory("/setting");
@@ -45,7 +41,7 @@ const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`} onClick={handlePopupClick}>
+    <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`}>
       <button className="btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">👤</span> 账号与设置
       </button>

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import useToggle from "../../hooks/useToggle";
 import "../../less/common/selector.less";
 
@@ -23,6 +23,8 @@ const Selector: React.FC<Props> = (props: Props) => {
   const { className, dataSource, handleValueChanged, value } = props;
   const [showSelector, toggleSelectorStatus] = useToggle(false);
 
+  const seletorElRef = useRef<HTMLDivElement>(null);
+
   let currentItem = nullItem;
   for (const d of dataSource) {
     if (d.value === value) {
@@ -32,13 +34,24 @@ const Selector: React.FC<Props> = (props: Props) => {
   }
 
   useEffect(() => {
-    // do nth
-  }, []);
+    if (showSelector) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (!seletorElRef.current?.contains(event.target as Node)) {
+          toggleSelectorStatus(false);
+        }
+      };
+      window.addEventListener("click", handleClickOutside, {
+        capture: true,
+        once: true,
+      });
+    }
+  }, [showSelector]);
 
   const handleItemClick = (item: TVObject) => {
     if (handleValueChanged) {
       handleValueChanged(item.value);
     }
+    toggleSelectorStatus(false);
   };
 
   const handleCurrentValueClick = (event: React.MouseEvent) => {
@@ -46,14 +59,9 @@ const Selector: React.FC<Props> = (props: Props) => {
     toggleSelectorStatus();
   };
 
-  const handleSeletorClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    toggleSelectorStatus();
-  };
-
   return (
-    <div className={`selector-wrapper ${className ?? ""}`} onClick={handleSeletorClick}>
-      <div className="current-value-container" onClick={handleCurrentValueClick}>
+    <div className={`selector-wrapper ${className ?? ""}`} ref={seletorElRef}>
+      <div className={`current-value-container ${showSelector ? "active" : ""}`} onClick={handleCurrentValueClick}>
         <span className="value-text">{currentItem.text}</span>
         <span className="arrow-text">
           <img className="icon-img" src="/icons/arrow-right.svg" />

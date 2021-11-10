@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Provider from "./labs/Provider";
 import appContext from "./stores/appContext";
-import appStore from "./stores";
+import appStore from "./stores/appStore";
 import App from "./App";
 import "./helpers/polyfill";
 import "./less/global.less";

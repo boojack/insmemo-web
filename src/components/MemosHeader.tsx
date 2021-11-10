@@ -5,6 +5,8 @@ import SearchBar from "./SearchBar";
 import { memoService, queryService } from "../services";
 import "../less/memos-header.less";
 
+let prevRequestTimestamp = Date.now();
+
 interface Props {}
 
 const MemosHeader: React.FC<Props> = () => {
@@ -27,9 +29,13 @@ const MemosHeader: React.FC<Props> = () => {
   }, [filter, queries]);
 
   const handleMemoTextClick = useCallback(() => {
-    memoService.fetchAllMemos().catch(() => {
-      // do nth
-    });
+    const now = Date.now();
+    if (now - prevRequestTimestamp > 10 * 1000) {
+      prevRequestTimestamp = now;
+      memoService.fetchAllMemos().catch(() => {
+        // do nth
+      });
+    }
   }, []);
 
   const handleMoreActionBtnClick = useCallback((event: React.MouseEvent) => {

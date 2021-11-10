@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import appContext from "../stores/appContext";
 import Provider from "../labs/Provider";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 import { ANIMATION_DURATION } from "../helpers/consts";
 import "../less/dialog.less";
 

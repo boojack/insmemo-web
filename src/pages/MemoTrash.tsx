@@ -82,12 +82,9 @@ const MemoTrash: React.FC<Props> = () => {
     locationService.clearQuery();
   }, []);
 
-  const handleDeletedMemoAction = useCallback(
-    (memoId: string) => {
-      setDeletedMemos(deletedMemos.filter((m) => m.id !== memoId));
-    },
-    [deletedMemos]
-  );
+  const handleDeletedMemoAction = useCallback((memoId: string) => {
+    setDeletedMemos((deletedMemos) => deletedMemos.filter((memo) => memo.id !== memoId));
+  }, []);
 
   const handleMoreActionBtnClick = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();

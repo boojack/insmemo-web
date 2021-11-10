@@ -1,6 +1,6 @@
 import api from "../helpers/api";
 import { TAG_REG } from "../helpers/consts";
-import appStore from "../stores";
+import appStore from "../stores/appStore";
 import userService from "./userService";
 
 class MemoService {
