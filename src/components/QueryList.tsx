@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import Only from "./common/OnlyWhen";

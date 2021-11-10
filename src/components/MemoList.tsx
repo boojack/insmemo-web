@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import appContext from "../stores/appContext";
 import { locationService, memoService, queryService } from "../services";
-import appContext from "../labs/appContext";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";

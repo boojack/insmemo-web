@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { locationService, userService } from "../services";
 import { homeRouterSwitch } from "../routers";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import Sidebar from "../components/Sidebar";
 import useLoading from "../hooks/useLoading";
 import "../less/index.less";
@@ -17,15 +17,15 @@ function Home() {
     if (!user) {
       userService
         .doSignIn()
-        .then((user) => {
-          if (user) {
+        .catch(() => {
+          // do nth
+        })
+        .finally(() => {
+          if (userService.getState().user) {
             loadingState.setFinish();
           } else {
             locationService.replaceHistory("/signin");
           }
-        })
-        .catch(() => {
-          // do nth
         });
     } else {
       loadingState.setFinish();

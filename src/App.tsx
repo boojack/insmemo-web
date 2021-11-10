@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import appContext from "./labs/appContext";
+import appContext from "./stores/appContext";
 import { appRouterSwitch } from "./routers";
 import { globalStateService } from "./services";
 

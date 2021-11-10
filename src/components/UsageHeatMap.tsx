@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import appContext from "../stores/appContext";
 import { globalStateService, locationService } from "../services";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
-import appContext from "../labs/appContext";
 import utils from "../helpers/utils";
 import "../less/usage-heat-map.less";
 

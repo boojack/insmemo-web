@@ -27,7 +27,8 @@
       font-size: 18px;
     }
 
-    &:hover {
+    &:hover,
+    &:active {
       > .btn {
         display: block;
       }
@@ -74,7 +75,8 @@
       flex-shrink: 0;
       user-select: none;
 
-      &:hover {
+      &:hover,
+      &:active {
         background-color: @bg-gray;
 
         > .btns-container {
@@ -132,7 +134,8 @@
             height: 16px;
           }
 
-          &:hover {
+          &:hover,
+          &:active {
             + .action-btns-wrapper {
               display: flex;
             }
@@ -167,7 +170,7 @@
             > .btn {
               width: 100%;
               padding: 6px 0;
-              padding-left: 16px;
+              padding-left: 12px;
               border-radius: 4px;
               font-size: 13px;
               height: unset;

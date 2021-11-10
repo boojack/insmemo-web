@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import appContext from "../stores/appContext";
 import { globalStateService, locationService, memoService } from "../services";
-import appContext from "../labs/appContext";
 import utils from "../helpers/utils";
 import { storage } from "../helpers/storage";
 import toastHelper from "./Toast";

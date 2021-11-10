@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import SearchBar from "./SearchBar";
 import { memoService, queryService } from "../services";

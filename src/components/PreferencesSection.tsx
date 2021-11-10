@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import { globalStateService, memoService } from "../services";
 import { parseHtmlToRawText } from "../helpers/marked";
 import { formatMemoContent } from "./Memo";

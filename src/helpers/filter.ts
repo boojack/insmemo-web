@@ -1,5 +1,10 @@
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "./consts";
 
+export const relationConsts = [
+  { text: "且", value: "AND" },
+  { text: "或", value: "OR" },
+];
+
 export const filterConsts = {
   TAG: {
     value: "TAG",

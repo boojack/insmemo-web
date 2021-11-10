@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import Provider from "../labs/Provider";
 import appStore from "../stores";
 import { ANIMATION_DURATION } from "../helpers/consts";

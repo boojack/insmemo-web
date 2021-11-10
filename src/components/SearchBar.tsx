@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { memoSpecialTypes } from "../helpers/filter";
+import appContext from "../stores/appContext";
 import { locationService } from "../services";
-import appContext from "../labs/appContext";
+import { memoSpecialTypes } from "../helpers/filter";
 import "../less/search-bar.less";
 
 interface Props {}

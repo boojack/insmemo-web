@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import appContext from "../stores/appContext";
 import { locationService, memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import Only from "./common/OnlyWhen";
-import appContext from "../labs/appContext";
 import utils from "../helpers/utils";
 import "../less/tag-list.less";
 
@@ -29,7 +29,7 @@ const TagList: React.FC<Props> = () => {
 
   useEffect(() => {
     const sortedTags = Array.from(tagsText).sort();
-    const root: IterObject<any> = {
+    const root: KVObject<any> = {
       subTags: [],
     };
     for (const tag of sortedTags) {

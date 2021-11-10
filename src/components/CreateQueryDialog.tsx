@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { memoService, queryService } from "../services";
-import { filterConsts, getDefaultFilter } from "../helpers/filter";
+import { filterConsts, getDefaultFilter, relationConsts } from "../helpers/filter";
 import useLoading from "../hooks/useLoading";
 import { showDialog } from "./Dialog";
 import toastHelper from "./Toast";
+import Selector from "./common/Selector";
 import "../less/create-query-dialog.less";
 
 interface Props extends DialogProps {
@@ -65,16 +66,20 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
     setFilters([...filters, getDefaultFilter()]);
   };
 
-  const handleFilterChange = (index: number, filter: Filter) => {
-    const temp = [...filters];
-    temp[index] = filter;
-    setFilters(temp);
-  };
+  const handleFilterChange = useCallback((index: number, filter: Filter) => {
+    setFilters((filters) => {
+      const temp = [...filters];
+      temp[index] = filter;
+      return temp;
+    });
+  }, []);
 
-  const handleFilterRemove = (index: number) => {
-    const temp = filters.filter((_, i) => i !== index);
-    setFilters(temp);
-  };
+  const handleFilterRemove = useCallback((index: number) => {
+    setFilters((filters) => {
+      const temp = filters.filter((_, i) => i !== index);
+      return temp;
+    });
+  }, []);
 
   return (
     <>
@@ -97,8 +102,8 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
           <div className="filters-wrapper">
             {filters.map((f, index) => {
               return (
-                <MemoFilterInput
-                  key={`${index}-${Date.now()}`}
+                <MemoFilterInputer
+                  key={index}
                   index={index}
                   filter={f}
                   handleFilterChange={handleFilterChange}
@@ -124,14 +129,14 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
   );
 };
 
-interface MemoFilterInputProps {
+interface MemoFilterInputerProps {
   index: number;
   filter: Filter;
   handleFilterChange: (index: number, filter: Filter) => void;
   handleFilterRemove: (index: number) => void;
 }
 
-const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputProps) => {
+const MemoFilterInputer: React.FC<MemoFilterInputerProps> = memo((props: MemoFilterInputerProps) => {
   const { index, filter, handleFilterChange, handleFilterRemove } = props;
   const { type } = filter;
   const [inputElements, setInputElements] = useState<JSX.Element>(<></>);
@@ -140,15 +145,12 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
     let operatorElement = <></>;
     if (Object.keys(filterConsts).includes(type)) {
       operatorElement = (
-        <select className="operator-selector" value={filter.value.operator} onChange={handleOperatorChange}>
-          {filterConsts[type as FilterType].operators.map((t) => {
-            return (
-              <option key={t.value} value={t.value}>
-                {t.text}
-              </option>
-            );
-          })}
-        </select>
+        <Selector
+          className="operator-selector"
+          dataSource={Object.values(filterConsts[type as FilterType].operators)}
+          value={filter.value.operator}
+          handleValueChanged={handleOperatorChange}
+        />
       );
     }
 
@@ -156,37 +158,42 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
     switch (type) {
       case "TYPE": {
         valueElement = (
-          <select className="value-selector" value={filter.value.value} onChange={handleValueChange}>
-            <option value=""></option>
-            {filterConsts["TYPE"].values.map((t) => {
-              return (
-                <option key={t.value} value={t.value}>
-                  {t.text}
-                </option>
-              );
-            })}
-          </select>
+          <Selector
+            className="value-selector"
+            dataSource={filterConsts["TYPE"].values}
+            value={filter.value.value}
+            handleValueChanged={handleValueChange}
+          />
         );
         break;
       }
       case "TAG": {
         valueElement = (
-          <select className="value-selector" value={filter.value.value} onChange={handleValueChange}>
-            <option value=""></option>
-            {memoService.getState().tags.map((t) => {
-              return (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              );
-            })}
-          </select>
+          <Selector
+            className="value-selector"
+            dataSource={memoService
+              .getState()
+              .tags.sort()
+              .map((t) => {
+                return { text: t, value: t };
+              })}
+            value={filter.value.value}
+            handleValueChanged={handleValueChange}
+          />
         );
         break;
       }
       case "TEXT": {
         valueElement = (
-          <input className="value-inputer" value={filter.value.value} onChange={handleValueChange} type="text" name="" id="" />
+          <input
+            type="text"
+            className="value-inputer"
+            value={filter.value.value}
+            onChange={(event) => {
+              handleValueChange(event.target.value);
+              event.target.focus();
+            }}
+          />
         );
         break;
       }
@@ -200,46 +207,60 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
     );
   }, [type, filter]);
 
-  const handleRelationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const relation = event.target.value;
+  const handleRelationChange = useCallback(
+    (value: string) => {
+      if (["AND", "OR"].includes(value)) {
+        handleFilterChange(index, {
+          ...filter,
+          relation: value as MemoFilterRalation,
+        });
+      }
+    },
+    [filter]
+  );
 
-    if (["AND", "OR"].includes(relation)) {
+  const handleTypeChange = useCallback(
+    (value: string) => {
+      if (filter.type !== value) {
+        const ops = Object.values(filterConsts[value as FilterType].operators);
+        handleFilterChange(index, {
+          ...filter,
+          type: value as FilterType,
+          value: {
+            operator: ops[0].value,
+            value: "",
+          },
+        });
+      }
+    },
+    [filter]
+  );
+
+  const handleOperatorChange = useCallback(
+    (value: string) => {
       handleFilterChange(index, {
         ...filter,
-        relation: relation as MemoFilterRalation,
+        value: {
+          ...filter.value,
+          operator: value,
+        },
       });
-    }
-  };
+    },
+    [filter]
+  );
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const type = event.target.value as FilterType;
-    handleFilterChange(index, {
-      ...filter,
-      type,
-    });
-  };
-
-  const handleOperatorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const operator = event.target.value;
-    handleFilterChange(index, {
-      ...filter,
-      value: {
-        ...filter.value,
-        operator,
-      },
-    });
-  };
-
-  const handleValueChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const value = event.target.value as FilterType;
-    handleFilterChange(index, {
-      ...filter,
-      value: {
-        ...filter.value,
-        value,
-      },
-    });
-  };
+  const handleValueChange = useCallback(
+    (value: string) => {
+      handleFilterChange(index, {
+        ...filter,
+        value: {
+          ...filter.value,
+          value,
+        },
+      });
+    },
+    [filter]
+  );
 
   const handleRemoveBtnClick = () => {
     handleFilterRemove(index);
@@ -248,25 +269,25 @@ const MemoFilterInput: React.FC<MemoFilterInputProps> = (props: MemoFilterInputP
   return (
     <div className="memo-filter-input-wrapper">
       {index > 0 ? (
-        <select className="relation-selector" onChange={handleRelationChange} value={props.filter.relation}>
-          <option value="AND">且</option>
-          <option value="OR">或</option>
-        </select>
+        <Selector
+          className="relation-selector"
+          dataSource={relationConsts}
+          value={filter.relation}
+          handleValueChanged={handleRelationChange}
+        />
       ) : null}
-      <select className="type-selector" onChange={handleTypeChange} value={type}>
-        {Object.values(filterConsts).map((t) => {
-          return (
-            <option key={t.value} value={t.value}>
-              {t.text}
-            </option>
-          );
-        })}
-      </select>
+      <Selector
+        className="type-selector"
+        dataSource={Object.values(filterConsts)}
+        value={filter.type}
+        handleValueChanged={handleTypeChange}
+      />
+
       {inputElements}
       <img className="remove-btn" src="/icons/close.svg" onClick={handleRemoveBtnClick} />
     </div>
   );
-};
+});
 
 export default function showCreateQueryDialog(queryId?: string): void {
   showDialog(

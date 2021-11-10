@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Provider from "./labs/Provider";
-import appContext from "./labs/appContext";
+import appContext from "./stores/appContext";
 import appStore from "./stores";
 import App from "./App";
 import "./helpers/polyfill";

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import useLoading from "../hooks/useLoading";
 import { locationService, memoService, queryService } from "../services";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR, TAG_REG } from "../helpers/consts";

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect } from "react";
-import appContext from "../labs/appContext";
+import appContext from "../stores/appContext";
 import { memoService } from "../services";
 import MyAccountSection from "../components/MyAccountSection";
 import PreferencesSection from "../components/PreferencesSection";

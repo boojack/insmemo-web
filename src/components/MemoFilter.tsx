@@ -1,6 +1,6 @@
 import { useContext } from "react";
+import appContext from "../stores/appContext";
 import { locationService, queryService } from "../services";
-import appContext from "../labs/appContext";
 import utils from "../helpers/utils";
 import { getTextWithMemoType } from "../helpers/filter";
 import "../less/memo-filter.less";

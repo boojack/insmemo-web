@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import appStore from "../stores";
+import appStore from ".";
 
 const appContext = createContext(appStore.getState());
 

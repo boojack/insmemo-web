@@ -8,6 +8,6 @@ type TimeStamp = number;
 
 type FunctionType = (...args: unknown[]) => unknown;
 
-interface IterObject<T = any> {
+interface KVObject<T = any> {
   [key: string]: T;
 }

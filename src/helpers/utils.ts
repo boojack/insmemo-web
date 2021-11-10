@@ -123,7 +123,7 @@ namespace utils {
     };
   }
 
-  export function transformObjectToParamsString(object: IterObject): string {
+  export function transformObjectToParamsString(object: KVObject): string {
     const params = [];
     const keys = Object.keys(object).sort();
 
@@ -141,8 +141,8 @@ namespace utils {
     return params.join("&");
   }
 
-  export function transformParamsStringToObject(paramsString: string): IterObject {
-    const object: IterObject = {};
+  export function transformParamsStringToObject(paramsString: string): KVObject {
+    const object: KVObject = {};
     const params = paramsString.split("&");
 
     for (const p of params) {
@@ -155,12 +155,12 @@ namespace utils {
     return object;
   }
 
-  export function filterObjectNullKeys(object: IterObject): IterObject {
+  export function filterObjectNullKeys(object: KVObject): KVObject {
     if (!object) {
       return {};
     }
 
-    const finalObject: IterObject = {};
+    const finalObject: KVObject = {};
     const keys = Object.keys(object).sort();
 
     for (const key of keys) {

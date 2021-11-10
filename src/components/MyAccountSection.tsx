@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
+import appContext from "../stores/appContext";
 import { userService } from "../services";
 import utils from "../helpers/utils";
 import { validate, ValidatorConfig } from "../helpers/validator";
-import appContext from "../labs/appContext";
 import toastHelper from "./Toast";
 import showChangePasswordDialog from "./ChangePasswordDialog";
 import showBindWxUserIdDialog from "./BindWxUserIdDialog";
