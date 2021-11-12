@@ -8,7 +8,7 @@
   flex-wrap: nowrap;
   padding-bottom: 16px;
   flex-grow: 1;
-  .pretty-scroll-bar();
+  .hide-scroll-bar();
 
   > .title-text {
     width: 100%;
@@ -186,19 +186,15 @@
 }
 
 @media only screen and (max-width: 875px) {
-  .tags-container {
-    height: auto;
+  .tags-wrapper {
+    background-color: white;
 
-    &:last-child {
-      flex-grow: 1;
-    }
+    > .tags-container {
+      height: auto;
 
-    > .title-text {
-      font-size: 13px;
-    }
-
-    > .tag-item-container {
-      font-size: 15px;
+      &:last-child {
+        flex-grow: 1;
+      }
     }
   }
 

@@ -75,14 +75,28 @@
 @media only screen and (max-width: 875px) {
   .user-banner-container {
     height: 154px;
+    z-index: 1;
     padding-top: 16px !important;
 
     > .userinfo-header-container {
       padding: 0 16px;
+
+      > .username-text {
+        font-size: 22px;
+      }
     }
 
     > .status-text-container {
       padding: 0 16px;
+
+      > .status-text {
+        > .amount-text {
+          font-size: 32px;
+        }
+        > .type-text {
+          font-size: 14px;
+        }
+      }
     }
   }
 }

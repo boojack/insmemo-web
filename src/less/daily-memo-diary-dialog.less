@@ -140,14 +140,12 @@
 @media only screen and (max-width: 875px) {
   .dialog-wrapper.daily-memo-diary-dialog {
     padding: 0;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    .hide-scroll-bar();
 
     > .dialog-container {
-      border-radius: 0;
+      width: 100%;
       height: 100%;
+      border-radius: 0;
       overflow-y: auto;
       overflow-x: hidden;
       padding-bottom: 16px;

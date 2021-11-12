@@ -94,7 +94,7 @@ const Signin: React.FC<Props> = () => {
       <div className="page-container">
         <div className="page-header-container">
           <p className="title-text">
-            <span className="icon-text">👋</span> 账号注册 / 登录
+            登录 Memos <span className="icon-text">✍️</span>
           </p>
         </div>
         <div className="page-content-container">

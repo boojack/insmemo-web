@@ -14,6 +14,14 @@
 @bg-light-blue: #eef3fe;
 @bg-paper-yellow: #fbf4de;
 
+.hide-scroll-bar {
+  .pretty-scroll-bar(0, 0);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .pretty-scroll-bar(@width: 0px, @height: 0px) {
   scrollbar-width: none;
 

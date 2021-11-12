@@ -7,9 +7,9 @@
   padding-top: 16px;
   padding-bottom: 24px;
   padding-right: 8px;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex-shrink: 0;
-  .pretty-scroll-bar();
+  .hide-scroll-bar();
 
   > * {
     flex-shrink: 0;
@@ -20,10 +20,10 @@
   #page-wrapper.mobile-show-sidebar {
     > .sidebar-wrapper {
       z-index: 99;
-      background-color: rgb(0 0 0 / 70%);
+      background-color: rgba(0, 0, 0, 0.6);
 
       > * {
-        margin-left: 0;
+        transform: translateX(0);
       }
     }
   }
@@ -36,13 +36,12 @@
     width: 100%;
     height: 100%;
     padding: 0;
-    overflow-y: auto;
     display: flex;
+    background-color: transparent;
     transition: all 0.4s ease;
-    .pretty-scroll-bar();
 
     > * {
-      margin-left: calc(-100%);
+      transform: translateX(-100%);
       transition: all 0.4s ease;
       width: 320px;
       max-width: 95%;
@@ -50,27 +49,6 @@
       flex-shrink: 0;
       padding-left: 32px;
       padding-right: 16px;
-    }
-
-    > .user-banner-container {
-      padding-top: 8px;
-
-      > .userinfo-header-container {
-        > .username-text {
-          font-size: 22px;
-        }
-      }
-
-      > .status-text-container {
-        > .status-text {
-          > .amount-text {
-            font-size: 32px;
-          }
-          > .type-text {
-            font-size: 14px;
-          }
-        }
-      }
     }
   }
 }
