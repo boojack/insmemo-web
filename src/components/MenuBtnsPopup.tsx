@@ -1,20 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { locationService, userService } from "../services";
 import showAboutSiteDialog from "./AboutSiteDialog";
 import "../less/menu-btns-popup.less";
 
 interface Props {
   shownStatus: boolean;
-  toggleShownStatus: (status?: boolean) => void;
+  setShownStatus: (status: boolean) => void;
 }
 
 const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
-  const { shownStatus, toggleShownStatus } = props;
+  const { shownStatus, setShownStatus } = props;
+
+  const popupElRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (shownStatus) {
-      const handleClickOutside = () => {
-        toggleShownStatus(false);
+      const handleClickOutside = (event: MouseEvent) => {
+        if (!popupElRef.current?.contains(event.target as Node)) {
+          event.stopPropagation();
+        }
+        setShownStatus(false);
       };
       window.addEventListener("click", handleClickOutside, {
         capture: true,
@@ -41,7 +46,7 @@ const MenuBtnsPopup: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`}>
+    <div className={`menu-btns-popup ${shownStatus ? "" : "hidden"}`} ref={popupElRef}>
       <button className="btn action-btn" onClick={handleMyAccountBtnClick}>
         <span className="icon">👤</span> 账号与设置
       </button>

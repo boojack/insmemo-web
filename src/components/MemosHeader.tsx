@@ -3,6 +3,7 @@ import appContext from "../stores/appContext";
 import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import SearchBar from "./SearchBar";
 import { memoService, queryService } from "../services";
+import Only from "./common/OnlyWhen";
 import "../less/memos-header.less";
 
 let prevRequestTimestamp = Date.now();
@@ -14,6 +15,7 @@ const MemosHeader: React.FC<Props> = () => {
     locationState: {
       query: { filter },
     },
+    globalState: { isMobileView },
     queryState: { queries },
   } = useContext(appContext);
 
@@ -50,9 +52,11 @@ const MemosHeader: React.FC<Props> = () => {
   return (
     <div className="section-header-container memos-header-container">
       <div className="title-text" onClick={handleMemoTextClick}>
-        <button className="action-btn" onClick={handleMoreActionBtnClick}>
-          <img className="icon-img" src="/icons/menu.svg" alt="menu" />
-        </button>
+        <Only when={isMobileView}>
+          <button className="action-btn" onClick={handleMoreActionBtnClick}>
+            <img className="icon-img" src="/icons/menu.svg" alt="menu" />
+          </button>
+        </Only>
         <span className="normal-text">{titleText}</span>
       </div>
       <SearchBar />

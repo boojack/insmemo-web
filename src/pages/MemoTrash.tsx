@@ -5,6 +5,7 @@ import { locationService, memoService, queryService } from "../services";
 import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR, TAG_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
+import Only from "../components/common/OnlyWhen";
 import toastHelper from "../components/Toast";
 import DeletedMemo from "../components/DeletedMemo";
 import MemoFilter from "../components/MemoFilter";
@@ -15,6 +16,7 @@ interface Props {}
 const MemoTrash: React.FC<Props> = () => {
   const {
     locationState: { query },
+    globalState: { isMobileView },
   } = useContext(appContext);
   const loadingState = useLoading();
   const [deletedMemos, setDeletedMemos] = useState<Model.Memo[]>([]);
@@ -99,9 +101,11 @@ const MemoTrash: React.FC<Props> = () => {
     <div className="memo-trash-wrapper">
       <div className="section-header-container">
         <div className="title-text">
-          <button className="action-btn" onClick={handleMoreActionBtnClick}>
-            <img className="icon-img" src="/icons/menu.svg" alt="menu" />
-          </button>
+          <Only when={isMobileView}>
+            <button className="action-btn" onClick={handleMoreActionBtnClick}>
+              <img className="icon-img" src="/icons/menu.svg" alt="menu" />
+            </button>
+          </Only>
           <span className="normal-text">回收站</span>
         </div>
       </div>

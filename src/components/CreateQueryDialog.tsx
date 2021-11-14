@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { memoService, queryService } from "../services";
-import { filterConsts, getDefaultFilter, relationConsts } from "../helpers/filter";
+import { checkShouldShowMemoWithFilters, filterConsts, getDefaultFilter, relationConsts } from "../helpers/filter";
 import useLoading from "../hooks/useLoading";
 import { showDialog } from "./Dialog";
 import toastHelper from "./Toast";
@@ -17,6 +17,10 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
   const [title, setTitle] = useState<string>("");
   const [filters, setFilters] = useState<Filter[]>([]);
   const requestState = useLoading(false);
+
+  const shownMemoLength = memoService.getState().memos.filter((memo) => {
+    return checkShouldShowMemoWithFilters(memo, filters);
+  }).length;
 
   useEffect(() => {
     const queryTemp = queryService.getQueryById(queryId ?? "");
@@ -120,6 +124,9 @@ const CreateQueryDialog: React.FC<Props> = (props: Props) => {
       <div className="dialog-footer-container">
         <div></div>
         <div className="btns-container">
+          <span className={`tip-text ${filters.length === 0 && "hidden"}`}>
+            符合条件的 Memo 有 <strong>{shownMemoLength}</strong> 条
+          </span>
           <button className={`btn save-btn ${requestState.isLoading ? "requesting" : ""}`} onClick={handleSaveBtnClick}>
             保存
           </button>

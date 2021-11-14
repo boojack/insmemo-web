@@ -7,6 +7,7 @@
   padding-top: 16px;
   padding-bottom: 24px;
   padding-right: 8px;
+  overflow-x: hidden;
   overflow-y: scroll;
   flex-shrink: 0;
   .hide-scroll-bar();
@@ -19,33 +20,28 @@
 @media only screen and (max-width: 875px) {
   #page-wrapper.mobile-show-sidebar {
     > .sidebar-wrapper {
-      z-index: 99;
-      background-color: rgba(0, 0, 0, 0.6);
-
-      > * {
-        transform: translateX(0);
-      }
+      transform: translateX(0);
     }
   }
 
   .sidebar-wrapper {
-    z-index: -1;
+    .flex(column, flex-start, center);
+    z-index: 99;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     padding: 0;
-    display: flex;
-    background-color: transparent;
+    padding-top: 8px;
+    background-color: white;
+    box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
     transition: all 0.4s ease;
+    transform: translateX(-100% - 10px);
 
     > * {
-      transform: translateX(-100%);
-      transition: all 0.4s ease;
       width: 320px;
       max-width: 95%;
-      background-color: white;
       flex-shrink: 0;
       padding-left: 32px;
       padding-right: 16px;
