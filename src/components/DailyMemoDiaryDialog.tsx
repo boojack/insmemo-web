@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toPng } from "html-to-image";
 import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
@@ -50,20 +51,12 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         return;
       }
 
-      const osVersion = utils.getOSVersion();
-      if (osVersion === "MacOS" || osVersion === "Unknown") {
-        window.scrollTo(0, 0);
-      }
-
-      html2canvas(memosElRef.current, {
-        scale: window.devicePixelRatio * 2,
-        allowTaint: true,
-        useCORS: true,
-        backgroundColor: "white",
-        scrollX: -window.scrollX,
-        scrollY: -window.scrollY,
-      }).then((canvas) => {
-        showPreviewImageDialog(canvas.toDataURL());
+      toPng(memosElRef.current, {
+        backgroundColor: "#fff",
+        cacheBust: true,
+        pixelRatio: 3,
+      }).then((url) => {
+        showPreviewImageDialog(url);
       });
     }, 0);
   };
@@ -76,7 +69,8 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="dialog-header-container">
-        <div className="btns-wrapper">
+        <div className="header-wrapper">
+          <p className="title-text">Daily Memos</p>
           <div className="btns-container">
             <span className="btn-text" onClick={() => setCurrentDateStamp(currentDateStamp - DAILY_TIMESTAMP)}>
               <img className="icon-img" src="/icons/arrow-left.svg" />
@@ -84,9 +78,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
             <span className="btn-text" onClick={() => setCurrentDateStamp(currentDateStamp + DAILY_TIMESTAMP)}>
               <img className="icon-img" src="/icons/arrow-right.svg" />
             </span>
-          </div>
-          <div className="btns-container">
-            <span className="btn-text" onClick={handleShareBtnClick}>
+            <span className="btn-text share-btn" onClick={handleShareBtnClick}>
               <img className="icon-img" src="/icons/share.svg" />
             </span>
             <span className="btn-text" onClick={() => props.destroy()}>

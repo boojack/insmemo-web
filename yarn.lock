@@ -1050,6 +1050,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-to-image@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "html-to-image@npm:1.9.0"
+  checksum: e4472be2481e85cdf85decdaa04b8acc6d2124ed8957d5fcaa07a6d0c4da4e3084e380793a96abfa1af58029fba100ec8b1a5fed8318c02439923c14377b6f78
+  languageName: node
+  linkType: hard
+
 "http-cache-semantics@npm:^4.1.0":
   version: 4.1.0
   resolution: "http-cache-semantics@npm:4.1.0"
@@ -1335,6 +1342,7 @@ __metadata:
     "@types/react": ^17.0.2
     "@types/react-dom": ^17.0.2
     "@vitejs/plugin-react": ^1.0.0
+    html-to-image: ^1.9.0
     less: ^4.1.1
     react: ^17.0.2
     react-dom: ^17.0.2

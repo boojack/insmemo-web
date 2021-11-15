@@ -6,7 +6,8 @@
   box-sizing: border-box;
   color: @text-black;
   -webkit-tap-highlight-color: transparent;
-  font-family: "Open Sans", "Noto Sans SC", sans-serif;
+  font-family: -apple-system, "system-ui", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
 }
 
 body,
@@ -18,27 +19,30 @@ html {
 }
 
 code {
-  font-family: "Roboto Mono", monospace;
+  font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
   background-color: pink;
   padding: 2px 4px;
   border-radius: 4px;
 }
 
 pre {
-  font-family: "Roboto Mono", monospace;
+  font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
 
   * {
-    font-family: "Roboto Mono", monospace;
+    font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
   }
 }
 
 label,
 input,
 button,
+textarea,
 img {
   background-color: transparent;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  border: none;
+  outline: none;
 }
 
 input:-webkit-autofill,

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toPng } from "html-to-image";
 import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
@@ -25,28 +26,19 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
   const [imageAmount, setImageAmount] = useState(imageUrls.length);
 
   useEffect(() => {
+    if (imageAmount > 0) {
+      return;
+    }
+
     setTimeout(() => {
-      if (!memoElRef.current) {
-        return;
-      }
-
-      if (imageAmount === 0) {
-        const osVersion = utils.getOSVersion();
-        if (osVersion === "MacOS" || osVersion === "Unknown") {
-          window.scrollTo(0, 0);
-        }
-
-        html2canvas(memoElRef.current, {
-          scale: window.devicePixelRatio * 2,
-          allowTaint: true,
-          useCORS: true,
-          backgroundColor: "white",
-          scrollX: -window.scrollX,
-          scrollY: -window.scrollY,
-        }).then((canvas) => {
-          setImgUrl(canvas.toDataURL());
-        });
-      }
+      toPng(memoElRef.current!, {
+        backgroundColor: "#f8f8f8",
+        cacheBust: true,
+        pixelRatio: 3,
+      }).then((url) => {
+        setImgUrl(url);
+        memoElRef.current?.remove();
+      });
     }, ANIMATION_DURATION + 100);
   }, [imageAmount]);
 
@@ -73,7 +65,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <div className={`tip-words-container ${imgUrl ? "finished" : "genarating"}`}>
+        <div className={`tip-words-container ${imgUrl ? "finish" : "loading"}`}>
           <p className="tip-text">{imgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
         </div>
         <img className="memo-img" src={imgUrl} />
@@ -84,19 +76,19 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
             <div className="images-container">
               {imageUrls.map((imgUrl, idx) => (
                 <img
-                  key={idx}
                   crossOrigin="anonymous"
+                  decoding="async"
+                  key={idx}
                   src={imgUrl}
                   onLoad={handleImageOnLoad}
                   onError={handleImageOnLoad}
-                  decoding="async"
                 />
               ))}
             </div>
           </Only>
           <div className="watermark-container">
             <span className="normal-text">
-              by <span className="name-text">{userinfo?.username}</span>
+              ✍️ Memo by <span className="name-text">{userinfo?.username}</span>
             </span>
           </div>
         </div>

@@ -14,7 +14,7 @@
       margin-bottom: 0;
       padding-bottom: 0;
 
-      > .btns-wrapper {
+      > .header-wrapper {
         .flex(row, space-between, center);
         width: 100%;
 
@@ -41,6 +41,10 @@
             &:hover {
               background-color: lightgray;
             }
+
+            &.share-btn {
+              padding: 2px;
+            }
           }
         }
       }
@@ -50,7 +54,6 @@
       .flex(column, flex-start, flex-start);
       width: 100%;
       padding: 24px 24px;
-      margin-top: -46px;
 
       > .date-card-container {
         .flex(column, center, center);

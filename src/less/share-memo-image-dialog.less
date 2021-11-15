@@ -2,14 +2,18 @@
 
 .share-memo-image-dialog {
   > .dialog-container {
-    width: 480px;
+    width: 380px;
     padding: 0;
     border-radius: 8px;
     flex-grow: 0;
+    background-color: @bg-whitegray;
 
     > .dialog-header-container {
       padding: 8px 16px;
       margin-bottom: 0;
+      background-color: white;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
     }
 
     > .dialog-content-container {
@@ -25,59 +29,57 @@
       }
 
       > .tip-words-container {
-        .flex(column, center, center);
+        .flex(column, center, flex-start);
         width: 100%;
+        border-bottom: 1px solid lightgray;
+        background-color: white;
+        padding: 0 24px;
+        padding-bottom: 8px;
 
         > .tip-text {
-          text-align: center;
-          padding: 0 16px;
-          border-radius: 8px;
+          color: gray;
+          font-size: 13px;
+          line-height: 24px;
         }
 
-        &.genarating {
-          margin: auto;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-          z-index: 1;
-
+        &.loading {
           > .tip-text {
-            text-align: center;
+            animation: 1s linear 1s infinite alternate breathing;
           }
         }
 
-        &.finished {
-          border-bottom: 1px solid lightgray;
+        @keyframes breathing {
+          from {
+            opacity: 1;
+          }
 
-          > .tip-text {
-            color: gray;
-            padding: 4px 16px;
-            margin-bottom: 8px;
-            font-size: 13px;
+          to {
+            opacity: 0.4;
           }
         }
       }
 
       > .memo-container {
         .flex(column, flex-start, flex-start);
-        position: fixed;
-        top: 0;
-        left: -200%;
         width: 380px;
         max-width: 100%;
+        height: auto;
+        user-select: none;
 
         > .time-text {
           width: 100%;
           padding: 0 24px;
-          padding-top: 16px;
-          font-size: 13px;
+          padding-top: 12px;
+          font-size: 12px;
           color: gray;
+          background-color: white;
         }
 
         > .memo-content-text {
-          padding: 16px 24px;
-          padding-top: 8px;
+          padding: 8px 24px;
           width: 100%;
           font-size: 15px;
+          background-color: white;
         }
 
         > .images-container {
@@ -86,6 +88,7 @@
           height: auto;
           padding: 0 24px;
           .hide-scroll-bar();
+          background-color: white;
 
           > img {
             width: 100%;
@@ -96,19 +99,24 @@
         }
 
         > .watermark-container {
-          .flex(row, flex-start, flex-end);
+          .flex(row, flex-start, center);
+          flex-wrap: nowrap;
           width: 100%;
-          padding: 16px 24px;
-          background-color: @bg-whitegray;
+          padding: 12px 24px;
 
           > .normal-text {
+            .flex(row, flex-start, center);
+            width: 100%;
             font-size: 12px;
+            line-height: 20px;
             color: gray;
+            font-style: italic;
 
             > .name-text {
-              font-size: 14px;
+              font-size: 13px;
               color: @text-black;
               margin-left: 4px;
+              line-height: 20px;
             }
           }
         }
