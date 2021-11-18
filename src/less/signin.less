@@ -8,7 +8,8 @@
 
   > .page-container {
     width: 360px;
-    padding: 16px 20px;
+    max-width: 100%;
+    padding: 16px;
 
     > .page-header-container {
       .flex(row, space-between, center);
@@ -17,10 +18,6 @@
 
       > .title-text {
         font-size: 24px;
-
-        > .icon-text {
-          margin-right: 6px;
-        }
       }
     }
 
@@ -70,7 +67,7 @@
         }
 
         &:hover {
-          opacity: 0.9;
+          opacity: 0.8;
         }
       }
     }
@@ -78,16 +75,16 @@
     > .page-footer-container {
       .flex(row, space-between, center);
       width: 100%;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin: 12px 0;
 
       > .btns-container {
         .flex(row, flex-start, center);
         height: 100%;
 
         > .btn {
-          padding: 6px 16px;
+          padding: 0 16px;
           font-size: 14px;
+          line-height: 32px;
           border-radius: 4px;
 
           &:hover {
@@ -124,25 +121,22 @@
     > .tip-text {
       border-top: 1px solid lightgray;
       color: gray;
-      margin-top: 12px;
-      padding-top: 12px;
+      padding-top: 16px;
       width: 100%;
       font-size: 12px;
-      line-height: 2;
-      word-wrap: break-word;
 
       > .btn {
-        display: inline-block;
-        margin-top: 8px;
-        text-align: center;
+        .flex(row, center, center);
+        width: 90px;
+        margin-top: 12px;
         color: @text-green;
         font-weight: bold;
-        padding: 4px 12px;
+        line-height: 30px;
         border-radius: 4px;
         background-color: @bg-whitegray;
 
         > .icon-text {
-          margin-right: 2px;
+          margin-right: 4px;
         }
 
         &:hover {

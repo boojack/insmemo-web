@@ -54,7 +54,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
       toPng(memosElRef.current, {
         backgroundColor: "#fff",
         cacheBust: true,
-        pixelRatio: 3,
+        pixelRatio: 4,
       }).then((url) => {
         showPreviewImageDialog(url);
       });

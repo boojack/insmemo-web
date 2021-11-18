@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { toPng } from "html-to-image";
+import { toPng, toSvg } from "html-to-image";
 import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
@@ -15,32 +15,40 @@ interface Props extends DialogProps {
 
 const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
   const { memo: propsMemo, destroy } = props;
-  const [imgUrl, setImgUrl] = useState("");
-  const memoElRef = useRef<HTMLDivElement>(null);
   const { user: userinfo } = userService.getState();
   const memo: FormattedMemo = {
     ...propsMemo,
     createdAtStr: utils.getDateTimeString(propsMemo.createdAt),
   };
-  const imageUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
-  const [imageAmount, setImageAmount] = useState(imageUrls.length);
+  const memoImgUrls = Array.from(memo.content.match(IMAGE_URL_REG) ?? []);
+
+  const [shortcutImgUrl, setShortcutImgUrl] = useState("");
+  const [imgAmount, setImgAmount] = useState(memoImgUrls.length);
+  const memoElRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (imageAmount > 0) {
+    if (imgAmount > 0) {
       return;
     }
 
     setTimeout(() => {
-      toPng(memoElRef.current!, {
+      toSvg(memoElRef.current!, {
         backgroundColor: "#f8f8f8",
         cacheBust: true,
-        pixelRatio: 3,
+        pixelRatio: 4,
       }).then((url) => {
-        setImgUrl(url);
-        memoElRef.current?.remove();
+        setShortcutImgUrl(url);
+        // NOTE 为了可以直接 copy 高清图片，hack 了一下
+        toPng(memoElRef.current!, {
+          backgroundColor: "#f8f8f8",
+          cacheBust: true,
+          pixelRatio: 4,
+        }).then((url) => {
+          setShortcutImgUrl(url);
+        });
       });
     }, ANIMATION_DURATION + 100);
-  }, [imageAmount]);
+  }, [imgAmount]);
 
   const handleCloseBtnClick = () => {
     destroy();
@@ -51,7 +59,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
       toastHelper.error("有个图片加载失败了😟");
       (ev.target as HTMLImageElement).remove();
     }
-    setImageAmount(imageAmount - 1);
+    setImgAmount(imgAmount - 1);
   };
 
   return (
@@ -65,16 +73,16 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         </button>
       </div>
       <div className="dialog-content-container">
-        <div className={`tip-words-container ${imgUrl ? "finish" : "loading"}`}>
-          <p className="tip-text">{imgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
+        <div className={`tip-words-container ${shortcutImgUrl ? "finish" : "loading"}`}>
+          <p className="tip-text">{shortcutImgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
         </div>
-        <img className="memo-img" src={imgUrl} />
         <div className="memo-container" ref={memoElRef}>
+          <img className={`memo-shortcut-img ${shortcutImgUrl ? "" : "hidden"}`} src={shortcutImgUrl} />
           <span className="time-text">{memo.createdAtStr}</span>
           <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
-          <Only when={imageUrls.length > 0}>
+          <Only when={memoImgUrls.length > 0}>
             <div className="images-container">
-              {imageUrls.map((imgUrl, idx) => (
+              {memoImgUrls.map((imgUrl, idx) => (
                 <img
                   crossOrigin="anonymous"
                   decoding="async"
