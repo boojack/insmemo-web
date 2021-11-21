@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import TinyUndo from "tiny-undo";
 import Only from "../common/OnlyWhen";
-import { parseHtmlToRawText } from "../../helpers/marked";
 import useRefresh from "../../hooks/useRefresh";
 import "../../less/editor.less";
 
@@ -43,6 +43,12 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
       editorRef.current!.value = initialContent;
       refresh();
     }
+
+    const tinyUndo = new TinyUndo(editorRef.current!);
+
+    return () => {
+      tinyUndo.destroy();
+    };
   }, []);
 
   useEffect(() => {
