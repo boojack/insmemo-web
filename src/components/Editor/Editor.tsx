@@ -1,7 +1,8 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import TinyUndo from "tiny-undo";
-import Only from "../common/OnlyWhen";
+import { storage } from "../../helpers/storage";
 import useRefresh from "../../hooks/useRefresh";
+import Only from "../common/OnlyWhen";
 import "../../less/editor.less";
 
 export interface EditorRefActions {
@@ -36,6 +37,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     onContentChange: handleContentChangeCallback,
   } = props;
   const editorRef = useRef<HTMLTextAreaElement>(null);
+  const tinyUndoRef = useRef<TinyUndo>({} as TinyUndo);
   const refresh = useRefresh();
 
   useEffect(() => {
@@ -44,10 +46,21 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
       refresh();
     }
 
-    const tinyUndo = new TinyUndo(editorRef.current!);
+    const { tinyUndoActionsCache, tinyUndoIndexCache } = storage.get(["tinyUndoActionsCache", "tinyUndoIndexCache"]);
+    tinyUndoRef.current = new TinyUndo(editorRef.current!, {
+      initialActions: tinyUndoActionsCache,
+      initialIndex: tinyUndoIndexCache,
+    });
+
+    tinyUndoRef.current.subscribe((actions, index) => {
+      storage.set({
+        tinyUndoActionsCache: actions,
+        tinyUndoIndexCache: index,
+      });
+    });
 
     return () => {
-      tinyUndo.destroy();
+      tinyUndoRef.current.destroy();
     };
   }, []);
 
@@ -101,6 +114,8 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     handleConfirmBtnClickCallback(editorRef.current!.value);
     editorRef.current!.value = "";
     refresh();
+    // After confirm btn clicked, tiny-undo should reset state(clear actions and index)
+    tinyUndoRef.current.resetState();
   }, []);
 
   const handleCommonCancelBtnClick = useCallback(() => {

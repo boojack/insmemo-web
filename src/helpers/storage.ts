@@ -1,3 +1,5 @@
+import { InputAction } from "tiny-undo";
+
 /**
  * Define storage data type
  */
@@ -10,6 +12,11 @@ interface StorageData {
   shouldHideImageUrl: boolean;
   // markdown 解析开关
   shouldUseMarkdownParser: boolean;
+
+  // tiny undo actions cache
+  tinyUndoActionsCache: InputAction[];
+  // tiny undo index cache
+  tinyUndoIndexCache: number;
 }
 
 type StorageKey = keyof StorageData;
@@ -43,6 +50,16 @@ export namespace storage {
         localStorage.setItem(key, stringifyValue);
       } catch (error: any) {
         console.error("Save storage failed in ", key, error);
+      }
+    }
+  }
+
+  export function remove(keys: StorageKey[]) {
+    for (const key of keys) {
+      try {
+        localStorage.removeItem(key);
+      } catch (error: any) {
+        console.error("Remove storage failed in ", key, error);
       }
     }
   }
