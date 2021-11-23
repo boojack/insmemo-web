@@ -21,14 +21,17 @@ const Signin: React.FC<Props> = () => {
   const [password, setPassword] = useState("");
   const [showAutoSigninAsGuest, setShowAutoSigninAsGuest] = useState(true);
   const signinBtnClickLoadingState = useLoading(false);
+  const autoSigninAsGuestBtn = useRef<HTMLDivElement>(null);
   const signinBtn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
+        autoSigninAsGuestBtn.current?.click();
         signinBtn.current?.click();
       }
     };
+
     document.body.addEventListener("keypress", handleKeyPress);
 
     return () => {
@@ -90,8 +93,21 @@ const Signin: React.FC<Props> = () => {
     signinBtnClickLoadingState.setFinish();
   };
 
+  const handleSwitchAccountSigninBtnClick = () => {
+    if (signinBtnClickLoadingState.isLoading) {
+      return;
+    }
+
+    setShowAutoSigninAsGuest(false);
+  };
+
   const handleAutoSigninAsGuestBtnClick = async () => {
+    if (signinBtnClickLoadingState.isLoading) {
+      return;
+    }
+
     try {
+      signinBtnClickLoadingState.setLoading();
       const { succeed, message } = await api.signin("guest", "123456");
 
       if (!succeed && message) {
@@ -109,6 +125,7 @@ const Signin: React.FC<Props> = () => {
       console.error(error);
       toastHelper.error("😟 " + error.message);
     }
+    signinBtnClickLoadingState.setFinish();
   };
 
   return (
@@ -122,10 +139,17 @@ const Signin: React.FC<Props> = () => {
         {showAutoSigninAsGuest ? (
           <>
             <div className="quickly-btns-container">
-              <div className="btn guest-signin" onClick={handleAutoSigninAsGuestBtnClick}>
+              <div
+                ref={autoSigninAsGuestBtn}
+                className={`btn guest-signin ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+                onClick={handleAutoSigninAsGuestBtnClick}
+              >
                 以游客账号快速登录
               </div>
-              <div className="btn" onClick={() => setShowAutoSigninAsGuest(false)}>
+              <div
+                className={`btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+                onClick={handleSwitchAccountSigninBtnClick}
+              >
                 已有账号，我要自己登录
               </div>
             </div>
