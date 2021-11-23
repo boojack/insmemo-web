@@ -13,6 +13,9 @@ interface StorageData {
   // markdown 解析开关
   shouldUseMarkdownParser: boolean;
 
+  // Editor setting
+  useTinyUndoHistoryCache: boolean;
+
   // tiny undo actions cache
   tinyUndoActionsCache: InputAction[];
   // tiny undo index cache

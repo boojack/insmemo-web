@@ -9,9 +9,15 @@ interface Props {}
 
 const PreferencesSection: React.FC<Props> = () => {
   const { globalState } = useContext(appContext);
-  const { shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser } = globalState;
+  const { useTinyUndoHistoryCache, shouldHideImageUrl, shouldSplitMemoWord, shouldUseMarkdownParser } = globalState;
 
   const demoMemoContent = `👋 你好呀～\n我是一个demo：\n* 👏 欢迎使用memos；`;
+
+  const handleOpenTinyUndoChanged = () => {
+    globalStateService.setAppSetting({
+      useTinyUndoHistoryCache: !useTinyUndoHistoryCache,
+    });
+  };
 
   const handleSplitWordsValueChanged = () => {
     globalStateService.setAppSetting({
@@ -74,6 +80,13 @@ const PreferencesSection: React.FC<Props> = () => {
         <label className="form-label checkbox-form-label" onClick={handleHideImageUrlValueChanged}>
           <span className="normal-text">隐藏图片链接地址</span>
           <img className="icon-img" src={shouldHideImageUrl ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
+        </label>
+      </div>
+      <div className="section-container preferences-section-container">
+        <p className="title-text">编辑器</p>
+        <label className="form-label checkbox-form-label" onClick={handleOpenTinyUndoChanged}>
+          <span className="normal-text">启用 tiny-undo</span>
+          <img className="icon-img" src={useTinyUndoHistoryCache ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
         </label>
       </div>
       <div className="section-container hidden">

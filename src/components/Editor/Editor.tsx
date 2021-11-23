@@ -1,5 +1,6 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef } from "react";
 import TinyUndo from "tiny-undo";
+import appContext from "../../stores/appContext";
 import { storage } from "../../helpers/storage";
 import useRefresh from "../../hooks/useRefresh";
 import Only from "../common/OnlyWhen";
@@ -26,6 +27,9 @@ interface Props {
 
 const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefActions>) => {
   const {
+    globalState: { useTinyUndoHistoryCache },
+  } = useContext(appContext);
+  const {
     className,
     initialContent,
     placeholder,
@@ -37,7 +41,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     onContentChange: handleContentChangeCallback,
   } = props;
   const editorRef = useRef<HTMLTextAreaElement>(null);
-  const tinyUndoRef = useRef<TinyUndo>({} as TinyUndo);
+  const tinyUndoRef = useRef<TinyUndo | null>(null);
   const refresh = useRefresh();
 
   useEffect(() => {
@@ -45,24 +49,32 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
       editorRef.current!.value = initialContent;
       refresh();
     }
-
-    const { tinyUndoActionsCache, tinyUndoIndexCache } = storage.get(["tinyUndoActionsCache", "tinyUndoIndexCache"]);
-    tinyUndoRef.current = new TinyUndo(editorRef.current!, {
-      initialActions: tinyUndoActionsCache,
-      initialIndex: tinyUndoIndexCache,
-    });
-
-    tinyUndoRef.current.subscribe((actions, index) => {
-      storage.set({
-        tinyUndoActionsCache: actions,
-        tinyUndoIndexCache: index,
-      });
-    });
-
-    return () => {
-      tinyUndoRef.current.destroy();
-    };
   }, []);
+
+  useEffect(() => {
+    if (useTinyUndoHistoryCache) {
+      const { tinyUndoActionsCache, tinyUndoIndexCache } = storage.get(["tinyUndoActionsCache", "tinyUndoIndexCache"]);
+      tinyUndoRef.current = new TinyUndo(editorRef.current!, {
+        initialActions: tinyUndoActionsCache,
+        initialIndex: tinyUndoIndexCache,
+      });
+
+      tinyUndoRef.current.subscribe((actions, index) => {
+        storage.set({
+          tinyUndoActionsCache: actions,
+          tinyUndoIndexCache: index,
+        });
+      });
+
+      return () => {
+        tinyUndoRef.current?.destroy();
+      };
+    } else {
+      tinyUndoRef.current?.destroy();
+      tinyUndoRef.current = null;
+      storage.remove(["tinyUndoActionsCache", "tinyUndoIndexCache"]);
+    }
+  }, [useTinyUndoHistoryCache]);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -115,7 +127,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     editorRef.current!.value = "";
     refresh();
     // After confirm btn clicked, tiny-undo should reset state(clear actions and index)
-    tinyUndoRef.current.resetState();
+    tinyUndoRef.current?.resetState();
   }, []);
 
   const handleCommonCancelBtnClick = useCallback(() => {

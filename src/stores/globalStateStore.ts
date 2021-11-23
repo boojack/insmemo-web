@@ -2,6 +2,7 @@ export interface AppSetting {
   shouldSplitMemoWord: boolean;
   shouldHideImageUrl: boolean;
   shouldUseMarkdownParser: boolean;
+  useTinyUndoHistoryCache: boolean;
 }
 
 export interface State extends AppSetting {
@@ -88,5 +89,6 @@ export const defaultState: State = {
   shouldSplitMemoWord: true,
   shouldHideImageUrl: true,
   shouldUseMarkdownParser: true,
+  useTinyUndoHistoryCache: true,
   isMobileView: false,
 };

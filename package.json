@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "tiny-undo": "^0.0.5"
+    "tiny-undo": "^0.0.8"
   },
   "devDependencies": {
     "@types/react": "^17.0.2",

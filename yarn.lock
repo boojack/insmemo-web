@@ -802,10 +802,10 @@ supports-color@^5.3.0:
   dependencies:
     has-flag "^3.0.0"
 
-tiny-undo@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/tiny-undo/-/tiny-undo-0.0.5.tgz#daa5e8baa305b9eaccc9e3984340a8802bc1bd43"
-  integrity sha512-b6rOhbqDStliJEL/92zbBjvca9w2UqwNkED4xOjCwgTtsUCp3MI1pKHvEtWF9GVsHqIx6j9/W72J787Rt1wbuw==
+tiny-undo@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/tiny-undo/-/tiny-undo-0.0.8.tgz#6017fd1054055bcc40fd431d9e5cb6c046076aab"
+  integrity sha512-x/zUWVVoehq0TTLTLngUCvg41bssl5OYloNOE6sRz/2fsEetB87zpj4kEZyrmvzI3Rsq+t9olujqXprlu+lbvw==
 
 to-fast-properties@^2.0.0:
   version "2.0.0"

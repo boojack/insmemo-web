@@ -20,17 +20,13 @@ class UserService {
   }
 
   public async doSignOut() {
-    api
-      .signout()
-      .catch(() => {
-        // do nth
-      })
-      .finally(() => {
-        appStore.dispatch({
-          type: "SIGN_OUT",
-          payload: null,
-        });
-      });
+    appStore.dispatch({
+      type: "SIGN_OUT",
+      payload: null,
+    });
+    api.signout().catch(() => {
+      // do nth
+    });
   }
 
   public async checkUsernameUsable(username: string): Promise<boolean> {
