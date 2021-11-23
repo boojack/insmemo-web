@@ -4,18 +4,18 @@ namespace utils {
   }
 
   export function getOSVersion(): "Windows" | "MacOS" | "Linux" | "Unknown" {
-    const appVersion = navigator.appVersion;
-    let detectOS: "Windows" | "MacOS" | "Linux" | "Unknown" = "Unknown";
+    const appVersion = navigator.userAgent;
+    let detectedOS: "Windows" | "MacOS" | "Linux" | "Unknown" = "Unknown";
 
     if (appVersion.indexOf("Win") != -1) {
-      detectOS = "Windows";
+      detectedOS = "Windows";
     } else if (appVersion.indexOf("Mac") != -1) {
-      detectOS = "MacOS";
+      detectedOS = "MacOS";
     } else if (appVersion.indexOf("Linux") != -1) {
-      detectOS = "Linux";
+      detectedOS = "Linux";
     }
 
-    return detectOS;
+    return detectedOS;
   }
 
   export function getTimeStampByDate(t: Date | number | string): number {
@@ -93,7 +93,6 @@ namespace utils {
     return result;
   }
 
-  // 防抖
   export function debounce(fn: FunctionType, delay: number) {
     let timer: number | null = null;
 
@@ -107,7 +106,6 @@ namespace utils {
     };
   }
 
-  // 节流
   export function throttle(fn: FunctionType, delay: number) {
     let valid = true;
 
@@ -215,24 +213,6 @@ namespace utils {
       document.body.appendChild(imgEl);
       imgEl.remove();
     });
-  }
-
-  export function clearDangerHTMLNode(node: Element) {
-    for (let i = 0; i < node.children.length; i++) {
-      const c = node.children[i];
-
-      if (c.tagName === "P") {
-        if (c.textContent === "" && c.firstElementChild?.tagName !== "BR") {
-          c.remove();
-          i--;
-          continue;
-        }
-      }
-
-      if (c.childElementCount > 0) {
-        clearDangerHTMLNode(c);
-      }
-    }
   }
 }
 

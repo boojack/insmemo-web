@@ -19,8 +19,9 @@ const validateConfig: ValidatorConfig = {
 const Signin: React.FC<Props> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const signinBtn = useRef<HTMLButtonElement>(null);
+  const [showAutoSigninAsGuest, setShowAutoSigninAsGuest] = useState(true);
   const signinBtnClickLoadingState = useLoading(false);
+  const signinBtn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -89,6 +90,27 @@ const Signin: React.FC<Props> = () => {
     signinBtnClickLoadingState.setFinish();
   };
 
+  const handleAutoSigninAsGuestBtnClick = async () => {
+    try {
+      const { succeed, message } = await api.signin("guest", "123456");
+
+      if (!succeed && message) {
+        toastHelper.error("😟 " + message);
+        return;
+      }
+
+      const user = await userService.doSignIn();
+      if (user) {
+        locationService.replaceHistory("/");
+      } else {
+        toastHelper.error("😟 登录失败");
+      }
+    } catch (error: any) {
+      console.error(error);
+      toastHelper.error("😟 " + error.message);
+    }
+  };
+
   return (
     <div className="page-wrapper signin">
       <div className="page-container">
@@ -97,46 +119,70 @@ const Signin: React.FC<Props> = () => {
             登录 Memos <span className="icon-text">✍️</span>
           </p>
         </div>
-        <div className="page-content-container">
-          <div className="form-item-container input-form-container">
-            <span className={"normal-text " + (username === "" ? "" : "not-null")}>账号</span>
-            <input type="text" autoComplete="off" value={username} onChange={handleUsernameInputChanged} />
-          </div>
-          <div className="form-item-container input-form-container">
-            <span className={"normal-text " + (password === "" ? "" : "not-null")}>密码</span>
-            <input type="password" autoComplete="off" value={password} onChange={handlePasswordInputChanged} />
-          </div>
-        </div>
-        <div className="page-footer-container">
-          <div className="btns-container">
-            {window.location.origin.includes("justsven.top") ? (
-              <a className="btn-text" href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist">
-                Sign In with GitHub
-              </a>
-            ) : null}
-          </div>
-          <div className="btns-container">
-            <button className="btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
-              注册
-            </button>
-            <span className="split-text">/</span>
-            <button
-              className={`btn signin-btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
-              ref={signinBtn}
-              onClick={handleSignInBtnClick}
-            >
-              登录
-            </button>
-          </div>
-        </div>
-        <p className="tip-text">
-          仅用于作品展示，可输入 <code>guest, 123456</code> 进行体验。
-          <br />
-          <span className="btn" onClick={handleAboutBtnClick}>
-            <span className="icon-text">🤠</span>
-            关于本站
-          </span>
-        </p>
+        {showAutoSigninAsGuest ? (
+          <>
+            <div className="quickly-btns-container">
+              <div className="btn guest-signin" onClick={handleAutoSigninAsGuestBtnClick}>
+                以游客账号快速登录
+              </div>
+              <div className="btn" onClick={() => setShowAutoSigninAsGuest(false)}>
+                已有账号，我要自己登录
+              </div>
+            </div>
+            <p className="tip-text">
+              <span className="btn" onClick={handleAboutBtnClick}>
+                <span className="icon-text">🤠</span>
+                关于本站
+              </span>
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="page-content-container">
+              <div className="form-item-container input-form-container">
+                <span className={"normal-text " + (username === "" ? "" : "not-null")}>账号</span>
+                <input type="text" autoComplete="off" value={username} onChange={handleUsernameInputChanged} />
+              </div>
+              <div className="form-item-container input-form-container">
+                <span className={"normal-text " + (password === "" ? "" : "not-null")}>密码</span>
+                <input type="password" autoComplete="off" value={password} onChange={handlePasswordInputChanged} />
+              </div>
+            </div>
+            <div className="page-footer-container">
+              <div className="btns-container">
+                {window.location.origin.includes("justsven.top") ? (
+                  <a
+                    className="btn-text"
+                    href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+                  >
+                    Sign In with GitHub
+                  </a>
+                ) : null}
+              </div>
+              <div className="btns-container">
+                <button className="btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
+                  注册
+                </button>
+                <span className="split-text">/</span>
+                <button
+                  className={`btn signin-btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+                  ref={signinBtn}
+                  onClick={handleSignInBtnClick}
+                >
+                  登录
+                </button>
+              </div>
+            </div>
+            <p className="tip-text">
+              仅用于作品展示，可输入 <code>guest, 123456</code> 进行体验。
+              <br />
+              <span className="btn" onClick={handleAboutBtnClick}>
+                <span className="icon-text">🤠</span>
+                关于本站
+              </span>
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
