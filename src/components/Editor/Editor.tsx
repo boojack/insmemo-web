@@ -55,6 +55,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
     if (useTinyUndoHistoryCache) {
       const { tinyUndoActionsCache, tinyUndoIndexCache } = storage.get(["tinyUndoActionsCache", "tinyUndoIndexCache"]);
       tinyUndoRef.current = new TinyUndo(editorRef.current!, {
+        interval: 5000,
         initialActions: tinyUndoActionsCache,
         initialIndex: tinyUndoIndexCache,
       });

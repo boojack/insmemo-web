@@ -10,6 +10,7 @@
     width: 360px;
     max-width: 100%;
     padding: 16px;
+    margin-top: -64px;
 
     > .page-header-container {
       .flex(row, space-between, center);
@@ -119,7 +120,7 @@
     }
 
     > .tip-text {
-      border-top: 1px solid lightgray;
+      border-top: 2px solid lightgray;
       color: gray;
       padding-top: 16px;
       width: 100%;
@@ -151,11 +152,11 @@
 
       > .btn {
         margin-bottom: 24px;
-        line-height: 22px;
-        border: 1px solid lightgray;
-        border-radius: 20px;
-        padding: 8px 16px;
-        font-size: 14px;
+        line-height: 40px;
+        border: 2px solid lightgray;
+        border-radius: 22px;
+        padding: 0 16px;
+        font-size: 15px;
 
         &:hover {
           opacity: 0.8;
@@ -164,6 +165,7 @@
         &.guest-signin {
           color: @text-green;
           border-color: @text-green;
+          font-weight: bold;
         }
 
         &.requesting {

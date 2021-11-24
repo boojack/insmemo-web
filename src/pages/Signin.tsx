@@ -144,7 +144,7 @@ const Signin: React.FC<Props> = () => {
                 className={`btn guest-signin ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
                 onClick={handleAutoSigninAsGuestBtnClick}
               >
-                以游客账号快速登录
+                👉 快速登录进行体验
               </div>
               <div
                 className={`btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}

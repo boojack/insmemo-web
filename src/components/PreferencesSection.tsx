@@ -85,7 +85,12 @@ const PreferencesSection: React.FC<Props> = () => {
       <div className="section-container preferences-section-container">
         <p className="title-text">编辑器</p>
         <label className="form-label checkbox-form-label" onClick={handleOpenTinyUndoChanged}>
-          <span className="normal-text">启用 tiny-undo</span>
+          <span className="normal-text">
+            启用{" "}
+            <a target="_blank" href="https://github.com/boojack/tiny-undo" onClick={(e) => e.stopPropagation()}>
+              tiny-undo
+            </a>
+          </span>
           <img className="icon-img" src={useTinyUndoHistoryCache ? "/icons/checkbox-active.svg" : "/icons/checkbox.svg"} />
         </label>
       </div>
