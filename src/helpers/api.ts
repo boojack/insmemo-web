@@ -5,12 +5,6 @@ type ResponseType<T = unknown> = {
   data: T;
 };
 
-/**
- * api
- *
- * Q: 如何进行错误处理？
- * A: 在调用的位置，用 trycatch 块
- */
 async function get<T>(url: string): Promise<ResponseType<T>> {
   const response = await fetch(url, {
     method: "GET",

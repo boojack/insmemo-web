@@ -149,7 +149,7 @@ const Editor = forwardRef((props: Props, ref: React.ForwardedRef<EditorRefAction
         <Only when={showTools}>
           <div className={"common-tools-container"}>{/* nth */}</div>
         </Only>
-        <div className="btns-right-container">
+        <div className="btns-container">
           <Only when={showCancelBtn}>
             <button className="action-btn cancel-btn" onClick={handleCommonCancelBtnClick}>
               撤销修改

@@ -42,53 +42,44 @@
       .flex(row, flex-start, center);
     }
 
-    > .btns-right-container {
+    > .btns-container {
       .flex(row, flex-end, center);
       flex-grow: 0;
       flex-shrink: 0;
 
       > .action-btn {
+        border: none;
         user-select: none;
         cursor: pointer;
-        padding: 6px 10px;
-        border-radius: 4px;
+        padding: 6px 12px;
+        border-radius: 6px;
         font-size: 13px;
-        border: none;
+        line-height: 32px;
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
 
       > .cancel-btn {
         color: gray;
         background-color: transparent;
-        font-size: 13px;
         margin-right: 8px;
-
-        &:hover {
-          color: black;
-        }
       }
 
       > .confirm-btn {
-        user-select: none;
         cursor: pointer;
         padding: 0 12px;
-        border-radius: 4px;
-        font-size: 13px;
-        line-height: 32px;
-        border: none;
         background-color: @text-green;
         color: white;
 
-        &:hover {
-          opacity: 0.9;
-        }
-
         &:disabled {
           cursor: not-allowed;
-          opacity: 0.5;
+          opacity: 0.6;
         }
 
         > .icon-text {
-          margin-left: 2px;
+          margin-left: 4px;
         }
       }
     }

@@ -1,5 +1,5 @@
 // 验证器
-// 主要用于验证表单
+// * 主要用于验证表单
 const chineseReg = /[\u3000\u3400-\u4DBF\u4E00-\u9FFF]/;
 
 export interface ValidatorConfig {
