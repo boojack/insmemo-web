@@ -167,7 +167,7 @@ const MyAccountSection: React.FC<Props> = () => {
             </>
           ) : (
             <>
-              <span className="value-text">无</span>
+              <span className="value-text">空</span>
               <span
                 className="btn-text bind-btn"
                 onClick={() => {
@@ -196,7 +196,7 @@ const MyAccountSection: React.FC<Props> = () => {
             </>
           ) : (
             <>
-              <span className="value-text">无</span>
+              <span className="value-text">空</span>
               <a
                 className="btn-text link-btn"
                 href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"

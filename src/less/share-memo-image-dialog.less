@@ -4,12 +4,11 @@
   > .dialog-container {
     width: 380px;
     padding: 0;
-    border-radius: 8px;
-    flex-grow: 0;
     background-color: @bg-whitegray;
 
     > .dialog-header-container {
       padding: 8px 16px;
+      padding-left: 24px;
       margin-bottom: 0;
       background-color: white;
       border-top-left-radius: 8px;
@@ -74,14 +73,14 @@
         > .time-text {
           width: 100%;
           padding: 0 24px;
-          padding-top: 12px;
+          padding-top: 20px;
           font-size: 12px;
           color: gray;
           background-color: white;
         }
 
         > .memo-content-text {
-          padding: 8px 24px;
+          padding: 12px 24px;
           width: 100%;
           font-size: 15px;
           background-color: white;
@@ -92,8 +91,9 @@
           width: 100%;
           height: auto;
           padding: 0 24px;
-          .hide-scroll-bar();
+          padding-bottom: 8px;
           background-color: white;
+          .hide-scroll-bar();
 
           > img {
             width: 100%;
@@ -107,7 +107,7 @@
           .flex(row, flex-start, center);
           flex-wrap: nowrap;
           width: 100%;
-          padding: 12px 24px;
+          padding: 16px 24px;
 
           > .normal-text {
             .flex(row, flex-start, center);
@@ -115,13 +115,17 @@
             font-size: 12px;
             line-height: 20px;
             color: gray;
-            font-style: italic;
 
             > .name-text {
               font-size: 13px;
               color: @text-black;
               margin-left: 4px;
               line-height: 20px;
+            }
+
+            > .icon-text {
+              font-size: 15px;
+              margin-right: 6px;
             }
           }
         }

@@ -69,7 +69,8 @@
     height: 28px;
 
     > .value-text {
-      max-width: 126px;
+      max-width: 128px;
+      min-height: 20px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -86,9 +87,11 @@
         opacity: 0.8;
       }
 
-      &.bind-btn {
+      &.bind-btn,
+      &.link-btn {
         color: white;
         background-color: @text-green;
+        text-decoration: none;
       }
 
       &.unbind-btn {
@@ -98,11 +101,6 @@
         &.final-confirm {
           font-weight: bold;
         }
-      }
-
-      &.link-btn {
-        color: white;
-        background-color: @bg-blue;
       }
     }
   }

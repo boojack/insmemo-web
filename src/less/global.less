@@ -1,13 +1,31 @@
 @import "./mixin.less";
 
+// ⚠️ This font is only free for personal use but not for commercial.
+@font-face {
+  font-family: "DINPro";
+  src: url("/fonts/DINPro-Regular.otf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "DINPro";
+  src: url("/fonts/DINPro-Bold.otf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "ubuntu-mono";
+  src: url("/fonts/UbuntuMono.ttf");
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   color: @text-black;
   -webkit-tap-highlight-color: transparent;
-  font-family: -apple-system, "system-ui", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  font-family: "DINPro", "PingFang SC", Helvetica, Arial, sans-serif;
 }
 
 body,
@@ -19,17 +37,17 @@ html {
 }
 
 code {
-  font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+  font-family: "ubuntu-mono", monospace;
   background-color: pink;
   padding: 2px 4px;
   border-radius: 4px;
 }
 
 pre {
-  font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+  font-family: "ubuntu-mono", monospace;
 
   * {
-    font-family: SFMono-Regular, Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+    font-family: "ubuntu-mono", monospace;
   }
 }
 

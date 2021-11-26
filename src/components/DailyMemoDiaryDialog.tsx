@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { toPng } from "html-to-image";
 import { memoService } from "../services";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
@@ -51,13 +50,19 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         return;
       }
 
-      toPng(memosElRef.current, {
-        backgroundColor: "#fff",
-        cacheBust: true,
-        pixelRatio: 4,
-      }).then((url) => {
-        showPreviewImageDialog(url);
-      });
+      try {
+        window
+          .html2canvas(memosElRef.current, {
+            scale: window.devicePixelRatio * 2,
+            backgroundColor: "#fff",
+            useCORS: true,
+          })
+          .then((canvas) => {
+            showPreviewImageDialog(canvas.toDataURL());
+          });
+      } catch (error) {
+        // do nth
+      }
     }, 0);
   };
 

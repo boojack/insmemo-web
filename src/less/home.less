@@ -33,6 +33,19 @@
       height: 100%;
       margin-left: 0;
       padding-top: 0;
+      transition: all 0.4s ease;
+    }
+
+    &.mobile-show-sidebar {
+      > .content-wrapper {
+        width: calc(100% - 32px);
+        margin: auto;
+        box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
+        margin-top: 8px;
+        background-color: white;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+      }
     }
   }
 }

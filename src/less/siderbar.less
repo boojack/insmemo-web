@@ -2,13 +2,11 @@
 
 .sidebar-wrapper {
   .flex(column, flex-start, flex-start);
-  width: 248px;
+  width: 240px;
   height: 100%;
-  padding-top: 16px;
-  padding-bottom: 24px;
-  padding-right: 8px;
+  padding: 16px 0;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   flex-shrink: 0;
   .hide-scroll-bar();
 
@@ -20,7 +18,7 @@
 @media only screen and (max-width: 875px) {
   #page-wrapper.mobile-show-sidebar {
     > .sidebar-wrapper {
-      transform: translateX(0);
+      transform: translateY(24px);
     }
   }
 
@@ -37,7 +35,9 @@
     background-color: white;
     box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
     transition: all 0.4s ease;
-    transform: translateX(-100% - 10px);
+    transform: translateY(100% + 12px);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 
     > * {
       width: 320px;

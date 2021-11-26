@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { toPng, toSvg } from "html-to-image";
 import { userService } from "../services";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
@@ -32,22 +31,24 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
     }
 
     setTimeout(() => {
-      toSvg(memoElRef.current!, {
-        backgroundColor: "#f8f8f8",
-        cacheBust: true,
-        pixelRatio: 4,
-      }).then((url) => {
-        setShortcutImgUrl(url);
-        // NOTE 为了可以直接 copy 高清图片，hack 了一下
-        toPng(memoElRef.current!, {
-          backgroundColor: "#f8f8f8",
-          cacheBust: true,
-          pixelRatio: 4,
-        }).then((url) => {
-          setShortcutImgUrl(url);
-        });
-      });
-    }, ANIMATION_DURATION + 100);
+      if (!memoElRef.current) {
+        return;
+      }
+
+      try {
+        window
+          .html2canvas(memoElRef.current, {
+            scale: window.devicePixelRatio * 2,
+            backgroundColor: "#f8f8f8",
+            useCORS: true,
+          })
+          .then((canvas) => {
+            setShortcutImgUrl(canvas.toDataURL());
+          });
+      } catch (error) {
+        // do nth
+      }
+    }, ANIMATION_DURATION);
   }, [imgAmount]);
 
   const handleCloseBtnClick = () => {
@@ -96,7 +97,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
           </Only>
           <div className="watermark-container">
             <span className="normal-text">
-              ✍️ Memo by <span className="name-text">{userinfo?.username}</span>
+              <span className="icon-text">✍️</span> by <span className="name-text">{userinfo?.username}</span>
             </span>
           </div>
         </div>
