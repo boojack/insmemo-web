@@ -65,6 +65,7 @@ interface QueryItemContainerProps {
 
 const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemContainerProps) => {
   const { query, isActive } = props;
+  const [showActionBtns, toggleShowActionBtns] = useToggle(false);
   const [showConfirmDeleteBtn, toggleConfirmDeleteBtn] = useToggle(false);
 
   const handleQueryClick = () => {
@@ -76,6 +77,15 @@ const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemC
       }
       locationService.setMemoFilter(query.id);
     }
+  };
+
+  const handleShowActionBtnClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    toggleShowActionBtns();
+  };
+
+  const handleActionBtnContainerMouseLeave = () => {
+    toggleShowActionBtns(false);
   };
 
   const handleDeleteMemoClick = async (event: React.MouseEvent) => {
@@ -119,8 +129,7 @@ const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemC
     }
   };
 
-  const handleDeleteBtnMouseLeave = (event: React.MouseEvent) => {
-    event.stopPropagation();
+  const handleDeleteBtnMouseLeave = () => {
     toggleConfirmDeleteBtn(false);
   };
 
@@ -132,10 +141,10 @@ const QueryItemContainer: React.FC<QueryItemContainerProps> = (props: QueryItemC
           <span className="query-text">{query.title}</span>
         </div>
         <div className="btns-container">
-          <span className="action-btn toggle-btn">
+          <span className="action-btn toggle-btn" onClick={handleShowActionBtnClick}>
             <img className="icon-img" src={`/icons/more${isActive ? "-white" : ""}.svg`} />
           </span>
-          <div className="action-btns-wrapper">
+          <div className={`action-btns-wrapper ${showActionBtns ? "" : "hidden"}`} onMouseLeave={handleActionBtnContainerMouseLeave}>
             <div className="action-btns-container">
               <span className="btn" onClick={handlePinQueryBtnClick}>
                 {query.pinnedAt ? "取消置顶" : "置顶"}

@@ -39,7 +39,7 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         window
           .html2canvas(memoElRef.current, {
             scale: window.devicePixelRatio * 2,
-            backgroundColor: "#f8f8f8",
+            backgroundColor: "#eaeaea",
             useCORS: true,
           })
           .then((canvas) => {

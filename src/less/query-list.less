@@ -67,7 +67,7 @@
       .flex(row, space-between, center);
       width: 100%;
       height: 40px;
-      padding: 6px 12px;
+      padding: 0 16px;
       margin-top: 4px;
       border-radius: 8px;
       font-size: 14px;
@@ -75,8 +75,7 @@
       flex-shrink: 0;
       user-select: none;
 
-      &:hover,
-      &:active {
+      &:hover {
         background-color: @bg-gray;
 
         > .btns-container {
@@ -107,11 +106,8 @@
 
         > .icon-text {
           display: block;
-          width: 20px;
-          height: 20px;
-          text-align: center;
+          width: 16px;
           flex-shrink: 0;
-          font-family: "ubuntu-mono", monospace;
         }
 
         > .query-text {
@@ -130,15 +126,8 @@
           flex-shrink: 0;
 
           > .icon-img {
-            width: 16px;
-            height: 16px;
-          }
-
-          &:hover,
-          &:active {
-            + .action-btns-wrapper {
-              display: flex;
-            }
+            width: 18px;
+            height: auto;
           }
         }
 
@@ -151,11 +140,6 @@
           padding: 8px;
           transform: translateY(60px);
           z-index: 1;
-          display: none;
-
-          &:hover {
-            display: flex;
-          }
 
           > .action-btns-container {
             .flex(column, flex-start, flex-start);
@@ -165,7 +149,7 @@
             border-radius: 6px;
             padding: 4px;
             background-color: white;
-            box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+            box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
 
             > .btn {
               width: 100%;
