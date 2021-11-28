@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import appContext from "../stores/appContext";
 import useLoading from "../hooks/useLoading";
-import { locationService, memoService, queryService } from "../services";
-import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR, TAG_REG } from "../helpers/consts";
+import { globalStateService, locationService, memoService, queryService } from "../services";
+import { IMAGE_URL_REG, LINK_REG, MEMO_LINK_REG, TAG_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import Only from "../components/common/OnlyWhen";
@@ -88,13 +88,8 @@ const MemoTrash: React.FC<Props> = () => {
     setDeletedMemos((deletedMemos) => deletedMemos.filter((memo) => memo.id !== memoId));
   }, []);
 
-  const handleMoreActionBtnClick = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-
-    if (pageContainerEl) {
-      pageContainerEl.classList.add(MOBILE_ADDITION_CLASSNAME);
-    }
+  const handleShowSidebarBtnClick = useCallback(() => {
+    globalStateService.setShowSiderbarInMobileView(true);
   }, []);
 
   return (
@@ -102,7 +97,7 @@ const MemoTrash: React.FC<Props> = () => {
       <div className="section-header-container">
         <div className="title-text">
           <Only when={isMobileView}>
-            <button className="action-btn" onClick={handleMoreActionBtnClick}>
+            <button className="action-btn" onClick={handleShowSidebarBtnClick}>
               <img className="icon-img" src="/icons/menu.svg" alt="menu" />
             </button>
           </Only>

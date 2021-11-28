@@ -1,8 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import appContext from "../stores/appContext";
-import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
 import SearchBar from "./SearchBar";
-import { memoService, queryService } from "../services";
+import { globalStateService, memoService, queryService } from "../services";
 import Only from "./common/OnlyWhen";
 import "../less/memos-header.less";
 
@@ -40,20 +39,15 @@ const MemosHeader: React.FC<Props> = () => {
     }
   }, []);
 
-  const handleMoreActionBtnClick = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-
-    if (pageContainerEl) {
-      pageContainerEl.classList.add(MOBILE_ADDITION_CLASSNAME);
-    }
+  const handleShowSidebarBtnClick = useCallback(() => {
+    globalStateService.setShowSiderbarInMobileView(true);
   }, []);
 
   return (
     <div className="section-header-container memos-header-container">
       <div className="title-text" onClick={handleMemoTextClick}>
         <Only when={isMobileView}>
-          <button className="action-btn" onClick={handleMoreActionBtnClick}>
+          <button className="action-btn" onClick={handleShowSidebarBtnClick}>
             <img className="icon-img" src="/icons/menu.svg" alt="menu" />
           </button>
         </Only>

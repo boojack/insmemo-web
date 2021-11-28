@@ -16,35 +16,33 @@
 }
 
 @media only screen and (max-width: 875px) {
-  #page-wrapper.mobile-show-sidebar {
-    > .sidebar-wrapper {
-      transform: translateY(24px);
+  body.mobile-show-sidebar {
+    #page-wrapper {
+      > .sidebar-wrapper {
+        transform: translateX(0);
+        box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
+      }
     }
   }
 
   .sidebar-wrapper {
     .flex(column, flex-start, center);
     z-index: 99;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 320px;
     height: 100%;
     padding: 0;
-    padding-top: 8px;
     background-color: white;
-    box-shadow: 0 0 8px 0 rgb(0 0 0 / 20%);
     transition: all 0.4s ease;
-    transform: translateY(100% + 12px);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    transform: translateX(-320px);
 
     > * {
       width: 320px;
       max-width: 95%;
       flex-shrink: 0;
       padding-left: 32px;
-      padding-right: 16px;
     }
   }
 }

@@ -9,6 +9,7 @@ export interface State extends AppSetting {
   markMemoId: string;
   editMemoId: string;
   isMobileView: boolean;
+  showSiderbarInMobileView: boolean;
 }
 
 interface SetMarkMemoIdAction {
@@ -32,12 +33,19 @@ interface SetMobileViewAction {
   };
 }
 
+interface SetShowSidebarAction {
+  type: "SET_SHOW_SIDEBAR_IN_MOBILE_VIEW";
+  payload: {
+    showSiderbarInMobileView: boolean;
+  };
+}
+
 interface SetAppSettingAction {
   type: "SET_APP_SETTING";
   payload: Partial<AppSetting>;
 }
 
-export type Actions = SetMobileViewAction | SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingAction;
+export type Actions = SetMobileViewAction | SetShowSidebarAction | SetEditMemoIdAction | SetMarkMemoIdAction | SetAppSettingAction;
 
 export function reducer(state: State, action: Actions) {
   switch (action.type) {
@@ -71,6 +79,16 @@ export function reducer(state: State, action: Actions) {
         isMobileView: action.payload.isMobileView,
       };
     }
+    case "SET_SHOW_SIDEBAR_IN_MOBILE_VIEW": {
+      if (action.payload.showSiderbarInMobileView === state.showSiderbarInMobileView) {
+        return state;
+      }
+
+      return {
+        ...state,
+        showSiderbarInMobileView: action.payload.showSiderbarInMobileView,
+      };
+    }
     case "SET_APP_SETTING": {
       return {
         ...state,
@@ -91,4 +109,5 @@ export const defaultState: State = {
   shouldUseMarkdownParser: true,
   useTinyUndoHistoryCache: true,
   isMobileView: false,
+  showSiderbarInMobileView: false,
 };

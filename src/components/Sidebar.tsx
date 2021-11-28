@@ -1,35 +1,69 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import appContext from "../stores/appContext";
-import { MOBILE_ADDITION_CLASSNAME, PAGE_CONTAINER_SELECTOR } from "../helpers/consts";
+import { SHOW_SIDERBAR_MOBILE_CLASSNAME } from "../helpers/consts";
+import { globalStateService } from "../services";
 import UserBanner from "./UserBanner";
 import QueryList from "./QueryList";
 import TagList from "./TagList";
 import UsageHeatMap from "./UsageHeatMap";
 import "../less/siderbar.less";
 
-const removeMobileAdditionClass = () => {
-  const pageContainerEl = document.querySelector(PAGE_CONTAINER_SELECTOR);
-  pageContainerEl?.classList.remove(MOBILE_ADDITION_CLASSNAME);
-};
-
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
-  const { locationState } = useContext(appContext);
+  const {
+    locationState,
+    globalState: { isMobileView, showSiderbarInMobileView },
+  } = useContext(appContext);
+  const wrapperElRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    removeMobileAdditionClass();
-  }, [locationState]);
+  const handleClickOutsideOfWrapper = useMemo(() => {
+    return (event: MouseEvent) => {
+      const siderbarShown = globalStateService.getState().showSiderbarInMobileView;
 
-  const handleWrapperClick = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    if (event.target && (event.target as HTMLElement).className === "sidebar-wrapper") {
-      removeMobileAdditionClass();
-    }
+      if (!siderbarShown) {
+        window.removeEventListener("click", handleClickOutsideOfWrapper, {
+          capture: true,
+        });
+        return;
+      }
+
+      if (!wrapperElRef.current?.contains(event.target as Node)) {
+        if (wrapperElRef.current?.parentNode?.contains(event.target as Node)) {
+          if (siderbarShown) {
+            event.stopPropagation();
+          }
+          globalStateService.setShowSiderbarInMobileView(false);
+          window.removeEventListener("click", handleClickOutsideOfWrapper, {
+            capture: true,
+          });
+        }
+      }
+    };
   }, []);
 
+  useEffect(() => {
+    globalStateService.setShowSiderbarInMobileView(false);
+  }, [locationState]);
+
+  useEffect(() => {
+    if (showSiderbarInMobileView) {
+      document.body.classList.add(SHOW_SIDERBAR_MOBILE_CLASSNAME);
+    } else {
+      document.body.classList.remove(SHOW_SIDERBAR_MOBILE_CLASSNAME);
+    }
+  }, [showSiderbarInMobileView]);
+
+  useEffect(() => {
+    if (isMobileView && showSiderbarInMobileView) {
+      window.addEventListener("click", handleClickOutsideOfWrapper, {
+        capture: true,
+      });
+    }
+  }, [isMobileView, showSiderbarInMobileView]);
+
   return (
-    <aside className="sidebar-wrapper" onClick={handleWrapperClick}>
+    <aside className="sidebar-wrapper" ref={wrapperElRef}>
       <UserBanner />
       <UsageHeatMap />
       <QueryList />

@@ -1,8 +1,5 @@
-// container 选择器
-export const PAGE_CONTAINER_SELECTOR = "#page-wrapper";
-
 // 移动端样式适配额外类名
-export const MOBILE_ADDITION_CLASSNAME = "mobile-show-sidebar";
+export const SHOW_SIDERBAR_MOBILE_CLASSNAME = "mobile-show-sidebar";
 
 // 默认动画持续时长
 export const ANIMATION_DURATION = 200;

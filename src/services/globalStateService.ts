@@ -46,6 +46,15 @@ class GlobalStateService {
     });
   };
 
+  public setShowSiderbarInMobileView = (showSiderbarInMobileView: boolean) => {
+    appStore.dispatch({
+      type: "SET_SHOW_SIDEBAR_IN_MOBILE_VIEW",
+      payload: {
+        showSiderbarInMobileView,
+      },
+    });
+  };
+
   public setAppSetting = (appSetting: Partial<AppSetting>) => {
     appStore.dispatch({
       type: "SET_APP_SETTING",
