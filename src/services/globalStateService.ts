@@ -9,7 +9,7 @@ class GlobalStateService {
       shouldSplitMemoWord: cachedSetting.shouldSplitMemoWord ?? true,
       shouldHideImageUrl: cachedSetting.shouldHideImageUrl ?? true,
       shouldUseMarkdownParser: cachedSetting.shouldUseMarkdownParser ?? true,
-      useTinyUndoHistoryCache: cachedSetting.useTinyUndoHistoryCache ?? true,
+      useTinyUndoHistoryCache: cachedSetting.useTinyUndoHistoryCache ?? false,
     };
 
     this.setAppSetting(defaultAppSetting);

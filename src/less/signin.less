@@ -38,7 +38,7 @@
           top: 18px;
           left: 12px;
           flex-shrink: 0;
-          font-size: 14px;
+          font-size: 13px;
           line-height: 2;
           color: gray;
           cursor: text;
@@ -80,11 +80,10 @@
 
       > .btns-container {
         .flex(row, flex-start, center);
-        height: 100%;
 
         > .btn {
-          padding: 0 16px;
-          font-size: 14px;
+          padding: 0 4px;
+          font-size: 13px;
           line-height: 32px;
           border-radius: 4px;
 
@@ -100,6 +99,7 @@
           &.signin-btn {
             background-color: @text-green;
             color: white;
+            padding: 0 12px;
 
             &.requesting {
               cursor: wait;
@@ -120,20 +120,19 @@
     }
 
     > .tip-text {
+      .flex(row, flex-start, center);
       border-top: 2px solid lightgray;
       color: gray;
       padding-top: 16px;
       width: 100%;
       font-size: 12px;
+      line-height: 30px;
 
       > .btn {
-        .flex(row, center, center);
-        width: 90px;
-        margin-top: 12px;
+        width: 86px;
         color: @text-green;
-        line-height: 30px;
         border-radius: 4px;
-        background-color: @bg-whitegray;
+        background-color: @bg-lightgray;
 
         > .icon-text {
           margin-right: 4px;

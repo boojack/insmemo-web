@@ -3,6 +3,7 @@ import appContext from "../stores/appContext";
 import { userService } from "../services";
 import utils from "../helpers/utils";
 import { validate, ValidatorConfig } from "../helpers/validator";
+import Only from "./common/OnlyWhen";
 import toastHelper from "./Toast";
 import showChangePasswordDialog from "./ChangePasswordDialog";
 import showBindWxUserIdDialog from "./BindWxUserIdDialog";
@@ -150,63 +151,66 @@ const MyAccountSection: React.FC<Props> = () => {
           </span>
         </label>
       </div>
-      <div className="section-container connect-section-container">
-        <p className="title-text">关联账号</p>
-        <label className="form-label input-form-label">
-          <span className="normal-text">微信 OpenID：</span>
-          {user.wxUserId ? (
-            <>
-              <span className="value-text">************</span>
-              <span
-                className={`btn-text unbind-btn ${showConfirmUnbindWxBtn ? "final-confirm" : ""}`}
-                onMouseLeave={() => setShowConfirmUnbindWxBtn(false)}
-                onClick={handleUnbindWxBtnClick}
-              >
-                {showConfirmUnbindWxBtn ? "确定取消绑定！" : "取消绑定"}
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="value-text">空</span>
-              <span
-                className="btn-text bind-btn"
-                onClick={() => {
-                  showBindWxUserIdDialog();
-                }}
-              >
-                绑定 ID
-              </span>
-            </>
-          )}
-        </label>
-        <label className="form-label input-form-label">
-          <span className="normal-text">GitHub：</span>
-          {user.githubName ? (
-            <>
-              <a className="value-text" href={"https://github.com/" + user.githubName}>
-                {user.githubName}
-              </a>
-              <span
-                className={`btn-text unbind-btn ${showConfirmUnbindGithubBtn ? "final-confirm" : ""}`}
-                onMouseLeave={() => setShowConfirmUnbindGithubBtn(false)}
-                onClick={handleUnbindGithubBtnClick}
-              >
-                {showConfirmUnbindGithubBtn ? "确定取消绑定！" : "取消绑定"}
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="value-text">空</span>
-              <a
-                className="btn-text link-btn"
-                href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
-              >
-                前往绑定
-              </a>
-            </>
-          )}
-        </label>
-      </div>
+      {/* Account Binding Settings: only can use for domain: memos.justsven.top */}
+      <Only when={window.location.origin.includes("justsven.top")}>
+        <div className="section-container connect-section-container">
+          <p className="title-text">关联账号</p>
+          <label className="form-label input-form-label">
+            <span className="normal-text">微信 OpenID：</span>
+            {user.wxUserId ? (
+              <>
+                <span className="value-text">************</span>
+                <span
+                  className={`btn-text unbind-btn ${showConfirmUnbindWxBtn ? "final-confirm" : ""}`}
+                  onMouseLeave={() => setShowConfirmUnbindWxBtn(false)}
+                  onClick={handleUnbindWxBtnClick}
+                >
+                  {showConfirmUnbindWxBtn ? "确定取消绑定！" : "取消绑定"}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="value-text">空</span>
+                <span
+                  className="btn-text bind-btn"
+                  onClick={() => {
+                    showBindWxUserIdDialog();
+                  }}
+                >
+                  绑定 ID
+                </span>
+              </>
+            )}
+          </label>
+          <label className="form-label input-form-label">
+            <span className="normal-text">GitHub：</span>
+            {user.githubName ? (
+              <>
+                <a className="value-text" href={"https://github.com/" + user.githubName}>
+                  {user.githubName}
+                </a>
+                <span
+                  className={`btn-text unbind-btn ${showConfirmUnbindGithubBtn ? "final-confirm" : ""}`}
+                  onMouseLeave={() => setShowConfirmUnbindGithubBtn(false)}
+                  onClick={handleUnbindGithubBtnClick}
+                >
+                  {showConfirmUnbindGithubBtn ? "确定取消绑定！" : "取消绑定"}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="value-text">空</span>
+                <a
+                  className="btn-text link-btn"
+                  href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
+                >
+                  前往绑定
+                </a>
+              </>
+            )}
+          </label>
+        </div>
+      </Only>
     </>
   );
 };

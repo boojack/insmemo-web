@@ -107,7 +107,7 @@ export const defaultState: State = {
   shouldSplitMemoWord: true,
   shouldHideImageUrl: true,
   shouldUseMarkdownParser: true,
-  useTinyUndoHistoryCache: true,
+  useTinyUndoHistoryCache: false,
   isMobileView: false,
   showSiderbarInMobileView: false,
 };

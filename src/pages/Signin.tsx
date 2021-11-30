@@ -3,6 +3,7 @@ import api from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import useLoading from "../hooks/useLoading";
 import { locationService, userService } from "../services";
+import Only from "../components/common/OnlyWhen";
 import showAboutSiteDialog from "../components/AboutSiteDialog";
 import toastHelper from "../components/Toast";
 import "../less/signin.less";
@@ -154,6 +155,8 @@ const Signin: React.FC<Props> = () => {
               </div>
             </div>
             <p className="tip-text">
+              仅用于作品展示。
+              <br />
               <span className="btn" onClick={handleAboutBtnClick}>
                 <span className="icon-text">🤠</span>
                 关于本站
@@ -174,16 +177,23 @@ const Signin: React.FC<Props> = () => {
             </div>
             <div className="page-footer-container">
               <div className="btns-container">
-                {window.location.origin.includes("justsven.top") ? (
+                <Only when={window.location.origin.includes("justsven.top")}>
                   <a
                     className="btn-text"
                     href="https://github.com/login/oauth/authorize?client_id=187ba36888f152b06612&scope=read:user,gist"
                   >
                     Sign In with GitHub
                   </a>
-                ) : null}
+                </Only>
               </div>
               <div className="btns-container">
+                <button
+                  className={`btn ${signinBtnClickLoadingState.isLoading ? "requesting" : ""}`}
+                  onClick={handleAutoSigninAsGuestBtnClick}
+                >
+                  体验一下
+                </button>
+                <span className="split-text">/</span>
                 <button className="btn signup-btn disabled" onClick={() => toastHelper.info("注册已关闭")}>
                   注册
                 </button>
@@ -197,14 +207,6 @@ const Signin: React.FC<Props> = () => {
                 </button>
               </div>
             </div>
-            <p className="tip-text">
-              仅用于作品展示，可输入 <code>guest, 123456</code> 进行体验。
-              <br />
-              <span className="btn" onClick={handleAboutBtnClick}>
-                <span className="icon-text">🤠</span>
-                关于本站
-              </span>
-            </p>
           </>
         )}
       </div>
