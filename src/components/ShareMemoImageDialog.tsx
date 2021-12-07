@@ -42,7 +42,6 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
       })
         .then((url) => {
           setShortcutImgUrl(url);
-          memoElRef.current?.remove();
         })
         .catch(() => {
           // do nth
@@ -76,8 +75,10 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         <div className={`tip-words-container ${shortcutImgUrl ? "finish" : "loading"}`}>
           <p className="tip-text">{shortcutImgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
         </div>
-        <img className={`memo-shortcut-img ${shortcutImgUrl ? "" : "hidden"}`} src={shortcutImgUrl} />
         <div className="memo-container" ref={memoElRef}>
+          <Only when={shortcutImgUrl !== ""}>
+            <img className="memo-shortcut-img" src={shortcutImgUrl} />
+          </Only>
           <span className="time-text">{memo.createdAtStr}</span>
           <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
           <Only when={memoImgUrls.length > 0}>

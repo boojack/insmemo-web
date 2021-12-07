@@ -50,6 +50,7 @@ function generateSVGElement(width: number, height: number, element: HTMLElement)
   return svg;
 }
 
+// TODO need rethink how to get the needed font-family
 async function getFontsStyleElement() {
   const styleElement = document.createElement("style");
 
@@ -74,12 +75,11 @@ async function getFontsStyleElement() {
   for (const f of fonts) {
     const base64Url = await convertResourceToDataURL(f.url);
     styleElement.innerHTML += `
-    @font-face {
-      font-family: "${f.name}";
-      src: url("${base64Url}");
-      font-weight: ${f.weight};
-    }
-    `;
+      @font-face {
+        font-family: "${f.name}";
+        src: url("${base64Url}");
+        font-weight: ${f.weight};
+      }`;
   }
 
   return styleElement;

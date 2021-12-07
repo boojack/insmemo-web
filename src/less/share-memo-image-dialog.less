@@ -52,19 +52,24 @@
         }
       }
 
-      > .memo-shortcut-img {
-        width: 100%;
-        height: auto;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-      }
-
       > .memo-container {
         .flex(column, flex-start, flex-start);
         width: 380px;
         max-width: 100%;
         height: auto;
         user-select: none;
+        position: relative;
+
+        > .memo-shortcut-img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+          width: 100%;
+          height: auto;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
 
         > .time-text {
           width: 100%;
