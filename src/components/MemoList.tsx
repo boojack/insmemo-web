@@ -7,6 +7,7 @@ import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import Memo from "./Memo";
 import toastHelper from "./Toast";
 import "../less/memolist.less";
+import MainEditor from "./MemoEditor";
 
 interface Props {}
 
@@ -14,6 +15,7 @@ const MemoList: React.FC<Props> = () => {
   const {
     locationState: { query },
     memoState: { memos },
+    globalState,
   } = useContext(appContext);
   const [isFetching, setFetchStatus] = useState(true);
   const wrapperElement = useRef<HTMLDivElement>(null);
@@ -94,7 +96,7 @@ const MemoList: React.FC<Props> = () => {
   return (
     <div className={`memolist-wrapper ${isFetching ? "" : "completed"}`} onClick={handleMemoListClick} ref={wrapperElement}>
       {shownMemos.map((memo) => (
-        <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+        globalState.editMemoId === memo.id ? <MainEditor isAllowUpdate={true} key={memo.id + 'edit'}/> : <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
       ))}
       <div className="status-text-container">
         <p className="status-text">
