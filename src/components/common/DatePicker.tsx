@@ -104,7 +104,7 @@ function getMonthDayAmount(datestamp: DateStamp): number {
   const currentDate = new Date(`${dateTemp.getFullYear()}/${dateTemp.getMonth() + 1}/1`);
   const nextMonthDate =
     currentDate.getMonth() === 11
-      ? new Date(`${currentDate.getFullYear() + 1}/1`)
+      ? new Date(`${currentDate.getFullYear() + 1}/1/1`)
       : new Date(`${currentDate.getFullYear()}/${currentDate.getMonth() + 2}/1`);
 
   return (nextMonthDate.getTime() - currentDate.getTime()) / DAILY_TIMESTAMP;

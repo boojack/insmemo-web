@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { userService } from "../services";
+import toImage from "../labs/html2image";
 import { ANIMATION_DURATION, IMAGE_URL_REG } from "../helpers/consts";
 import utils from "../helpers/utils";
 import { showDialog } from "./Dialog";
@@ -35,19 +36,17 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         return;
       }
 
-      try {
-        window
-          .html2canvas(memoElRef.current, {
-            scale: window.devicePixelRatio * 2,
-            backgroundColor: "#eaeaea",
-            useCORS: true,
-          })
-          .then((canvas) => {
-            setShortcutImgUrl(canvas.toDataURL());
-          });
-      } catch (error) {
-        // do nth
-      }
+      toImage(memoElRef.current, {
+        backgroundColor: "#eaeaea",
+        pixelRatio: window.devicePixelRatio * 2,
+      })
+        .then((url) => {
+          setShortcutImgUrl(url);
+          memoElRef.current?.remove();
+        })
+        .catch(() => {
+          // do nth
+        });
     }, ANIMATION_DURATION);
   }, [imgAmount]);
 
@@ -77,8 +76,8 @@ const ShareMemoImageDialog: React.FC<Props> = (props: Props) => {
         <div className={`tip-words-container ${shortcutImgUrl ? "finish" : "loading"}`}>
           <p className="tip-text">{shortcutImgUrl ? "右键或长按即可保存图片 👇" : "图片生成中..."}</p>
         </div>
+        <img className={`memo-shortcut-img ${shortcutImgUrl ? "" : "hidden"}`} src={shortcutImgUrl} />
         <div className="memo-container" ref={memoElRef}>
-          <img className={`memo-shortcut-img ${shortcutImgUrl ? "" : "hidden"}`} src={shortcutImgUrl} />
           <span className="time-text">{memo.createdAtStr}</span>
           <div className="memo-content-text" dangerouslySetInnerHTML={{ __html: formatMemoContent(memo.content) }}></div>
           <Only when={memoImgUrls.length > 0}>

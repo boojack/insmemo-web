@@ -52,17 +52,20 @@
 
     > .dialog-content-container {
       .flex(column, flex-start, flex-start);
-      width: 100%;
+      width: 440px;
+      max-width: 100%;
+      height: auto;
       padding: 24px 24px;
 
       > .date-card-container {
         .flex(column, center, center);
         margin: auto;
-        margin-bottom: 24px;
+        padding-bottom: 24px;
         z-index: 1;
         user-select: none;
 
         > .year-text {
+          margin: auto;
           font-weight: bold;
           color: gray;
           text-align: center;
@@ -72,6 +75,7 @@
 
         > .date-container {
           .flex(column, center, center);
+          margin: auto;
           width: 96px;
           height: 96px;
           border-radius: 32px;
@@ -115,15 +119,10 @@
         border: 1px solid lightgray;
         border-radius: 8px;
         margin-bottom: 24px;
-
-        &.hide {
-          display: none;
-        }
       }
 
       > .tip-container {
-        .flex(column, center, center);
-        width: 100%;
+        margin: auto;
         padding: 16px 0;
 
         > .tip-text {

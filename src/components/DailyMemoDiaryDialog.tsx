@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { memoService } from "../services";
+import toImage from "../labs/html2image";
 import useToggle from "../hooks/useToggle";
 import useLoading from "../hooks/useLoading";
 import { DAILY_TIMESTAMP } from "../helpers/consts";
@@ -50,19 +51,16 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
         return;
       }
 
-      try {
-        window
-          .html2canvas(memosElRef.current, {
-            scale: window.devicePixelRatio * 2,
-            backgroundColor: "#fff",
-            useCORS: true,
-          })
-          .then((canvas) => {
-            showPreviewImageDialog(canvas.toDataURL());
-          });
-      } catch (error) {
-        // do nth
-      }
+      toImage(memosElRef.current, {
+        backgroundColor: "#ffffff",
+        pixelRatio: window.devicePixelRatio * 2,
+      })
+        .then((url) => {
+          showPreviewImageDialog(url);
+        })
+        .catch(() => {
+          // do nth
+        });
     }, 0);
   };
 
@@ -102,7 +100,7 @@ const DailyMemoDiaryDialog: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <DatePicker
-          className={`date-picker ${showDatePicker ? "" : "hide"}`}
+          className={`date-picker ${showDatePicker ? "" : "hidden"}`}
           datestamp={currentDateStamp}
           handleDateStampChange={handleDataPickerChange}
         />
