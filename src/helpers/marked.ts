@@ -5,7 +5,8 @@
  * - 加粗/斜体；
  * - TODO;
  */
-import Prism from 'prismjs';
+import Prism from "prismjs";
+
 const CODE_BLOCK_REG = /```([\s\S]*?)```/g;
 const BOLD_TEXT_REG = /\*\*(.+?)\*\*/g;
 const EM_TEXT_REG = /\*(.+?)\*/g;
@@ -14,25 +15,43 @@ const DONE_BLOCK_REG = /\[x\] /g;
 const DOT_LI_REG = /[*] /g;
 const NUM_LI_REG = /(\d+)\. /g;
 
-const parseCodeToPrism = (codeStr: string) : string => {
-  const getLang = (str:string): string => {
-    let lang = /^\w+/g.exec(str)
-    if (lang !== null) {
-      return lang[0]
-    }
-    return 'javascript'
+const getCodeLanguage = (codeStr: string): string => {
+  const execRes = /^\w+/g.exec(codeStr);
+
+  if (execRes !== null) {
+    return execRes[0];
   }
-  return codeStr.replace(CODE_BLOCK_REG, (match, p1): string => {
-    let lang = getLang(p1);
-    let s = p1.replace(lang, '').replace(/<p>/g,'').replace(/<\/p>/g,'\r\n').replace(/<br>/g,'\r\n').replace(/&nbsp;/g,' ');
+
+  return "javascript";
+};
+
+const parseCodeToPrism = (codeStr: string): string => {
+  return codeStr.replace(CODE_BLOCK_REG, (_, matchedStr): string => {
+    const lang = getCodeLanguage(matchedStr);
+    let convertedStr = matchedStr
+      .replace(lang, "")
+      .replace(/<p>/g, "")
+      .replace(/<\/p>/g, "\r\n")
+      .replace(/<br>/g, "\r\n")
+      .replace(/&nbsp;/g, " ");
+
     // 特定语言处理
-    switch(lang) {
-      case 'html': s = s.replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+    switch (lang) {
+      case "html":
+        convertedStr = convertedStr.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
     }
-    let str = Prism.highlight(s, Prism.languages[lang], lang)
-    return `<pre>${str}</pre>`
-  })
-}
+
+    try {
+      const resultStr = Prism.highlight(convertedStr, Prism.languages[lang], lang);
+      return `<pre>${resultStr}</pre>`;
+    } catch (error) {
+      // do nth
+    }
+
+    return `<pre>${codeStr}</pre>`;
+  });
+};
+
 const parseMarkedToHtml = (markedStr: string): string => {
   const htmlText = parseCodeToPrism(markedStr)
     .replace(DOT_LI_REG, "<span class='counter-block'>•</span>")
