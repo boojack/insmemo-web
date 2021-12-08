@@ -8,10 +8,10 @@ import Editor, { EditorRefActions } from "./Editor/Editor";
 import "../less/memo-editor.less";
 
 interface Props {
-  isAllowUpdate: boolean
+  editMemoId: string
 }
 
-const MemoEditor: React.FC<Props> = ({ isAllowUpdate = false}) => {
+const MemoEditor: React.FC<Props> = ({ editMemoId }) => {
   const { globalState } = useContext(appContext);
   const editorRef = useRef<EditorRefActions>(null);
   const prevGlobalStateRef = useRef(globalState);
@@ -41,12 +41,12 @@ const MemoEditor: React.FC<Props> = ({ isAllowUpdate = false}) => {
       return;
     }
 
-    const { editMemoId } = globalStateService.getState();
+    // const { editMemoId } = globalStateService.getState();
 
     content = content.replaceAll("&nbsp;", " ");
 
     try {
-      if (isAllowUpdate && editMemoId) {
+      if (editMemoId) {
         const prevMemo = memoService.getMemoById(editMemoId);
 
         if (prevMemo && prevMemo.content !== content) {
@@ -82,8 +82,8 @@ const MemoEditor: React.FC<Props> = ({ isAllowUpdate = false}) => {
     setEditorContentCache(content);
   }, []);
 
-  const { editMemoId } = globalState;
-  const showEditStatus  = isAllowUpdate && !!editMemoId
+  // const { editMemoId } = globalState;
+  // const showEditStatus  = isAllowUpdate && !!editMemoId
   // 编辑器配置
   const editorConfig = useMemo(
     () => ({
@@ -91,7 +91,7 @@ const MemoEditor: React.FC<Props> = ({ isAllowUpdate = false}) => {
       initialContent: getEditorContentCache(),
       placeholder: "现在的想法是...",
       showConfirmBtn: true,
-      showCancelBtn: !showEditStatus ? false : true,
+      showCancelBtn: !editMemoId ? false : true,
       showTools: true,
       onConfirmBtnClick: handleSaveBtnClick,
       onCancelBtnClick: handleCancelBtnClick,
@@ -101,8 +101,8 @@ const MemoEditor: React.FC<Props> = ({ isAllowUpdate = false}) => {
   );
 
   return (
-    <div className={"memo-editor-wrapper " + (showEditStatus ? "edit-ing" : "")}>
-      <p className={"tip-text " + (showEditStatus ? "" : "hidden")}>正在修改中...</p>
+    <div className={"memo-editor-wrapper " + (editMemoId ? "edit-ing" : "")}>
+      <p className={"tip-text " + (editMemoId ? "" : "hidden")}>正在修改中...</p>
       <Editor ref={editorRef} {...editorConfig} />
     </div>
   );

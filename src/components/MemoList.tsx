@@ -96,7 +96,7 @@ const MemoList: React.FC<Props> = () => {
   return (
     <div className={`memolist-wrapper ${isFetching ? "" : "completed"}`} onClick={handleMemoListClick} ref={wrapperElement}>
       {shownMemos.map((memo) => (
-        globalState.editMemoId === memo.id ? <MainEditor isAllowUpdate={true} key={memo.id + 'edit'}/> : <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
+        globalState.editMemoId === memo.id ? <MemoEditor editMemoId={memo.id} key={memo.id + 'edit'}/> : <Memo key={`${memo.id}-${memo.updatedAt}`} memo={memo} />
       ))}
       <div className="status-text-container">
         <p className="status-text">
