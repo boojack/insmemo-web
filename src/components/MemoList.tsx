@@ -6,8 +6,8 @@ import utils from "../helpers/utils";
 import { checkShouldShowMemoWithFilters } from "../helpers/filter";
 import Memo from "./Memo";
 import toastHelper from "./Toast";
+import MemoEditor from "./MemoEditor";
 import "../less/memolist.less";
-import MainEditor from "./MemoEditor";
 
 interface Props {}
 
